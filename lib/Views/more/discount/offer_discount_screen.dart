@@ -1,0 +1,181 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:get/get.dart';
+import 'package:iobm/Widgets/custom_widgets.dart';
+import 'package:iobm/helper_classes/ui_helper.dart';
+import 'package:iobm/models/error_entity.dart';
+import 'package:iobm/networkcalls/api_calls.dart';
+import 'package:iobm/networkcalls/response_models/insert_offer_entity.dart';
+import 'package:iobm/utils/app_color.dart';
+import 'package:iobm/utils/app_constants.dart';
+import 'package:iobm/utils/strings.dart';
+
+class OfferDiscount extends StatefulWidget {
+  const OfferDiscount({Key? key}) : super(key: key);
+
+  @override
+  OfferDiscountState createState() => OfferDiscountState();
+}
+
+class OfferDiscountState extends State<OfferDiscount> {
+  final TextEditingController _detailsController = TextEditingController();
+  GlobalKey<FormState> fKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          Strings.offerediscount,
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(18),
+          ),
+        ),
+        shape: Border(
+          bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
+        ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(15.0),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Form(
+            key: fKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 70,
+                ),
+                Text(
+                  'Please enter details of discount',
+                  style: TextStyle(
+                    color: AppColor.primaryColor,
+                    fontSize: ScreenUtil().setSp(18),
+                    // fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                TextFormField(
+                  controller: _detailsController,
+                  validator: (value) {
+                    return value!.isEmpty
+                        ? 'Please Enter Discount Information'
+                        : value.length < 30
+                            ? 'Discount information should be at least 30 characters '
+                            : null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Discount Details here',
+                    hintStyle: TextStyle(
+                      fontSize: ScreenUtil().setSp(14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: AppColor.primaryColor),
+                      borderRadius: BorderRadius.circular(5.r),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.primaryColor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: AppColor.primaryColor),
+                        borderRadius: BorderRadius.circular(5.r)),
+                  ),
+                  maxLines: 8,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                CustomWidget.myButton(
+                  name: AppConstants.submit,
+                  isBorder: false,
+                  onClicked: () {
+                    FocusScope.of(context).unfocus();
+                    if (fKey.currentState!.validate()) {
+                      addDiscountDetails();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> addDiscountDetails() async {
+    UIHelper.apiCallingAlert(context);
+    var response = await ApiCalls.insertDiscount(
+      userId: AppConstants.myId,
+      message: _detailsController.text,
+    );
+    UIHelper.hideApiCallingAlert(context);
+    if (response is ErrorEntity) {
+      print(response.message);
+    } else {
+      InsertOfferEntity offerEntity = InsertOfferEntity().fromJson(response);
+      if (offerEntity.success == 1) {
+        showDialog(
+          context: context,
+          builder: (builder) => Dialog(
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Alert',
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    offerEntity.message,
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(14),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 50,
+                    child: TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Center(
+                          child: Text(
+                            "OK",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              color: AppColor.primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ).then((value) => Get.back());
+      }
+    }
+  }
+}

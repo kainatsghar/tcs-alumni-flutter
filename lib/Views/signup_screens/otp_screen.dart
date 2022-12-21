@@ -1,0 +1,204 @@
+import 'dart:convert';
+
+import 'package:country_picker/country_picker.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:iobm/Widgets/custom_widgets.dart';
+import 'package:iobm/Widgets/widget_styles.dart';
+import 'package:iobm/helper_classes/ui_helper.dart';
+import 'package:iobm/models/error_entity.dart';
+import 'package:iobm/networkcalls/api_calls.dart';
+import 'package:iobm/networkcalls/response_models/verify_phone_entity.dart';
+import 'package:iobm/utils/app_color.dart';
+import 'package:iobm/utils/app_constants.dart';
+import 'package:iobm/utils/app_images.dart';
+
+class OtpScreen extends StatefulWidget {
+  final String check;
+  const OtpScreen({Key? key, required this.check}) : super(key: key);
+
+  @override
+  _OtpScreenState createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _countryCodeController = TextEditingController();
+  String number = '';
+
+  @override
+  void initState() {
+    _countryCodeController.text = '+92';
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: AppColor.primaryColor, //change your color here
+        ),
+        backgroundColor: AppColor.transparent,
+        elevation: 0,
+      ),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppColor.white,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 100.h,
+                ),
+                SvgPicture.asset(AppImages.otpIllustration),
+                SizedBox(
+                  height: 35.h,
+                ),
+                Text(
+                  'Enter your registered mobile number to verify its you',
+                  style: WidgetStyle.forgotTExtStyle(
+                      fontSize: 14.0, color: AppColor.greyshade800),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 30.h),
+                otpTextField(),
+                SizedBox(height: 40.h),
+                CustomWidget.myButton(
+                    isBorder: false,
+                    name: AppConstants.sendcode,
+                    // size: Size(110.w, 30.h),
+                    onClicked: () {
+                      verifyPhoneNumber();
+                    }),
+                SizedBox(height: 40.h),
+                backToLogin(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget backToLogin() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Back to',
+          style: WidgetStyle.forgotTExtStyle(
+              fontSize: ScreenUtil().setSp(13), color: AppColor.greyshade800),
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Text(
+              'Sign In',
+              style: WidgetStyle.underLineTextStyle(
+                color: AppColor.primaryColor,
+                fontSize: ScreenUtil().setSp(13),
+              ),
+            )),
+      ],
+    );
+  }
+
+  Widget otpTextField() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: 40,
+          child: TextFormField(
+            readOnly: true,
+            onTap: () {
+              showCountryPicker(
+                exclude: <String>['IR', 'SY', 'KP', 'CU', 'VE'],
+                context: context,
+                onSelect: (Country country) {
+                  setState(
+                    () {
+                      _countryCodeController.text = "+${country.phoneCode}";
+                    },
+                  );
+                },
+              );
+            },
+            controller: _countryCodeController,
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.redshade900)),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 10.w,
+        ),
+        Expanded(
+          child: TextFormField(
+            controller: _phoneController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              hintText: 'Enter Phone Number',
+              hintStyle: const TextStyle(),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.redshade900)),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Future<void> verifyPhoneNumber() async {
+    if (_phoneController.text[0] == "0") {
+      _phoneController.text = _phoneController.text.substring(1);
+    }
+    setState(() {
+      number = _countryCodeController.text + _phoneController.text;
+    });
+    UIHelper.apiCallingAlert(context);
+    var response = await ApiCalls.verifyPhone(
+      phone: number,
+    );
+    print(number);
+    UIHelper.hideApiCallingAlert(context);
+    if (response is ErrorEntity) {
+      if (widget.check == 'forget') {
+        CustomWidget.otpDialog(
+            context: context, phone: number, check: widget.check);
+      } else {
+        UIHelper.showErrorAlert(context, response.message);
+      }
+    } else {
+      VerifyPhoneEntity phoneEntity = VerifyPhoneEntity.fromJson(
+        jsonEncode(response),
+      );
+      if (phoneEntity.success == 1) {
+        if (widget.check == "forget") {
+          UIHelper.showErrorAlert(context, "The phone number does not exist");
+        } else {
+          CustomWidget.otpDialog(
+              context: context, phone: number, check: widget.check);
+        }
+      }
+    }
+  }
+}
