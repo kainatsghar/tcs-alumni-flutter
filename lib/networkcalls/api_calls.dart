@@ -763,6 +763,7 @@ class ApiCalls {
 
   // Auto Verify
   static autoSignupBoss({
+    userId,
     email,
     password,
     fullName,
@@ -803,8 +804,9 @@ class ApiCalls {
       Params.DEVICE_VERSION: osVersion,
       Params.DEVICE_UUID: serial,
       Params.DEVICE_STATUS: status,
+      Params.USER_ID: userId,
     };
-    return await NetworkCalls.postMultipartCall(apiAutoSignUpBoss, params);
+    return await NetworkCalls.postMultipartCall(apiAutoSignUpCityzens, params);
   }
 
   // Manual Signup Boss
@@ -848,7 +850,7 @@ class ApiCalls {
       Params.DEVICE_UUID: serial,
       Params.DEVICE_STATUS: status,
     };
-    return await NetworkCalls.postMultipartCall(apiManualSignupBoss, params);
+    return await NetworkCalls.postMultipartCall(apiManualSignupCityzens, params);
   }
 
   /// ***************************************************

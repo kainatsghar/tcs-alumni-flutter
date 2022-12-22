@@ -6,15 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:iobm/Widgets/custom_widgets.dart';
-import 'package:iobm/Widgets/widget_styles.dart';
-import 'package:iobm/helper_classes/ui_helper.dart';
-import 'package:iobm/models/error_entity.dart';
-import 'package:iobm/networkcalls/api_calls.dart';
-import 'package:iobm/networkcalls/response_models/verify_phone_entity.dart';
-import 'package:iobm/utils/app_color.dart';
-import 'package:iobm/utils/app_constants.dart';
-import 'package:iobm/utils/app_images.dart';
+
+import '../../Widgets/custom_widgets.dart';
+import '../../Widgets/widget_styles.dart';
+import '../../helper_classes/ui_helper.dart';
+import '../../models/error_entity.dart';
+import '../../networkcalls/api_calls.dart';
+import '../../networkcalls/response_models/verify_phone_entity.dart';
+import '../../utils/app_color.dart';
+import '../../utils/app_constants.dart';
+import '../../utils/app_images.dart';
+
 
 class OtpScreen extends StatefulWidget {
   final String check;

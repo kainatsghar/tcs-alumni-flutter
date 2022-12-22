@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,12 +40,14 @@ import 'package:linkedin_login/linkedin_login.dart';
 
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'boss_forget_password.dart';
 
 String? chapterId;
+bool fromLogout = false;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -59,11 +62,42 @@ class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> fKey = GlobalKey<FormState>();
   final ProfileController _controller = Get.put(ProfileController());
   Future<void>? _launched;
-
   bool showPass = true;
+  String rEmail = '';
+  String rPass = '';
+
+  //biometric
+  final LocalAuthentication auth = LocalAuthentication();
+
+  bool? canAuthenticate;
+  Future? fetchSupport;
+
+  void bioMetCheck() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    canAuthenticate =
+    (canAuthenticateWithBiometrics || await auth.isDeviceSupported());
+    setState(() {});
+  }
+
+  bioMetricFunc() {
+    bioMetCheck();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      return bioMetCheck();
+    });
+    fromLogout
+        ? null
+        : Future.delayed(const Duration(milliseconds: 1000), () {
+      if(rEmail.isNotEmpty && rPass.isNotEmpty) {
+        return _authenticateWithBiometrics();
+      }
+    });
+
+  }
+  //biometric closed
+
   void toggle() {
     setState(
-      () {
+          () {
         showPass = !showPass;
       },
     );
@@ -87,16 +121,25 @@ class _LoginScreenState extends State<LoginScreen> {
   bool? remember = false;
 
   void getData() async {
+    print(fromLogout);
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    _emailController.text = localStorage.getString('rEmail') ?? '';
-    _passwordController.text = localStorage.getString('rPass') ?? "";
+    // _emailController.text = localStorage.getString('rEmail') ?? '';
+    // _passwordController.text = localStorage.getString('rPass') ?? "";
+    rEmail = localStorage.getString('fingerEmail') ?? '';
+    rPass = localStorage.getString('fingerPass') ?? '';
+    print(rEmail);
+    print(rPass);
   }
 
   @override
   void initState() {
+
     getData();
+    bioMetricFunc();
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,76 +149,121 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
           body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 100.h,
-                ),
-                profileLogo(),
-                SizedBox(
-                  height: 40.h,
-                ),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 100.h,
+                    ),
+                    profileLogo(),
+                    SizedBox(
+                      height: 40.h,
+                    ),
 
-                _form(),
-                SizedBox(
-                  height: 20.h,
+                    _form(),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    rememberMe(),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          height: 60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomWidget.myButton(
+                                isBorder: false,
+                                name: AppConstants.signin,
+                                // size: Size(110.w, 30.h),
+                                onClicked: () {
+                                  if (fKey.currentState!.validate()) {
+                                    loginCall(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      name: "",
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        canAuthenticate == true && canAuthenticate != null
+                            ? Positioned(
+                          right: 40.w,
+                          child: GestureDetector(
+                            onTap: () {
+                              print('fingerprint called');
+                              if(rEmail.isNotEmpty && rPass.isNotEmpty){
+                                _authenticateWithBiometrics();
+                              }
+                              else{
+                                print('No user found');
+                                ScaffoldMessenger.of(context).showSnackBar(snackBarRed('User not remembered yet'));
+                              }
+                            },
+                            child: SizedBox(
+                              height: 45.w,
+                              width: 45.w,
+                              child: const ImageIcon(
+                                AssetImage(
+                                  AppImages.biometric,
+                                ),
+                                color: AppColor.blue,
+                              ),
+                            ),
+                          ),
+                        )
+                            : const SizedBox(),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    // WidgetStyle.title(title: "Or continue with"),
+                    Text(
+                      'Or continue with',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 18.h,
+                    ),
+
+                    ///Social login Buttons Row
+
+                    _mediaButtons(),
+                    SizedBox(
+                      height: 18.h,
+                    ),
+
+                    ///sign button text
+                    _signup(),
+                    SizedBox(
+                      height: 18.h,
+                    ),
+                    _privacyPolicy(),
+                    SizedBox(
+                      height: 18.h,
+                    ),
+                  ],
                 ),
-                rememberMe(),
-                SizedBox(
-                  height: 20.h,
-                ),
-                CustomWidget.myButton(
-                  isBorder: false,
-                  name: AppConstants.signin,
-                  // size: Size(110.w, 30.h),
-                  onClicked: () {
-                    if (fKey.currentState!.validate()) {
-                      loginCall(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        name: "",
-                      );
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                //WidgetStyle.title(title: "Or continue with"),
-                Text(
-                  'Or continue with',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 18.h,
-                ),
-                _mediaButtons(),
-                SizedBox(
-                  height: 18.h,
-                ),
-                _signup(),
-                SizedBox(
-                  height: 18.h,
-                ),
-                _privacyPolicy(),
-                SizedBox(
-                  height: 18.h,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      )),
+          )),
     );
   }
 
@@ -226,8 +314,8 @@ class _LoginScreenState extends State<LoginScreen> {
               return value!.isEmpty
                   ? 'Email is required'
                   : validateEmail(value) == 1
-                      ? 'Invalid email'
-                      : null;
+                  ? 'Invalid email'
+                  : null;
             },
             decoration: WidgetStyle.emailTextFieldDecoration(),
           ),
@@ -287,11 +375,11 @@ class _LoginScreenState extends State<LoginScreen> {
           onTap: () {
             if (AppConstants.appName == "BOSS") {
               Get.to(
-                () => const BossForgetPassScreen(),
+                    () => const BossForgetPassScreen(),
               );
             } else {
               Get.to(
-                () => const OtpScreen(
+                    () => const OtpScreen(
                   check: 'forget',
                 ),
               );
@@ -357,6 +445,8 @@ class _LoginScreenState extends State<LoginScreen> {
             //   // width: 25.w,
             // ),
           ),
+
+        ///Apple login Button
         if (Platform.isIOS)
           GestureDetector(
             onTap: () {
@@ -371,6 +461,8 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(
           width: 10,
         ),
+
+        ///FB login Button
         GestureDetector(
           onTap: () {
             _facebookSingIn();
@@ -478,7 +570,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     /// Dow Signup
 
                     Get.to(
-                      () => const OtpScreen(
+                          () => const OtpScreen(
                         check: 'signup',
                       ),
                     );
@@ -548,7 +640,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     setState(
-                      () {
+                          () {
                         _launched = _launchInBrowser(toLaunch!);
                       },
                     );
@@ -570,12 +662,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginCall(
       {String loginWith = 'email',
-      required String email,
-      required String name,
-      required String password}) async {
+        required String email,
+        required String name,
+        required String password}) async {
     UIHelper.apiCallingAlert(context);
     DeviceData device = DeviceData();
     await device.init();
+    print('loginEmail from logincall $email');
 
     var response = await ApiCalls.login(
       email: email,
@@ -599,6 +692,8 @@ class _LoginScreenState extends State<LoginScreen> {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
 
       if (loginEntity.success == 1 || loginEntity.success == -4) {
+        print(
+            'This is token from Alumni LoginScreen ${loginEntity.result!.token}');
         if (loginEntity.result!.isVerified == "1") {
           AppConstants.myId = loginEntity.result!.userId ?? '';
           print(AppConstants.myId);
@@ -606,7 +701,7 @@ class _LoginScreenState extends State<LoginScreen> {
           AppConstants.bearerToken = loginEntity.result!.token ?? '';
           AppConstants.chapterId = loginEntity.result!.chapterId ?? '';
           SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           localStorage.setString('email', loginEntity.result!.email ?? '');
           localStorage.setString('password', password);
           localStorage.setString('loginWith', loginWith);
@@ -646,6 +741,9 @@ class _LoginScreenState extends State<LoginScreen> {
             localStorage.setString('rPass', password);
           }
 
+          localStorage.setString("fingerEmail", email);
+          localStorage.setString('fingerPass', password);
+
           DBAllUser allUser = DBAllUser(
             userId: loginEntity.result!.userId,
             firstName: loginEntity.result!.firstName,
@@ -673,7 +771,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (loginEntity.success == 1) {
             Get.offUntil(
                 GetPageRoute(page: () => const BottomNavigationScreen()),
-                (route) => false);
+                    (route) => false);
           } else {
             UIHelper.showOptionalUpdateAlert(
               context,
@@ -689,26 +787,27 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (loginEntity.success == -1) {
         /// **************************************
         /// DOW SignUp
-        Get.to(
-          () => SignUpScreen(
-            phone: "",
-            name: name,
-            email: email,
-            loginWith: loginWith,
-            password: password,
-          ),
-        );
+        // Get.to(
+        //   () => SignUpScreen(
+        //     phone: "",
+        //     name: name,
+        //     email: email,
+        //     loginWith: loginWith,
+        //     password: password,
+        //   ),
+        // );
 
         /// **************************************
         /// Boss Signup
-        // Get.to(
-        //   () => BossSearchSignupView(
-        //     name: name,
-        //     password: password,
-        //     loginWith: loginWith,
-        //     email: email,
-        //   ),
-        // );
+        print('email $email');
+        Get.to(
+              () => BossSearchSignupView(
+            name: name,
+            password: password,
+            loginWith: loginWith,
+            email: email,
+          ),
+        );
         /// **************************************
         /// IOBM Signup
         // Get.to(
@@ -731,7 +830,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void cancelOptionalUpdate() {
     Get.offUntil(GetPageRoute(page: () => const BottomNavigationScreen()),
-        (route) => false);
+            (route) => false);
   }
 
   _googleSingIn() async {
@@ -750,7 +849,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (accountInfos != null) {
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
-          await accountInfos.authentication;
+      await accountInfos.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -776,7 +875,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (result.accessToken != null) {
       // Create a credential from the access token
       final facebookAuthCredential =
-          FacebookAuthProvider.credential(result.accessToken!.token);
+      FacebookAuthProvider.credential(result.accessToken!.token);
       _handleSocialLogin(facebookAuthCredential, 'facebook');
     } else {
       UIHelper.showErrorAlert(context,
@@ -815,7 +914,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleSocialLogin(OAuthCredential credential, String loginWith) async {
     try {
       UserCredential user =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       _handleLoggedUser(user, loginWith);
     } catch (e) {
       print(e);
@@ -850,16 +949,46 @@ class _LoginScreenState extends State<LoginScreen> {
     print(signInWith);
 
     if (email != null && signInWith != null) {
+      print(email);
+      print(name);
+      print(signInWith);
       await loginCall(
         email: email,
         name: name ?? '',
         password: "dow_alumni_social_login@4gs55^&!",
         loginWith: signInWith,
       );
+      print('done');
       // FirebaseAuth.instance.signOut();
     } else {
       debugPrint('user object is null in social login $email $signInWith');
     }
+  }
+
+  Future<void> _authenticateWithBiometrics() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+        localizedReason: 'Scan your fingerprint to authenticate',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+
+      if (authenticated && rEmail!.isNotEmpty && rPass!.isNotEmpty) {
+        print('login called with fingerPrint');
+        loginCall(email: rEmail!, name: '', password: rPass!);
+      }
+    } on PlatformException catch (e) {
+      print(e);
+      // ScaffoldMessenger.of(context).showSnackBar(snackBarRed(e));
+      return ;
+    }
+    if (!mounted) {
+      return;
+    }
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
   }
 }
 

@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iobm/Views/forget_password_screen.dart';
-import 'package:iobm/Views/signup_screens/sign_up_screen.dart';
 import 'package:iobm/helper_classes/ui_helper.dart';
 import 'package:iobm/utils/app_color.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
+
+import '../../Views/signup_screens/sign_up_boss/signup_search_screen.dart';
 
 class OTPDialog extends StatefulWidget {
   final String? phone;
@@ -25,6 +29,8 @@ class _OTPDialogState extends State<OTPDialog> {
   final TextEditingController _otpController = TextEditingController();
 
   String? _verificationCode;
+  int resentTime = 60;
+  bool showTimer = false;
 
   @override
   void initState() {
@@ -34,116 +40,175 @@ class _OTPDialogState extends State<OTPDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 16,
-      child: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-          child: Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    "OTP Verification",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: AppColor.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "We have sent you a six digit verification code. Please enter below",
-                      style: TextStyle(
-                        // fontFamily: 'Nunito',
-                        fontSize: ScreenUtil().setSp(12),
-                        color: AppColor.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  inputField(),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                  const EdgeInsets.symmetric(horizontal: 20.0)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              side: const BorderSide(
-                                color: AppColor.primaryColor,
-                              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SingleChildScrollView(
+          child: Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 16,
+            child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Text(
+                          "OTP Verification",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "We have sent you a six digit verification code. Please enter below",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              // fontFamily: 'Nunito',
+                              fontSize: ScreenUtil().setSp(12),
+                              color: AppColor.black,
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          verifyCode();
-                        },
-                        child: Text(
-                          'Verify',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        inputField(),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Text('Time Remaining',
+                            style: TextStyle(color: AppColor.grey, fontSize: 12.sp)),
+                        Text('00 : ${resentTime.toString().padLeft(2, '0')}s',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.primaryColor)),
+                        SizedBox(height: 15.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 50.h,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    // padding:
+                                    //     MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                    //          EdgeInsets.symmetric(horizontal: 50.w)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        side: const BorderSide(
+                                          color: AppColor.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    verifyCode();
+                                  },
+                                  child: Text(
+                                    widget.check == 'signup'
+                                        ? 'Verify & Create Account'
+                                        : 'Verify & Continue',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(14),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: AppColor.black,
+                              fontSize: 12.sp,
+                            ),
+                            text: 'Didn\'t receive code? ',
+                            children: [
+                              TextSpan(
+                                  text: 'Request Again',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: resentTime == 0 ? AppColor.primaryColor : AppColor.primaryColor.withOpacity(0.4),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.sp),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      if(resentTime == 0){
+                                        _sendOtp();
+                                        setState(() {
+                                          resentTime = 60;
+                                        });
+                                      }
+                                    }),
+                            ],
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                ],
-              ),
-              Positioned(
-                right: 0,
-                child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: const Icon(Icons.close),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
   Padding inputField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: PinPut(
-        fieldsCount: 6,
-        textStyle: TextStyle(
-          fontSize: ScreenUtil().setSp(24),
-        ),
-        pinAnimationType: PinAnimationType.slide,
-        focusNode: _pinPutFocusNode,
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      child: Pinput(
+        // androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
         controller: _otpController,
-        submittedFieldDecoration: pinPutDecoration,
-        selectedFieldDecoration: pinUnSubmitDecoration,
-        followingFieldDecoration: pinUnSubmitDecoration,
-        inputDecoration: const InputDecoration(
-          counterText: '',
-          border: InputBorder.none,
+        length: 6,
+        pinAnimationType: PinAnimationType.slide,
+        followingPinTheme: PinTheme(
+            width: 40.w,height: 40.w,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+            decoration: pinPutDecoration
+        ),
+        defaultPinTheme: PinTheme(
+            width: 40.w,height: 40.w,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+            decoration: pinUnSubmitDecoration
+        ),
+        focusedPinTheme: PinTheme(
+            width: 40.w,height: 40.w,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+            decoration: pinUnSubmitDecoration
         ),
       ),
     );
@@ -166,19 +231,21 @@ class _OTPDialogState extends State<OTPDialog> {
   );
 
   Future<void> _sendOtp() async {
+    showTimer = true;
+    resendTimer();
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '${widget.phone}',
       verificationCompleted: (PhoneAuthCredential credential) async {
-        await FirebaseAuth.instance
-            .signInWithCredential(credential)
-            .then((value) async {
-          if (value.user != null) {
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => HomeScreen()),
-            //     (route) => false);
-          }
-        });
+        // await FirebaseAuth.instance
+        //     .signInWithCredential(credential)
+        //     .then((value) async {
+        //   if (value.user != null) {
+        //     // Navigator.pushAndRemoveUntil(
+        //     //     context,
+        //     //     MaterialPageRoute(builder: (context) => HomeScreen()),
+        //     //     (route) => false);
+        //   }
+        // });
       },
       verificationFailed: (FirebaseAuthException e) {
         print(e.message);
@@ -210,12 +277,13 @@ class _OTPDialogState extends State<OTPDialog> {
 
     // Sign the user in (or link) with the credential
     await auth.signInWithCredential(phoneAuthCredential).then(
-      (value) {
+          (value) {
         if (value.user != null) {
           UIHelper.hideApiCallingAlert(context);
           if (widget.check == 'signup') {
+            Navigator.of(context).pop();
             Get.off(
-              () => SignUpScreen(
+                  () => BossSearchSignupView(
                 phone: widget.phone,
                 email: "",
                 name: "",
@@ -224,8 +292,9 @@ class _OTPDialogState extends State<OTPDialog> {
               ),
             );
           } else {
+            Navigator.of(context).pop();
             Get.off(
-              () => ForgetPasswordScreen(
+                  () => ForgetPasswordScreen(
                 phone: widget.phone ?? '',
               ),
             );
@@ -235,10 +304,23 @@ class _OTPDialogState extends State<OTPDialog> {
         }
       },
     ).catchError(
-      (error) {
+          (error) {
         UIHelper.hideApiCallingAlert(context);
         UIHelper.showErrorAlert(context, "Code is not correct");
       },
     );
+  }
+
+  resendTimer() {
+    print('timer called');
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      print(resentTime);
+      if(mounted){setState(() {
+        resentTime--;
+      });}
+      if (resentTime == 0) {
+        timer.cancel();
+      }
+    });
   }
 }

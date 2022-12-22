@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:iobm/Views/login_screen.dart';
-
-import 'package:iobm/Widgets/custom_widgets.dart';
-import 'package:iobm/Widgets/widget_styles.dart';
-import 'package:iobm/controllers/profile_controller.dart';
-import 'package:iobm/helper_classes/ui_helper.dart';
-import 'package:iobm/local_db/local_db.dart';
-import 'package:iobm/models/error_entity.dart';
-import 'package:iobm/networkcalls/api_calls.dart';
-import 'package:iobm/networkcalls/response_models/login_entity_entity.dart';
-
-import 'package:iobm/utils/app_color.dart';
-import 'package:iobm/utils/app_constants.dart';
-import 'package:iobm/utils/app_images.dart';
-import 'package:iobm/utils/device_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Widgets/custom_widgets.dart';
+import '../../Widgets/widget_styles.dart';
+import '../../controllers/profile_controller.dart';
+import '../../helper_classes/ui_helper.dart';
+import '../../local_db/local_db.dart';
+import '../../models/error_entity.dart';
+import '../../networkcalls/api_calls.dart';
+import '../../networkcalls/response_models/login_entity_entity.dart';
+import '../../utils/app_color.dart';
+import '../../utils/app_constants.dart';
+import '../../utils/app_images.dart';
+import '../../utils/device_data.dart';
 import '../bottom_navigationbar.dart';
 import 'package:get/get.dart';
+
+import '../login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   final String? phone;
@@ -190,7 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     image: const AssetImage(
                       AppImages.alumniLogo,
                     ),
-                    height: 120.w,
+                    height: 80.w,
                   ),
                 ),
                 const SizedBox(

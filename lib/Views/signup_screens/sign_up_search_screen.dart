@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iobm/Views/login_screen.dart';
 
-import 'package:iobm/Widgets/custom_widgets.dart';
-import 'package:iobm/Widgets/widget_styles.dart';
-import 'package:iobm/utils/app_color.dart';
-import 'package:iobm/utils/app_images.dart';
+import '../../Widgets/custom_widgets.dart';
+import '../../Widgets/widget_styles.dart';
+import '../../utils/app_color.dart';
+import '../../utils/app_images.dart';
+import '../login_screen.dart';
 
 class SignUpScreenSearch extends StatefulWidget {
   const SignUpScreenSearch({Key? key}) : super(key: key);

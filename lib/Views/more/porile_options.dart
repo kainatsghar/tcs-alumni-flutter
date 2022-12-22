@@ -172,7 +172,7 @@ class ProfileOptionsView extends StatelessWidget {
         localStorage.remove('lng');
         localStorage.remove('loginStatus');
         localStorage.remove('token');
-
+        fromLogout = true;
         Get.offUntil(
           GetPageRoute(page: () => const LoginScreen()),
           (route) => false,

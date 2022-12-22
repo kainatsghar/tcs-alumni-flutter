@@ -33,6 +33,7 @@ class AppImages {
   static const String interestfill = 'assets/icons/interestfill.png';
   static const String noImage = 'assets/images/noimage.png';
   static const String pinIcon = "assets/icons/pinIcon.png";
+  static const String biometric = "assets/icons/biometric.png";
 
   //moreicons
   static const String jobopening = 'assets/icons/jobopening.svg';

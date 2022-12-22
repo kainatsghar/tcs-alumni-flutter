@@ -1,34 +1,37 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:iobm/Views/login_screen.dart';
 
-import 'package:iobm/Widgets/custom_widgets.dart';
-import 'package:iobm/Widgets/widget_styles.dart';
-import 'package:iobm/controllers/profile_controller.dart';
-import 'package:iobm/helper_classes/ui_helper.dart';
-import 'package:iobm/local_db/local_db.dart';
-import 'package:iobm/models/error_entity.dart';
-import 'package:iobm/networkcalls/api_calls.dart';
-import 'package:iobm/networkcalls/response_models/boss_search_entity.dart';
-import 'package:iobm/networkcalls/response_models/login_entity_entity.dart';
-import 'package:iobm/utils/app_color.dart';
-import 'package:iobm/utils/app_constants.dart';
-import 'package:iobm/utils/app_images.dart';
-import 'package:iobm/utils/device_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../Widgets/custom_widgets.dart';
+import '../../../Widgets/widget_styles.dart';
+import '../../../controllers/profile_controller.dart';
+import '../../../helper_classes/ui_helper.dart';
+import '../../../local_db/local_db.dart';
+import '../../../models/error_entity.dart';
+import '../../../networkcalls/api_calls.dart';
+import '../../../networkcalls/response_models/boss_search_entity.dart';
+import '../../../networkcalls/response_models/login_entity_entity.dart';
+import '../../../utils/app_color.dart';
+import '../../../utils/app_constants.dart';
+import '../../../utils/app_images.dart';
+import '../../../utils/device_data.dart';
 import '../../bottom_navigationbar.dart';
+import '../../login_screen.dart';
 
 class BossSearchSignupView extends StatefulWidget {
   final String? email;
   final String? loginWith;
   final String? password;
   final String? name;
+  final String? phone;
 
   const BossSearchSignupView({
     Key? key,
@@ -36,6 +39,7 @@ class BossSearchSignupView extends StatefulWidget {
     this.loginWith,
     this.password,
     this.name,
+    this.phone,
   }) : super(key: key);
 
   @override
@@ -51,7 +55,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
 
   bool showValue = false;
   Future<void>? _launched;
@@ -76,7 +80,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   bool showPass = true;
   void toggle() {
     setState(
-      () {
+          () {
         showPass = !showPass;
       },
     );
@@ -85,7 +89,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   bool showPass2 = true;
   void toggle2() {
     setState(
-      () {
+          () {
         showPass2 = !showPass2;
       },
     );
@@ -140,6 +144,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
 
   @override
   void initState() {
+    print('this is email ${widget.email}');
     _branchList = [];
     _students = [];
     print(widget.loginWith);
@@ -216,12 +221,12 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   const SizedBox(
                     height: 15,
                   ),
-                  WidgetStyle.signUpName(title: "Graduating School*"),
+                  WidgetStyle.signUpName(title: "Branch Name*"),
                   _programName(),
                   const SizedBox(
                     height: 15,
                   ),
-                  WidgetStyle.signUpName(title: "Graduation Year*"),
+                  WidgetStyle.signUpName(title: "Passing out year*"),
                   _passingYear(),
                   const SizedBox(
                     height: 15,
@@ -229,8 +234,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   searched
                       ? _extendedBody()
                       : const SizedBox(
-                          height: 18,
-                        ),
+                    height: 18,
+                  ),
                   Center(
                     child: CustomWidget.myButton(
                         isBorder: false,
@@ -278,8 +283,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         ),
         wait
             ? const Center(
-                child: CircularProgressIndicator(),
-              )
+          child: CircularProgressIndicator(),
+        )
             : const SizedBox()
       ],
     );
@@ -296,7 +301,13 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       readOnly: searched ? true : false,
       textInputAction: TextInputAction.next,
       validator: (value) {
-        return value!.isEmpty ? 'Name is required' : null;
+        if (value!.isEmpty) {
+          return 'Name is required';
+        } else if (value!.length < 2) {
+          return 'Enter minimum 2 letters';
+        } else {
+          return null;
+        }
       },
       decoration: InputDecoration(
         errorStyle: TextStyle(fontSize: 13.sp),
@@ -326,7 +337,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       // // 18.h,
       textCapitalization: TextCapitalization.words,
       controller: _fatherController,
-      enabled: searched ? false : true,
+      // enabled: searched ? false : true,
       textInputAction: TextInputAction.next,
       validator: (value) {
         return value!.isEmpty ? 'Guardian Name is required' : null;
@@ -398,12 +409,12 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       children: [
         _students.isNotEmpty
             ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WidgetStyle.signUpName(title: 'Verify your name*'),
-                  _studentList(),
-                ],
-              )
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            WidgetStyle.signUpName(title: 'Verify your name*'),
+            _studentList(),
+          ],
+        )
             : const SizedBox(),
         const SizedBox(
           height: 5,
@@ -418,20 +429,20 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         ),
         widget.password == ""
             ? Column(
-                children: [
-                  passwordTextField(),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  confirmPasswordTextField(),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                ],
-              )
+          children: [
+            passwordTextField(),
+            const SizedBox(
+              height: 15,
+            ),
+            confirmPasswordTextField(),
+            const SizedBox(
+              height: 25,
+            ),
+          ],
+        )
             : const SizedBox(
-                height: 15,
-              ),
+          height: 15,
+        ),
         _checkbox(),
         SizedBox(
           height: 10.w,
@@ -452,7 +463,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           }
         },
         items: _students.map(
-          (itemValue) {
+              (itemValue) {
             return DropdownMenuItem(
               value: itemValue.id,
               child: Text(
@@ -498,8 +509,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             return value!.isEmpty
                 ? 'Email is required'
                 : validateEmail(value) == 1
-                    ? 'Invalid email'
-                    : null;
+                ? 'Invalid email'
+                : null;
           },
           style: TextStyle(
             fontSize: ScreenUtil().setSp(14),
@@ -508,7 +519,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           textInputAction: TextInputAction.next,
           controller: _emailController,
           decoration:
-              WidgetStyle.nameTextFieldDecoration(hint: "example@mail.com"),
+          WidgetStyle.nameTextFieldDecoration(hint: "example@mail.com"),
         )
       ],
     );
@@ -521,6 +532,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       children: [
         WidgetStyle.signUpName(title: 'Phone*'),
         TextFormField(
+          enabled: searched && widget.email == 'email' ? false : true,
           // 18.h,
           validator: (value) {
             return value!.isEmpty ? 'Phone is required' : null;
@@ -532,7 +544,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           maxLength: 16,
           controller: _phoneController,
           decoration:
-              WidgetStyle.nameTextFieldDecoration(hint: "+923212345678"),
+          WidgetStyle.nameTextFieldDecoration(hint: "+923212345678"),
         )
       ],
     );
@@ -572,8 +584,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             return value!.isEmpty
                 ? 'Please confirm Password'
                 : value != _passwordController.text
-                    ? 'Password does not match'
-                    : null;
+                ? 'Password does not match'
+                : null;
           },
           style: TextStyle(
             fontSize: ScreenUtil().setSp(14),
@@ -587,40 +599,44 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   }
 
   Widget _passingYear() {
-    return DropdownButtonFormField(
-      decoration: InputDecoration(
-        errorStyle: TextStyle(fontSize: 13.sp),
-        contentPadding: const EdgeInsets.only(top: 10),
-        isDense: true,
-      ),
-      isExpanded: true,
-      validator: (value) {
-        return value == null ? 'Please select graduation year' : null;
-      },
-      items: graduationYearList.map((itemValue) {
-        return DropdownMenuItem(
-          value: itemValue,
-          child: Text(itemValue),
-        );
-      }).toList(),
-      onChanged: (newValue) {
-        setState(() {
-          _passingYearValue = newValue.toString();
-        });
-      },
-      hint: Text(
-        '2021',
+    return IgnorePointer(
+      ignoring: searched ? true : false,
+      child: DropdownButtonFormField(
+        decoration: InputDecoration(
+          errorStyle: TextStyle(fontSize: 13.sp),
+          contentPadding: const EdgeInsets.only(top: 10),
+          isDense: true,
+        ),
+        isExpanded: true,
+        validator: (value) {
+          return value == null ? 'Please select passing out year' : null;
+        },
+        items: graduationYearList.map((itemValue) {
+          return DropdownMenuItem(
+            // enabled: false,
+            value: itemValue,
+            child: Text(itemValue),
+          );
+        }).toList(),
+        onChanged: (newValue) {
+          setState(() {
+            _passingYearValue = newValue.toString();
+          });
+        },
+        hint: Text(
+          '2021',
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(14),
+            color: AppColor.greyshade400,
+          ),
+        ),
         style: TextStyle(
           fontSize: ScreenUtil().setSp(14),
-          color: AppColor.greyshade400,
+          color: AppColor.black,
         ),
+        value: _passingYearValue,
+        iconEnabledColor: AppColor.primaryColor,
       ),
-      style: TextStyle(
-        fontSize: ScreenUtil().setSp(14),
-        color: AppColor.black,
-      ),
-      value: _passingYearValue,
-      iconEnabledColor: AppColor.primaryColor,
     );
   }
 
@@ -745,7 +761,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         GestureDetector(
           onTap: () {
             setState(
-              () {
+                  () {
                 _launched = _launchInBrowser(toLaunch!);
               },
             );
@@ -769,6 +785,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   }
 
   Future<void> signUpSearch() async {
+    print('singupSearch called.....');
     setState(() {
       wait = true;
     });
@@ -789,16 +806,39 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       BossSearchEntity searchEntity = BossSearchEntity().fromJson(response);
       if (searchEntity.success == 1) {
         if (searchEntity.result!.isEmpty) {
+          setState(() {
+            _phoneController.text = widget.phone ?? '';
+          });
           return signUpSearchDialogue(context: context);
         } else {
           setState(() {
             searched = true;
+            _phoneController.text = widget.phone ?? '';
+            _nameController.text = searchEntity.result!.first!.firstName ?? '';
+            _emailController.text = searchEntity.result!.first!.email ?? '';
+            // _branchId = searchEntity.result!.first!.branchId;
+            // print('This is branch id bro **** $_branchId');
+            _passingYearValue = searchEntity.result!.first!.graduationYear;
+            print('hello');
           });
           for (var element in searchEntity.result!) {
             _students.add(
-              Student(element.firstName ?? '', element.userId ?? ''),
+              Student(element.firstName ?? '', element.userId ?? '',
+                  element.phone ?? '', element.email ?? ''),
             );
+            print('Student first name ${element.firstName}');
           }
+          _phoneController.text = _students.first.phone;
+          print('This is list student ${_students.first.name}');
+          print('This is list email ${_students.first.email}');
+          print('This is list student ${_students.first.phone}');
+          print('This is list student userID ${_students.first.id}');
+          _fatherController.text =
+          searchEntity.result!.first!.fatherName == null ||
+              searchEntity.result!.first.fatherName == '' ||
+              searchEntity.result!.first.fatherName == 'N/A'
+              ? _fatherController.text
+              : searchEntity.result!.first!.fatherName ?? '';
         }
       }
     }
@@ -809,12 +849,12 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return _dialog();
+        return _dialog(context);
       },
     );
   }
 
-  Widget _dialog() {
+  Widget _dialog(context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 16,
@@ -837,20 +877,21 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0).copyWith(bottom: 20.h),
               child: Text(
-                'User with these details not found, Please modify search or proceed for manual verification',
+                'User not found',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColor.black,
-                  fontSize: ScreenUtil().setSp(15),
+                  fontSize: ScreenUtil().setSp(18),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            _buttonsRow(),
+            _buttonsRow(context),
             const SizedBox(
               height: 20,
             ),
@@ -864,7 +905,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     );
   }
 
-  Widget _buttonsRow() {
+  Widget _buttonsRow(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -873,7 +914,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           child: OutlinedButton(
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.symmetric(horizontal: 10.0)),
+                  const EdgeInsets.symmetric(horizontal: 20.0)),
               side: MaterialStateProperty.all<BorderSide>(
                 const BorderSide(color: AppColor.primaryColor),
               ),
@@ -894,20 +935,20 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
               'Modify Search',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: ScreenUtil().setSp(12),
+                fontSize: ScreenUtil().setSp(11),
               ),
             ),
           ),
         ),
-        const SizedBox(
-          width: 10,
+        SizedBox(
+          width: 8.w,
         ),
         SizedBox(
           height: 30.h,
           child: ElevatedButton(
             style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.symmetric(horizontal: 12.0)),
+                    const EdgeInsets.symmetric(horizontal: 8.0)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
@@ -927,11 +968,11 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
               'Manual Verification',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: ScreenUtil().setSp(12),
+                fontSize: ScreenUtil().setSp(11),
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -943,8 +984,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           TextSpan(
             text: 'Having trouble? ',
             style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
-              color: AppColor.greyshade500,
+              fontSize: ScreenUtil().setSp(14),
+              color: AppColor.black,
             ),
           ),
           TextSpan(
@@ -955,10 +996,10 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                     'https://api.whatsapp.com/send?phone=${AppConstants.whatsAppNumber}');
               },
             style: TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: ScreenUtil().setSp(16),
+              // decoration: TextDecoration.underline,
+              fontSize: ScreenUtil().setSp(14),
               color: AppColor.primaryColor,
-              fontWeight: FontWeight.bold,
+              // fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -970,7 +1011,16 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     UIHelper.apiCallingAlert(context);
     DeviceData device = DeviceData();
     await device.init();
+    print('student id ${_students.first.id}');
+    // if(widget.email != '' || widget.email != 'email'){
+    //   setState(() {
+    //     _emailController.text = widget.email!;
+    //   });
+    // }
+    print('_emailController.text   ${_emailController.text}');
+
     var response = await ApiCalls.autoSignupBoss(
+      userId: _students.first.id,
       email: _emailController.text,
       fullName: _nameController.text,
       fatherName: _fatherController.text,
@@ -997,13 +1047,18 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       UIHelper.showErrorAlert(context, response.message);
     } else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
+      print('This is success broo *** ${loginEntity.success}');
+      print(loginEntity.result!.isDeleted);
+      print(loginEntity.result!.isVerified);
       if (loginEntity.success == 1) {
         if (loginEntity.result!.isDeleted == "N" &&
             loginEntity.result!.isVerified == "1") {
+          AppConstants.bearerToken = loginEntity.result!.token ?? '';
+          print(AppConstants.bearerToken);
           AppConstants.myId = loginEntity.result!.userId ?? '';
           AppConstants.userName = loginEntity.result!.firstName ?? '';
           SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           localStorage.setString('email', loginEntity.result!.email ?? '');
           localStorage.setString('password', _passwordController.text);
           localStorage.setString('loginWith', "email");
@@ -1047,7 +1102,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           await database.insertUser(allUser);
           _controller.getInfo();
           Get.offUntil(GetPageRoute(page: () => const BottomNavigationScreen()),
-              (route) => false);
+                  (route) => false);
         } else {
           UIHelper.showErrorAlert(context, loginEntity.message);
         }
@@ -1091,7 +1146,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           AppConstants.myId = loginEntity.result!.userId ?? '';
           AppConstants.userName = loginEntity.result!.firstName ?? '';
           SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           localStorage.setString('email', loginEntity.result!.email ?? '');
           localStorage.setString('password', _passwordController.text);
           localStorage.setString('loginWith', "email");
@@ -1138,11 +1193,14 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           );
           await database.insertUser(allUser);
           Get.offUntil(GetPageRoute(page: () => const BottomNavigationScreen()),
-              (route) => false);
+                  (route) => false);
         } else {
           UIHelper.showSuccessAlert(context, loginEntity.message, () {
             Get.offUntil(GetPageRoute(page: () => const LoginScreen()),
-                (route) => false);
+                    (route) => false);
+            setState(() {
+              fromLogout = true;
+            });
           });
         }
       }
@@ -1154,5 +1212,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
 class Student {
   String name;
   String id;
-  Student(this.name, this.id);
+  String phone;
+  String email;
+  Student(this.name, this.id, this.phone, this.email);
 }

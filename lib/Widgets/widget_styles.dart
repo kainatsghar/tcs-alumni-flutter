@@ -336,3 +336,9 @@ TextStyle filterTextstyle() {
   //   fontWeight: FontWeight.w500,
   // );
 }
+snackBarRed(content) {
+  return SnackBar(
+    content: Text(content),
+    backgroundColor: AppColor.redd,
+  );
+}
