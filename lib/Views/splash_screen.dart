@@ -40,7 +40,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final ProfileController _controller = Get.put(ProfileController());
   Timer? _timer;
-  int count = 4;
+  int _count = 5;
   String? sharingLocation;
   double? latitude;
   double? longitude;
@@ -58,9 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
-        print(count);
-        if (count > 0) {
-          count--;
+        print(_count);
+        if (_count > 0) {
+          _count--;
         } else {
           checkRoutes();
         }
@@ -80,68 +80,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.splashimage),
-                fit: BoxFit.cover,
-              ),
+      backgroundColor: const Color(0Xff1F2D65),
+      body: Container(
+        // height: Get.height,width: Get.width,
+        decoration: const BoxDecoration(
+          //color: Colors.grey,
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/splashgif.gif",
             ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Image(
-                  height: 63.h,
-                  width: 234.w,
-                  image: const AssetImage(AppImages.splashLogo),
-                ),
-              ),
-            ),
+            fit: BoxFit.cover,
           ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                "ver $versionCode",
-                style: TextStyle(
-                    color: AppConstants.appName == 'TLE'
-                        ? AppColor.black
-                        : AppColor.white,
-                    fontSize: ScreenUtil().setSp(12)),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 30,
-            // right: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Text(
-                    "Powered by",
-                    style: TextStyle(
-                        color: AppColor.white,
-                        fontSize: ScreenUtil().setSp(14)),
-                  ),
-                  const SizedBox(width: 5),
-                  Image.asset(
-                    AppImages.viion,
-                    height: 25,
-                    width: 45,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
+        // child: null /* add child content here */,
       ),
     );
   }
