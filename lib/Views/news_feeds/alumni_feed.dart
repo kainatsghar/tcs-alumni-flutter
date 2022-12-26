@@ -79,6 +79,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   int commentCount = 0;
 
+
   List<Reaction<String>> reactions = [
     Reaction(icon: _emojis(AppImages.likeIcon), value: 'Like'),
     Reaction(icon: _emojis(AppImages.heartIcon), value: 'Love'),
@@ -2117,4 +2118,5 @@ class _AlumniFeedState extends State<AlumniFeed> {
       }
     }
   }
+
 }

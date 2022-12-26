@@ -34,6 +34,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../Widgets/custom_widgets.dart';
 import '../../networkcalls/network_config.dart';
 import '../../utils/app_utils.dart';
 import '../buy_and_sell_tle/product_detail_screen.dart';
@@ -295,17 +296,31 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         itemBuilder: (context, index) {
                           if (snapshot.data!.docs[index]['senderId'] ==
                               AppConstants.myId) {
-                            return _send(
-                              snapshot.data!.docs[index]['message'],
-                              AppUtils()
-                                  .chatDifference(
-                                      snapshot.data!.docs[index]['timeStamp'])
-                                  .toString(),
-                              snapshot.data!.docs[index]['type'],
-                              snapshot.data!.docs[index]['media_url'],
-                              snapshot.data!.docs[index]['messageId'],
-                              snapshot.data!.docs[index]['status'],
-                              snapshot.data!.docs[index]['timeStamp'],
+                            return GestureDetector(
+                              onLongPress: () {
+                                // listSlcTile.clear();
+                                // isSelected = true;
+
+                                print(snapshot.data!.docs[index].metadata);
+                                var split = snapshot.data!.docs[index].reference.path.split('/');
+                                String selected = split.last;
+                                // listSlcTile.add(SlcMsgTile(selected, index));
+                                // setState(() {});
+
+                                deleteMessage(selected);
+                              },
+                              child: _send(
+                                snapshot.data!.docs[index]['message'],
+                                AppUtils()
+                                    .chatDifference(
+                                        snapshot.data!.docs[index]['timeStamp'])
+                                    .toString(),
+                                snapshot.data!.docs[index]['type'],
+                                snapshot.data!.docs[index]['media_url'],
+                                snapshot.data!.docs[index]['messageId'],
+                                snapshot.data!.docs[index]['status'],
+                                snapshot.data!.docs[index]['timeStamp'],
+                              ),
                             );
                           } else {
                             return _receive(
@@ -1744,4 +1759,38 @@ class _MessagesScreenState extends State<MessagesScreen> {
       print("error");
     }
   }
+
+  deleteMessage(selected) {
+    return Get.defaultDialog(
+        middleText: 'Are you sure you want to unsend message?',
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomWidget.dialogButton(
+                  name: 'Cancel',
+                  isBorderColor: true,
+                  onClicked: () {
+                    Get.back();
+                  }),
+              SizedBox(width: 10.w,),
+              CustomWidget.dialogButton(
+                name: 'Unsend',
+                isBorderColor: false,
+                onClicked: () async {
+                  Get.back();
+                  await FirebaseFirestore.instance
+                      .collection('chats')
+                      .doc('chatsScreen')
+                      .collection('$largeId-$smallId')
+                      .doc(selected)
+                      .delete();
+                },
+              ),
+            ],
+          ),
+        ]);
+  }
+
+
 }

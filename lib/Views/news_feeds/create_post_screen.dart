@@ -270,7 +270,7 @@ class _CreatePostState extends State<CreatePost> {
                                     },
                                     child: Stack(
                                       children: [
-                                        VideoPlayer(_controller),
+                                        VideoPlayer(VideoPlayerController.network(_images[index].path)..initialize()),
                                       ],
                                     ),
                                   )

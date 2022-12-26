@@ -1235,4 +1235,13 @@ class ApiCalls {
     };
     return await NetworkCalls.postWebWithTokenCall(apiGetReactionDetails, map);
   }
+
+  static getUpdateUserName({name}) async {
+    Map map = {
+      "name": name,
+    };
+    return await NetworkCalls.postWebWithTokenCall(apiUpdateProfile, map);
+  }
+
+
 }

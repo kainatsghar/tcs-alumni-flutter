@@ -27,6 +27,7 @@ import 'package:iobm/utils/app_utils.dart';
 
 import '../../helper_classes/ui_helper.dart';
 import '../../networkcalls/response_models/like_post_entity.dart';
+import '../more/profile_screen.dart';
 import 'create_post_screen.dart';
 
 class InsertComments extends StatefulWidget {
@@ -191,29 +192,38 @@ class _InsertCommentsState extends State<InsertComments> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: _comments[index].userImage ?? '',
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 45.w,
-                        height: 45.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          //   color: AppColor.white,
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                              () => ProfileScreen(
+                            userID: _comments[index].commentedBy,
+                          ),
+                        );
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: _comments[index].userImage ?? '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 45.w,
+                          height: 45.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            //   color: AppColor.white,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => CircleAvatar(
-                        //profile image
-                        backgroundColor: AppColor.white,
-                        backgroundImage: const AssetImage(AppImages.profile),
-                        radius: 25.r,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          //profile image
+                          backgroundColor: AppColor.white,
+                          backgroundImage: const AssetImage(AppImages.profile),
+                          radius: 25.r,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -236,12 +246,21 @@ class _InsertCommentsState extends State<InsertComments> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      '${_comments[index].firstName}',
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(13),
-                                        color: AppColor.greyshade800,
-                                        fontWeight: FontWeight.bold,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(
+                                              () => ProfileScreen(
+                                            userID: _comments[index].commentedBy,
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        '${_comments[index].firstName}',
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13),
+                                          color: AppColor.greyshade800,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -386,32 +405,41 @@ class _InsertCommentsState extends State<InsertComments> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: element.userImage ?? '',
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 45.w,
-                                  height: 45.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    //   color: AppColor.white,
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                    () => ProfileScreen(
+                                      userID: element.commentedBy,
+                                    ),
+                                  );
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: element.userImage ?? '',
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 45.w,
+                                    height: 45.w,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      //   color: AppColor.white,
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                errorWidget: (context, url, error) =>
-                                    CircleAvatar(
-                                  //profile image
-                                  backgroundColor: AppColor.white,
-                                  backgroundImage:
-                                      const AssetImage(AppImages.profile),
-                                  radius: 25.r,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      CircleAvatar(
+                                    //profile image
+                                    backgroundColor: AppColor.white,
+                                    backgroundImage:
+                                        const AssetImage(AppImages.profile),
+                                    radius: 25.r,
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -436,13 +464,22 @@ class _InsertCommentsState extends State<InsertComments> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                element.firstName ?? '',
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(13),
-                                                  color: AppColor.greyshade800,
-                                                  fontWeight: FontWeight.bold,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.to(
+                                                        () => ProfileScreen(
+                                                          userID: element.commentedBy,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  element.firstName ?? '',
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        ScreenUtil().setSp(13),
+                                                    color: AppColor.greyshade800,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
                                               Text(
@@ -1352,4 +1389,5 @@ class _InsertCommentsState extends State<InsertComments> {
       }
     }
   }
+
 }

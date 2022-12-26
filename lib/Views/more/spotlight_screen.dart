@@ -176,8 +176,10 @@ class SpotlightScreenState extends State<SpotlightScreen> {
     if (_aluminiList.isNotEmpty) {
       alumini = _aluminiList.first;
     }
+    print("alumini= $alumini");
     setState(() {
       _dataFetched = true;
     });
   }
+
 }

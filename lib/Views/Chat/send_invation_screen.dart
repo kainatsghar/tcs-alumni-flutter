@@ -657,6 +657,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
       }
     }
   }
+
 }
 
 class ChatInvitation {

@@ -142,4 +142,5 @@ class _BusinessSpotlightState extends State<BusinessSpotlight> {
       throw 'Could not launch $url';
     }
   }
+
 }

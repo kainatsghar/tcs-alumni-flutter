@@ -16,6 +16,8 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../Widgets/custom_widgets.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -25,6 +27,12 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool check = true;
+  List<Color> listColor = [];
+  String? largeId;
+  String? smallId;
+  var nums = [];
+  List<SelectedTile> listSlcTile = [];
+  bool isSelected = false;
 
   void checkConnectivity() async {
     var connectivity = await (Connectivity().checkConnectivity());
@@ -53,6 +61,32 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text(Strings.chat),
         context: context,
       ),
+      floatingActionButton: isSelected ? Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(onPressed: () {
+            setState(() {
+              isSelected = false;
+            });
+            deleteMessage();
+          },
+            child: const Icon(Icons.delete, color: AppColor.white,),
+          ),
+          SizedBox(height: 15.w,),
+          FloatingActionButton(
+            backgroundColor: AppColor.grey,
+            onPressed: () {
+              for(int i= 0; i<listSlcTile.length; i++){
+                listColor[listSlcTile[i].slcIndex] = AppColor.white;
+              }
+              isSelected = false;
+              listSlcTile.clear();
+              setState(() {});
+            },
+            child: const Icon(Icons.close,color: AppColor.white,),
+          ),
+        ],
+      ) : null,
       body: check
           ? _chatList()
           : Column(
@@ -100,22 +134,88 @@ class _ChatScreenState extends State<ChatScreen> {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                return user(
-                  onPressed: () {
-                    Get.to(
-                      () => ChatInvitationScreen(
-                        name: snapshot.data!.docs[index]['name'],
-                        image: snapshot.data!.docs[index]['imageUrl'],
-                        receiverId: snapshot.data!.docs[index]['id'],
-                      ),
-                    );
+                for(int i=0; i<snapshot.data!.docs.length; i++){
+                  listColor.add(AppColor.white);
+                }
+                return GestureDetector(
+                  onLongPress: () {
+                    listSlcTile.clear();
+                    isSelected = true;
+
+                    var split = snapshot.data!.docs[index].reference.path.split('/');
+                    String selected = split.last;
+
+                    nums = [int.parse(AppConstants.myId), int.parse(selected)];
+                    nums.sort();
+                    largeId = nums.last.toString();
+                    smallId = nums.first.toString();
+                    listSlcTile.add(SelectedTile(
+                        selected,
+                        largeId!,
+                        smallId!,
+                        index
+                    ));
+
+                    print("selected= $selected");
+                    if(listColor[index] == AppColor.greyshade300){
+                      listColor[index] = AppColor.white;
+                    }
+                    else{
+                      listColor[index] = AppColor.greyshade300;
+                    }
+                    setState(() {});
+                    //deleteMessage(selected);
                   },
-                  // unreadCount: snapshot.data!.docs[index]['unread'].toString(),
-                  name: snapshot.data!.docs[index]['name'],
-                  image: snapshot.data!.docs[index]['imageUrl'],
-                  msg: snapshot.data!.docs[index]['lastText'],
-                  time: AppUtils()
-                      .chatDifference(snapshot.data!.docs[index]['time']),
+                  child: user(
+                    onPressed: () {
+                      if(isSelected){
+                        var split = snapshot
+                            .data!.docs[index].reference.path
+                            .split('/');
+                        String selected = split.last;
+                        nums = [int.parse(AppConstants.myId), int.parse(selected)];
+                        nums.sort();
+                        largeId = nums.last.toString();
+                        smallId = nums.first.toString();
+                        listSlcTile.add(SelectedTile(
+                            selected,
+                            largeId!,
+                            smallId!,
+                            index
+                        ));
+
+
+                        if(listColor[index] == AppColor.greyshade300){
+                          listColor[index] = AppColor.white;
+                          for(int i=0; i<listSlcTile.length; i++){
+                            if(index == listSlcTile[i].slcIndex){
+                              listSlcTile.removeAt(i);
+                            }
+                          }
+                        }
+                        else{
+                          listColor[index] = AppColor.greyshade300;
+                        }
+                        setState(() {});
+                      }
+                      else{
+                        Get.to(
+                              () => ChatInvitationScreen(
+                            name: snapshot.data!.docs[index]['name'],
+                            image: snapshot.data!.docs[index]['imageUrl'],
+                            receiverId: snapshot.data!.docs[index]['id'],
+                          ),
+                        );
+                      }
+                    },
+                    // unreadCount: snapshot.data!.docs[index]['unread'].toString(),
+                    name: snapshot.data!.docs[index]['name'],
+                    image: snapshot.data!.docs[index]['imageUrl'],
+                    msg: snapshot.data!.docs[index]['lastText'],
+                    slcColor: listColor[index],
+                    time: AppUtils()
+                        .chatDifference(snapshot.data!.docs[index]['time']),
+                  ),
                 );
               },
             );
@@ -167,11 +267,13 @@ class _ChatScreenState extends State<ChatScreen> {
       String? msg,
       String? time,
       String? unreadCount,
+      int? index,
+      Color? slcColor,
       Function()? onPressed}) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        color: AppColor.white,
+        color: slcColor,
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -265,4 +367,78 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  deleteMessage() async{
+    return Get.defaultDialog(
+        middleText: 'Do you want to delete this chat?',
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomWidget.dialogButton(
+                  name: 'Cancel',
+                  isBorderColor: true,
+                  onClicked: () {
+                    Get.back();
+                    // snapshots.docs[i].reference.delete();
+                    for(int i= 0; i<listSlcTile.length; i++){
+                      listColor[listSlcTile[i].slcIndex] = AppColor.white;
+                    }
+                    listSlcTile.clear();
+                    setState(() {});
+                  }),
+              SizedBox(width: 10.w,),
+              CustomWidget.dialogButton(
+                name: 'Delete',
+                isBorderColor: false,
+                onClicked: () async{
+                  Get.back();
+                  Future.delayed(const Duration(milliseconds: 900),()async{
+                    for(int i=0; i<listSlcTile.length; i++){
+                      //deleting sender list
+                      FirebaseFirestore.instance
+                          .collection('messageKeys')
+                          .doc('keys')
+                          .collection(AppConstants.myId)
+                          .doc(listSlcTile[i].selectedId).delete();
+
+                      //deleting receiver list
+                      FirebaseFirestore.instance
+                          .collection('messageKeys')
+                          .doc('keys')
+                          .collection(listSlcTile[i].slcLarger).doc(AppConstants.myId).delete();
+
+                      //deleting chats
+                      var collection =  FirebaseFirestore.instance
+                          .collection('chats')
+                          .doc('chatsScreen')
+                          .collection('${listSlcTile[i].slcLarger}-${listSlcTile[i].slcSmaller}');
+
+                      var snapshots = await collection.get();
+                      for (var doc in snapshots.docs) {
+                        await doc.reference.delete();
+                      }
+                      listColor[listSlcTile[i].slcIndex] = AppColor.white;
+                    }
+
+                    listSlcTile.clear();
+                    setState(() {});
+                  });
+                },
+              ),
+            ],
+          ),
+        ]);
+  }
+
+}
+
+
+class SelectedTile{
+  int slcIndex;
+  String selectedId;
+  String slcLarger;
+  String slcSmaller;
+
+  SelectedTile(this.selectedId, this.slcLarger, this.slcSmaller,this.slcIndex);
 }

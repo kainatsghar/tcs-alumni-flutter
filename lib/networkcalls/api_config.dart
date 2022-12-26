@@ -8,6 +8,7 @@ import 'package:iobm/utils/app_constants.dart';
 
 class NetworkCalls {
   static Future<dynamic> getWebCall(String url, {params}) async {
+    print(url);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -43,6 +44,7 @@ class NetworkCalls {
   }
 
   static Future<dynamic> getWebCallWithToken(String url, {params}) async {
+    print(url);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -79,6 +81,8 @@ class NetworkCalls {
   }
 
   static Future postWebCall(String url, Map map) async {
+    print(url);
+    print(map);
     Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
@@ -120,6 +124,8 @@ class NetworkCalls {
   }
 
   static Future postMultipartCall(String url, Map map) async {
+    print(url);
+    print(map);
     Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
@@ -164,6 +170,8 @@ class NetworkCalls {
   }
 
   static Future postWebWithTokenCall(String url, Map map) async {
+    print(url);
+    print(map);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

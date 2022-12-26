@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -57,6 +58,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _interestController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+
   final ProfileController controller = Get.put(ProfileController());
 
   //loading
@@ -72,6 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late List<DBExperiece> _experienceList = [];
   late List<DBInterest> _interestList = [];
   late List<DBProduct> _productList = [];
+
+  bool isUpdateName = false;
 
   DBAllUser? oneUser;
   bool writeAbout = false;
@@ -194,14 +199,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${oneUser?.firstName} ${oneUser?.lastName}",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              color: AppColor.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 140.w,
+                                child: Text(
+                                  "${oneUser?.firstName} ${oneUser?.lastName}",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: ScreenUtil().setSp(14),
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 2.r,
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              oneUser?.userId == AppConstants.myId ?
+                              GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    isUpdateName = true;
+                                  });
+                                },
+                                child: Container(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  color: Colors.transparent,
+                                  child: Icon(Icons.edit,size: 15.h,color: Colors.white,),
+                                ),
+                              ) :
+                              Container(),
+                            ],
                           ),
+                          isUpdateName && oneUser?.userId == AppConstants.myId ? _updateUserName(): Container(),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -631,6 +667,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _updateUserName(){
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(right: 30.w),
+          child: TextField(
+            controller: _userNameController,
+            cursorColor: Colors.white,
+            style: const TextStyle(color: Colors.white),
+            // controller: emailController,
+            decoration: userNameTextFieldDecoration(hint: ""),
+          ),
+        ),
+        SizedBox(height: 10.h,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CustomWidget.dialogButton(
+              name: "Update",
+              isBorderColor: true,
+              onClicked: () async {
+                updateName();
+              },
+            ),
+            sizedBox(
+              width: 6.0,
+            ),
+            CustomWidget.dialogButton(
+              name: Strings.cancel,
+              isBorderColor: true,
+              onClicked: () {
+                setState(() {
+                  isUpdateName = false;
+                });
+              },
+            ),
+            sizedBox(width: 6.0)
+          ],
+        )
+      ],
+    );
+  }
+
+
   sizedBox({height, width}) {
     return SizedBox(
       height: height,
@@ -856,6 +936,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: TextField(
                             controller: _interestController,
                             // controller: emailController,
+                            maxLength: 17,
                             decoration:
                                 WidgetStyle.nameTextFieldDecoration(hint: ""),
                           ),
@@ -1071,6 +1152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.zero,
                       itemCount: _experienceList.length,
                       shrinkWrap: true,
+                      reverse: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return detailsWidget(
@@ -1387,6 +1469,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.zero,
                   itemCount: _educationList.length,
                   shrinkWrap: true,
+                  reverse: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return detailsWidget(
@@ -1770,6 +1853,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     String? loc = localStorage.getString('sharingLoc');
+    _userNameController.text = oneUser?.firstName ?? "";
+
     if (mounted) {
       setState(() {
         loc == "1" ? shareLocation = true : shareLocation = false;
@@ -2005,4 +2090,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
       wait = false;
     });
   }
+
+  Future<void> updateName() async {
+    UIHelper.apiCallingAlert(context);
+    var response = await ApiCalls.getUpdateUserName(
+      name: _userNameController.text,
+    );
+    if (response is ErrorEntity) {
+      setState(() {
+        isUpdateName = false;
+      });
+      UIHelper.hideApiCallingAlert(context);
+    }
+    else {
+      if(json.decode(json.encode(response))["success"] == 1){
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('firstName',_userNameController.text);
+        UIHelper.hideApiCallingAlert(context);
+        UIHelper.showSuccessAlert(context, json.decode(json.encode(response))["message"], ()=> Navigator.pop(context));
+        setState(() {
+          isUpdateName = false;
+        });
+
+        getUserInfo();
+      }
+      else{
+        setState(() {
+          isUpdateName = false;
+        });
+        UIHelper.hideApiCallingAlert(context);
+      }
+    }
+  }
+
+  InputDecoration userNameTextFieldDecoration({hint}) {
+    return InputDecoration(
+      errorStyle: TextStyle(fontSize: 13.sp),
+      contentPadding: const EdgeInsets.only(bottom: 4.0, top: 15),
+      counterText: "",
+      prefixIconConstraints: const BoxConstraints(
+        minWidth: 23,
+        maxHeight: 25,
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      hintStyle: TextStyle(
+        fontSize: ScreenUtil().setSp(12),
+        color: AppColor.greyshade400,
+      ),
+      hintText: hint,
+      isDense: true,
+    );
+  }
+
 }

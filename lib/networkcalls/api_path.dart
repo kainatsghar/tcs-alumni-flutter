@@ -111,3 +111,6 @@ const String apiGetTimeLineStory = "api/timeline_story";
 const String apiAddTimeLineStory = "api/add_timeline_story";
 const String apiSeenTimeLineStory = "api/seen_story";
 const String apiDeleteTimeLineStory = "api/delete_timeline_story";
+
+const String apiUpdateProfile = "api/update-profile";
+

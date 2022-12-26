@@ -271,4 +271,5 @@ class AvailDiscountState extends State<AvailDiscount> {
       wait = false;
     });
   }
+
 }

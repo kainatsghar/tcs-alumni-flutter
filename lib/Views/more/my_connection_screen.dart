@@ -206,7 +206,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               ),
             ),
           ]);
-        } else {
+        }
+        else {
           return const SizedBox();
         }
       },
@@ -248,4 +249,5 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       }
     }
   }
+
 }
