@@ -21,6 +21,7 @@ import 'package:iobm/Views/news_feeds/create_post_screen.dart';
 import 'package:iobm/Views/news_feeds/stories/create_story.dart';
 import 'package:iobm/Views/news_feeds/full_page_newsfedd_view.dart';
 import 'package:iobm/Views/news_feeds/insert_comment.dart';
+import 'package:iobm/Views/news_feeds/stories/video_story.dart';
 import 'package:iobm/Views/news_feeds/stories/view_story.dart';
 import 'package:iobm/Views/news_feeds/video_player_view.dart';
 import 'package:iobm/Views/news_feeds/youtube_full_screen.dart';
@@ -68,7 +69,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
   late List<DBPostImage> _postImages;
   late List<DBPostTag> _postTags;
   late List<YoutubeModel> _youtube;
-  late List<DBStorie> _storiesList;
+  late List<DbNewStorie> _storiesList;
 
   late List<Timeline> _postsTimeLine;
   late List<DBReportType> _reportTypes;
@@ -76,8 +77,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
   int? currentPage;
   bool wait = false;
   bool dataFetched = false;
-
+  var _storiesModelList;
   int commentCount = 0;
+  bool storyFetch = false;
+  List<String> storyImageList = [];
+  late List<DBStorie> _storiesByList;
 
 
   List<Reaction<String>> reactions = [
@@ -97,6 +101,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
     _postTags = [];
     _postsTimeLine = [];
     _storiesList = [];
+    _storiesByList = [];
 
     _scrollController.addListener(_scrollListener);
 
@@ -1367,7 +1372,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
   Future<void> setDataFromDB() async {
     _reportTypes = await database.getAllReportTypes();
     _timeLinePosts = await database.getTimeLinePosts();
-    _storiesList = await database.getAllTimeLineStories();
+    //_storiesList = await database.getAllTimeLineStories();
 
     for (var element in _timeLinePosts) {
       _postTags = await database.getPostTags(element.id ?? '');
@@ -1899,40 +1904,40 @@ class _AlumniFeedState extends State<AlumniFeed> {
                               CircleAvatar(
                                 child: _.image == ''
                                     ? Image(
-                                        image: const AssetImage(
-                                            "assets/images/profile.png"),
+                                  image: const AssetImage(
+                                      "assets/images/profile.png"),
+                                  width: 80.w,
+                                  height: 80.w,
+                                )
+                                    : CachedNetworkImage(
+                                  imageUrl: _.image ?? '',
+                                  imageBuilder:
+                                      (context, imageProvider) =>
+                                      Container(
                                         width: 80.w,
                                         height: 80.w,
-                                      )
-                                    : CachedNetworkImage(
-                                        imageUrl: _.image ?? '',
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          width: 80.w,
-                                          height: 80.w,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            //   color: Colors.white,
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
-                                          ),
-                                        ),
-                                        progressIndicatorBuilder: (context, url,
-                                                downloadProgress) =>
-                                            CircularProgressIndicator(
-                                                value:
-                                                    downloadProgress.progress),
-                                        errorWidget: (context, url, error) =>
-                                            CircleAvatar(
-                                          //profile image
-                                          backgroundColor: Colors.white,
-                                          backgroundImage: const AssetImage(
-                                              "assets/images/profile.png"),
-                                          radius: 20.r,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          //   color: Colors.white,
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover),
                                         ),
                                       ),
+                                  progressIndicatorBuilder: (context, url,
+                                      downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value:
+                                          downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      CircleAvatar(
+                                        //profile image
+                                        backgroundColor: Colors.white,
+                                        backgroundImage: const AssetImage(
+                                            "assets/images/profile.png"),
+                                        radius: 20.r,
+                                      ),
+                                ),
                                 radius: 20.r,
                                 //backgroundColor: Colors.black,
                               ),
@@ -1973,68 +1978,77 @@ class _AlumniFeedState extends State<AlumniFeed> {
               ),
             ),
           ),
+          storyFetch ?
           ListView.builder(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _storiesList.length,
+            itemCount: _storiesByList.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Get.to(
-                    () => ViewStory(
-                      url: _storiesList[index].storyImage ?? '',
-                      name: _storiesList[index].name ?? '',
-                      image: _storiesList[index].userImage ?? '',
-                      date: _storiesList[index].storyTime ?? '',
-                      userId: _storiesList[index].addedBy.toString(),
-                      storyId: _storiesList[index].id.toString(),
-                    ),
-                    transition: Transition.downToUp,
-                    duration: const Duration(milliseconds: 400),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Container(
-                    width: 100.w,
-                    height: 160.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColor.black38,
-                    ),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: SizedBox(
-                            width: 100.w,
-                            height: 160.w,
-                            child: CachedNetworkImage(
-                              fit: BoxFit.fill,
-                              imageUrl: _storiesList[index].storyImage ?? '',
-                              errorWidget: (context, url, error) => const Image(
-                                image: AssetImage(AppImages.profile),
+              if (storyImageList[index].endsWith('mp4')) {
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(
+                          () => ViewStory(
+                        //url: _storiesList[index].storyImage ?? '',
+                        name: _storiesByList[index].name ?? '',
+                        image: _storiesByList[index].userImage ?? '',
+                        storiesList: List<Story>.from(_storiesModelList[index]),
+                        //date: _storiesList[index].storyTime ?? '',
+                        userId: _storiesByList[index].addedBy.toString(),
+                        //storyId: _storiesList[index].storyId.toString(),
+                      ),
+                      transition: Transition.downToUp,
+                      duration: const Duration(milliseconds: 400),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      width: 100.w,
+                      height: 160.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColor.black38,
+                      ),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: SizedBox(
+                              width: 100.w,
+                              height: 160.w,
+                              child: StoryVideoPlayer(
+                                url: storyImageList[index],
                               ),
+                              // child: CachedNetworkImage(
+                              //   fit: BoxFit.fill,
+                              //   imageUrl: _storiesList[index].storyImage ?? '',
+                              //   errorWidget: (context, url, error) => const Image(
+                              //     image: AssetImage(AppImages.profile),
+                              //   ),
+                              // ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top: 5,
-                          left: 5,
-                          child: CircleAvatar(
-                            radius: 26.w,
-                            child: _storiesList[index].userImage == ''
-                                ? Image(
-                                    image: const AssetImage(AppImages.profile),
-                                    width: 50.w,
-                                    height: 50.h,
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl:
-                                        _storiesList[index].userImage ?? '',
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
+                          Positioned(
+                            top: 5,
+                            left: 5,
+                            child: CircleAvatar(
+                              radius: 26.w,
+                              child: _storiesByList[index].userImage == ''
+                                  ? Image(
+                                image: const AssetImage(
+                                    AppImages.profile),
+                                width: 50.w,
+                                height: 50.h,
+                              )
+                                  : CachedNetworkImage(
+                                imageUrl: _storiesByList[index]
+                                    .userImage ??
+                                    '',
+                                imageBuilder:
+                                    (context, imageProvider) =>
+                                    Container(
                                       height: 50.h,
                                       width: 50.w,
                                       decoration: BoxDecoration(
@@ -2045,77 +2059,248 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                         ),
                                       ),
                                     ),
-                                    errorWidget: (context, url, error) => Image(
-                                      image:
-                                          const AssetImage(AppImages.profile),
-                                      height: 50.w,
-                                      width: 50.h,
-                                    ),
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            CircularProgressIndicator(
+                                errorWidget:
+                                    (context, url, error) => Image(
+                                  image: const AssetImage(
+                                      AppImages.profile),
+                                  height: 50.w,
+                                  width: 50.h,
+                                ),
+                                progressIndicatorBuilder: (context,
+                                    url, downloadProgress) =>
+                                    CircularProgressIndicator(
                                       value: downloadProgress.progress,
                                     ),
-                                  ),
-                          ),
-                        ),
-
-                        Positioned(
-                          bottom: 6,
-                          left: 4,
-                          child: Text(
-                            _storiesList[index].name ?? '',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: AppColor.white,
-                              fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     border: Border.all(color: AppColor.primaryColor),
-                        //     shape: BoxShape.circle,
-                        //     color: Colors.blue,
-                        //   ),
-                        //   width: 53,
-                        //   height: 70,
-                        //   child: Image.asset(AppImages.profile),
-                        // ),
-                        // index == 0
-                        //     ? const Positioned(
-                        //         bottom: 0,
-                        //         right: 0,
-                        //         child: Icon(
-                        //           Icons.add,
-                        //           size: 10,
-                        //           color: AppColor.primaryColor,
-                        //         ),
-                        //       )
-                        //     : const SizedBox(),
-                      ],
+                          Positioned(
+                            bottom: 6,
+                            left: 4,
+                            child: Container(
+                              width: 90.w,
+                              height: 15.h,
+                              color: Colors.transparent,
+                              child: Text(
+                                _storiesByList[index].name ?? '',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: AppColor.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Container(
+                          //   decoration: BoxDecoration(
+                          //     border: Border.all(color: AppColor.primaryColor),
+                          //     shape: BoxShape.circle,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   width: 53,
+                          //   height: 70,
+                          //   child: Image.asset(AppImages.profile),
+                          // ),
+                          // index == 0
+                          //     ? const Positioned(
+                          //         bottom: 0,
+                          //         right: 0,
+                          //         child: Icon(
+                          //           Icons.add,
+                          //           size: 10,
+                          //           color: AppColor.primaryColor,
+                          //         ),
+                          //       )
+                          //     : const SizedBox(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
+              else {
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(
+                          () => ViewStory(
+                        name: _storiesByList[index].name ?? '',
+                        image: _storiesByList[index].userImage ?? '',
+                        storiesList: List<Story>.from(_storiesModelList[index]),
+                        userId: _storiesByList[index].addedBy.toString(),
+                        //storyId: _storiesList[index].storyId.toString(),
+                        //link: _storiesList[index].link ?? '',
+                      ),
+                      transition: Transition.downToUp,
+                      duration: const Duration(milliseconds: 400),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      width: 100.w,
+                      height: 160.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColor.black38,
+                      ),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: SizedBox(
+                              width: 100.w,
+                              height: 160.w,
+                              child: Image.network(
+                                storyImageList[index],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 5,
+                            left: 5,
+                            child: CircleAvatar(
+                              radius: 26.w,
+                              child: _storiesByList[index].userImage == ''
+                                  ? Image(
+                                image: const AssetImage(
+                                    AppImages.profile),
+                                width: 50.w,
+                                height: 50.h,
+                              )
+                                  : CachedNetworkImage(
+                                imageUrl: _storiesByList[index].userImage ?? '',
+                                imageBuilder:
+                                    (context, imageProvider) =>
+                                    Container(
+                                      height: 50.h,
+                                      width: 50.w,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                errorWidget:
+                                    (context, url, error) => Image(
+                                  image: const AssetImage(
+                                      AppImages.profile),
+                                  height: 50.w,
+                                  width: 50.h,
+                                ),
+                                progressIndicatorBuilder: (context,
+                                    url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 6,
+                            left: 4,
+                            child: Container(
+                              width: 85.w,
+                              height: 15.h,
+                              color: Colors.transparent,
+                              child: Text(
+                                _storiesByList[index].name ?? '',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColor.white,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
             },
-          ),
+          ) :
+          const CircularProgressIndicator(color: Colors.transparent,),
         ],
       ),
     );
   }
 
   Future<void> getStories() async {
+    setState(() {
+      storyFetch = false;
+    });
     var response = await ApiCalls.getStories();
     if (response is ErrorEntity) {
-    } else {
-      TimelineStoriesEntity storiesEntity =
-          TimelineStoriesEntity.fromJson(jsonEncode(response));
+    }
+    else {
+      print("Stories Response= ${response.toString()}");
+      TimelineStoriesEntity storiesEntity = TimelineStoriesEntity.fromJson(response);
       if (storiesEntity.success == 1) {
         await database.deleteAllTimeLineStories();
-        await database.insertAllTimeLineStories(storiesEntity.stories ?? []);
-        _storiesList = await database.getAllTimeLineStories();
+        await database.deleteAllStories();
+        int storiesLength = storiesEntity.data!.length;
+        replyUserDevices!.clear();
+        storyImageList.clear();
+
+        for(int i=0; i<storiesLength; i++){
+          storyImageList.add(storiesEntity.data![i].stories!.first.storyImage!);
+          print("storyImageList= $storyImageList");
+        }
+
+        try{
+          for(var element in storiesEntity.data!){
+            for(var element2 in element.devices!){
+              if(element2.token!.isNotEmpty){
+                replyUserDevices!.add(UserDevices(
+                  token: element2.token,
+                  status: element2.status,
+                ));
+              }
+            }
+          }
+        }catch(e){}
+
+        var list = [];
+        for(int i=0; i<storiesLength; i++){
+          list.add(storiesEntity.data![i].stories);
+        }
+
+        _storiesModelList = list;
+
+        for (var element in storiesEntity.data!) {
+          DBStorie dbStorie = DBStorie(
+              storyById: element.id,
+              name: element.name,
+              addedBy: element.addedBy,
+              userImage: element.userImage
+          );
+          database.insertAllTimeLineStories(dbStorie);
+        }
+
+        for (var element in storiesEntity.data!.first.stories!) {
+          DbNewStorie dbNewStorie = DbNewStorie(
+              storyId: element.id,
+              mediaType: element.mediaType,
+              storyImage: element.storyImage,
+              storyTime: element.storyTime.toString(),
+              updatedDate: element.updatedAt.toString(),
+              link: element.link);
+          database.insertAllStories(dbNewStorie);
+        }
+
+        _storiesByList = await database.getAllTimeLineStories();
+        print("_storiesByList= ${_storiesByList.length}");
+        _storiesList = await database.getAllStories();
       }
+      setState(() {
+        storyFetch = true;
+      });
     }
   }
 

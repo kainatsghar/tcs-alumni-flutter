@@ -44,7 +44,7 @@ class NetworkCalls {
   }
 
   static Future<dynamic> getWebCallWithToken(String url, {params}) async {
-    print(url);
+    print(AppConstants.baseUrl + url);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

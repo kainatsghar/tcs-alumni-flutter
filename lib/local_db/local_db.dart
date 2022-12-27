@@ -30,6 +30,7 @@ import 'package:iobm/local_db/tables/table_gallery_images.dart';
 import 'package:iobm/local_db/tables/table_industries.dart';
 import 'package:iobm/local_db/tables/table_jobs.dart';
 import 'package:iobm/local_db/tables/table_montors.dart';
+import 'package:iobm/local_db/tables/table_new_stories.dart';
 import 'package:iobm/local_db/tables/table_notifications.dart';
 import 'package:iobm/local_db/tables/table_one_user.dart';
 import 'package:iobm/local_db/tables/table_post_images.dart';
@@ -111,13 +112,15 @@ LazyDatabase _openConnection() {
     DBCommentReplies,
     DBStories,
     DBStorySeens,
+    DbNewStories
+
   ],
 )
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 28;
+  int get schemaVersion => 29;
 
   @override
   MigrationStrategy get migration => destructiveFallback;
@@ -1264,11 +1267,8 @@ class MyDatabase extends _$MyDatabase {
 
   /// *******************************
   /// TimeLine Stories
-  Future insertAllTimeLineStories(List<DBStorie> story) async {
-    await batch((b) {
-      b.insertAllOnConflictUpdate(dBStories, story);
-    });
-  }
+  Future insertAllTimeLineStories(DBStorie story) =>
+      into(dBStories).insert(story);
 
   Future deleteAllTimeLineStories() => delete(dBStories).go();
   Future<List<DBStorie>> getAllTimeLineStories() => select(dBStories).get();
@@ -1281,4 +1281,19 @@ class MyDatabase extends _$MyDatabase {
 
   Future deleteSingleStory(int storyId) =>
       (delete(dBStories)..where((e) => (e.addedBy.equals(storyId)))).go();
+
+
+  Future insertAllStories(DbNewStorie story) => into(dbNewStories).insert(story);
+  Future deleteAllStories() => delete(dbNewStories).go();
+
+  Future<List<DbNewStorie>> getAllStories() => select(dbNewStories).get();
+
+  Future<List<DbNewStorie>> getSingleStory(int id) {
+    final _select = select(dbNewStories);
+    _select.where((tbl) => tbl.updatedDate.equals(id.toString()));
+    return _select.get();
+  }
+
+  Future deleteStory(int storyId) =>
+      (delete(dbNewStories)..where((e) => (e.storyId.equals(storyId)))).go();
 }

@@ -46,6 +46,10 @@ import 'package:iobm/utils/app_images.dart';
 
 import '../models/error_entity.dart';
 
+List<UserDevices>? productUserDevices = [];
+List<UserDevices>? serviceUserDevices = [];
+List<UserDevices>? replyUserDevices = [];
+
 class ApiHelper {
   static Future<DataFetched> getUserInfo(context, userId) async {
     var response = await ApiCalls.getUserInfo(
@@ -1056,4 +1060,13 @@ class ApiHelper {
     }
     return DataFetched(false, 'errorMsg');
   }
+}
+
+class UserDevices {
+  String? token;
+  String? status;
+  UserDevices({
+    this.token,
+    this.status,
+  });
 }

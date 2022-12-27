@@ -1244,4 +1244,24 @@ class ApiCalls {
   }
 
 
+  /// Seen By
+  static seenBy({storyId}) async {
+    Map map = {
+      Params.STORY_ID: storyId,
+    };
+    return await NetworkCalls.postWebWithTokenCall(apiSeenByStory, map);
+  }
+
+  /// Seen Story
+  static seenStory({storyId}) async {
+    Map map = {
+      Params.STORY_ID: storyId,
+    };
+    return await NetworkCalls.postWebWithTokenCall(apiSeenTimeLineStory, map);
+  }
+
+
+
+
+
 }

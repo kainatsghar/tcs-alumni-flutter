@@ -303,7 +303,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       validator: (value) {
         if (value!.isEmpty) {
           return 'Name is required';
-        } else if (value!.length < 2) {
+        } else if (value.length < 2) {
           return 'Enter minimum 2 letters';
         } else {
           return null;
@@ -814,11 +814,11 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           setState(() {
             searched = true;
             _phoneController.text = widget.phone ?? '';
-            _nameController.text = searchEntity.result!.first!.firstName ?? '';
-            _emailController.text = searchEntity.result!.first!.email ?? '';
+            _nameController.text = searchEntity.result!.first.firstName ?? '';
+            _emailController.text = searchEntity.result!.first.email ?? '';
             // _branchId = searchEntity.result!.first!.branchId;
             // print('This is branch id bro **** $_branchId');
-            _passingYearValue = searchEntity.result!.first!.graduationYear;
+            _passingYearValue = searchEntity.result!.first.graduationYear;
             print('hello');
           });
           for (var element in searchEntity.result!) {
@@ -834,11 +834,11 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           print('This is list student ${_students.first.phone}');
           print('This is list student userID ${_students.first.id}');
           _fatherController.text =
-          searchEntity.result!.first!.fatherName == null ||
+          searchEntity.result!.first.fatherName == null ||
               searchEntity.result!.first.fatherName == '' ||
               searchEntity.result!.first.fatherName == 'N/A'
               ? _fatherController.text
-              : searchEntity.result!.first!.fatherName ?? '';
+              : searchEntity.result!.first.fatherName ?? '';
         }
       }
     }

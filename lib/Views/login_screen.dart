@@ -976,9 +976,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-      if (authenticated && rEmail!.isNotEmpty && rPass!.isNotEmpty) {
+      if (authenticated && rEmail.isNotEmpty && rPass.isNotEmpty) {
         print('login called with fingerPrint');
-        loginCall(email: rEmail!, name: '', password: rPass!);
+        loginCall(email: rEmail, name: '', password: rPass);
       }
     } on PlatformException catch (e) {
       print(e);

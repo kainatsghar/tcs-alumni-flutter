@@ -107,10 +107,12 @@ const String apiChangeBannerStatus = "api/change-banner-status";
 const String apiAddFavourite = "api/favourite_product";
 
 /// Stories
-const String apiGetTimeLineStory = "api/timeline_story";
+//const String apiGetTimeLineStory = "api/timeline_story";
+const String apiGetTimeLineStory = "api/timeline_stories";
 const String apiAddTimeLineStory = "api/add_timeline_story";
 const String apiSeenTimeLineStory = "api/seen_story";
 const String apiDeleteTimeLineStory = "api/delete_timeline_story";
 
 const String apiUpdateProfile = "api/update-profile";
+const String apiSeenByStory = "api/seen_by";
 
