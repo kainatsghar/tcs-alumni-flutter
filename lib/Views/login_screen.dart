@@ -688,7 +688,8 @@ class _LoginScreenState extends State<LoginScreen> {
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
       UIHelper.showErrorAlert(context, response.message);
-    } else {
+    }
+    else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
 
       if (loginEntity.success == 1 || loginEntity.success == -4) {
@@ -990,6 +991,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
   }
+
 }
 
 int validateEmail(String value) {

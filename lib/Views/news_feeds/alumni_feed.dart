@@ -602,7 +602,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
                     ),
                     //
                   ),
-
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.all(10.0),
@@ -615,7 +614,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
                       ),
                     ),
                   ),
-
                   _postsTimeLine[index].postImages!.isNotEmpty
                       ? GestureDetector(
                           onTap: () {

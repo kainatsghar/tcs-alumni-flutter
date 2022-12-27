@@ -60,6 +60,8 @@ dependencies:
   flutter_reaction_button:
   flutter_local_notifications: ^9.4.0
   story_view: ^0.13.2
+  pod_player: ^0.1.0
+  flick_video_player: ^0.5.0
 
 
 

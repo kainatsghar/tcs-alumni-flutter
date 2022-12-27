@@ -38,6 +38,8 @@ void main() async {
   );
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // var token =  await messaging.getToken();
+  // print("firebase fcm token= $token");
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
