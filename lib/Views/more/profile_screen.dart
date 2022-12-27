@@ -84,18 +84,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late List values = [];
   Future<void> getData() async {
     if (_interestList.isNotEmpty) {
-      final tagName = _interestList.first.interest ?? '';
-      final split = tagName.split(',');
-      if (mounted) {
-        setState(
-          () {
-            values = [
-              for (int i = 0; i < split.length; i++) split[i],
-            ];
-          },
-        );
+      values.clear();
+      for(int i=0; i<_interestList.length; i++){
+        values.add(_interestList[i].interest);
+        // var tagName = _interestList[i].interest ?? '';
+        // final split = tagName.split(',');
+        // print("split= $split");
+        // if (mounted) {
+        //   setState(() {
+        //     values = [
+        //       for (int i = 0; i < split.length; i++) split[i],
+        //     ];
+        //   },);
+        // }
       }
-    } else {}
+      setState(() {
+
+      });
+    }
+    else {}
   }
 
   String? valuesString;

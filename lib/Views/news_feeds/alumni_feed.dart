@@ -325,7 +325,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   //region Row User name, time, image
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -416,13 +415,18 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                         ),
                                       );
                                     },
-                                    child: Text(
-                                      '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(13),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                        overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: 200.w,
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
                                   ),

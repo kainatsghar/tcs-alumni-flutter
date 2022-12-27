@@ -105,11 +105,13 @@ class ApiHelper {
           );
           database.insertExperience(experience);
         }
-        for (var element in profileEntity.result!.interest!) {
+
+
+        for(int i=0; i<profileEntity.result!.interest!.length; i++){
           DBInterest interest = DBInterest(
-            id: int.parse(element.id ?? ''),
-            userId: int.parse(element.userId ?? ''),
-            interest: element.interest,
+            id: i,
+            userId: int.parse(profileEntity.result!.interest![i].userId ?? ''),
+            interest: profileEntity.result!.interest![i].interest,
           );
           database.insertInterests(interest);
         }

@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       builder: () => Portal(
         child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: AppConstants.appFontFamily,
             primaryColor: AppColor.primaryColor,
