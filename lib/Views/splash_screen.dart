@@ -35,7 +35,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final ProfileController _controller = Get.put(ProfileController());
   Timer? _timer;
-  int _count = 7;
+  int _count = 5;
   String? sharingLocation;
   double? latitude;
   double? longitude;
