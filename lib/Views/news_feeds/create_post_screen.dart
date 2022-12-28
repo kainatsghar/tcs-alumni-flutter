@@ -48,6 +48,7 @@ class _CreatePostState extends State<CreatePost> {
   final TagController _tagController = Get.put(TagController());
   final CityController _cityController = Get.put(CityController());
   final FeelingController _feelingController = Get.put(FeelingController());
+  bool isPostingStory = true;
 
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
 
@@ -129,16 +130,25 @@ class _CreatePostState extends State<CreatePost> {
               ),
             ),
             actions: [
+              isPostingStory?
               IconButton(
                 onPressed: () {
                   if (key.currentState!.controller!.text != "") {
                     _insertPost();
-                  } else {}
+                  } else {
+                    UIHelper.showErrorAlert(context, "Please enter something");
+                  }
                 },
                 icon: const Icon(
                   Icons.check,
                 ),
-              ),
+              ) :
+              Container(
+                  width: 50,
+                  margin: EdgeInsets.only(right: 10.w),
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(15),
+                  child: const CircularProgressIndicator(color: Colors.white,)),
             ],
           ),
           body: FutureBuilder(
@@ -753,6 +763,9 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   Future<void> _insertPost() async {
+    setState(() {
+      isPostingStory = false;
+    });
     var tagIds = [];
     if (_tagController.tagList.isNotEmpty) {
       for (var element in _tagController.tagList) {
@@ -769,11 +782,17 @@ class _CreatePostState extends State<CreatePost> {
       checkin: _cityController.cityId.value,
     );
     if (response is ErrorEntity) {
+      setState(() {
+        isPostingStory = true;
+      });
       UIHelper.showErrorAlert(context, response.message);
     } else {
       AddPostEntity postEntity = AddPostEntity().fromJson(response);
       if (postEntity.success == 1) {
         await Fluttertoast.showToast(msg: "Post added successfully");
+        setState(() {
+          isPostingStory = true;
+        });
         Get.offUntil(
             GetPageRoute(
               page: () => const BottomNavigationScreen(),

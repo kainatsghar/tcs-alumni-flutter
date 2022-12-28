@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:iobm/Views/login_screen.dart';
@@ -16,16 +15,12 @@ import 'package:iobm/networkcalls/api_calls.dart';
 import 'package:iobm/networkcalls/response_models/login_entity_entity.dart';
 
 import 'package:iobm/networkcalls/response_models/settings_entity.dart';
-import 'package:iobm/utils/app_color.dart';
 
 import 'package:iobm/utils/app_constants.dart';
-import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/device_data.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
-
-import '../main.dart';
 import '../networkcalls/response_models/logout_entity.dart';
 import '../utils/notification_manager.dart';
 import 'bottom_navigationbar.dart';
@@ -40,7 +35,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final ProfileController _controller = Get.put(ProfileController());
   Timer? _timer;
-  int _count = 5;
+  int _count = 7;
   String? sharingLocation;
   double? latitude;
   double? longitude;
@@ -380,4 +375,5 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false);
     }
   }
+
 }
