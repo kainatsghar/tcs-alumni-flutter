@@ -45,7 +45,10 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../networkcalls/response_models/get_invitation_entity.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({this.userID});
@@ -176,17 +179,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
           sizedBox(
             height: 30.h,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                color: AppColor.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: AppColor.white,
+                  ),
+                ),
               ),
-            ),
+              oneUser?.userId == AppConstants.myId ?const SizedBox() :GestureDetector(
+                onTap: (){
+                  showMaterialModalBottomSheet(
+                    context: context,
+                    builder: (context) => Container(
+                      height: 50.h,
+                      child: ListTile(
+                        leading: const Icon(Icons.sim_card_alert_rounded),
+                        title: const Text("Report"),
+                        onTap: (){
+                          sendInvitation(AppConstants.BLOCK);
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 30.h,
+                    width: 30.h,
+                    margin: EdgeInsets.only(right: 10.w),
+                    color: Colors.transparent,
+                    child: const Icon(Icons.more_vert_rounded,color: Colors.white,)),
+              )
+            ],
           ),
           sizedBox(
             height: 10.h,
@@ -716,7 +747,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-
 
   sizedBox({height, width}) {
     return SizedBox(
@@ -2152,6 +2182,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       hintText: hint,
       isDense: true,
     );
+  }
+
+  Future<void> sendInvitation(status) async {
+    UIHelper.apiCallingAlert(context);
+    var response = await ApiCalls.insertUserInvitation(
+      senderId: AppConstants.myId,
+      receiverId: widget.userID,
+      status: status,
+    );
+    UIHelper.hideApiCallingAlert(context);
+    if (response is ErrorEntity) {
+      UIHelper.hideApiCallingAlert(context);
+    }
+    else {
+      GetInvitationEntity entity = GetInvitationEntity().fromJson(response);
+      if (entity.success == 1) {
+        Get.back();
+        UIHelper.showSuccessAlert(
+          context,
+          "Your report is in Review",
+              () {
+            Get.back();
+          },
+        );
+      }
+    }
   }
 
 }

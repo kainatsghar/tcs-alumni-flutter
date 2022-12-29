@@ -363,6 +363,91 @@ class _MessagesScreenState extends State<MessagesScreen> {
       message = sp[1];
       description = sp.last;
     }
+    else if (type == 'storyReply') {
+      return Align(
+        alignment: Alignment.bottomRight,
+        child: Container(
+          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: AppColor.primaryColor.withOpacity(0.15),
+            border: Border.all(color: AppColor.black54),
+          ),
+          child: IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 270.w),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 70.w,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black12),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: media ?? '',
+                          height: 50.w,
+                          width: 100.w,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 5,
+                      color: AppColor.grey,
+                    ),
+                    Text(
+                      msg,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(15),
+                        color: AppColor.black,
+                        fontFamily: 'Gotham',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          time,
+                          style: WidgetStyle.forgotTExtStyle(
+                            color: AppColor.white,
+                            fontSize: 10.0.sp,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: AppColor.grey,
+                              size: 12.r,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     if (type == 'offer') {
       return Align(
         alignment: Alignment.bottomRight,
@@ -1029,7 +1114,64 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
         ),
       );
-    } else {
+    }
+    else if (type == 'storyReply') {
+      return Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: AppColor.white.withOpacity(0.15),
+            border: Border.all(color: AppColor.black54),
+          ),
+          child: IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 270.w),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50.w,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black12),
+                        ),
+                        child: media == null
+                            ? const SizedBox()
+                            : CachedNetworkImage(
+                          imageUrl: media,
+                          height: 50.w,
+                          width: 100.w,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 5,
+                      color: AppColor.grey,
+                    ),
+                    Text(
+                      msg,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(15),
+                        color: AppColor.black,
+                        fontFamily: 'Gotham',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    else {
       return Bubble(
         radius: const Radius.circular(15),
         margin: const BubbleEdges.only(top: 10, left: 5),
