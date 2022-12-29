@@ -112,7 +112,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 Icons.people_rounded,
                 size: 22.h,
               ),
-              label: 'Users',
+              label: 'Alumni',
             ),
             AppConstants.appName == 'TLE'
                 ? BottomNavigationBarItem(

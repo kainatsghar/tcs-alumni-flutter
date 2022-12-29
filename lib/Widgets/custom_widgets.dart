@@ -185,6 +185,7 @@ class CustomWidget {
   }
 
   static linkedInDialogue({context, url}) {
+    print("Dialog LinkedIn Url= $url");
     return showDialog(
         barrierDismissible: false,
         context: context,
@@ -196,6 +197,7 @@ class CustomWidget {
   }
 
   static facebookDialogue({context, url}) {
+    print("Dialog Facebook Url= $url");
     return showDialog(
         barrierDismissible: false,
         context: context,

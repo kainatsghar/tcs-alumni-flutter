@@ -177,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           sizedBox(
-            height: 30.h,
+            height: 40.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 50.h,
                       child: ListTile(
                         leading: const Icon(Icons.sim_card_alert_rounded),
-                        title: const Text("Report"),
+                        title: const Text("Block"),
                         onTap: (){
                           sendInvitation(AppConstants.BLOCK);
                         },
@@ -557,52 +557,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               //         ),
                               //       );
                               //     }),
-                              AppConstants.appName != 'TLE'
-                                  ? Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        mediaButton(
-                                          mediaIcon: oneUser?.isMentor == '1'
-                                              ? AppImages.nomentoricon
-                                              : AppImages.mentoricon,
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  _clickMentor(),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              AppConstants.appName == 'IOBM'
-                                  ? Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        mediaButton(
-                                          mediaIcon: AppImages.alumniCard,
-                                          onPressed: () {
-                                            CustomWidget.applyForCardDialog(
-                                              context: context,
-                                              name:
-                                                  '${oneUser?.firstName} ${oneUser?.lastName}',
-                                              img: _userImage2(),
-                                              id: oneUser?.userId ?? '-',
-                                              email: oneUser?.userId ==
-                                                      AppConstants.myId
-                                                  ? oneUser?.email ?? '-'
-                                                  : '-',
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
                               const SizedBox(
                                 height: 5,
                               ),
@@ -1886,6 +1840,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await database.getUserProduct(int.parse(widget.userID ?? '0'));
 
     oneUser = await database.getSingleUser(widget.userID ?? '');
+    print("Db LinkedIn= ${oneUser?.linkedinUrl}");
+    print("Db fb= ${oneUser?.facebookUrl}");
     await getData();
 
     SharedPreferences localStorage = await SharedPreferences.getInstance();

@@ -604,7 +604,6 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           status: entity.result.status,
           blockBy: entity.result.blockBy,
         );
-        print("status= ${_status.status}");
         setState(() {
 
         });

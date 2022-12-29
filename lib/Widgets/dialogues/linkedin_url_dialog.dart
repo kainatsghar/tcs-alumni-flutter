@@ -170,7 +170,8 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
     String url = '';
     if (_urlController.text.startsWith('http')) {
       url = _urlController.text;
-    } else {
+    }
+    else {
       url = "https://" + _urlController.text;
     }
     var response = await ApiCalls.editLinkedInUrl(
@@ -191,4 +192,5 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
       }
     }
   }
+
 }
