@@ -8444,7 +8444,7 @@ class DBComment extends DataClass implements Insertable<DBComment> {
   final String? userImage;
   final String? commentedBy;
   final String? type;
-  final String? isLike;
+  String? isLike;
   String? likeCount;
   String? reaction;
   final String? commentImage;
