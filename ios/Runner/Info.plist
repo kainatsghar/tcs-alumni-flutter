@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>DOW University</string>
+	<string>TCS Alumni</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -50,7 +50,7 @@
 	<key>FacebookAppID</key>
 	<string>335901081305921</string>
 	<key>FacebookClientToken</key>
-    <string>1372f4bcb44b13e82f2ad4aefb3fd9bf</string>
+	<string>1372f4bcb44b13e82f2ad4aefb3fd9bf</string>
 	<key>FacebookDisplayName</key>
 	<string>DOW University</string>
 	<key>NSCameraUsageDescription</key>
