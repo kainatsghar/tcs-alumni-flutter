@@ -436,8 +436,8 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             child: Image.asset(
               AppImages.googleicon,
-              height: 27,
-              width: 27,
+              height: 28,
+              width: 28,
             ),
             // child: SvgPicture.asset(
             //   AppImages.googleicon,
@@ -445,8 +445,7 @@ class _LoginScreenState extends State<LoginScreen> {
             //   // width: 25.w,
             // ),
           ),
-
-        ///Apple login Button
+        //Apple login Button
         if (Platform.isIOS)
           GestureDetector(
             onTap: () {
@@ -454,20 +453,19 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             child: SvgPicture.asset(
               AppImages.apple,
-              height: 25.h,
-              width: 25.w,
+              height: 27,
+              width: 27,
             ),
           ),
-        const SizedBox(
-          width: 10,
+        SizedBox(
+          width: 15.w,
         ),
-
-        ///FB login Button
+        //FB login Button
         GestureDetector(
           onTap: () {
             _facebookSingIn();
           },
-          child: Image.asset(AppImages.fbicon, height: 25, width: 25),
+          child: Image.asset(AppImages.fbicon, height: 27, width: 27),
           // child: SvgPicture.asset(
           //   AppImages.fbicon,
           //   height: 25.h,
