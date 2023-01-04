@@ -446,17 +446,17 @@ class _LoginScreenState extends State<LoginScreen> {
             // ),
           ),
         //Apple login Button
-        if (Platform.isIOS)
-          GestureDetector(
-            onTap: () {
-              _appleSingIn();
-            },
-            child: SvgPicture.asset(
-              AppImages.apple,
-              height: 27,
-              width: 27,
-            ),
-          ),
+        // if (Platform.isIOS)
+        //   GestureDetector(
+        //     onTap: () {
+        //       _appleSingIn();
+        //     },
+        //     child: SvgPicture.asset(
+        //       AppImages.apple,
+        //       height: 27,
+        //       width: 27,
+        //     ),
+        //   ),
         SizedBox(
           width: 15.w,
         ),

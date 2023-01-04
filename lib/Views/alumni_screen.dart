@@ -877,4 +877,5 @@ class _AlumniScreenState extends State<AlumniScreen> {
       }
     }
   }
+
 }

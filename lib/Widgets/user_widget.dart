@@ -150,6 +150,7 @@ class _UserWidgetState extends State<UserWidget> {
         Text(
           name,
           style: TextStyle(
+            overflow: TextOverflow.ellipsis,
             fontSize: ScreenUtil().setSp(12),
             fontWeight: FontWeight.bold,
           ),
@@ -158,7 +159,14 @@ class _UserWidgetState extends State<UserWidget> {
           height: 4,
         ),
         if (designation != '' || organization != '')
-          Text('$designation,$organization',style: TextStyle(color: AppColor.grey,fontSize: 13.sp),),
+          Container(
+            height: 30.h,
+            color: Colors.transparent,
+            child: Text(
+              '$designation,$organization',
+              maxLines: 2,
+              style: TextStyle(color: AppColor.grey,fontSize: 13.sp,overflow: TextOverflow.ellipsis),),
+          ),
         AppConstants.appName != 'TLE' ? Column(
           children: [
             const SizedBox(
@@ -231,4 +239,5 @@ class _UserWidgetState extends State<UserWidget> {
       ),
     );
   }
+
 }

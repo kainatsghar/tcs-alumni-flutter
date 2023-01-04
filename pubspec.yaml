@@ -78,6 +78,7 @@ dependencies:
   audioplayers: ^0.20.1
   flutter_sound: ^9.1.7
   local_auth: ^2.1.2
+  firebase_crashlytics:
 
 
   #device info

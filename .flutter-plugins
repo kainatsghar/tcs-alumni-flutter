@@ -18,6 +18,7 @@ firebase_auth=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_a
 firebase_auth_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-4.6.1\\
 firebase_core=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-1.24.0\\
 firebase_core_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-1.7.3\\
+firebase_crashlytics=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_crashlytics-2.9.0\\
 firebase_database=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_database-9.1.7\\
 firebase_database_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_database_web-0.2.1+9\\
 firebase_messaging=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_messaging-13.1.0\\
