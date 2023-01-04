@@ -30,7 +30,6 @@ class _FullMediaViewState extends State<FullMediaView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

@@ -121,7 +121,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _scrollController.dispose();
     super.dispose();
   }

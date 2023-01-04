@@ -26,7 +26,6 @@ class _BusinessSpotlightState extends State<BusinessSpotlight> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     busiList = [];
     dbMethod();

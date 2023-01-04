@@ -24,7 +24,6 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _galleryImages = [];
     _fetchData = getImages();
 

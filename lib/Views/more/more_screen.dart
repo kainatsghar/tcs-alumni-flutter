@@ -55,7 +55,6 @@ class MoreScreen extends StatefulWidget {
 class MoreScreenState extends State<MoreScreen> {
   @override
   void initState() {
-    // TODO: implement initState
 
     super.initState();
   }

@@ -26,7 +26,6 @@ class _TLESpotlightState extends State<TLESpotlight> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     spotList = [];
 

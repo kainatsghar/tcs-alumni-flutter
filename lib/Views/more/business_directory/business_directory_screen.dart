@@ -48,7 +48,6 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
       });
     });
 
-    // TODO: implement initState
     super.initState();
   }
 

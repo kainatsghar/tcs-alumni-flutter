@@ -35,7 +35,6 @@ class _WorkOrdersState extends State<WorkOrders> {
     _workList = [];
     _myWorkList = [];
     fetchData = getWorkCall();
-    // TODO: implement initState
     super.initState();
   }
 

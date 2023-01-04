@@ -25,7 +25,6 @@ class _FacebookUrlState extends State<FacebookUrl> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _urlController.text = widget.facebookUrl ?? '';
   }

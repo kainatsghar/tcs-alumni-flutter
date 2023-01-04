@@ -39,7 +39,6 @@ class _ReactionsDetailState extends State<ReactionsDetail> {
     reactList = [];
     _list = [];
     fetched = reactionDetailCall();
-    // TODO: implement initState
     super.initState();
   }
 

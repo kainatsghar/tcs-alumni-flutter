@@ -47,7 +47,6 @@ class JobOpeningState extends State<JobOpening> {
     _myJobs = [];
     _fetchData = getJobs();
 
-    // TODO: implement initState
     super.initState();
   }
 

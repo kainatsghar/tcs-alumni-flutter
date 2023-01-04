@@ -34,7 +34,6 @@ class _CampusDetailsState extends State<CampusDetails> {
     print('1');
     dataFetch = campusDetailsCall();
     print('2');
-    // TODO: implement initState
     super.initState();
   }
 

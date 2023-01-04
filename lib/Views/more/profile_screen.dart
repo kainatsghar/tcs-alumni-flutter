@@ -131,7 +131,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     loadDesignations();
     loadCompanies();
 
-    // TODO: implement initState
     super.initState();
   }
 
