@@ -18,6 +18,7 @@ import 'package:iobm/Views/Chat/chat_audio_player.dart';
 import 'package:iobm/Views/Chat/chat_video_player.dart';
 import 'package:iobm/Views/Chat/full_img_view.dart';
 import 'package:iobm/Views/Chat/send_invation_screen.dart';
+import 'package:iobm/Widgets/custom_widgets.dart';
 import 'package:iobm/Widgets/widget_styles.dart';
 
 import 'package:get/get.dart';
@@ -34,9 +35,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../Widgets/custom_widgets.dart';
 import '../../networkcalls/network_config.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/strings.dart';
 import '../buy_and_sell_tle/product_detail_screen.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -61,10 +62,16 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   final ProfileController _profileController = Get.put(ProfileController());
   final TextEditingController _chatController = TextEditingController();
+  // final _messageController = TextEditingController();
+  final _priceController = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
 
   List _deviceTokens = [];
+
+  //audio timer
+  Timer? _timer;
+  int _secondCount = 0;
 
   bool recording = false;
   FlutterSoundPlayer? _myPlayer;
@@ -77,11 +84,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
   File? _imageFile;
   // String? filePath;
 
+  String? selectedBubble;
+  bool deleteIcon = false;
+
   /// Video and Images
 
   late VideoPlayerController _controller;
   bool uploading = false;
   String _uploadPath = "";
+  bool audioUploaded = false;
+
+  String? readLength;
 
   Future galleryImage() async {
     var pickedFile = await _picker.pickImage(
@@ -122,6 +135,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
   filePicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       lockParentWindow: true,
+      type: FileType.custom,
+      allowedExtensions: ['mp4', 'png', 'jpg','docx','pdf','xls','mp4'],
     );
     if (result != null) {
       File file = File(result.files.single.path!);
@@ -140,10 +155,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
           //  _imagePath = file!.path;
         });
         uploadChatFile(_imagePath);
-      } else {
+      }
+      else {
         await Fluttertoast.showToast(msg: 'Invalid Format');
       }
-    } else {
+    }
+    else {
       // User canceled the picker
     }
   }
@@ -171,7 +188,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     Directory tempDir = await getTemporaryDirectory();
     File filePath = File('${tempDir.path}/audio.aac');
     // String path = await _myRecorder!.startRecorder(uri: filePath.path, codec: t_CODEC.CODEC_AAC);
-    print('startRecorder: $path');
+    print('startRecorder**********: $filePath');
     // final directory = await getApplicationDocumentsDirectory();
     // _mPath = directory.path;
     _myRecorder!
@@ -187,7 +204,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Future stop() async {
     String? url = await _myRecorder!.stopRecorder();
     print(url);
-    uploadChatFile(url);
+    print('top method');
+    await uploadChatFile(url);
     //_writeFileToStorage();
     print('stopped....');
   }
@@ -225,6 +243,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
       throw 'Could not launch $url';
     }
   }
+
+  List<Color> listColor = [];
+
+  List<SlcMsgTile> listSlcTile = [];
+  bool isSelected = false;
 
   @override
   void initState() {
@@ -280,6 +303,27 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
+                //
+
+                updateChatReads();
+                updateKeyReads();
+
+                // snapshot.data!.docs.forEach((element) {
+                //   if(AppConstants.myId != element['senderID']){
+                //     final query =  await FirebaseFirestore.instance
+                //         .collection('chats')
+                //         .doc('chatsScreen')
+                //         .collection('$largeId-$smallId')
+                //         .where('readStatus', isEqualTo:'1')
+                //         .get();
+                //     for (var doc in query.docs) {
+                //       doc.reference.update({'readStatus': '0'});
+                //     }
+                //
+                //
+                //   }
+                // },);
+
                 if (!snapshot.hasData) {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -291,12 +335,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       thickness: 5.0,
                       controller: _scrollController,
                       child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
                         reverse: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           if (snapshot.data!.docs[index]['senderId'] ==
                               AppConstants.myId) {
-                            return GestureDetector(
+                            return InkWell(
                               onLongPress: () {
                                 // listSlcTile.clear();
                                 // isSelected = true;
@@ -306,23 +352,31 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 String selected = split.last;
                                 // listSlcTile.add(SlcMsgTile(selected, index));
                                 // setState(() {});
-
+                                print("OnLongMessage Added= $listSlcTile");
                                 deleteMessage(selected);
+                              },
+                              onTap: (){
+                                // if(isSelected){
+                                //   var split = snapshot.data!.docs[index].reference.path.split('/');
+                                //   String selected = split.last;
+                                //   listSlcTile.add(SlcMsgTile(selected, index));
+                                //   setState(() {});
+                                //   print("OnTapMessage Added= $listSlcTile");
+                                // }
                               },
                               child: _send(
                                 snapshot.data!.docs[index]['message'],
-                                AppUtils()
-                                    .chatDifference(
-                                        snapshot.data!.docs[index]['timeStamp'])
-                                    .toString(),
+                                AppUtils().chatDifference(snapshot.data!.docs[index]['timeStamp']).toString(),
                                 snapshot.data!.docs[index]['type'],
                                 snapshot.data!.docs[index]['media_url'],
                                 snapshot.data!.docs[index]['messageId'],
                                 snapshot.data!.docs[index]['status'],
                                 snapshot.data!.docs[index]['timeStamp'],
+                                snapshot.data!.docs[index]['readStatus'],
                               ),
                             );
-                          } else {
+                          }
+                          else {
                             return _receive(
                               snapshot.data!.docs[index]['message'],
                               AppUtils()
@@ -344,24 +398,298 @@ class _MessagesScreenState extends State<MessagesScreen> {
               },
             ),
           ),
+          // isSelected?
+          // Column(
+          //   children: [
+          //     Row(
+          //       mainAxisAlignment: MainAxisAlignment.end,
+          //       children: [
+          //         GestureDetector(
+          //           onTap: (){
+          //
+          //           },
+          //           child: Container(
+          //             height: 35.h,
+          //             width: 35.h,
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(100),
+          //               color: AppColor.grey
+          //             ),
+          //             child: const Center(child: Icon(Icons.close,color: Colors.white,),),
+          //           ),
+          //         ),
+          //         SizedBox(width: 10.w,),
+          //         GestureDetector(
+          //           onTap: (){
+          //
+          //           },
+          //           child: Container(
+          //             height: 35.h,
+          //             width: 35.h,
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(100),
+          //               color: AppColor.primaryColor
+          //             ),
+          //             child: const Center(child: Icon(Icons.delete,color: Colors.white,),),
+          //           ),
+          //         ),
+          //         SizedBox(width: 20.w,)
+          //       ],
+          //     ),
+          //     SizedBox(height: 10.h,)
+          //   ],
+          // )
+          //     :
           buildInput(),
         ],
       ),
     );
   }
 
-  Widget _send(String msg, String time, type, String media, String msgId,
-      String status, String timeStamp) {
+  Widget _send(String msg, String time, type, String? media, String msgId, String status, String timeStamp, String readStatus) {
     String price = "";
     String message = "";
     String name = "";
     String description = "";
-    if (type == "offer") {
+    if (type == "product" || type == "service") {
       List sp = msg.split('*-');
       price = sp.first;
       name = sp[2];
       message = sp[1];
       description = sp.last;
+    }
+    if (type == 'product') {
+      return GestureDetector(
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: const EdgeInsets.only(top: 10, right: 10, bottom: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColor.primaryColor.withOpacity(0.15),
+              border: Border.all(color: AppColor.black54),
+            ),
+            child: IntrinsicWidth(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 270.w),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 200.w,
+                          width: 200.w,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black12),
+                          ),
+                          child: media == null
+                              ? const SizedBox()
+                              : CachedNetworkImage(
+                                  imageUrl: media,
+                                  height: 200.w,
+                                  width: 200.w,
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Product name : ',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Gotham',
+                            ),
+                          ),
+                          TextSpan(
+                            text: name,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontFamily: 'Gotham',
+                            ),
+                          )
+                        ]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Product Description : ',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(15),
+                                color: AppColor.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Gotham',
+                              ),
+                            ),
+                            TextSpan(
+                              text: description,
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(15),
+                                color: AppColor.black,
+                                fontFamily: 'Gotham',
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Offer Price : ',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Gotham',
+                            ),
+                          ),
+                          TextSpan(
+                            text: price,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontFamily: 'Gotham',
+                            ),
+                          )
+                        ]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Offer Details : ',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Gotham',
+                            ),
+                          ),
+                          TextSpan(
+                            text: message,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontFamily: 'Gotham',
+                            ),
+                          )
+                        ]),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.to(() => ProductDetailScreen(
+                                  productId: int.parse(msgId),
+                                ));
+                          },
+                          child: Text(
+                            "View Product",
+                            style: WidgetStyle.forgotTExtStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: AppColor.white,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              AppColor.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      status == ''
+                          ? Text(
+                              'Waiting for response',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : status == 'accept'
+                              ? Text(
+                                  'Your offer has been accepted',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Text(
+                                  'Your offer has been rejected',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            time,
+                            style: WidgetStyle.forgotTExtStyle(
+                              color: AppColor.white,
+                              fontSize: 10.0.sp,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: readStatus == '0'
+                                    ? AppColor.greenColor
+                                    : AppColor.grey,
+                                size: 12.r,
+                              ),
+                              const SizedBox(
+                                width: 2,
+                              ),
+                              readStatus == '0'
+                                  ? Text(
+                                      'Seen',
+                                      style: WidgetStyle.forgotTExtStyle(
+                                        color: AppColor.white,
+                                        fontSize: 10.0.sp,
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     }
     else if (type == 'storyReply') {
       return Align(
@@ -429,13 +757,23 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           children: [
                             Icon(
                               Icons.check_circle_rounded,
-                              color: AppColor.grey,
+                              color: readStatus == '0'
+                                  ? AppColor.greenColor
+                                  : AppColor.grey,
                               size: 12.r,
                             ),
                             const SizedBox(
                               width: 2,
                             ),
-
+                            readStatus == '0'
+                                ? Text(
+                                    'Seen',
+                                    style: WidgetStyle.forgotTExtStyle(
+                                      color: AppColor.white,
+                                      fontSize: 10.0.sp,
+                                    ),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ],
@@ -448,7 +786,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ),
       );
     }
-    if (type == 'offer') {
+    else if (type == 'service') {
       return Align(
         alignment: Alignment.bottomRight,
         child: Container(
@@ -474,12 +812,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black12),
                         ),
-                        child: CachedNetworkImage(
-                          imageUrl: media,
-                          height: 200.w,
-                          width: 200.w,
-                          fit: BoxFit.cover,
-                        ),
+                        child: media == null
+                            ? const SizedBox()
+                            : CachedNetworkImage(
+                                imageUrl: media,
+                                height: 200.w,
+                                width: 200.w,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(
@@ -488,7 +828,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     RichText(
                       text: TextSpan(children: [
                         TextSpan(
-                          text: 'Product name : ',
+                          text: 'Service name : ',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(15),
                             color: AppColor.black,
@@ -513,7 +853,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Product Description : ',
+                            text: 'Service Description : ',
                             style: TextStyle(
                               fontSize: ScreenUtil().setSp(15),
                               color: AppColor.black,
@@ -584,12 +924,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() => ProductDetailScreen(
-                                productId: int.parse(msgId),
-                              ));
+                         // Get.to(() => ServiceDetail(serviceId: msgId));
                         },
                         child: Text(
-                          "View Product",
+                          "View Service",
                           style: WidgetStyle.forgotTExtStyle(
                             fontSize: ScreenUtil().setSp(12),
                             color: AppColor.white,
@@ -627,7 +965,48 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   fontSize: ScreenUtil().setSp(14),
                                   fontWeight: FontWeight.bold,
                                 ),
-                              )
+                              ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          time,
+                          style: WidgetStyle.forgotTExtStyle(
+                            color: AppColor.white,
+                            fontSize: 10.0.sp,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: readStatus == '0'
+                                  ? AppColor.greenColor
+                                  : AppColor.grey,
+                              size: 12.r,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            readStatus == '0'
+                                ? Text(
+                                    'Seen',
+                                    style: WidgetStyle.forgotTExtStyle(
+                                      color: AppColor.white,
+                                      fontSize: 10.0.sp,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -635,7 +1014,124 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
         ),
       );
-    } else {
+    }
+    else if (type == 'counterOffer') {
+      return GestureDetector(
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: const EdgeInsets.only(top: 10, right: 10, bottom: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColor.primaryColor.withOpacity(0.15),
+              border: Border.all(color: AppColor.black54),
+            ),
+            child: IntrinsicWidth(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 270.w),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Offer Price : ',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Gotham',
+                            ),
+                          ),
+                          TextSpan(
+                            text: msg,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontFamily: 'Gotham',
+                            ),
+                          )
+                        ]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      status == ''
+                          ? Text(
+                              'Waiting for response',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : status == 'accept'
+                              ? Text(
+                                  'Your offer has been accepted',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Text(
+                                  'Your offer has been rejected',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            time,
+                            style: WidgetStyle.forgotTExtStyle(
+                              color: AppColor.white,
+                              fontSize: 10.0.sp,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: readStatus == '0'
+                                    ? AppColor.greenColor
+                                    : AppColor.grey,
+                                size: 12.r,
+                              ),
+                              const SizedBox(
+                                width: 2,
+                              ),
+                              readStatus == '0'
+                                  ? Text(
+                                      'Seen',
+                                      style: WidgetStyle.forgotTExtStyle(
+                                        color: AppColor.white,
+                                        fontSize: 10.0.sp,
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    else {
       return Bubble(
         radius: const Radius.circular(15),
         margin: const BubbleEdges.only(top: 10, right: 5),
@@ -665,13 +1161,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         onTap: () {
                           Get.to(
                             () => FullFileView(
-                              image: media,
+                              image: media ?? '',
                               type: type,
                             ),
                           );
                         },
                         child: CachedNetworkImage(
-                          imageUrl: media,
+                          imageUrl: media ?? '',
                           width: 200.w,
                           height: 200.w,
                           fit: BoxFit.cover,
@@ -682,23 +1178,24 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             onTap: () {
                               Get.to(
                                 () => FullFileView(
-                                  image: media,
+                                  image: media ?? '',
                                   type: type,
                                 ),
                               );
                             },
-                            child: ChatVideoPlayer(url: media),
+                            child: ChatVideoPlayer(url: media ?? ''),
                           )
                         : type == 'audio'
                             ? ChatAudioPlayer(
-                                url: media,
+                                url: media ?? '',
                                 user: 'sender',
                               )
                             : type == 'pdf'
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        _launched = _launchInBrowser(media);
+                                        _launched =
+                                            _launchInBrowser(media ?? '');
                                       });
                                     },
                                     child: Row(
@@ -728,7 +1225,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     ? GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            _launched = _launchInBrowser(media);
+                                            _launched =
+                                                _launchInBrowser(media ?? '');
                                           });
                                         },
                                         child: Row(
@@ -759,8 +1257,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                         ? GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                _launched =
-                                                    _launchInBrowser(media);
+                                                _launched = _launchInBrowser(
+                                                    media ?? '');
                                               });
                                             },
                                             child: Row(
@@ -792,7 +1290,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     _launched =
-                                                        _launchInBrowser(media);
+                                                        _launchInBrowser(
+                                                            media ?? '');
                                                   });
                                                 },
                                                 child: Row(
@@ -826,12 +1325,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: Text(
-                    time,
-                    style: WidgetStyle.forgotTExtStyle(
-                      color: AppColor.white,
-                      fontSize: 10.0.sp,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        time,
+                        style: WidgetStyle.forgotTExtStyle(
+                          color: AppColor.white,
+                          fontSize: 10.0.sp,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 3,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle_rounded,
+                            color: readStatus == '0'
+                                ? AppColor.greenColor
+                                : AppColor.grey,
+                            size: 12.r,
+                          ),
+                          const SizedBox(
+                            width: 2,
+                          ),
+                          readStatus == '0'
+                              ? Text(
+                                  'Seen',
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    color: AppColor.white,
+                                    fontSize: 10.0.sp,
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -842,22 +1372,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
     }
   }
 
-  Widget _receive(String msg, String time, String type, String media,
-      String msgId, String status, String timeStamp) {
+  Widget _receive(String msg, String time, String type, String? media, String msgId, String status, String timeStamp) {
     String price = "";
     String message = "";
     String name = "";
     String description = "";
     DateTime msgTime = DateFormat('yyyy/MM/dd HH:mm:ss').parse(timeStamp);
 
-    if (type == "offer") {
+    if (type == "product" || type == "service") {
       List sp = msg.split('*-');
       price = sp.first;
       name = sp[2];
       message = sp[1];
       description = sp.last;
     }
-    if (type == 'offer') {
+    if (type == 'product') {
       return Align(
         alignment: Alignment.bottomLeft,
         child: Container(
@@ -883,12 +1412,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black12),
                         ),
-                        child: CachedNetworkImage(
-                          imageUrl: media,
-                          height: 200.w,
-                          width: 200.w,
-                          fit: BoxFit.cover,
-                        ),
+                        child: media == null
+                            ? const SizedBox()
+                            : CachedNetworkImage(
+                                imageUrl: media,
+                                height: 200.w,
+                                width: 200.w,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(
@@ -1012,80 +1543,140 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ),
                     status == ""
-                        ? Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('chats')
-                                        .doc('chatsScreen')
-                                        .collection('$largeId-$smallId')
-                                        .where('timeStamp',
-                                            isEqualTo: timeStamp)
-                                        .get()
-                                        .then((value) {
-                                      var thing = value.docs[0];
-                                      var temp = thing.data();
-                                      temp['status'] = 'accept';
-                                      thing.reference.update(temp);
-                                    });
-                                  },
-                                  child: Text(
-                                    "Accept",
-                                    style: WidgetStyle.forgotTExtStyle(
-                                      fontSize: ScreenUtil().setSp(12),
-                                      color: AppColor.white,
+                        ? Builder(builder: (context) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('chats')
+                                              .doc('chatsScreen')
+                                              .collection('$largeId-$smallId')
+                                              .where('timeStamp',
+                                                  isEqualTo: timeStamp)
+                                              .get()
+                                              .then((value) {
+                                            var thing = value.docs[0];
+                                            var temp = thing.data();
+                                            temp['status'] = 'accept';
+                                            thing.reference.update(temp);
+                                          });
+                                          sendPushNotification(
+                                              'Your offer has been accepted');
+                                        },
+                                        child: Text(
+                                          "Accept",
+                                          style: WidgetStyle.forgotTExtStyle(
+                                            fontSize: ScreenUtil().setSp(11),
+                                            color: AppColor.white,
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                            Colors.green,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      Colors.green,
+                                    const SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('chats')
+                                              .doc('chatsScreen')
+                                              .collection('$largeId-$smallId')
+                                              .where('timeStamp',
+                                                  isEqualTo: timeStamp)
+                                              .get()
+                                              .then((value) {
+                                            var thing = value.docs[0];
+                                            var temp = thing.data();
+                                            temp['status'] = 'reject';
+                                            thing.reference.update(temp);
+                                          });
+                                          sendPushNotification(
+                                              'Your offer has been rejected');
+                                        },
+                                        child: Text(
+                                          "Reject",
+                                          style: WidgetStyle.forgotTExtStyle(
+                                            fontSize: ScreenUtil().setSp(11),
+                                            color: AppColor.white,
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              const BorderSide(
+                                                  color:
+                                                      AppColor.primaryColor)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                            AppColor.primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('chats')
-                                        .doc('chatsScreen')
-                                        .collection('$largeId-$smallId')
-                                        .where('timeStamp',
-                                            isEqualTo: timeStamp)
-                                        .get()
-                                        .then((value) {
-                                      var thing = value.docs[0];
-                                      var temp = thing.data();
-                                      temp['status'] = 'reject';
-                                      thing.reference.update(temp);
-                                    });
-                                  },
-                                  child: Text(
-                                    "Reject",
-                                    style: WidgetStyle.forgotTExtStyle(
-                                      fontSize: ScreenUtil().setSp(12),
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                  style: ButtonStyle(
-                                    side: MaterialStateProperty.all(
-                                        const BorderSide(
-                                            color: AppColor.primaryColor)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      AppColor.white,
-                                    ),
-                                  ),
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                              ),
-                            ],
-                          )
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('chats')
+                                              .doc('chatsScreen')
+                                              .collection('$largeId-$smallId')
+                                              .where('timeStamp',
+                                                  isEqualTo: timeStamp)
+                                              .get()
+                                              .then((value) {
+                                            var thing = value.docs[0];
+                                            var temp = thing.data();
+                                            temp['status'] = 'reject';
+                                            thing.reference.update(temp);
+                                            sendPushNotification(
+                                                'You received an counter offer');
+                                          });
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return _counterOffer();
+                                              });
+                                        },
+                                        child: Text(
+                                          "Counter Offer",
+                                          style: WidgetStyle.forgotTExtStyle(
+                                            fontSize: ScreenUtil().setSp(11),
+                                            color: AppColor.white,
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              const BorderSide(
+                                                  color: AppColor.grey)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                            AppColor.grey,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          })
                         : status == "accept"
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -1144,11 +1735,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: media == null
                             ? const SizedBox()
                             : CachedNetworkImage(
-                          imageUrl: media,
-                          height: 50.w,
-                          width: 100.w,
-                          fit: BoxFit.cover,
-                        ),
+                                imageUrl: media,
+                                height: 50.w,
+                                width: 100.w,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const Divider(
@@ -1163,6 +1754,527 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         fontFamily: 'Gotham',
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    else if (type == 'service') {
+      return Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: AppColor.white.withOpacity(0.15),
+            border: Border.all(color: AppColor.black54),
+          ),
+          child: IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 270.w),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 200.w,
+                        width: 200.w,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black12),
+                        ),
+                        child: media == null
+                            ? const SizedBox()
+                            : CachedNetworkImage(
+                                imageUrl: media,
+                                height: 200.w,
+                                width: 200.w,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Service name : ',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gotham',
+                          ),
+                        ),
+                        TextSpan(
+                          text: name,
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontFamily: 'Gotham',
+                          ),
+                        )
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Service Description : ',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Gotham',
+                            ),
+                          ),
+                          TextSpan(
+                            text: description,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: AppColor.black,
+                              fontFamily: 'Gotham',
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Offer Price : ',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gotham',
+                          ),
+                        ),
+                        TextSpan(
+                          text: price,
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontFamily: 'Gotham',
+                          ),
+                        )
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Offer Details : ',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gotham',
+                          ),
+                        ),
+                        TextSpan(
+                          text: message,
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontFamily: 'Gotham',
+                          ),
+                        )
+                      ]),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                         // Get.to(() => ServiceDetail(serviceId: msgId));
+                        },
+                        child: Text(
+                          "View Service",
+                          style: WidgetStyle.forgotTExtStyle(
+                            fontSize: ScreenUtil().setSp(12),
+                            color: AppColor.white,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            AppColor.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    status == ""
+                        ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'accept';
+                                          thing.reference.update(temp);
+                                        });
+                                        sendPushNotification(
+                                            'Your offer has been accepted');
+                                      },
+                                      child: Text(
+                                        "Accept",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'reject';
+                                          thing.reference.update(temp);
+                                        });
+                                        sendPushNotification(
+                                            'Your offer has been rejected');
+                                      },
+                                      child: Text(
+                                        "Reject",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            const BorderSide(
+                                                color: AppColor.primaryColor)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          AppColor.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'reject';
+                                          thing.reference.update(temp);
+                                        });
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return _counterOffer();
+                                            });
+                                        sendPushNotification(
+                                            'You received an counter offer');
+                                      },
+                                      child: Text(
+                                        "Counter Offer",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            const BorderSide(
+                                                color: AppColor.grey)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          AppColor.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : status == "accept"
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'You accepted the offer',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'You rejected the offer',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    else if (type == 'counterOffer') {
+      return Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: AppColor.white.withOpacity(0.15),
+            border: Border.all(color: AppColor.black54),
+          ),
+          child: IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 270.w),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Offer Price : ',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Gotham',
+                          ),
+                        ),
+                        TextSpan(
+                          text: msg,
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(15),
+                            color: AppColor.black,
+                            fontFamily: 'Gotham',
+                          ),
+                        )
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    status == ""
+                        ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'accept';
+                                          thing.reference.update(temp);
+                                        });
+                                        sendPushNotification(
+                                            'Your offer has been accepted');
+                                      },
+                                      child: Text(
+                                        "Accept",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'reject';
+                                          thing.reference.update(temp);
+                                        });
+                                        sendPushNotification(
+                                            'Your offer has been rejected');
+                                      },
+                                      child: Text(
+                                        "Reject",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            const BorderSide(
+                                                color: AppColor.primaryColor)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          AppColor.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FirebaseFirestore.instance
+                                            .collection('chats')
+                                            .doc('chatsScreen')
+                                            .collection('$largeId-$smallId')
+                                            .where('timeStamp',
+                                                isEqualTo: timeStamp)
+                                            .get()
+                                            .then((value) {
+                                          var thing = value.docs[0];
+                                          var temp = thing.data();
+                                          temp['status'] = 'reject';
+                                          thing.reference.update(temp);
+                                        });
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return _counterOffer();
+                                            });
+                                        sendPushNotification(
+                                            'You received an counter offer');
+                                      },
+                                      child: Text(
+                                        "Counter Offer",
+                                        style: WidgetStyle.forgotTExtStyle(
+                                          fontSize: ScreenUtil().setSp(11),
+                                          color: AppColor.white,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        side: MaterialStateProperty.all(
+                                            const BorderSide(
+                                                color: AppColor.grey)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          AppColor.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : status == "accept"
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'You accepted the offer',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'You rejected the offer',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
                   ],
                 ),
               ),
@@ -1201,13 +2313,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         onTap: () {
                           Get.to(
                             () => FullFileView(
-                              image: media,
+                              image: media ?? '',
                               type: type,
                             ),
                           );
                         },
                         child: CachedNetworkImage(
-                          imageUrl: media,
+                          imageUrl: media ?? '',
                           width: 200.w,
                           height: 200.w,
                           fit: BoxFit.cover,
@@ -1218,23 +2330,24 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             onTap: () {
                               Get.to(
                                 () => FullFileView(
-                                  image: media,
+                                  image: media ?? '',
                                   type: type,
                                 ),
                               );
                             },
-                            child: ChatVideoPlayer(url: media),
+                            child: ChatVideoPlayer(url: media ?? ''),
                           )
                         : type == 'audio'
                             ? ChatAudioPlayer(
-                                url: media,
+                                url: media ?? '',
                                 user: 'receiver',
                               )
                             : type == 'pdf'
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        _launched = _launchInBrowser(media);
+                                        _launched =
+                                            _launchInBrowser(media ?? '');
                                       });
                                     },
                                     child: Row(
@@ -1264,7 +2377,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     ? GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            _launched = _launchInBrowser(media);
+                                            _launched =
+                                                _launchInBrowser(media ?? '');
                                           });
                                         },
                                         child: Row(
@@ -1295,8 +2409,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                         ? GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                _launched =
-                                                    _launchInBrowser(media);
+                                                _launched = _launchInBrowser(
+                                                    media ?? '');
                                               });
                                             },
                                             child: Row(
@@ -1328,7 +2442,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     _launched =
-                                                        _launchInBrowser(media);
+                                                        _launchInBrowser(
+                                                            media ?? '');
                                                   });
                                                 },
                                                 child: Row(
@@ -1391,7 +2506,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   borderRadius: BorderRadius.circular(20),
                   child: recording
                       ? Text(
-                          'Recording',
+                          'Recording...  $_secondCount',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             fontWeight: FontWeight.bold,
@@ -1410,11 +2525,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     onPressed: () async {
                                       if (_chatController.text == "" &&
                                           _imageFile == null) {
+                                        print(
+                                            '**********-----***Null imageFile & text');
+                                        print(_imagePath);
                                       } else {
                                         String message = _chatController.text;
                                         _chatController.clear();
                                         await sendMessage(message);
-
                                         setState(() {
                                           _uploadPath = "";
                                           _imagePath = null;
@@ -1479,14 +2596,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
               //   width: 10.w,
               // ),
               GestureDetector(
-                onTap: () {
-                  _myRecorder!.openRecorder().then((value) {});
-                  openTheRecorder().then((value) {
-                    setState(() {
-                      _mRecorderIsInited = true;
-                    });
-                  });
-                },
+                // onTap: () {
+                //   _myRecorder!.openRecorder().then((value) {});
+                //   openTheRecorder().then((value) {
+                //     setState(() {
+                //       _mRecorderIsInited = true;
+                //     });
+                //   });
+                // },
                 onLongPressStart: (s) {
                   _myRecorder!.openRecorder().then((value) {});
                   openTheRecorder().then((value) {
@@ -1497,9 +2614,19 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   setState(() {
                     recording = true;
                   });
+                  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+                    setState(() {
+                      _secondCount += 1;
+                    });
+                  });
                   record();
                 },
                 onLongPressEnd: (L) {
+                  _timer?.cancel();
+                  setState(() {
+                    audioUploaded = true;
+                    _secondCount = 0;
+                  });
                   stop();
                   setState(() {
                     recording = false;
@@ -1659,7 +2786,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       Icons.close,
                       size: 20.w,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -1682,6 +2809,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         'messageId': DateTime.now().millisecondsSinceEpoch.toString(),
         'messageKey': "$largeId-$smallId",
         "read": false,
+        "readStatus": '1',
         "received": true,
         "receiverId": "${widget.receiverId}",
         "send": true,
@@ -1704,6 +2832,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
       },
     );
 
+    await getNameAddress();
+
     /// Message Keys Collection
     FirebaseFirestore.instance
         .collection('messageKeys')
@@ -1723,6 +2853,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
                         ? "Photo"
                         : "Document",
+        "readStatus": '0',
         "unread": 0,
         "messageKey": "$largeId-$smallId",
         "name": widget.name,
@@ -1749,16 +2880,20 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
                         ? "Photo"
                         : "Document",
+        "readStatus": readLength,
         "unread": 1,
         "messageKey": "$largeId-$smallId",
         "name": AppConstants.userName,
         "time": DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
       },
     );
-    // await sendPushNotification();
+    await sendPushNotification('You have received a new message');
   }
 
   Future<void> uploadChatFile(path) async {
+    print('uploadchatfile call');
+    String readLength = '0';
+
     setState(() {
       uploading = true;
     });
@@ -1767,97 +2902,111 @@ class _MessagesScreenState extends State<MessagesScreen> {
     Map map = {
       'user_id': AppConstants.myId,
     };
-    ApiResponse apiResponse =
-        await NetworkConfig.uploadFileWithToken(url, map, path);
+    try {
+      ApiResponse apiResponse =
+          await NetworkConfig.uploadFileWithToken(url, map, path);
+      print('called');
+      print('api response -----******-----***** ${apiResponse.done}');
+      if (apiResponse.done ?? false) {
+        UploadFileEntity response =
+            UploadFileEntity.fromJson(apiResponse.responseString ?? '');
 
-    if (apiResponse.done ?? false) {
-      UploadFileEntity response =
-          UploadFileEntity.fromJson(apiResponse.responseString ?? '');
+        if (response.success == 1) {
+          print(response.images);
+          setState(() {
+            uploading = false;
+            _uploadPath = response.images ?? '';
+          });
+          if (response.images!.endsWith('aac')) {
+            /// Chat add Collection
+            FirebaseFirestore.instance
+                .collection('chats')
+                .doc('chatsScreen')
+                .collection('$largeId-$smallId')
+                .doc(DateTime.now().millisecondsSinceEpoch.toString())
+                .set(
+              {
+                'message': '',
+                "media_url": _uploadPath,
+                'messageId': DateTime.now().millisecondsSinceEpoch.toString(),
+                'messageKey': "$largeId-$smallId",
+                "read": false,
+                "readStatus": '1',
+                "received": true,
+                "receiverId": "${widget.receiverId}",
+                "send": true,
+                "senderId": AppConstants.myId,
+                "type": 'audio',
+                "status": "",
+                "timeStamp":
+                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+              },
+            );
 
-      if (response.success == 1) {
-        print(response.images);
-        setState(() {
-          uploading = false;
-          _uploadPath = response.images ?? '';
-        });
-        if (response.images!.endsWith('aac')) {
-          /// Chat add Collection
-          FirebaseFirestore.instance
-              .collection('chats')
-              .doc('chatsScreen')
-              .collection('$largeId-$smallId')
-              .doc(DateTime.now().millisecondsSinceEpoch.toString())
-              .set(
-            {
-              'message': '',
-              "media_url": _uploadPath,
-              'messageId': DateTime.now().millisecondsSinceEpoch.toString(),
-              'messageKey': "$largeId-$smallId",
-              "read": false,
-              "received": true,
-              "receiverId": "${widget.receiverId}",
-              "send": true,
-              "senderId": AppConstants.myId,
-              "type": 'audio',
-              "status": "",
-              "timeStamp":
-                  DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
-            },
-          );
+            /// Message Keys Collection
+            FirebaseFirestore.instance
+                .collection('messageKeys')
+                .doc('keys')
+                .collection(AppConstants.myId)
+                .doc(widget.receiverId)
+                .set(
+              {
+                "id": widget.receiverId,
+                "imageUrl": widget.image,
+                "lastText": "Audio",
+                "readStatus": readLength,
+                "messageKey": "$largeId-$smallId",
+                "name": widget.name,
+                "time":
+                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+              },
+            );
 
-          /// Message Keys Collection
-          FirebaseFirestore.instance
-              .collection('messageKeys')
-              .doc('keys')
-              .collection(AppConstants.myId)
-              .doc(widget.receiverId)
-              .set(
-            {
-              "id": widget.receiverId,
-              "imageUrl": widget.image,
-              "lastText": "Audio",
-              "messageKey": "$largeId-$smallId",
-              "name": widget.name,
-              "time": DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
-            },
-          );
-
-          /// Message Keys Collection
-          FirebaseFirestore.instance
-              .collection('messageKeys')
-              .doc('keys')
-              .collection(widget.receiverId ?? '')
-              .doc(AppConstants.myId)
-              .set(
-            {
-              "id": AppConstants.myId,
-              "imageUrl": _profileController.image,
-              "lastText": "Audio",
-              "messageKey": "$largeId-$smallId",
-              "name": AppConstants.userName,
-              "time": DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
-            },
-          );
+            /// Message Keys Collection
+            FirebaseFirestore.instance
+                .collection('messageKeys')
+                .doc('keys')
+                .collection(widget.receiverId ?? '')
+                .doc(AppConstants.myId)
+                .set(
+              {
+                "id": AppConstants.myId,
+                "imageUrl": _profileController.image,
+                "lastText": "Audio",
+                "readStatus": readLength,
+                "messageKey": "$largeId-$smallId",
+                "name": AppConstants.userName,
+                "time":
+                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+              },
+            );
+            setState(() {
+              audioUploaded = false;
+              _uploadPath = '';
+            });
+          }
+          // setState(() {
+          //   _imageFile = null;
+          //   // _imagePath = null;
+          //   uploading = false;
+          // });
+        } else {
+          await Fluttertoast.showToast(msg: response.message ?? '');
+          setState(() {
+            _imageFile = null;
+            _imagePath = null;
+            uploading = false;
+          });
         }
-        setState(() {
-          _imageFile = null;
-          _imagePath = null;
-          uploading = false;
-        });
       } else {
-        await Fluttertoast.showToast(msg: response.message ?? '');
-        setState(() {
-          _imageFile = null;
-          _imagePath = null;
-          uploading = false;
-        });
+        // setState(() {
+        //   _imageFile = null;
+        //   // _imagePath = null;
+        //   uploading = false;
+        // });
       }
-    } else {
-      setState(() {
-        _imageFile = null;
-        _imagePath = null;
-        uploading = false;
-      });
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -1875,17 +3024,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
     }
   }
 
-  Future<void> sendPushNotification() async {
+  Future<void> sendPushNotification(String title) async {
     Map<String, String> headers = {
       'content-type': 'application/json',
       'Authorization':
-          'key=AAAAsgp6bIs:APA91bFB3yMPrQDdiTQ7TvNkQijEuZaXFqEtchHutoNuJf5wYWlfQ5hc8gaydHlpZh6gQaY63cO6jXz82qirXxARWoyRrf-k056aT3xi51Bia4jx6eSvBgyvHdqAk98LILWNwxUbFauN'
+          'key=AAAArlvuZY0:APA91bFUXWxp69gz1c1Y7CaOCVVG_0w15zRAKhf0OvR9gwUIU6F_ZFsnNsda9WG8soMMBFuHQAFKcQPb73baHDDtFjyKqDAzkuVN2afz37yyE-ndXZjPpW43FTQKJHUXglE8rmFw52is'
     };
     Map map = {
       "registration_ids": _deviceTokens,
       "notification": {
         "body": "New message",
-        "title": "You have received a new message",
+        "title": title,
       }
     };
 
@@ -1902,6 +3051,42 @@ class _MessagesScreenState extends State<MessagesScreen> {
     }
   }
 
+  Future<void> getNameAddress() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('chats')
+        .doc('chatsScreen')
+        .collection('$largeId-$smallId')
+        .where('readStatus', isNotEqualTo: '0')
+        .get();
+    setState(() {
+      readLength = doc.docs.length.toString();
+    });
+  }
+
+  Future<void> updateChatReads() async {
+    final query = await FirebaseFirestore.instance
+        .collection('chats')
+        .doc('chatsScreen')
+        .collection('$largeId-$smallId')
+        .where('readStatus', isEqualTo: '1')
+        .where('receiverId', isEqualTo: AppConstants.myId)
+        .get();
+    for (var doc in query.docs) {
+      doc.reference.update({'readStatus': '0'});
+    }
+  }
+
+  Future<void> updateKeyReads() async {
+    await FirebaseFirestore.instance
+        .collection('messageKeys')
+        .doc('keys')
+        .collection(AppConstants.myId)
+        .doc(widget.receiverId)
+        .update(
+      {'readStatus': '0'},
+    );
+  }
+
   deleteMessage(selected) {
     return Get.defaultDialog(
         middleText: 'Are you sure you want to unsend message?',
@@ -1915,7 +3100,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   onClicked: () {
                     Get.back();
                   }),
-              SizedBox(width: 10.w,),
+              SizedBox(width: 5.w,),
               CustomWidget.dialogButton(
                 name: 'Unsend',
                 isBorderColor: false,
@@ -1934,5 +3119,226 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ]);
   }
 
+  Widget _counterOffer() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: Text(
+                        'Counter offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(16),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Enter Price*',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: TextFormField(
+                        controller: _priceController,
+                        validator: (value) {
+                          return value == null || value.isEmpty
+                              ? 'Please write product name'
+                              : null;
+                        },
+                        //controller: _nameController,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(13),
+                        ),
+
+                        decoration: InputDecoration(
+                          hintText: '20000',
+                          hintStyle: TextStyle(
+                            fontSize: ScreenUtil().setSp(13),
+                            color: Colors.black26,
+                          ),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: AppColor.greyshade200,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(horizontal: 10.0)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: const BorderSide(
+                                    color: AppColor.primaryColor,
+                                  ),
+                                ),
+                              ),
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                Size(120.w, 20.h),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              Strings.cancel,
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                        EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        horizontal: 10.0)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: const BorderSide(
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                minimumSize: MaterialStateProperty.all<Size>(
+                                    Size(120.w, 40.h))),
+                            onPressed: () async {
+                              /// Chat add Collection
+                              FirebaseFirestore.instance
+                                  .collection('chats')
+                                  .doc('chatsScreen')
+                                  .collection('$largeId-$smallId')
+                                  .doc(DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString())
+                                  .set(
+                                {
+                                  'message': _priceController.text,
+                                  "media_url": '',
+                                  'messageId': DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString(),
+                                  'messageKey': "$largeId-$smallId",
+                                  "read": false,
+                                  "readStatus": '1',
+                                  "received": true,
+                                  "receiverId": "${widget.receiverId}",
+                                  "send": true,
+                                  "status": "",
+                                  "senderId": AppConstants.myId,
+                                  "type": 'counterOffer',
+                                  "timeStamp": DateFormat('yyyy/MM/dd HH:mm:ss')
+                                      .format(DateTime.now()),
+                                },
+                              );
+
+                              /// Message Keys Collection
+                              FirebaseFirestore.instance
+                                  .collection('messageKeys')
+                                  .doc('keys')
+                                  .collection(AppConstants.myId)
+                                  .doc(widget.receiverId)
+                                  .set(
+                                {
+                                  "id": widget.receiverId,
+                                  "imageUrl": widget.image,
+                                  "readStatus": '0',
+                                  "lastText": "Counter Offer",
+                                  "messageKey": "$largeId-$smallId",
+                                  "name": widget.name ?? '',
+                                  "time": DateFormat('yyyy/MM/dd HH:mm:ss')
+                                      .format(DateTime.now()),
+                                },
+                              );
+
+                              await getNameAddress();
+
+                              /// Message Keys Collection
+                              FirebaseFirestore.instance
+                                  .collection('messageKeys')
+                                  .doc('keys')
+                                  .collection(widget.receiverId ?? '')
+                                  .doc(AppConstants.myId)
+                                  .set({
+                                "id": AppConstants.myId,
+                                "imageUrl": _profileController.image,
+                                "readStatus": readLength,
+                                "lastText": "Counter Offer",
+                                "messageKey": "$largeId-$smallId",
+                                "name": AppConstants.userName,
+                                "time": DateFormat('yyyy/MM/dd HH:mm:ss')
+                                    .format(DateTime.now()),
+                              });
+                              Get.back();
+                              await Fluttertoast.showToast(
+                                  msg: 'Offer has been sent successfully');
+                              _priceController.clear();
+                            },
+                            child: Text(
+                              'Send Offer',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+}
+
+class SlcMsgTile{
+  String selected;
+  int slcIndex;
+
+  SlcMsgTile(this.selected, this.slcIndex);
 
 }

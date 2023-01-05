@@ -15,6 +15,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../Widgets/custom_widgets.dart';
 import 'messages.dart';
 
 class ChatInvitationScreen extends StatefulWidget {
@@ -259,8 +260,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                   child: Text('View Profile'),
                 )
               ];
-            } else if (_status.status == AppConstants.REJECT &&
-                _status.blockBy == AppConstants.myId) {
+            }
+            else if (_status.status == AppConstants.REJECT && _status.blockBy == AppConstants.myId) {
               return [
                 const PopupMenuItem(
                   value: 1,
@@ -271,8 +272,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                   child: Text('View Profile'),
                 )
               ];
-            } else if (_status.status == AppConstants.ACCEPT ||
-                _status.status == AppConstants.UNBLOCK) {
+            }
+            else if (_status.status == AppConstants.ACCEPT || _status.status == AppConstants.UNBLOCK) {
               return [
                 const PopupMenuItem(
                   value: 0,
@@ -287,8 +288,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                   child: Text('Block'),
                 ),
               ];
-            } else if (_status.status == AppConstants.BLOCK &&
-                _status.blockBy == AppConstants.myId) {
+            }
+            else if (_status.status == AppConstants.BLOCK && _status.blockBy == AppConstants.myId) {
               return [
                 const PopupMenuItem(
                   value: 3,
@@ -299,7 +300,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                   child: Text('View Profile'),
                 ),
               ];
-            } else {
+            }
+            else {
               return [
                 const PopupMenuItem(
                   value: 0,
@@ -585,7 +587,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
   }
 
   Future<void> sendInvitation(status) async {
-    print(status);
+    print("_status= ${status}");
+
     setState(() {
       wait = true;
     });
@@ -595,7 +598,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
       status: status,
     );
     if (response is ErrorEntity) {
-    } else {
+    }
+    else {
       GetInvitationEntity entity = GetInvitationEntity().fromJson(response);
       if (entity.success == 1) {
         _status = ChatInvitation(
@@ -604,10 +608,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           status: entity.result.status,
           blockBy: entity.result.blockBy,
         );
-        setState(() {
-
-        });
       }
+      print("_status.blockBy= ${_status.status}");
     }
     setState(() {
       wait = false;
@@ -632,8 +634,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           blockBy: invitationEntity.result.blockBy,
           name: invitationEntity.result.receiver.firstName,
           image: invitationEntity.result.receiver.image,
-          // devices: invitationEntity.result.devices,
         );
+        print("_status.blocked= ${_status.status}");
         for (var element in invitationEntity.result.devices) {
           _userDevices.add(
             UserDevices(

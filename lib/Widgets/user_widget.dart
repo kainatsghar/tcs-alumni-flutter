@@ -160,11 +160,11 @@ class _UserWidgetState extends State<UserWidget> {
         ),
         if (designation != '' || organization != '')
           Container(
-            height: 30.h,
+            height: 45.h,
             color: Colors.transparent,
             child: Text(
-              '$designation,$organization',
-              maxLines: 2,
+              '$designation\n$organization',
+              maxLines: 3,
               style: TextStyle(color: AppColor.grey,fontSize: 13.sp,overflow: TextOverflow.ellipsis),),
           ),
         AppConstants.appName != 'TLE' ? Column(

@@ -40,6 +40,7 @@ void main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
+  //region Firebase Notification
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   // var token =  await messaging.getToken();
   // print("firebase fcm token= $token");
@@ -52,6 +53,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  //endregion
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     print('User granted permission');

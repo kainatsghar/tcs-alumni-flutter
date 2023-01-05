@@ -127,7 +127,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _fetchData = getUserInfo();
-
     loadDesignations();
     loadCompanies();
 
@@ -138,34 +137,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: height * 0.4,
-            width: width,
-            color: AppColor.primaryColor,
-          ),
-          FutureBuilder(
-            future: _fetchData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Stack(
-                  children: [
-                    buildScreenWidget(height: height),
-                    wait
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Container(),
-                  ],
-                );
-              } else {
-                return buildScreenWidget(height: height);
-              }
-            },
-          ),
-        ],
+    return GestureDetector(
+      onTap: (){
+        //_firebaseRemote();
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              height: height * 0.4,
+              width: width,
+              color: AppColor.primaryColor,
+            ),
+            FutureBuilder(
+              future: _fetchData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Stack(
+                    children: [
+                      buildScreenWidget(height: height),
+                      wait
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(),
+                    ],
+                  );
+                } else {
+                  return buildScreenWidget(height: height);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -240,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  "${oneUser?.firstName} ${oneUser?.lastName}",
+                                  "${oneUser?.firstName ?? "-"} ${oneUser?.lastName??"-"}",
                                   maxLines: 2,
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,

@@ -174,37 +174,42 @@ class _ViewStoryState extends State<ViewStory> {
                           size: 25.w,
                         ),
                       ),
-                      CircleAvatar(
-                        child: widget.image == ''
-                            ? Image(
-                          image: const AssetImage(AppImages.profile),
-                          width: 45.w,
-                          height: 45.h,
-                        )
-                            : CachedNetworkImage(
-                          imageUrl: widget.image ?? '',
-                          imageBuilder: (context, imageProvider) =>
-                              Container(
-                                height: 45.w,
-                                width: 45.w,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=> ProfileScreen(userID: widget.userId,));
+                        },
+                        child: CircleAvatar(
+                          child: widget.image == ''
+                              ? Image(
+                            image: const AssetImage(AppImages.profile),
+                            width: 45.w,
+                            height: 45.h,
+                          )
+                              : CachedNetworkImage(
+                            imageUrl: widget.image ?? '',
+                            imageBuilder: (context, imageProvider) =>
+                                Container(
+                                  height: 45.w,
+                                  width: 45.w,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                          errorWidget: (context, url, error) => Image(
-                            image: const AssetImage(AppImages.profile),
-                            height: 50.w,
-                            width: 50.h,
+                            errorWidget: (context, url, error) => Image(
+                              image: const AssetImage(AppImages.profile),
+                              height: 50.w,
+                              width: 50.h,
+                            ),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
                           ),
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                value: downloadProgress.progress,
-                              ),
                         ),
                       ),
                       SizedBox(width: 15.w),
@@ -212,17 +217,22 @@ class _ViewStoryState extends State<ViewStory> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 150.w,
-                            height: 18.h,
-                            color: Colors.transparent,
-                            child: Text(
-                              widget.name ?? '',
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 14.sp,
-                                color: AppColor.white,
-                                fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: (){
+                              Get.to(()=> ProfileScreen(userID: widget.userId,));
+                            },
+                            child: Container(
+                              width: 150.w,
+                              height: 18.h,
+                              color: Colors.transparent,
+                              child: Text(
+                                widget.name ?? '',
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 14.sp,
+                                  color: AppColor.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
