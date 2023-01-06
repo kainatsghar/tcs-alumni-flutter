@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,9 +13,6 @@ import 'package:iobm/Views/bottom_navigationbar.dart';
 import 'package:iobm/Views/signup_screens/otp_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
 import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart';
-import 'package:iobm/Views/signup_screens/sign_up_iobm/iobm_signup_search_screen.dart';
-import 'package:iobm/Views/signup_screens/sign_up_screen.dart';
-import 'package:iobm/Views/signup_screens/sign_up_tle/sign_up_tle_screen.dart';
 
 import 'package:iobm/Widgets/custom_widgets.dart';
 
@@ -36,7 +32,6 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/device_data.dart';
 
 import 'package:iobm/utils/strings.dart';
-import 'package:linkedin_login/linkedin_login.dart';
 
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -138,8 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
     bioMetricFunc();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -457,10 +450,12 @@ class _LoginScreenState extends State<LoginScreen> {
         //       width: 27,
         //     ),
         //   ),
+        if (Platform.isAndroid)
         SizedBox(
           width: 15.w,
         ),
         //FB login Button
+        if (Platform.isAndroid)
         GestureDetector(
           onTap: () {
             _facebookSingIn();
