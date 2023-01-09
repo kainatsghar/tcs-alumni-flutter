@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart' as html;
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +16,7 @@ import 'package:iobm/Views/news_feeds/reactions_details.dart';
 import 'package:iobm/local_db/local_db.dart';
 import 'package:iobm/models/data_fetched.dart';
 import 'package:iobm/models/error_entity.dart';
+import 'package:html/parser.dart' show parse;
 import 'package:iobm/networkcalls/api_calls.dart';
 
 import 'package:iobm/networkcalls/api_helper.dart';
@@ -24,11 +27,10 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../helper_classes/ui_helper.dart';
+import '../../networkcalls/response_models/delete_post_entity.dart';
 import '../../networkcalls/response_models/like_post_entity.dart';
-import '../../networkcalls/response_models/report_entity.dart';
 import '../more/profile_screen.dart';
 import 'create_post_screen.dart';
 
@@ -64,11 +66,14 @@ class _InsertCommentsState extends State<InsertComments> {
   var map1 = <Map<String, dynamic>>[];
   late List<DBAllUser> _tagUsers;
   late List<SelectableUser> _users;
+  late List tagUsersList;
 
   ///Reply Feature
   bool replying = false;
   String replyName = "";
   String commentId = '';
+  String replyId = '';
+  bool updateComment = false;
 
   /// Image Picker
   final ImagePicker _picker = ImagePicker();
@@ -87,8 +92,10 @@ class _InsertCommentsState extends State<InsertComments> {
 
   @override
   void initState() {
+    print("widget.postId= ${widget.postId}");
     _comments = [];
     _replies = [];
+    tagUsersList = [];
     _users = [];
     _fetchData = getComments();
     super.initState();
@@ -103,6 +110,7 @@ class _InsertCommentsState extends State<InsertComments> {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           elevation: 0,
           shape: Border(
             bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
@@ -133,7 +141,7 @@ class _InsertCommentsState extends State<InsertComments> {
         GestureDetector(
           onTap: () {
             Get.to(
-              () => ReactionsDetail(
+                  () => ReactionsDetail(
                 postId: widget.postId,
                 totalCount: widget.totalLikes,
                 commentId: '',
@@ -184,281 +192,306 @@ class _InsertCommentsState extends State<InsertComments> {
         shrinkWrap: true,
         itemCount: _comments.length,
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onLongPress: (){
-              showMaterialModalBottomSheet(
-                context: context,
-                builder: (context) => Container(
-                  height: 50.h,
-                  child: ListTile(
-                    leading: const Icon(Icons.sim_card_alert_rounded),
-                    title: const Text("Report"),
-                    onTap: (){
-                      reportPost(
-                        comment: "Report from post comments",
-                        postId: _comments[index].id,
-                        reportType: 1,
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15.0,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(
-                                () => ProfileScreen(
-                              userID: _comments[index].commentedBy,
-                            ),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: _comments[index].userImage ?? '',
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: 45.w,
-                            height: 45.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              //   color: AppColor.white,
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+          return Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(
+                              () => ProfileScreen(
+                            userID: _comments[index].commentedBy,
                           ),
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  CircularProgressIndicator(
-                                      value: downloadProgress.progress),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            //profile image
-                            backgroundColor: AppColor.white,
-                            backgroundImage: const AssetImage(AppImages.profile),
-                            radius: 25.r,
+                        );
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: _comments[index].userImage ?? '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 45.w,
+                          height: 45.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            //   color: AppColor.white,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          //profile image
+                          backgroundColor: AppColor.white,
+                          backgroundImage: const AssetImage(AppImages.profile),
+                          radius: 25.r,
+                        ),
                       ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                color: AppColor.greyshade200,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.to(
-                                                () => ProfileScreen(
-                                              userID: _comments[index].commentedBy,
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          '${_comments[index].firstName}',
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(13),
-                                            color: AppColor.greyshade800,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        '${AppUtils().calculateFormatDifference(_comments[index].createdDate ?? '')}',
-                                        style: TextStyle(
-                                          color: AppColor.greyshade600,
-                                          fontSize: ScreenUtil().setSp(11),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  // HtmlWidget(
-                                  //   AppUtils().commentString(
-                                  //       _comments[index].comment ?? ''),
-                                  // ),
-                                  Text(
-                                    AppUtils().commentString(
-                                        _comments[index].comment ?? ''),
-                                    style: TextStyle(
-                                      color: AppColor.greyshade800,
-                                      fontSize: ScreenUtil().setSp(13),
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  if (_comments[index].commentImage != "")
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: AppColor.greyshade200,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
                                     GestureDetector(
                                       onTap: () {
                                         Get.to(
-                                            () => FullViewImage(
-                                                  image: _comments[index]
-                                                          .commentImage ??
-                                                      '',
-                                                ),
-                                            duration:
-                                                const Duration(milliseconds: 300),
-                                            curve: Curves.easeIn);
+                                              () => ProfileScreen(
+                                            userID:
+                                            _comments[index].commentedBy,
+                                          ),
+                                        );
                                       },
-                                      child: Hero(
-                                        tag: 'fullImage',
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              _comments[index].commentImage ?? '',
-                                          height: 200,
-                                          progressIndicatorBuilder:
-                                              (context, url, downloadProgress) =>
-                                                  Center(
-                                            child: CircularProgressIndicator(
-                                              value: downloadProgress.progress,
-                                              strokeWidth: 2.0,
-                                            ),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image.asset(
-                                            AppImages.noImage,
-                                          ),
+                                      child: Text(
+                                        '${_comments[index].firstName}',
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(13),
+                                          color: AppColor.greyshade800,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 8.w,
-                                ),
-                                _commentReaction(index),
-                                SizedBox(
-                                  width: 8.w,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      replying = true;
-                                      replyName =
-                                          _comments[index].firstName ?? '';
-                                      commentId = _comments[index].id ?? '';
-                                    });
-                                  },
-                                  child: Text(
-                                    'Reply',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(13),
+                                    const Spacer(),
+                                    Text(
+                                      '${AppUtils().calculateFormatDifference(_comments[index].createdDate ?? '')}',
+                                      style: TextStyle(
+                                        color: AppColor.greyshade600,
+                                        fontSize: ScreenUtil().setSp(11),
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 30,
+                                      child: _comments[index].commentedBy ==
+                                          AppConstants.myId
+                                          ? PopupMenuButton(
+                                          onSelected: (result) {
+                                            if (result == 0) {
+                                              deleteTimeLineComment(
+                                                  _comments[index].id ?? '',
+                                                  "");
+                                              setState(() {
+                                                count--;
+                                              });
+                                            } else if (result == 1) {
+                                              print("clicked 1");
+                                              setState(() {
+                                                updateComment = true;
+                                                commentId =
+                                                    _comments[index].id ?? '';
+                                              });
+                                              String text =
+                                                  _comments[index].comment ??
+                                                      '';
+                                              String finalText = "";
+                                              if (text.contains("{")) {
+                                                final startIndex =
+                                                text.indexOf("{");
+                                                final endIndex =
+                                                text.indexOf("}");
+                                                final jsonString =
+                                                text.substring(startIndex,
+                                                    endIndex + 1);
+                                                final decodedMap =
+                                                json.decode(jsonString);
+                                                finalText = text.replaceAll(
+                                                    jsonString,
+                                                    "@${decodedMap['name']}");
+                                                key.currentState!.controller!
+                                                    .text = finalText;
+                                              } else {
+                                                setState(() {
+                                                  key.currentState!
+                                                      .controller!.text =
+                                                      _parseHtmlString(text)
+                                                          .replaceAll(
+                                                          '"', '');
+                                                });
+                                              }
+                                            }
+                                          }, itemBuilder: (context) {
+                                        return [
+                                          const PopupMenuItem(
+                                              value: 0,
+                                              child: Text('Delete')),
+                                          const PopupMenuItem(
+                                              value: 1,
+                                              child: Text('Edit')),
+                                        ];
+                                      })
+                                          : const SizedBox(),
+                                    ),
+                                  ],
                                 ),
-                                const Expanded(child: SizedBox()),
-                                if (int.parse(_comments[index].likeCount ?? '') >
-                                    0)
+                                html.HtmlWidget(
+                                  AppUtils().commentString(
+                                      _comments[index].comment ?? ''),
+                                ),
+
+                                // Text(
+                                //   AppUtils().commentString(
+                                //       _comments[index].comment ?? ''),
+                                //   style: TextStyle(
+                                //     color:
+                                //          AppColor.greyshade800,
+                                //     fontSize: ScreenUtil().setSp(13),
+                                //   ),
+                                //   textAlign: TextAlign.left,
+                                // ),
+                                // AppUtils().commentString(_comments[index].comment ?? '').startsWith('@') ? AppColor.blue :
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                if (_comments[index].commentImage != "")
                                   GestureDetector(
                                     onTap: () {
                                       Get.to(
-                                        () => ReactionsDetail(
-                                          postId: widget.postId,
-                                          totalCount:
-                                              _comments[index].likeCount ?? '',
-                                          commentId: _comments[index].id ?? '',
-                                          replyId: '',
-                                        ),
-                                        transition: Transition.rightToLeft,
-                                      );
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          _comments[index].likeCount ?? '',
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(14),
+                                              () => FullViewImage(
+                                            image: _comments[index]
+                                                .commentImage ??
+                                                '',
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Icon(
-                                          Icons.thumb_up_alt_outlined,
-                                          size: 16.w,
-                                        ),
-                                      ],
+                                          duration:
+                                          const Duration(milliseconds: 300),
+                                          curve: Curves.easeIn);
+                                    },
+                                    child: Hero(
+                                      tag: 'fullImage',
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                        _comments[index].commentImage ?? '',
+                                        height: 200,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                value: downloadProgress.progress,
+                                                strokeWidth: 2.0,
+                                              ),
+                                            ),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                              AppImages.noImage,
+                                            ),
+                                      ),
                                     ),
                                   ),
-                                const SizedBox(
-                                  width: 10,
-                                )
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              _commentReaction(index),
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    replying = true;
+                                    replyName =
+                                        _comments[index].firstName ?? '';
+                                    commentId = _comments[index].id ?? '';
+                                  });
+                                },
+                                child: Text(
+                                  'Reply',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(13),
+                                  ),
+                                ),
+                              ),
+                              const Expanded(child: SizedBox()),
+                              if (int.parse(_comments[index].likeCount ?? '') >
+                                  0)
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                          () => ReactionsDetail(
+                                        postId: widget.postId,
+                                        totalCount:
+                                        _comments[index].likeCount ?? '',
+                                        commentId: _comments[index].id ?? '',
+                                        replyId: '',
+                                      ),
+                                      transition: Transition.rightToLeft,
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        _comments[index].likeCount ?? '',
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(14),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.thumb_up_alt_outlined,
+                                        size: 16.w,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  for (var element in _replies)
-                    if (element.commentId == _comments[index].id)
-                      GestureDetector(
-                        onLongPress: (){
-                          showMaterialModalBottomSheet(
-                            context: context,
-                            builder: (context) =>  SizedBox(
-                              height: 50.h,
-                              child: ListTile(
-                                leading: const Icon(Icons.sim_card_alert_rounded),
-                                title: const Text("Report"),
-                                onTap: (){
-                                  reportReplyPost(
-                                    comment: "Report from post comments",
-                                    postId: element.id,
-                                    reportType: 1,
+                    ),
+                  ],
+                ),
+                for (var element in _replies)
+                  if (element.commentId == _comments[index].id)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0)
+                          .copyWith(left: 45.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                        () => ProfileScreen(
+                                      userID: element.commentedBy,
+                                    ),
                                   );
                                 },
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0)
-                              .copyWith(left: 45.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                        () => ProfileScreen(
-                                          userID: element.commentedBy,
-                                        ),
-                                      );
-                                    },
-                                    child: CachedNetworkImage(
-                                      imageUrl: element.userImage ?? '',
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
+                                child: CachedNetworkImage(
+                                  imageUrl: element.userImage ?? '',
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
                                         width: 45.w,
                                         height: 45.w,
                                         decoration: BoxDecoration(
@@ -470,176 +503,255 @@ class _InsertCommentsState extends State<InsertComments> {
                                           ),
                                         ),
                                       ),
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) =>
-                                              CircularProgressIndicator(
-                                                  value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) =>
-                                          CircleAvatar(
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      CircleAvatar(
                                         //profile image
                                         backgroundColor: AppColor.white,
                                         backgroundImage:
-                                            const AssetImage(AppImages.profile),
+                                        const AssetImage(AppImages.profile),
                                         radius: 25.r,
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 8.w,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.r),
-                                            color: AppColor.greyshade200,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10.r),
+                                        color: AppColor.greyshade200,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
                                             children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Get.to(
-                                                            () => ProfileScreen(
-                                                              userID: element.commentedBy,
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                      element.firstName ?? '',
-                                                      style: TextStyle(
-                                                        fontSize:
-                                                            ScreenUtil().setSp(13),
-                                                        color: AppColor.greyshade800,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.to(
+                                                        () => ProfileScreen(
+                                                      userID:
+                                                      element.commentedBy,
                                                     ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  element.firstName ?? '',
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                    ScreenUtil().setSp(13),
+                                                    color:
+                                                    AppColor.greyshade800,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  Text(
-                                                    '${AppUtils().calculateFormatDifference(element.createdDate ?? '')}',
-                                                    style: TextStyle(
-                                                      color: AppColor.greyshade600,
-                                                      fontSize:
-                                                          ScreenUtil().setSp(11),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                AppUtils().commentString(
-                                                    element.comment ?? ''),
-                                                style: TextStyle(
-                                                  color: AppColor.greyshade800,
-                                                  fontSize: ScreenUtil().setSp(13),
                                                 ),
-                                                textAlign: TextAlign.left,
                                               ),
-                                              if (element.commentImage != "")
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Get.to(
-                                                      () => FullViewImage(
-                                                          image: element
-                                                                  .commentImage ??
-                                                              ''),
-                                                    );
-                                                  },
-                                                  child: Hero(
-                                                    tag: 'fullImage',
-                                                    child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          element.commentImage ??
-                                                              '',
-                                                      height: 200,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                                  downloadProgress) =>
-                                                              Center(
+                                              const Spacer(),
+                                              Text(
+                                                '${AppUtils().calculateFormatDifference(element.createdDate ?? '')}',
+                                                style: TextStyle(
+                                                  color: AppColor.greyshade600,
+                                                  fontSize:
+                                                  ScreenUtil().setSp(11),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                                width: 30,
+                                                child: element.commentedBy ==
+                                                    AppConstants.myId
+                                                    ? PopupMenuButton(
+                                                    onSelected: (result) {
+                                                      if (result == 0) {
+                                                        print(
+                                                            'reply deleted');
+                                                        deleteTimeLineComment(
+                                                            '',
+                                                            element.id ?? '');
+                                                      } else if (result ==
+                                                          1) {
+                                                        print(
+                                                            "Editing Reply");
+                                                        setState(() {
+                                                          updateComment =
+                                                          true;
+                                                          replyId =
+                                                              element.id ??
+                                                                  '';
+                                                          commentId = element
+                                                              .commentId ??
+                                                              "";
+                                                        });
+                                                        print(replyId);
+                                                        print(
+                                                            "Editing Reply");
+                                                        String text =
+                                                            element.comment ??
+                                                                '';
+                                                        String finalText = "";
+                                                        if (text
+                                                            .contains("{")) {
+                                                          final startIndex =
+                                                          text.indexOf(
+                                                              "{");
+                                                          final endIndex =
+                                                          text.indexOf(
+                                                              "}");
+                                                          final jsonString =
+                                                          text.substring(
+                                                              startIndex,
+                                                              endIndex +
+                                                                  1);
+                                                          final decodedMap =
+                                                          json.decode(
+                                                              jsonString);
+                                                          finalText =
+                                                              text.replaceAll(
+                                                                  jsonString,
+                                                                  "@${decodedMap['name']}");
+                                                          key
+                                                              .currentState!
+                                                              .controller!
+                                                              .text = finalText;
+                                                        } else {
+                                                          key
+                                                              .currentState!
+                                                              .controller!
+                                                              .text = text;
+                                                        }
+                                                      }
+                                                    }, itemBuilder:
+                                                    (context) {
+                                                  return [
+                                                    const PopupMenuItem(
+                                                        value: 0,
+                                                        child: Text(
+                                                            'Delete')),
+                                                    const PopupMenuItem(
+                                                        value: 1,
                                                         child:
-                                                            CircularProgressIndicator(
+                                                        Text('Edit')),
+                                                  ];
+                                                })
+                                                    : const SizedBox(),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            AppUtils().commentString(
+                                                element.comment ?? ''),
+                                            style: TextStyle(
+                                              color: AppColor.greyshade800,
+                                              fontSize: ScreenUtil().setSp(13),
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          if (element.commentImage != "")
+                                            GestureDetector(
+                                              onTap: () {
+                                                Get.to(
+                                                      () => FullViewImage(
+                                                      image: element
+                                                          .commentImage ??
+                                                          ''),
+                                                );
+                                              },
+                                              child: Hero(
+                                                tag: 'fullImage',
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                  element.commentImage ??
+                                                      '',
+                                                  height: 200,
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                      downloadProgress) =>
+                                                      Center(
+                                                        child:
+                                                        CircularProgressIndicator(
                                                           value: downloadProgress
                                                               .progress,
                                                           strokeWidth: 2.0,
                                                         ),
                                                       ),
-                                                      errorWidget:
-                                                          (context, url, error) =>
-                                                              Image.asset(
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                      Image.asset(
                                                         AppImages.noImage,
                                                       ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            _replyReaction(
-                                                _replies.indexOf(element),
-                                                element,
-                                                index),
-                                            const Expanded(child: SizedBox()),
-                                            if (int.parse(element.likeCount ?? '') >
-                                                0)
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(
-                                                    () => ReactionsDetail(
-                                                      postId: '',
-                                                      totalCount:
-                                                          element.likeCount ?? '',
-                                                      commentId: '',
-                                                      replyId: element.id ?? '',
-                                                    ),
-                                                    transition:
-                                                        Transition.rightToLeft,
-                                                  );
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      element.likeCount ?? '',
-                                                      style: TextStyle(
-                                                        fontSize:
-                                                            ScreenUtil().setSp(14),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Icon(
-                                                      Icons.thumb_up_alt_outlined,
-                                                      size: 16.w,
-                                                    ),
-                                                  ],
                                                 ),
                                               ),
-                                            const SizedBox(
-                                              width: 10,
                                             ),
-                                          ],
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Row(
+                                      children: [
+                                        _replyReaction(
+                                            _replies.indexOf(element),
+                                            element,
+                                            index),
+                                        const Expanded(child: SizedBox()),
+                                        if (int.parse(element.likeCount ?? '') >
+                                            0)
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(
+                                                    () => ReactionsDetail(
+                                                  postId: '',
+                                                  totalCount:
+                                                  element.likeCount ?? '',
+                                                  commentId: '',
+                                                  replyId: element.id ?? '',
+                                                ),
+                                                transition:
+                                                Transition.rightToLeft,
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  element.likeCount ?? '',
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Icon(
+                                                  Icons.thumb_up_alt_outlined,
+                                                  size: 16.w,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      )
-                ],
-              ),
+                        ],
+                      ),
+                    ),
+              ],
             ),
           );
         },
@@ -702,126 +814,126 @@ class _InsertCommentsState extends State<InsertComments> {
         reactions: reactions,
         initialReaction: _comments[index].reaction == ""
             ? Reaction(
-                value: '',
-                icon: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  size: 20.w,
-                ),
-              )
+          value: '',
+          icon: Icon(
+            Icons.thumb_up_alt_outlined,
+            size: 20.w,
+          ),
+        )
             : _comments[index].reaction == "Like"
-                ? Reaction(
-                    value: 'Like',
-                    icon: Image.asset(
-                      AppImages.likeIcon,
-                      height: 20.w,
-                      width: 20.w,
-                    ),
-                  )
-                : _comments[index].reaction == "Love"
-                    ? Reaction(
-                        value: 'Love',
-                        icon: Image.asset(
-                          AppImages.heartIcon,
-                          height: 20.w,
-                          width: 20.w,
-                        ),
-                      )
-                    : _comments[index].reaction == "HaHa"
-                        ? Reaction(
-                            value: 'HaHa',
-                            icon: Image.asset(
-                              AppImages.hahaIcon,
-                              height: 20.w,
-                              width: 20.w,
-                            ),
-                          )
-                        : _comments[index].reaction == "Sad"
-                            ? Reaction(
-                                value: 'Sad',
-                                icon: Image.asset(
-                                  AppImages.sadIcon,
-                                  height: 20.w,
-                                  width: 20.w,
-                                ),
-                              )
-                            : _comments[index].reaction == "Wow"
-                                ? Reaction(
-                                    value: 'Wow',
-                                    icon: Image.asset(
-                                      AppImages.wowIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  )
-                                : Reaction(
-                                    value: 'Angry',
-                                    icon: Image.asset(
-                                      AppImages.angryIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  ),
+            ? Reaction(
+          value: 'Like',
+          icon: Image.asset(
+            AppImages.likeIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Love"
+            ? Reaction(
+          value: 'Love',
+          icon: Image.asset(
+            AppImages.heartIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "HaHa"
+            ? Reaction(
+          value: 'HaHa',
+          icon: Image.asset(
+            AppImages.hahaIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Sad"
+            ? Reaction(
+          value: 'Sad',
+          icon: Image.asset(
+            AppImages.sadIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Wow"
+            ? Reaction(
+          value: 'Wow',
+          icon: Image.asset(
+            AppImages.wowIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : Reaction(
+          value: 'Angry',
+          icon: Image.asset(
+            AppImages.angryIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        ),
         selectedReaction: _comments[index].reaction == ""
             ? Reaction<String>(
-                value: '',
-                icon: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  size: 20.w,
-                ),
-              )
+          value: '',
+          icon: Icon(
+            Icons.thumb_up_alt_outlined,
+            size: 20.w,
+          ),
+        )
             : _comments[index].reaction == "Like"
-                ? Reaction<String>(
-                    value: 'Like',
-                    icon: Image.asset(
-                      AppImages.likeIcon,
-                      height: 20.w,
-                      width: 20.w,
-                    ),
-                  )
-                : _comments[index].reaction == "Love"
-                    ? Reaction<String>(
-                        value: 'Love',
-                        icon: Image.asset(
-                          AppImages.heartIcon,
-                          height: 20.w,
-                          width: 20.w,
-                        ),
-                      )
-                    : _comments[index].reaction == "HaHa"
-                        ? Reaction<String>(
-                            value: 'HaHa',
-                            icon: Image.asset(
-                              AppImages.hahaIcon,
-                              height: 20.w,
-                              width: 20.w,
-                            ),
-                          )
-                        : _comments[index].reaction == "Sad"
-                            ? Reaction<String>(
-                                value: 'Sad',
-                                icon: Image.asset(
-                                  AppImages.sadIcon,
-                                  height: 20.w,
-                                  width: 20.w,
-                                ),
-                              )
-                            : _comments[index].reaction == "Wow"
-                                ? Reaction<String>(
-                                    value: 'Wow',
-                                    icon: Image.asset(
-                                      AppImages.wowIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  )
-                                : Reaction<String>(
-                                    value: 'Angry',
-                                    icon: Image.asset(
-                                      AppImages.angryIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  ),
+            ? Reaction<String>(
+          value: 'Like',
+          icon: Image.asset(
+            AppImages.likeIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Love"
+            ? Reaction<String>(
+          value: 'Love',
+          icon: Image.asset(
+            AppImages.heartIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "HaHa"
+            ? Reaction<String>(
+          value: 'HaHa',
+          icon: Image.asset(
+            AppImages.hahaIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Sad"
+            ? Reaction<String>(
+          value: 'Sad',
+          icon: Image.asset(
+            AppImages.sadIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _comments[index].reaction == "Wow"
+            ? Reaction<String>(
+          value: 'Wow',
+          icon: Image.asset(
+            AppImages.wowIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : Reaction<String>(
+          value: 'Angry',
+          icon: Image.asset(
+            AppImages.angryIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        ),
         boxColor: Colors.white,
         boxRadius: 15,
         boxDuration: const Duration(milliseconds: 200),
@@ -879,126 +991,126 @@ class _InsertCommentsState extends State<InsertComments> {
         reactions: reactions,
         initialReaction: _replies[replyIndex].reaction == ""
             ? Reaction(
-                value: '',
-                icon: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  size: 20.w,
-                ),
-              )
+          value: '',
+          icon: Icon(
+            Icons.thumb_up_alt_outlined,
+            size: 20.w,
+          ),
+        )
             : _replies[replyIndex].reaction == "Like"
-                ? Reaction(
-                    value: 'Like',
-                    icon: Image.asset(
-                      AppImages.likeIcon,
-                      height: 20.w,
-                      width: 20.w,
-                    ),
-                  )
-                : _replies[replyIndex].reaction == "Love"
-                    ? Reaction(
-                        value: 'Love',
-                        icon: Image.asset(
-                          AppImages.heartIcon,
-                          height: 20.w,
-                          width: 20.w,
-                        ),
-                      )
-                    : _replies[replyIndex].reaction == "HaHa"
-                        ? Reaction(
-                            value: 'HaHa',
-                            icon: Image.asset(
-                              AppImages.hahaIcon,
-                              height: 20.w,
-                              width: 20.w,
-                            ),
-                          )
-                        : _replies[replyIndex].reaction == "Sad"
-                            ? Reaction(
-                                value: 'Sad',
-                                icon: Image.asset(
-                                  AppImages.sadIcon,
-                                  height: 20.w,
-                                  width: 20.w,
-                                ),
-                              )
-                            : _replies[replyIndex].reaction == "Wow"
-                                ? Reaction(
-                                    value: 'Wow',
-                                    icon: Image.asset(
-                                      AppImages.wowIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  )
-                                : Reaction(
-                                    value: 'Angry',
-                                    icon: Image.asset(
-                                      AppImages.angryIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  ),
+            ? Reaction(
+          value: 'Like',
+          icon: Image.asset(
+            AppImages.likeIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Love"
+            ? Reaction(
+          value: 'Love',
+          icon: Image.asset(
+            AppImages.heartIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "HaHa"
+            ? Reaction(
+          value: 'HaHa',
+          icon: Image.asset(
+            AppImages.hahaIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Sad"
+            ? Reaction(
+          value: 'Sad',
+          icon: Image.asset(
+            AppImages.sadIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Wow"
+            ? Reaction(
+          value: 'Wow',
+          icon: Image.asset(
+            AppImages.wowIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : Reaction(
+          value: 'Angry',
+          icon: Image.asset(
+            AppImages.angryIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        ),
         selectedReaction: _replies[replyIndex].reaction == ""
             ? Reaction<String>(
-                value: '',
-                icon: Icon(
-                  Icons.thumb_up_alt_outlined,
-                  size: 20.w,
-                ),
-              )
+          value: '',
+          icon: Icon(
+            Icons.thumb_up_alt_outlined,
+            size: 20.w,
+          ),
+        )
             : _replies[replyIndex].reaction == "Like"
-                ? Reaction<String>(
-                    value: 'Like',
-                    icon: Image.asset(
-                      AppImages.likeIcon,
-                      height: 20.w,
-                      width: 20.w,
-                    ),
-                  )
-                : _replies[replyIndex].reaction == "Love"
-                    ? Reaction<String>(
-                        value: 'Love',
-                        icon: Image.asset(
-                          AppImages.heartIcon,
-                          height: 20.w,
-                          width: 20.w,
-                        ),
-                      )
-                    : _replies[replyIndex].reaction == "HaHa"
-                        ? Reaction<String>(
-                            value: 'HaHa',
-                            icon: Image.asset(
-                              AppImages.hahaIcon,
-                              height: 20.w,
-                              width: 20.w,
-                            ),
-                          )
-                        : _replies[replyIndex].reaction == "Sad"
-                            ? Reaction<String>(
-                                value: 'Sad',
-                                icon: Image.asset(
-                                  AppImages.sadIcon,
-                                  height: 20.w,
-                                  width: 20.w,
-                                ),
-                              )
-                            : _replies[replyIndex].reaction == "Wow"
-                                ? Reaction<String>(
-                                    value: 'Wow',
-                                    icon: Image.asset(
-                                      AppImages.wowIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  )
-                                : Reaction<String>(
-                                    value: 'Angry',
-                                    icon: Image.asset(
-                                      AppImages.angryIcon,
-                                      height: 20.w,
-                                      width: 20.w,
-                                    ),
-                                  ),
+            ? Reaction<String>(
+          value: 'Like',
+          icon: Image.asset(
+            AppImages.likeIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Love"
+            ? Reaction<String>(
+          value: 'Love',
+          icon: Image.asset(
+            AppImages.heartIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "HaHa"
+            ? Reaction<String>(
+          value: 'HaHa',
+          icon: Image.asset(
+            AppImages.hahaIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Sad"
+            ? Reaction<String>(
+          value: 'Sad',
+          icon: Image.asset(
+            AppImages.sadIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : _replies[replyIndex].reaction == "Wow"
+            ? Reaction<String>(
+          value: 'Wow',
+          icon: Image.asset(
+            AppImages.wowIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        )
+            : Reaction<String>(
+          value: 'Angry',
+          icon: Image.asset(
+            AppImages.angryIcon,
+            height: 20.w,
+            width: 20.w,
+          ),
+        ),
         boxColor: Colors.white,
         boxRadius: 30,
         boxDuration: const Duration(milliseconds: 200),
@@ -1050,6 +1162,37 @@ class _InsertCommentsState extends State<InsertComments> {
                 )
               ],
             ),
+          if (updateComment)
+            Row(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Editing',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      updateComment = false;
+                      commentId = '';
+                      replyId = '';
+                      key.currentState!.controller!.clear();
+                    });
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    size: 20.h,
+                    color: AppColor.primaryColor,
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
+              ],
+            ),
           Row(
             children: [
               Flexible(
@@ -1092,7 +1235,8 @@ class _InsertCommentsState extends State<InsertComments> {
                           matchAll: false,
                           suggestionBuilder: (data) {
                             return Container(
-                              padding: const EdgeInsets.all(10.0),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ListTile(
                                 leading: SizedBox(
                                   height: 30,
@@ -1100,41 +1244,41 @@ class _InsertCommentsState extends State<InsertComments> {
                                   child: CircleAvatar(
                                     child: data["image"] == ''
                                         ? const Image(
-                                            image:
-                                                AssetImage(AppImages.profile),
-                                            width: 30,
-                                            height: 30,
-                                          )
+                                      image:
+                                      AssetImage(AppImages.profile),
+                                      width: 30,
+                                      height: 30,
+                                    )
                                         : CachedNetworkImage(
-                                            imageUrl: data["image"],
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                      imageUrl: data["image"],
+                                      imageBuilder:
+                                          (context, imageProvider) =>
+                                          Container(
+                                            height: 30,
+                                            width: 30,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    CircleAvatar(
-                                              //profile image
-                                              backgroundColor: AppColor.white,
-                                              backgroundImage: const AssetImage(
-                                                  AppImages.profile),
-                                              radius: 30.r,
-                                            ),
-                                            progressIndicatorBuilder: (context,
-                                                    url, downloadProgress) =>
-                                                CircularProgressIndicator(
-                                                    value: downloadProgress
-                                                        .progress),
                                           ),
+                                      errorWidget:
+                                          (context, url, error) =>
+                                          CircleAvatar(
+                                            //profile image
+                                            backgroundColor: AppColor.white,
+                                            backgroundImage: const AssetImage(
+                                                AppImages.profile),
+                                            radius: 30.r,
+                                          ),
+                                      progressIndicatorBuilder: (context,
+                                          url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress
+                                                  .progress),
+                                    ),
                                   ),
                                 ),
                                 title: Text(
@@ -1150,16 +1294,38 @@ class _InsertCommentsState extends State<InsertComments> {
               ),
               IconButton(
                 onPressed: () async {
-                  if (replying) {
-                    await insertReply();
-                    key.currentState!.controller!.clear();
-                    FocusScope.of(context).unfocus();
-                    await setDataFromDB();
-                  } else {
-                    await insertComment();
-                    key.currentState!.controller!.clear();
-                    FocusScope.of(context).unfocus();
-                    await setDataFromDB();
+                  if (key.currentState!.controller!.text != '' ||
+                      _imagePath != null) {
+                    if (replyId == '') {
+                      if (replying) {
+                        await insertReply('');
+                        key.currentState!.controller!.clear();
+                        FocusScope.of(context).unfocus();
+                        await setDataFromDB();
+                        setState(() {
+                          updateComment = false;
+                          replyId = '';
+                        });
+                      } else {
+                        await insertComment();
+                        key.currentState!.controller!.clear();
+                        FocusScope.of(context).unfocus();
+                        await setDataFromDB();
+                        setState(() {
+                          updateComment = false;
+                          commentId = '';
+                        });
+                      }
+                    } else {
+                      await insertReply(replyId);
+                      key.currentState!.controller!.clear();
+                      FocusScope.of(context).unfocus();
+                      await setDataFromDB();
+                      setState(() {
+                        updateComment = false;
+                        replyId = '';
+                      });
+                    }
                   }
                 },
                 icon: Icon(
@@ -1230,7 +1396,7 @@ class _InsertCommentsState extends State<InsertComments> {
         //   status == "like" ? "1" : "0",
         // );
         setState(
-          () {
+              () {
             _comments[index].likeCount = likeEntity.result.likes.toString();
             _comments[index].reaction = reaction;
             if (status == 'like') {
@@ -1270,7 +1436,7 @@ class _InsertCommentsState extends State<InsertComments> {
         //   status == "like" ? "1" : "0",
         // );
         setState(
-          () {
+              () {
             _replies[index].likeCount = likeEntity.result.likes.toString();
             _replies[index].reaction = reaction;
             if (status == 'like') {
@@ -1287,7 +1453,7 @@ class _InsertCommentsState extends State<InsertComments> {
   Future<void> getComments() async {
     await getConnectedUsers();
     DataFetched dataFetched =
-        await ApiHelper.loadPostComments(widget.postId, 'timeline');
+    await ApiHelper.loadPostComments(widget.postId, 'timeline');
     if (dataFetched.done) {
       setDataFromDB();
     }
@@ -1300,12 +1466,13 @@ class _InsertCommentsState extends State<InsertComments> {
       eventID: widget.postId,
       type: 'timeline',
       imagePath: _imagePath,
+      commentId: commentId,
     );
     if (response is ErrorEntity) {
       print(response.message);
     } else {
       InsertCommentEntity commentEntity =
-          InsertCommentEntity().fromJson(response);
+      InsertCommentEntity().fromJson(response);
       if (commentEntity.success == 1) {
         setState(() {
           count++;
@@ -1335,12 +1502,13 @@ class _InsertCommentsState extends State<InsertComments> {
     }
   }
 
-  Future<void> insertReply() async {
+  Future<void> insertReply(replyId) async {
     var response = await ApiCalls.addReply(
       text: key.currentState!.controller!.markupText,
       commentId: commentId,
       type: 'timeline',
       imagePath: _imagePath,
+      replyId: replyId,
     );
     if (response is ErrorEntity) {
       print(response.message);
@@ -1365,10 +1533,12 @@ class _InsertCommentsState extends State<InsertComments> {
         );
         database.insertCommentReply(comment);
         setState(() {
+          updateComment = false;
           replying = false;
           _imagePath = null;
           _imageFile = null;
         });
+        setState(() {});
       }
     }
   }
@@ -1381,7 +1551,7 @@ class _InsertCommentsState extends State<InsertComments> {
 
     var response = await ApiCalls.getAllUsers(
         url:
-            "api/get_users?next_page=0&name=&country=&city=&industry=&graduation_year=&branch=&is_mentor=&user_id=${AppConstants.myId}&company_id=&connected=Y&is_networking=");
+        "api/get_users?next_page=0&name=&country=&city=&industry=&graduation_year=&branch=&is_mentor=&user_id=${AppConstants.myId}&company_id=&connected=Y&is_networking=");
     if (response is ErrorEntity) {
     } else {
       AllUsersEntity usersEntity = AllUsersEntity().fromJson(response);
@@ -1401,14 +1571,14 @@ class _InsertCommentsState extends State<InsertComments> {
         }
 
         setState(
-          () {
+              () {
             map1 = _tagUsers
                 .map((h) => {
-                      "display": h.firstName,
-                      "id": h.userId,
-                      "name": h.firstName,
-                      "image": h.image,
-                    })
+              "display": h.firstName,
+              "id": h.userId,
+              "name": h.firstName,
+              "image": h.image,
+            })
                 .toList();
           },
         );
@@ -1425,7 +1595,7 @@ class _InsertCommentsState extends State<InsertComments> {
     //_replies = await database.getAllReplies();
     for (var element in _comments) {
       List<DBCommentReplie> _reply =
-          await database.getCommentReplies(element.id ?? '');
+      await database.getCommentReplies(element.id ?? '');
       if (_reply.isNotEmpty) {
         for (var element2 in _reply) {
           _replies.add(element2);
@@ -1434,66 +1604,40 @@ class _InsertCommentsState extends State<InsertComments> {
     }
   }
 
-  Future<void> reportPost({postId, comment, reportType}) async {
-    UIHelper.apiCallingAlert(context);
-    var response = await ApiCalls.reportContent(
-      userId: AppConstants.myId,
-      contentId: postId,
-      contentType: 'timeline',
-      comment: comment,
-      reportType: reportType,
+  Future<void> deleteTimeLineComment(String commentId, String replyId) async {
+    var response = await ApiCalls.deleteComment(
+      commentId: commentId,
+      replyId: replyId,
     );
-    UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
-      UIHelper.showErrorAlert(context, response.message);
+      print(response.message);
     } else {
-      ReportEntity reportEntity = ReportEntity.fromJson(jsonEncode(response));
-      if (reportEntity.success == 1) {
-        Get.back();
-        setState(() {
-          _comments.removeWhere((element) => element.id == postId);
-        });
-
-        UIHelper.showSuccessAlert(
-          context,
-          reportEntity.message,
-              () {
-            Get.back();
-          },
-        );
+      DeletePostEntity deleteCommentEntity =
+      DeletePostEntity.fromJson(jsonEncode(response));
+      if (deleteCommentEntity.success == 1) {
+        if (replyId != "") {
+          database.deleteCommentReply(replyId);
+          setState(() {
+            _replies.removeWhere((element) => element.id == replyId);
+          });
+          await Fluttertoast.showToast(msg: 'Reply deleted successfully');
+        } else {
+          database.deleteSingleComment(commentId);
+          setState(() {
+            _comments.removeWhere((element) => element.id == commentId);
+          });
+          await Fluttertoast.showToast(msg: 'Comment deleted successfully');
+        }
       }
     }
   }
 
-  Future<void> reportReplyPost({postId, comment, reportType}) async {
-    UIHelper.apiCallingAlert(context);
-    var response = await ApiCalls.reportContent(
-      userId: AppConstants.myId,
-      contentId: postId,
-      contentType: 'timeline',
-      comment: comment,
-      reportType: reportType,
-    );
-    UIHelper.hideApiCallingAlert(context);
-    if (response is ErrorEntity) {
-      UIHelper.showErrorAlert(context, response.message);
-    } else {
-      ReportEntity reportEntity = ReportEntity.fromJson(jsonEncode(response));
-      if (reportEntity.success == 1) {
-        Get.back();
-        setState(() {
-          _replies.removeWhere((element) => element.id == postId);
-        });
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body?.text).documentElement!.text;
 
-        UIHelper.showSuccessAlert(
-          context,
-          reportEntity.message,
-              () {
-            Get.back();
-          },
-        );
-      }
-    }
+    return parsedString;
   }
 
 }

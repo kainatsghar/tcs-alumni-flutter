@@ -335,42 +335,45 @@ class ApiCalls {
   }
 
   /// Comments *************************************
-  static addComment({commentedBy, text, eventID, type, imagePath}) async {
+  static addComment(
+      {commentedBy, text, eventID, type, imagePath, commentId}) async {
     Map params = {
       Params.COMMENTED_BY: commentedBy,
       Params.COMMENT_TEXT: text,
       Params.POST_ID: eventID,
       Params.TYPE: type,
+      Params.COMMENT_ID: commentId,
     };
     if (imagePath == null) {
       return _condition(apiInsertComment, params);
     } else {
       return AppConstants.appName != 'BOSS'
           ? await NetworkCalls.uploadFileWithToken(
-              url: apiInsertComment,
-              map: params,
-              imagePath: imagePath,
-              param: "comment_image",
-            )
+        url: apiInsertComment,
+        map: params,
+        imagePath: imagePath,
+        param: "comment_image",
+      )
           : await NetworkCalls.uploadFileWithToken(
-              url: apiInsertComment,
-              map: params,
-              imagePath: imagePath,
-              param: "comment_image",
-            );
+        url: apiInsertComment,
+        map: params,
+        imagePath: imagePath,
+        param: "comment_image",
+      );
     }
   }
-
   /// Replies ***********************************
-  static addReply({text, commentId, type, imagePath}) async {
+  static addReply({text, commentId, type, imagePath, replyId}) async {
     Map params = {
       Params.COMMENT_TEXT: text,
       Params.COMMENT_ID: commentId,
       Params.TYPE: type,
+      Params.REPLY_ID: replyId,
     };
     if (imagePath == null) {
       return _condition(apiInsertCommentReply, params);
-    } else {
+    }
+    else {
       return await NetworkCalls.uploadFileWithToken(
         url: apiInsertCommentReply,
         map: params,
@@ -1260,7 +1263,16 @@ class ApiCalls {
     return await NetworkCalls.postWebWithTokenCall(apiSeenTimeLineStory, map);
   }
 
-
+  static deleteComment({
+    commentId,
+    replyId,
+  }) async {
+    Map params = {
+      Params.COMMENT_ID: commentId,
+      Params.REPLY_ID: replyId,
+    };
+    return _condition(apiDeleteComment, params);
+  }
 
 
 

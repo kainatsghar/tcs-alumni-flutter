@@ -116,3 +116,6 @@ const String apiDeleteTimeLineStory = "api/delete_timeline_story";
 const String apiUpdateProfile = "api/update-profile";
 const String apiSeenByStory = "api/seen_by";
 
+const String apiDeleteComment = "api/delete_comment";
+
+

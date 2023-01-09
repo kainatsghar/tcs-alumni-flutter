@@ -1296,4 +1296,22 @@ class MyDatabase extends _$MyDatabase {
 
   Future deleteStory(int storyId) =>
       (delete(dbNewStories)..where((e) => (e.storyId.equals(storyId)))).go();
+
+  Future deleteSingleComment(String commentId) {
+    final _delete = delete(dBComments);
+    _delete.where((tbl) => tbl.id.equals(commentId));
+    return _delete.go();
+  }
+
+  //Future deleteAllComments() => delete(dBComments).go();
+
+  Future deleteCommentReply(String id) {
+    final _delete = delete(dBCommentReplies);
+    _delete.where((tbl) => tbl.id.equals(id));
+
+    return _delete.go();
+  }
+
+
+
 }
