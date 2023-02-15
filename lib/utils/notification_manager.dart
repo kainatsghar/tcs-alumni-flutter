@@ -25,7 +25,7 @@ class MessagingManager {
     await FlutterLocalNotificationsPlugin().initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings("ic_notification"),
-        iOS: IOSInitializationSettings(),
+        iOS: DarwinInitializationSettings(),
       ),
       //onSelectNotification: onSelectNotification,
     );

@@ -10,6 +10,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 
+import '../utils/text_styles.dart';
+
 class UserWidget extends StatefulWidget {
   String? image;
   String? name;
@@ -44,7 +46,7 @@ class _UserWidgetState extends State<UserWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
       decoration: const BoxDecoration(
         color: AppColor.white,
         border: Border(
@@ -149,35 +151,21 @@ class _UserWidgetState extends State<UserWidget> {
       children: [
         Text(
           name,
-          style: TextStyle(
-            overflow: TextOverflow.ellipsis,
-            fontSize: ScreenUtil().setSp(12),
-            fontWeight: FontWeight.bold,
-          ),
+          style: CustomTextStyles.text14SemiBoldW600,
         ),
         const SizedBox(
-          height: 4,
+          height: 1,
         ),
         if (designation != '' || organization != '')
-          Container(
-            height: 45.h,
-            color: Colors.transparent,
-            child: Text(
-              '$designation\n$organization',
-              maxLines: 3,
-              style: TextStyle(color: AppColor.grey,fontSize: 13.sp,overflow: TextOverflow.ellipsis),),
-          ),
+          Text('$designation,$organization',style: TextStyle(color: AppColor.grey,fontSize: 13.sp),),
         AppConstants.appName != 'TLE' ? Column(
           children: [
             const SizedBox(
-              height: 4,
+              height: 1,
             ),
             Text(
               'Class of $year',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(12),
-                color: AppColor.grey,
-              ),
+              style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.grey,),
             )
           ],
         ) : const SizedBox(),
@@ -230,14 +218,10 @@ class _UserWidgetState extends State<UserWidget> {
           ),
           Text(
             place == "null" ? "" : place,
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(12),
-              color: AppColor.black45,
-            ),
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black45,),
           )
         ],
       ),
     );
   }
-
 }

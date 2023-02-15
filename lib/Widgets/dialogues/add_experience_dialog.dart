@@ -23,6 +23,7 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/text_styles.dart';
 import '../custom_widgets.dart';
 import '../widget_styles.dart';
 
@@ -223,7 +224,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                   const EdgeInsets.symmetric(horizontal: 15),
                               child: SingleChildScrollView(
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.r)),
+                                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -234,7 +235,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                           right: 10,
                                         ),
                                         decoration: const BoxDecoration(
-                                          color: AppColor.primaryColor,
+                                          color: AppColor.primaryColor, //
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
@@ -243,11 +244,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                             const Text('         '),
                                             Text(
                                               'Add Professional Experience',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(16),
-                                                fontWeight: FontWeight.w300,
-                                                color: AppColor.white,
-                                              ),
+                                              style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.white,),
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -276,12 +273,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                             ),
                                             Text(
                                               'Designation',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(15),
-                                                // //Family: 'Nunito',
-                                                color: AppColor.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                             _positionField(),
                                             const SizedBox(
@@ -289,12 +281,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                             ),
                                             Text(
                                               'Company Name',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(15),
-                                                // //Family: 'Nunito',
-                                                color: AppColor.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                             _companyField(),
                                             const SizedBox(
@@ -359,16 +346,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                                               child: Text(
                                                                 industry.title ??
                                                                     '',
-                                                                style: TextStyle(
-                                                                  // fontFamily: 'Nunito',
-                                                                  fontSize:
-                                                                      ScreenUtil()
-                                                                          .setSp(
-                                                                              14),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
+                                                                style: CustomTextStyles.text12RegularW400,
                                                               ),
                                                             ),
                                                           );
@@ -463,10 +441,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
           },
           child: Text(
             'Upload Company Logo (Optional)',
-            style: WidgetStyle.underBoldLineTextStyle(
-                color: AppColor.blue,
-                fontSize: ScreenUtil().setSp(14),
-                fontWeight: FontWeight.normal),
+            style: CustomTextStyles.text12RegularW400.copyWith(decoration: TextDecoration.underline,color: AppColor.blue),
           ),
         ),
         GestureDetector(
@@ -512,11 +487,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
         SizedBox(width: 10.w),
         Text(
           'Currently working here',
-          style: TextStyle(
-            // //Family: 'Nunito',
-            color: AppColor.greyshade600,
-            fontSize: ScreenUtil().setSp(14),
-          ),
+          style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
           textAlign: TextAlign.start,
         )
       ],
@@ -546,10 +517,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
           SizedBox(width: 10.w),
           Text(
             'Change Industry',
-            style: TextStyle(
-              color: AppColor.greyshade600,
-              fontSize: ScreenUtil().setSp(14),
-            ),
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
           )
         ],
       ),
@@ -568,11 +536,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
             children: [
               Text(
                 'Starting Year',
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(15),
-                  color: AppColor.black,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: CustomTextStyles.text14SemiBoldW600,
               ),
               SizedBox(
                   width: 125.w,
@@ -599,11 +563,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                       decoration: InputDecoration(
                         hintText: "Starting Year",
                         isDense: true,
-                        hintStyle: TextStyle(
-                          //Family: 'Nunito',
-                          fontSize: ScreenUtil().setSp(12),
-                            color: AppColor.greyshade400,
-                        ),
+                        hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
                         contentPadding: EdgeInsets.only(top: 8.h, bottom: 2),
                       ),
                     ),
@@ -617,11 +577,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                   children: [
                     Text(
                       'Ending Year',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(15),
-                        color: AppColor.black,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                     SizedBox(
                         width: 125.w,
@@ -638,11 +594,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                             decoration: InputDecoration(
                               hintText: "End Year",
                               isDense: true,
-                              hintStyle: TextStyle(
-                                //Family: 'Nunito',
-                                fontSize: ScreenUtil().setSp(12),
-                                color: AppColor.greyshade400,
-                              ),
+                              hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
                               contentPadding: EdgeInsets.only(top: 8.h),
                             ),
                           ),
@@ -665,7 +617,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
       },
       textFieldConfiguration: TextFieldConfiguration(
         textCapitalization: TextCapitalization.words,
-        style: TextStyle(fontSize: 13.sp),
+        style: CustomTextStyles.text12RegularW400,
         controller: _designationController,
         // onSubmitted: (value) {
         //   airportSelected = null;
@@ -692,10 +644,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
         return ListTile(
           title: Text(
             suggestion.name ?? '',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(14),
-              color: AppColor.black54,
-            ),
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
           ),
           dense: true,
         );
@@ -717,7 +666,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
       },
       hideOnEmpty: true,
       textFieldConfiguration: TextFieldConfiguration(
-        style: TextStyle(fontSize: 13.sp),
+        style: CustomTextStyles.text12RegularW400,
         textCapitalization: TextCapitalization.words,
         controller: _companyController,
         // onSubmitted: (value) {
@@ -745,10 +694,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
         return ListTile(
           title: Text(
             suggestion.title ?? '',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(14),
-              color: AppColor.black54,
-            ),
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
           ),
           dense: true,
         );
@@ -793,10 +739,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
                   'Select Start Date',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(18),
-                    //Family: 'Nunito',
-                  ),
+                  style: CustomTextStyles.text16SemiBoldW600,
                 ),
               ),
               Row(
@@ -844,10 +787,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                           return Center(
                             child: Text(
                               startMonthsList[index],
-                              style: TextStyle(
-                                //Family: 'Nunito',
-                                fontSize: ScreenUtil().setSp(16),
-                              ),
+                              style: CustomTextStyles.text14SemiBoldW600,
                             ),
                           );
                         },
@@ -892,10 +832,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                           return Center(
                             child: Text(
                               yearStartList![index].toString(),
-                              style: TextStyle(
-                                //Family: 'Nunito',
-                                fontSize: ScreenUtil().setSp(16),
-                              ),
+                              style: CustomTextStyles.text14SemiBoldW600,
                             ),
                           );
                         },
@@ -914,9 +851,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                     child: Center(
                       child: Text(
                         Strings.cancel,
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(12),
-                        ),
+                        style: CustomTextStyles.text12RegularW400,
                       ),
                     ),
                   ),
@@ -963,9 +898,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                     child: Center(
                       child: Text(
                         'OK',
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(12),
-                        ),
+                        style: CustomTextStyles.text12RegularW400,
                       ),
                     ),
                   )
@@ -1001,10 +934,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     'Select End Date',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(18),
-                      //Family: 'Nunito',
-                    ),
+                    style: CustomTextStyles.text16SemiBoldW600,
                   ),
                 ),
                 Row(
@@ -1046,10 +976,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                             return Center(
                               child: Text(
                                 startMonthsList[index],
-                                style: TextStyle(
-                                  //Family: 'Nunito',
-                                  fontSize: ScreenUtil().setSp(16),
-                                ),
+                                style: CustomTextStyles.text14SemiBoldW600,
                               ),
                             );
                           },
@@ -1094,11 +1021,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                             return Center(
                               child: Text(
                                 yearEndList![index].toString(),
-                                style: TextStyle(
-                                  //Family: 'Nunito',
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: AppColor.black,
-                                ),
+                                style: CustomTextStyles.text14SemiBoldW600,
                               ),
                             );
                           },
@@ -1117,7 +1040,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                       child: Center(
                         child: Text(
                           Strings.cancel,
-                          style: TextStyle(fontSize: 13.sp),
+                          style: CustomTextStyles.text12RegularW400,
                         ),
                       ),
                     ),
@@ -1134,7 +1057,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                       child: Center(
                         child: Text(
                           'OK',
-                          style: TextStyle(fontSize: 13.sp),
+                          style: CustomTextStyles.text12RegularW400,
                         ),
                       ),
                     )

@@ -10,6 +10,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/text_styles.dart';
+
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
 
@@ -29,10 +31,7 @@ class _CreateStoryState extends State<CreateStory> {
       },
       child: Scaffold(
         appBar: AppBar(
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: ScreenUtil().setSp(18),
-          ),
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
           centerTitle: true,
           title: const Text(Strings.createStory),
           actions: const [
@@ -63,12 +62,12 @@ class _CreateStoryState extends State<CreateStory> {
                   color: AppColor.black,
                 ),
                 const Icon(Icons.camera_alt, color: AppColor.white),
-                const Positioned(
+                 Positioned(
                     bottom: 5,
                     left: 5,
                     child: Text(
                       Strings.camera,
-                      style: TextStyle(color: AppColor.white),
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
                     )),
               ],
             ),
@@ -85,12 +84,12 @@ class _CreateStoryState extends State<CreateStory> {
                   color: AppColor.grey,
                   child: Image.asset(AppImages.gallerypng),
                 ),
-                const Positioned(
+                 Positioned(
                     bottom: 5,
                     left: 5,
                     child: Text(
                       Strings.viewGallery,
-                      style: TextStyle(color: AppColor.white),
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
                     )),
               ],
             ),

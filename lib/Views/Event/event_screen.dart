@@ -16,6 +16,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../utils/text_styles.dart';
+
 class EventScreen extends StatefulWidget {
   const EventScreen({Key? key}) : super(key: key);
 
@@ -79,7 +81,7 @@ class _EventScreenState extends State<EventScreen> {
                     const SizedBox(height: 10),
                     Text(
                       'No Event in the List',
-                      style: TextStyle(fontSize: 18.sp),
+                      style: CustomTextStyles.text16SemiBoldW600,
                     ),
                   ],
                 )
@@ -90,6 +92,7 @@ class _EventScreenState extends State<EventScreen> {
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: _eventList.length,
+                          reverse: true,
                           itemBuilder: (BuildContext context, int index) {
                             if (_eventList[index]
                                     .title

@@ -62,4 +62,6 @@ class AppColor {
 
   // static Color shadeegray = Colors.grey.shade800;
 
+ static Color SYT = Color(0xFFa8a8a8);
+
 }

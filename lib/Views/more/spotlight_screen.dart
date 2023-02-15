@@ -9,6 +9,7 @@ import 'package:iobm/models/data_fetched.dart';
 import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 class SpotlightScreen extends StatefulWidget {
   const SpotlightScreen({Key? key}) : super(key: key);
@@ -144,18 +145,14 @@ class SpotlightScreenState extends State<SpotlightScreen> {
             ),
             Text(
               alumini?.firstName.toString() ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(16),
-              ),
+              style: CustomTextStyles.text14SemiBoldW600,
             ),
             const SizedBox(
               height: 10,
             ),
             Text(
               'Class of: ${alumini?.graduationYear}',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
+              style: CustomTextStyles.text12RegularW400,
             ),
           ],
         ),

@@ -22,6 +22,8 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../utils/text_styles.dart';
+
 class AlumniScreen extends StatefulWidget {
   AlumniScreen({this.userID, this.checkMentor});
   final String? userID;
@@ -111,11 +113,11 @@ class _AlumniScreenState extends State<AlumniScreen> {
       child: Scaffold(
         appBar: widget.checkMentor == 0
             ? MyAppBar(
-                title: Text(Strings.alumni),
+                title: Text(Strings.alumni, style: CustomTextStyles.text16SemiBoldW600,),
                 context: context,
               )
             : SecAppBar(
-                title: Text(Strings.alumni),
+                title: Text(Strings.alumni, style: CustomTextStyles.text16SemiBoldW600,),
                 context: context,
               ),
         body: dataFetched
@@ -244,7 +246,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
         children: [
           Icon(
             Icons.search,
-            size: 25.w,
+            size: 25.r,
             color: AppColor.black45,
           ),
           const SizedBox(
@@ -255,7 +257,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
               height: 30,
               child: TextField(
                 cursorHeight: 15.h,
-                style: TextStyle(fontSize: 13.sp),
+                style: CustomTextStyles.text12RegularW400,
                 textCapitalization: TextCapitalization.words,
                 onEditingComplete: () {
                   getFirstPageUsers();
@@ -266,10 +268,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  hintStyle: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    color: AppColor.black38,
-                  ),
+                  hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
                   contentPadding: const EdgeInsets.only(bottom: 10),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -294,7 +293,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
             },
             icon: Icon(
               Icons.tune,
-              size: 25.w,
+              size: 25.r,
               color: AppColor.black45,
             ),
           ),
@@ -308,11 +307,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
         ? Center(
             child: Text(
               'No Users Found',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-                color: AppColor.black45,
-                fontWeight: FontWeight.bold,
-              ),
+              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black45,),
             ),
           )
         : ListView.builder(
@@ -368,8 +363,9 @@ class _AlumniScreenState extends State<AlumniScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   color: AppColor.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 //height: 380.h,
 
@@ -405,7 +401,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                     ),
                     Text(
                       'Industry',
-                      style: filterTextstyle(),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -430,10 +426,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     industry.title ?? '',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14),
-                                      // fontWeight: FontWeight.bold,
-                                    ),
+                                    style: CustomTextStyles.text12RegularW400,
                                   ),
                                 ));
                           },
@@ -445,7 +438,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                     ),
                     Text(
                       'Graduation Year',
-                      style: filterTextstyle(),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -471,11 +464,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   itemValue ?? '',
-                                  style: TextStyle(
-                                    // //Family: 'Nunito',
-                                    fontSize: ScreenUtil().setSp(14),
-                                    // fontWeight: FontWeight.bold,
-                                  ),
+                                  style: CustomTextStyles.text12RegularW400,
                                 ),
                               ),
                             );
@@ -488,7 +477,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                     ),
                     Text(
                       'Branch',
-                      style: filterTextstyle(),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -517,11 +506,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     itemValue.title ?? '',
-                                    style: TextStyle(
-                                      // //Family: 'Nunito',
-                                      fontSize: ScreenUtil().setSp(14),
-                                      //     fontWeight: FontWeight.bold,
-                                    ),
+                                    style: CustomTextStyles.text12RegularW400,
                                   ),
                                 ),
                               );
@@ -588,13 +573,14 @@ class _AlumniScreenState extends State<AlumniScreen> {
           children: [
             Text(
               'Country',
-              style: filterTextstyle(),
+              style: CustomTextStyles.text14SemiBoldW600,
             ),
             TypeAheadFormField<DBCountrie>(
               //initialValue: 'Pakistan',
               textFieldConfiguration: TextFieldConfiguration(
                 textCapitalization: TextCapitalization.sentences,
                 controller: _countryController,
+                style: CustomTextStyles.text12RegularW400,
                 // onSubmitted: (value) {
                 //   airportSelected = null;
                 //   _searchairports(value);
@@ -619,10 +605,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                 return ListTile(
                   title: Text(
                     suggestion.countryName ?? '',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                      color: AppColor.black54,
-                    ),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
                   ),
                   dense: true,
                 );
@@ -649,13 +632,14 @@ class _AlumniScreenState extends State<AlumniScreen> {
         children: [
           Text(
             'City',
-            style: filterTextstyle(),
+            style: CustomTextStyles.text14SemiBoldW600,
           ),
           TypeAheadFormField<DBCitie>(
             //initialValue: 'Pakistan',
             textFieldConfiguration: TextFieldConfiguration(
               textCapitalization: TextCapitalization.sentences,
               controller: _cityController,
+              style: CustomTextStyles.text12RegularW400,
               decoration: WidgetStyle.thirnameTextFieldDecoration(hint: ""),
             ),
             suggestionsCallback: (pattern) async {
@@ -674,10 +658,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
               return ListTile(
                 title: Text(
                   suggestion.cityName ?? '',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14),
-                    color: AppColor.black54,
-                  ),
+                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
                 ),
                 dense: true,
               );
@@ -877,5 +858,4 @@ class _AlumniScreenState extends State<AlumniScreen> {
       }
     }
   }
-
 }

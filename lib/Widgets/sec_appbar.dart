@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 class SecAppBar extends AppBar {
   final ProfileController controller = Get.put(ProfileController());
@@ -36,10 +37,7 @@ class SecAppBar extends AppBar {
             bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
           ),
           centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: ScreenUtil().setSp(18),
-          ),
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
           actions: <Widget>[
             GestureDetector(
               onTap: () {

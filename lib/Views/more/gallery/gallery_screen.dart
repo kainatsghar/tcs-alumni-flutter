@@ -15,6 +15,8 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/text_styles.dart';
+
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({Key? key}) : super(key: key);
 
@@ -96,7 +98,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   children: [
                     SvgPicture.asset(AppImages.galleryImg,height: 250.h,width: 250.w,),
                     SizedBox(height: 20.h,),
-                    Text('No Galleries Available!',style: TextStyle(fontSize: 16.sp,color: AppColor.grey),),
+                    Text('No Galleries Available!',style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.grey)),
                   ],
                 ),
           )
@@ -173,18 +175,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 children: [
                   Text(
                     title,
-                    style: WidgetStyle.semiBoldText(
-                      color: AppColor.black,
-                      fontSize: 14.0.sp,
-                    ),
+                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
                   ),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(
                     date,
-                    style: WidgetStyle.forgotTExtStyle(
-                        color: AppColor.greyshade600, fontSize: 11.0.sp),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
                   ),
                 ],
               ),

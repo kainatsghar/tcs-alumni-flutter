@@ -12,6 +12,7 @@ import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 import '../../Widgets/sec_appbar.dart';
 
@@ -63,16 +64,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
           child: TabBar(
             labelPadding: const EdgeInsets.symmetric(vertical: 13),
-            labelStyle: TextStyle(
-              fontSize: ScreenUtil().setSp(15),
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Gotham',
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: ScreenUtil().setSp(15),
-              fontWeight: FontWeight.w400,
-              fontFamily: 'Gotham',
-            ),
+            labelStyle: CustomTextStyles.text14SemiBoldW600,
+            unselectedLabelStyle: CustomTextStyles.text14SemiBoldW600,
             indicatorColor: AppColor.primaryColor,
             labelColor: AppColor.primaryColor,
             unselectedLabelColor: AppColor.grey,

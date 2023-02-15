@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,6 +14,9 @@ import 'package:iobm/Views/bottom_navigationbar.dart';
 import 'package:iobm/Views/signup_screens/otp_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
 import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart';
+import 'package:iobm/Views/signup_screens/sign_up_iobm/iobm_signup_search_screen.dart';
+import 'package:iobm/Views/signup_screens/sign_up_screen.dart';
+import 'package:iobm/Views/signup_screens/sign_up_tle/sign_up_tle_screen.dart';
 
 import 'package:iobm/Widgets/custom_widgets.dart';
 
@@ -32,6 +36,7 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/device_data.dart';
 
 import 'package:iobm/utils/strings.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,6 +44,7 @@ import 'package:local_auth/local_auth.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/text_styles.dart';
 import 'boss_forget_password.dart';
 
 String? chapterId;
@@ -134,6 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -227,10 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // WidgetStyle.title(title: "Or continue with"),
                     Text(
                       'Or continue with',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                     SizedBox(
                       height: 18.h,
@@ -274,10 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Text(
             Strings.welcomeback,
-            style: TextStyle(
-                fontSize: ScreenUtil().setSp(22),
-                color: AppColor.primaryColor,
-                fontWeight: FontWeight.bold),
+            style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.primaryColor),
           ),
         ],
       ),
@@ -292,10 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Text(
             'Email*',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
-              color: AppColor.black,
-            ),
+            style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black),
           ),
           TextFormField(
             style: TextStyle(fontSize: 15.sp),
@@ -317,10 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Text(
             'Password*',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
-              color: AppColor.black,
-            ),
+            style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black),
             // GoogleFonts.poppins(
             //   color: AppColor.shadeegray,
             //   fontSize: ScreenUtil().setSp(16),
@@ -372,18 +368,13 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             } else {
               Get.to(
-                    () => const OtpScreen(
-                  check: 'forget',
-                ),
+                    () => const OtpScreen(check: 'forget',),
               );
             }
           },
           child: Text(
             "Forgot Password?",
-            style: WidgetStyle.underLineTextStyle(
-              color: AppColor.black,
-              fontSize: ScreenUtil().setSp(14),
-            ),
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black, decoration: TextDecoration.underline),
           ),
         )
       ],
@@ -408,10 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(width: 8),
         Text(
           'Remember Me',
-          style: WidgetStyle.forgotTExtStyle(
-            fontSize: ScreenUtil().setSp(14),
-            color: AppColor.greyshade700,
-          ),
+          style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade700),
         ),
       ],
     );
@@ -429,8 +417,8 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             child: Image.asset(
               AppImages.googleicon,
-              height: 28,
-              width: 28,
+              height: 27,
+              width: 27,
             ),
             // child: SvgPicture.asset(
             //   AppImages.googleicon,
@@ -438,29 +426,29 @@ class _LoginScreenState extends State<LoginScreen> {
             //   // width: 25.w,
             // ),
           ),
-        //Apple login Button
-        // if (Platform.isIOS)
-        //   GestureDetector(
-        //     onTap: () {
-        //       _appleSingIn();
-        //     },
-        //     child: SvgPicture.asset(
-        //       AppImages.apple,
-        //       height: 27,
-        //       width: 27,
-        //     ),
-        //   ),
-        if (Platform.isAndroid)
-        SizedBox(
-          width: 15.w,
+
+        ///Apple login Button
+        if (Platform.isIOS)
+          GestureDetector(
+            onTap: () {
+              _appleSingIn();
+            },
+            child: SvgPicture.asset(
+              AppImages.apple,
+              height: 25.h,
+              width: 25.w,
+            ),
+          ),
+        const SizedBox(
+          width: 10,
         ),
-        //FB login Button
-        if (Platform.isAndroid)
+
+        ///FB login Button
         GestureDetector(
           onTap: () {
             _facebookSingIn();
           },
-          child: Image.asset(AppImages.fbicon, height: 27, width: 27),
+          child: Image.asset(AppImages.fbicon, height: 25, width: 25),
           // child: SvgPicture.asset(
           //   AppImages.fbicon,
           //   height: 25.h,
@@ -549,11 +537,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               TextSpan(
                 text: 'Don\'t have an account? ',
-                style: TextStyle(
-                  fontFamily: 'Gotham',
-                  fontSize: ScreenUtil().setSp(13),
-                  color: AppColor.black,
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black),
               ),
               TextSpan(
                 text: 'Sign Up',
@@ -563,9 +547,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     /// Dow Signup
 
                     Get.to(
-                          () => const OtpScreen(
-                        check: 'signup',
-                      ),
+                          () => const OtpScreen(check: 'signup',),
                     );
 
                     /// **********
@@ -598,13 +580,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //       password: '',
                     //     ));
                   },
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontFamily: 'Gotham',
-                  fontSize: ScreenUtil().setSp(13),
-                  color: AppColor.primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor, decoration: TextDecoration.underline),
               ),
             ],
           ),
@@ -622,11 +598,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               TextSpan(
                 text: 'By signing in you agree to our ',
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(13),
-                  color: AppColor.black,
-                  fontFamily: 'Gotham',
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black),
               ),
               TextSpan(
                 text: 'Privacy Policy',
@@ -638,13 +610,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     );
                   },
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: ScreenUtil().setSp(13),
-                  color: AppColor.primaryColor,
-                  fontFamily: 'Gotham',
-                  // fontWeight: FontWeight.bold,
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor, decoration: TextDecoration.underline),
               ),
             ],
           ),

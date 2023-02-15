@@ -16,6 +16,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/text_styles.dart';
+
 class UpdatePassword extends StatefulWidget {
   const UpdatePassword({Key? key}) : super(key: key);
 
@@ -65,7 +67,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(100.w, 25.h)),
+                      minimumSize: MaterialStateProperty.all(Size(100.w, 30.h)),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(horizontal: 20.0)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -88,9 +90,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                     },
                     child: Text(
                       'Update',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text16SemiBoldW600,
                     ),
                   )
                 ],
@@ -105,10 +105,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   Widget title({title}) {
     return Text(
       title,
-      style: TextStyle(
-        fontSize: ScreenUtil().setSp(16),
-        fontWeight: FontWeight.bold,
-      ),
+      style: CustomTextStyles.text14SemiBoldW600,
     );
   }
 
@@ -119,7 +116,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       children: [
         title(title: 'Old Password'),
         TextFormField(
-          style: TextStyle(fontSize: 13.sp),
+          style: CustomTextStyles.text12RegularW400,
           // onEditingComplete: () => FocusScope.of(context).nextFocus(),
           textInputAction: TextInputAction.next,
           cursorHeight: 20,
@@ -140,7 +137,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               icon: Icon(_show1 ? Icons.visibility : Icons.visibility_off),
             ),
             hintText: 'Old Password',
-            hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.greyshade400),
+            hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400),
           ),
           // decoration: WidgetStyle.nameTextFieldDecoration(hint: "Old Password"),
         )
@@ -155,7 +152,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       children: [
         title(title: 'New Password'),
         TextFormField(
-          style: TextStyle(fontSize: 13.sp),
+          style: CustomTextStyles.text12RegularW400,
           // onEditingComplete:() => FocusScope.of(context).nextFocus(),
           textInputAction: TextInputAction.next,
           cursorHeight: 20,
@@ -176,7 +173,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               icon: Icon(_show2 ? Icons.visibility : Icons.visibility_off),
             ),
             hintText: 'New Password',
-            hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.greyshade400),
+            hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400),
           ),
         )
       ],
@@ -190,7 +187,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       children: [
         title(title: 'Confirm New Password'),
         TextFormField(
-          style: TextStyle(fontSize: 13.sp),
+          style: CustomTextStyles.text12RegularW400,
           cursorHeight: 20,
           controller: _confirmPasswordController,
           validator: (value) {
@@ -209,7 +206,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               icon: Icon(_show3 ? Icons.visibility : Icons.visibility_off),
             ),
             hintText: 'Confirm New Password',
-            hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.greyshade400),
+            hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400),
           ),
         ),
       ],
@@ -243,18 +240,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 children: [
                   Text(
                     'Alert',
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        fontWeight: FontWeight.bold),
+                    style: CustomTextStyles.text14SemiBoldW600,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
                     passwordEntity.message ?? '',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                    ),
+                    style: CustomTextStyles.text12SemiBoldW600,
                   ),
                   const SizedBox(
                     height: 10,
@@ -269,11 +262,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         child: Center(
                           child: Text(
                             "OK",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,)
                           ),
                         )),
                   ),

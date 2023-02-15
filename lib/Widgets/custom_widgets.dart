@@ -12,6 +12,7 @@ import 'package:iobm/Widgets/widget_styles.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 import 'dialogues/add_education_dialog.dart';
 import 'dialogues/add_experience_dialog.dart';
@@ -31,10 +32,7 @@ class CustomWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             name!,
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(14),
-              color: isBorder! ? AppColor.primaryColor : AppColor.white,
-            ),
+            style: CustomTextStyles.text14SemiBoldW600.copyWith(color: isBorder! ? AppColor.primaryColor : AppColor.white,),
             // style: GoogleFonts.poppins(
             //   color: isBorder! ? AppColor.primaryColor : AppColor.white,
             //   fontSize: ScreenUtil().setSp(14),
@@ -61,6 +59,7 @@ class CustomWidget {
     return GestureDetector(
       onTap: onclick,
       child: Container(
+        width: 100,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         decoration: BoxDecoration(
           color: AppColor.primaryColor,
@@ -71,10 +70,7 @@ class CustomWidget {
             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
             child: Text(
               title!,
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(12),
-                color: AppColor.white,
-              ),
+              style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
             ),
           ),
         ),
@@ -127,10 +123,7 @@ class CustomWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Text(
               name!,
-              style: TextStyle(
-                // //Family: 'Nunito',
-                color: isBorderColor! ? AppColor.primaryColor : AppColor.white,
-              ),
+              style: CustomTextStyles.text12RegularW400.copyWith(color: isBorderColor! ? AppColor.primaryColor : AppColor.white,),
             ),
           ),
           style: ButtonStyle(
@@ -156,10 +149,7 @@ class CustomWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
             child: Text(
               name!,
-              style: TextStyle(
-                // fontFamily: 'Nunito',
-                color: isBorderColor! ? AppColor.primaryColor : AppColor.white,
-              ),
+              style: CustomTextStyles.text12RegularW400.copyWith(color: isBorderColor! ? AppColor.primaryColor : AppColor.white,),
             ),
           ),
           style: ButtonStyle(
@@ -451,10 +441,7 @@ class CustomWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(15),
-              fontWeight: FontWeight.bold,
-            ),
+            style: CustomTextStyles.text14SemiBoldW600,
           ),
           userID == AppConstants.myId
               ? IconButton(

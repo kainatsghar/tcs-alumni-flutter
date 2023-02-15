@@ -24,6 +24,7 @@ class AlumniCardScreen extends StatefulWidget {
 class _AlumniCardScreenState extends State<AlumniCardScreen> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     print('its there bro');
   }

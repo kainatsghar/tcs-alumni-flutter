@@ -31,7 +31,7 @@ class Strings {
   static const String alumniCard = 'Alumni Card';
   static const String campusDetails = 'Campus Details';
   static const String alumnielection = 'Nomination Form';
-  static const String election = 'Election';
+  static const String election = 'Nomination Form';
   static const String networking = 'Networking';
   static const String youtubechannel = 'Youtube Channel';
   static const String myprofile = 'My Profile';
@@ -58,7 +58,7 @@ class Strings {
   static const String mission = 'Mission';
   static const String vision = 'Vision';
   static const String objective = 'Objectives';
-  static const String connect = 'Connect';
+  static const String connect = 'Contact Us';
   static const String alumniaffairs = 'Alumni Affairs';
   static const String notifications = 'Notifications';
   static const String delete = 'Delete';

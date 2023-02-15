@@ -34,6 +34,7 @@ import 'package:video_player/video_player.dart';
 import '../../controllers/checkin_cities_controller.dart';
 import '../../controllers/feeling_controller.dart';
 import '../../networkcalls/api_path.dart';
+import '../../utils/text_styles.dart';
 import '../bottom_navigationbar.dart';
 import 'check_in_city_screen.dart';
 
@@ -116,9 +117,7 @@ class _CreatePostState extends State<CreatePost> {
             centerTitle: true,
             title: Text(
               'Create Post',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(18),
-              ),
+              style: CustomTextStyles.text16SemiBoldW600,
             ),
             leading: IconButton(
               onPressed: () {
@@ -179,7 +178,7 @@ class _CreatePostState extends State<CreatePost> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: FlutterMentions(
-                    style: TextStyle(color: AppColor.grey,fontSize: 14.sp),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.grey),
                     textCapitalization: TextCapitalization.sentences,
                     key: key,
                     minLines: 1,
@@ -187,7 +186,7 @@ class _CreatePostState extends State<CreatePost> {
                     suggestionPosition: SuggestionPosition.Bottom,
                     decoration:  InputDecoration(
                       hintText: "Write Something ... ",
-                      hintStyle: TextStyle(color: AppColor.greyshade400),
+                      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400),
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -415,9 +414,7 @@ class _CreatePostState extends State<CreatePost> {
                       builder: (_) {
                         return Text(
                           "${_.firstName} ${_.lastName}",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(13),
-                              fontWeight: FontWeight.w600),
+                          style: CustomTextStyles.text14SemiBoldW600,
                         );
                       },
                     ),
@@ -509,6 +506,7 @@ class _CreatePostState extends State<CreatePost> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AppColor.black,
+                      width: 0.3,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -536,10 +534,7 @@ class _CreatePostState extends State<CreatePost> {
                               ),
                               Text(
                                 itemValue.name,
-                                style: TextStyle(
-                                  color: AppColor.grey,
-                                  fontSize: ScreenUtil().setSp(16),
-                                ),
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.grey,),
                               ),
                             ],
                           ),

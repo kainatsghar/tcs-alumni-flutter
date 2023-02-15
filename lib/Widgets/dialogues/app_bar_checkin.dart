@@ -16,6 +16,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/text_styles.dart';
 import '../widget_styles.dart';
 
 class CheckInDialog extends StatefulWidget {
@@ -57,6 +58,9 @@ class _CheckInDialogState extends State<CheckInDialog> {
         print(currentCityName);
       },
       child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
         elevation: 16,
         child: FutureBuilder(
           future: _fetchData,
@@ -80,8 +84,9 @@ class _CheckInDialogState extends State<CheckInDialog> {
         _dialogueTitleBar(),
         Container(
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             color: AppColor.white,
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -126,10 +131,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
                       },
                       child: Text(
                         Strings.cancel,
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: CustomTextStyles.text12RegularW400,
                       ),
                     ),
                   ),
@@ -162,10 +164,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
                       },
                       child: Text(
                         'Check In',
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: CustomTextStyles.text12RegularW400,
                       ),
                     ),
                   )
@@ -181,14 +180,14 @@ class _CheckInDialogState extends State<CheckInDialog> {
   Widget _dialogueTitleBar() {
     return Container(
       height: 45.h,
-      color: AppColor.primaryColor,
+      decoration: BoxDecoration(
+        color: AppColor.primaryColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+      ),
       child: Center(
         child: Text(
           'Enter Country and City',
-          style: TextStyle(
-            color: AppColor.white,
-            fontSize: ScreenUtil().setSp(14),
-          ),
+          style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.white,),
           textAlign: TextAlign.center,
         ),
       ),
@@ -202,11 +201,13 @@ class _CheckInDialogState extends State<CheckInDialog> {
         children: [
           Text(
             'Country*',
-            style: filterTextstyle(),
+            // filterTextstyle()
+            style: CustomTextStyles.text14SemiBoldW600,
           ),
           TypeAheadFormField<DBCountrie>(
             textFieldConfiguration: TextFieldConfiguration(
               controller: _countryController,
+              style: CustomTextStyles.text12RegularW400,
               textCapitalization: TextCapitalization.sentences,
               decoration: WidgetStyle.secNameTextFieldDecoration(hint: ""),
             ),
@@ -226,10 +227,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
               return ListTile(
                 title: Text(
                   suggestion.countryName ?? '',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14),
-                    color: AppColor.black54,
-                  ),
+                  style: CustomTextStyles.text12RegularW400,
                 ),
                 dense: true,
               );
@@ -255,12 +253,13 @@ class _CheckInDialogState extends State<CheckInDialog> {
         children: [
           Text(
             'City*',
-            style: filterTextstyle(),
+            style: CustomTextStyles.text14SemiBoldW600,
           ),
           TypeAheadFormField<DBCitie>(
             textFieldConfiguration: TextFieldConfiguration(
               textCapitalization: TextCapitalization.sentences,
               controller: _cityController,
+              style: CustomTextStyles.text12RegularW400,
               decoration: WidgetStyle.secNameTextFieldDecoration(hint: ""),
             ),
             suggestionsCallback: (pattern) async {
@@ -279,10 +278,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
               return ListTile(
                 title: Text(
                   suggestion.cityName ?? '',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14),
-                    color: AppColor.black54,
-                  ),
+                  style: CustomTextStyles.text12RegularW400,
                 ),
                 dense: true,
               );

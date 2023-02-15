@@ -15,6 +15,8 @@ import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../utils/text_styles.dart';
+
 class NotificationsView extends StatefulWidget {
   const NotificationsView({Key? key}) : super(key: key);
 
@@ -42,15 +44,13 @@ class _NotificationsViewState extends State<NotificationsView> {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           shape: Border(
             bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
           ),
           title: Text(
             Strings.notifications,
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(18),
-              // fontWeight: FontWeight.bold,
-            ),
+            style: CustomTextStyles.text16SemiBoldW600,
           ),
         ),
         body: FutureBuilder(
@@ -137,7 +137,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                       color: _notifications[index].readStatus == "N"
                           ? AppColor.primaryColor
                           : AppColor.greyshade400,
-                      width: 4,
+                      width: 2,
                     ),
                   ),
                 ),
@@ -148,25 +148,15 @@ class _NotificationsViewState extends State<NotificationsView> {
                   children: [
                     Text(
                       "${_notifications[index].title}",
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.black54,
-                      ),
+                      style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black54,),
                     ),
                     Text(
                       "${_notifications[index].description}",
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: AppColor.black38,
-                      ),
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
                     ),
                     Text(
                       "${_notifications[index].date}",
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: AppColor.black38,
-                      ),
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
                     ),
                   ],
                 ),

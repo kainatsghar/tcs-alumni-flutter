@@ -18,7 +18,7 @@ class AppImages {
   //icons
   static const String googleicon = 'assets/icons/googleicon.png';
   static const String fbicon = 'assets/icons/fbicon.png';
-  static const String facebicon = 'assets/icons/facebook.png';
+  static const String facebicon = 'assets/icons/fb_icon.png';
   static const String referfriend = 'assets/icons/referfriend.png';
   static const String mentoricon = 'assets/icons/mentor.png';
   static const String alumniCard = 'assets/icons/alumnicard.png';
@@ -85,6 +85,8 @@ class AppImages {
 
   //otp
   static const String otpIllustration = 'assets/images/otpillustration.svg';
+  static const String signupOtp = 'assets/images/sign_otp.svg';
+  static const String forgotPassword = 'assets/images/forgot_password.svg';
   static const String intro1Illustration =
       'assets/images/intro1illustration.svg';
   static const String intro2Illustration =
@@ -108,6 +110,7 @@ class AppImages {
   static const String chatBackground = "assets/images/chatBackground.svg";
 
   static const String election = "assets/images/campus_election.svg";
+  static const String nomiElection = "assets/images/nomi_election.svg";
   static const String nominationForm = "assets/images/nomination_form.svg";
   static const String spotlight = 'assets/images/spotlight.svg';
   static const String galleryImg = 'assets/images/gallery.svg';

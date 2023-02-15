@@ -13,6 +13,8 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../utils/text_styles.dart';
+
 class CareerScreen extends StatefulWidget {
   const CareerScreen({Key? key}) : super(key: key);
 
@@ -100,9 +102,7 @@ class CareerScreenState extends State<CareerScreen> {
             ),
             Text(
               title ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
+              style: CustomTextStyles.text14SemiBoldW600,
             ),
           ],
         ),
@@ -134,9 +134,7 @@ class CareerScreenState extends State<CareerScreen> {
             ),
             Text(
               title ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
+              style: CustomTextStyles.text14SemiBoldW600,
             ),
           ],
         ),
@@ -164,9 +162,7 @@ class CareerScreenState extends State<CareerScreen> {
             ),
             Text(
               title ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
+              style: CustomTextStyles.text14SemiBoldW600,
             ),
           ],
         ),

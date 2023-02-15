@@ -15,6 +15,7 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 
 import '../../../utils/app_images.dart';
+import '../../../utils/text_styles.dart';
 import 'offer_discount_screen.dart';
 
 class AvailDiscount extends StatefulWidget {
@@ -151,10 +152,7 @@ class AvailDiscountState extends State<AvailDiscount> {
                   child: Center(
                     child: Text(
                       percent,
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
                 ),
@@ -188,11 +186,7 @@ class AvailDiscountState extends State<AvailDiscount> {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(17),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade800,
-                      ),
+                      style: CustomTextStyles.text14SemiBoldW600.copyWith(color: Colors.grey.shade800,),
                     ),
                     Row(
                       children: [
@@ -208,35 +202,25 @@ class AvailDiscountState extends State<AvailDiscount> {
                           AppUtils().calculateDiscountDifference(endDate) < 1
                               ? 'Expired'
                               : "${AppUtils().calculateDiscountDifference(endDate)} Days",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.primaryColor,
-                          ),
+                          style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.primaryColor,),
                         ),
                       ],
                     )
                   ],
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 1,
                 ),
                 Text(
                   city,
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(15),
-                    color: Colors.grey.shade500,
-                  ),
+                  style: CustomTextStyles.text12SemiBoldW600.copyWith(color: Colors.grey.shade500,),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 1,
                 ),
                 Text(
                   address,
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14),
-                    color: Colors.grey.shade500,
-                  ),
+                  style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.grey.shade500,),
                 ),
                 const SizedBox(
                   height: 10,

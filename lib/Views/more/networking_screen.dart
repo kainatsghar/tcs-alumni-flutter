@@ -17,6 +17,8 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/text_styles.dart';
+
 class NetWorkingScreen extends StatefulWidget {
   const NetWorkingScreen({Key? key}) : super(key: key);
 
@@ -121,11 +123,7 @@ class _NetWorkingScreenState extends State<NetWorkingScreen> {
         centerTitle: true,
         title: Text(
           Strings.alumniNearme,
-          style: TextStyle(
-            // //Family: 'Nunito',
-            fontWeight: FontWeight.w600,
-            fontSize: ScreenUtil().setSp(18),
-          ),
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
       ),
       body: Column(
@@ -203,6 +201,7 @@ class _NetWorkingScreenState extends State<NetWorkingScreen> {
                   ),
                   Text(
                     "Radius ${radius.roundToDouble()} Km",
+                    style: CustomTextStyles.text14SemiBoldW600,
                   ),
                 ],
               ),

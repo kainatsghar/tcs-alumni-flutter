@@ -35,7 +35,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final ProfileController _controller = Get.put(ProfileController());
   Timer? _timer;
-  int _count = 5;
+  int _count = 2;
   String? sharingLocation;
   double? latitude;
   double? longitude;
@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     _timer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(seconds: 3),
       (timer) {
         print(_count);
         if (_count > 0) {
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
           //color: Colors.grey,
           image: DecorationImage(
             image: AssetImage(
-              "assets/splashgif.gif",
+              "assets/splash_gif.gif",
             ),
             fit: BoxFit.cover,
           ),

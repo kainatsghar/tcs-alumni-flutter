@@ -381,7 +381,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               snapshot.data!.docs[index]['message'],
                               AppUtils()
                                   .chatDifference(
-                                      snapshot.data!.docs[index]['timeStamp'])
+                                  snapshot.data!.docs[index]['timeStamp'])
                                   .toString(),
                               snapshot.data!.docs[index]['type'],
                               snapshot.data!.docs[index]['media_url'],
@@ -488,11 +488,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           child: media == null
                               ? const SizedBox()
                               : CachedNetworkImage(
-                                  imageUrl: media,
-                                  height: 200.w,
-                                  width: 200.w,
-                                  fit: BoxFit.cover,
-                                ),
+                            imageUrl: media,
+                            height: 200.w,
+                            width: 200.w,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -598,8 +598,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             Get.to(() => ProductDetailScreen(
-                                  productId: int.parse(msgId),
-                                ));
+                              productId: int.parse(msgId),
+                            ));
                           },
                           child: Text(
                             "View Product",
@@ -620,27 +620,27 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                       status == ''
                           ? Text(
-                              'Waiting for response',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
+                        'Waiting for response',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                           : status == 'accept'
-                              ? Text(
-                                  'Your offer has been accepted',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : Text(
-                                  'Your offer has been rejected',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                          ? Text(
+                        'Your offer has been accepted',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                          : Text(
+                        'Your offer has been rejected',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(
                         height: 2,
                       ),
@@ -671,12 +671,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               ),
                               readStatus == '0'
                                   ? Text(
-                                      'Seen',
-                                      style: WidgetStyle.forgotTExtStyle(
-                                        color: AppColor.white,
-                                        fontSize: 10.0.sp,
-                                      ),
-                                    )
+                                'Seen',
+                                style: WidgetStyle.forgotTExtStyle(
+                                  color: AppColor.white,
+                                  fontSize: 10.0.sp,
+                                ),
+                              )
                                   : const SizedBox(),
                             ],
                           ),
@@ -767,12 +767,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             ),
                             readStatus == '0'
                                 ? Text(
-                                    'Seen',
-                                    style: WidgetStyle.forgotTExtStyle(
-                                      color: AppColor.white,
-                                      fontSize: 10.0.sp,
-                                    ),
-                                  )
+                              'Seen',
+                              style: WidgetStyle.forgotTExtStyle(
+                                color: AppColor.white,
+                                fontSize: 10.0.sp,
+                              ),
+                            )
                                 : const SizedBox(),
                           ],
                         ),
@@ -815,11 +815,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: media == null
                             ? const SizedBox()
                             : CachedNetworkImage(
-                                imageUrl: media,
-                                height: 200.w,
-                                width: 200.w,
-                                fit: BoxFit.cover,
-                              ),
+                          imageUrl: media,
+                          height: 200.w,
+                          width: 200.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -924,7 +924,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                         // Get.to(() => ServiceDetail(serviceId: msgId));
+                          // Get.to(() => ServiceDetail(serviceId: msgId));
                         },
                         child: Text(
                           "View Service",
@@ -945,27 +945,27 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ),
                     status == ''
                         ? Text(
-                            'Waiting for response',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
+                      'Waiting for response',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                         : status == 'accept'
-                            ? Text(
-                                'Your offer has been accepted',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(14),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            : Text(
-                                'Your offer has been rejected',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(14),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                        ? Text(
+                      'Your offer has been accepted',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                        : Text(
+                      'Your offer has been rejected',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(
                       height: 2,
                     ),
@@ -996,12 +996,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             ),
                             readStatus == '0'
                                 ? Text(
-                                    'Seen',
-                                    style: WidgetStyle.forgotTExtStyle(
-                                      color: AppColor.white,
-                                      fontSize: 10.0.sp,
-                                    ),
-                                  )
+                              'Seen',
+                              style: WidgetStyle.forgotTExtStyle(
+                                color: AppColor.white,
+                                fontSize: 10.0.sp,
+                              ),
+                            )
                                 : const SizedBox(),
                           ],
                         ),
@@ -1060,27 +1060,27 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                       status == ''
                           ? Text(
-                              'Waiting for response',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
+                        'Waiting for response',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                           : status == 'accept'
-                              ? Text(
-                                  'Your offer has been accepted',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : Text(
-                                  'Your offer has been rejected',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                          ? Text(
+                        'Your offer has been accepted',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                          : Text(
+                        'Your offer has been rejected',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(
                         height: 2,
                       ),
@@ -1111,12 +1111,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               ),
                               readStatus == '0'
                                   ? Text(
-                                      'Seen',
-                                      style: WidgetStyle.forgotTExtStyle(
-                                        color: AppColor.white,
-                                        fontSize: 10.0.sp,
-                                      ),
-                                    )
+                                'Seen',
+                                style: WidgetStyle.forgotTExtStyle(
+                                  color: AppColor.white,
+                                  fontSize: 10.0.sp,
+                                ),
+                              )
                                   : const SizedBox(),
                             ],
                           ),
@@ -1149,177 +1149,177 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 msg == ""
                     ? const SizedBox()
                     : Text(
-                        msg,
+                  msg,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(15),
+                    color: AppColor.white,
+                  ),
+                ),
+                type == 'image'
+                    ? GestureDetector(
+                  onTap: () {
+                    Get.to(
+                          () => FullFileView(
+                        image: media ?? '',
+                        type: type,
+                      ),
+                    );
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: media ?? '',
+                    width: 200.w,
+                    height: 200.w,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                    : type == 'video'
+                    ? GestureDetector(
+                  onTap: () {
+                    Get.to(
+                          () => FullFileView(
+                        image: media ?? '',
+                        type: type,
+                      ),
+                    );
+                  },
+                  child: ChatVideoPlayer(url: media ?? ''),
+                )
+                    : type == 'audio'
+                    ? ChatAudioPlayer(
+                  url: media ?? '',
+                  user: 'sender',
+                )
+                    : type == 'pdf'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.pdfIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Pdf',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(15),
                           color: AppColor.white,
                         ),
                       ),
-                type == 'image'
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type == 'xls'
                     ? GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            () => FullFileView(
-                              image: media ?? '',
-                              type: type,
-                            ),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: media ?? '',
-                          width: 200.w,
-                          height: 200.w,
-                          fit: BoxFit.cover,
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.excelIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Excel',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize:
+                          ScreenUtil().setSp(15),
+                          color: AppColor.white,
                         ),
-                      )
-                    : type == 'video'
-                        ? GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                () => FullFileView(
-                                  image: media ?? '',
-                                  type: type,
-                                ),
-                              );
-                            },
-                            child: ChatVideoPlayer(url: media ?? ''),
-                          )
-                        : type == 'audio'
-                            ? ChatAudioPlayer(
-                                url: media ?? '',
-                                user: 'sender',
-                              )
-                            : type == 'pdf'
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _launched =
-                                            _launchInBrowser(media ?? '');
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          AppImages.pdfIcon,
-                                          height: 40.w,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Pdf',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(15),
-                                            color: AppColor.white,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 35,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : type == 'xls'
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _launched =
-                                                _launchInBrowser(media ?? '');
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.excelIcon,
-                                              height: 40.w,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Excel',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(15),
-                                                color: AppColor.white,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 35,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : type == 'docx'
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _launched = _launchInBrowser(
-                                                    media ?? '');
-                                              });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Image.asset(
-                                                  AppImages.wordIcon,
-                                                  height: 40.w,
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  'Word',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(15),
-                                                    color: AppColor.white,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 35,
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : type != 'text'
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _launched =
-                                                        _launchInBrowser(
-                                                            media ?? '');
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.file_open,
-                                                      color: AppColor.white,
-                                                      size: 30.h,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      'File',
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(15),
-                                                        color: AppColor.white,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 35,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : const SizedBox(),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type == 'docx'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched = _launchInBrowser(
+                          media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.wordIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Word',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize:
+                          ScreenUtil().setSp(15),
+                          color: AppColor.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type != 'text'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(
+                              media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.file_open,
+                        color: AppColor.white,
+                        size: 30.h,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'File',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: ScreenUtil()
+                              .setSp(15),
+                          color: AppColor.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 2,
                 ),
@@ -1352,12 +1352,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           ),
                           readStatus == '0'
                               ? Text(
-                                  'Seen',
-                                  style: WidgetStyle.forgotTExtStyle(
-                                    color: AppColor.white,
-                                    fontSize: 10.0.sp,
-                                  ),
-                                )
+                            'Seen',
+                            style: WidgetStyle.forgotTExtStyle(
+                              color: AppColor.white,
+                              fontSize: 10.0.sp,
+                            ),
+                          )
                               : const SizedBox(),
                         ],
                       ),
@@ -1415,11 +1415,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: media == null
                             ? const SizedBox()
                             : CachedNetworkImage(
-                                imageUrl: media,
-                                height: 200.w,
-                                width: 200.w,
-                                fit: BoxFit.cover,
-                              ),
+                          imageUrl: media,
+                          height: 200.w,
+                          width: 200.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -1525,8 +1525,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           Get.to(() => ProductDetailScreen(
-                                productId: int.parse(msgId),
-                              ));
+                            productId: int.parse(msgId),
+                          ));
                         },
                         child: Text(
                           "View Product",
@@ -1544,160 +1544,160 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ),
                     status == ""
                         ? Builder(builder: (context) {
-                            return Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          FirebaseFirestore.instance
-                                              .collection('chats')
-                                              .doc('chatsScreen')
-                                              .collection('$largeId-$smallId')
-                                              .where('timeStamp',
-                                                  isEqualTo: timeStamp)
-                                              .get()
-                                              .then((value) {
-                                            var thing = value.docs[0];
-                                            var temp = thing.data();
-                                            temp['status'] = 'accept';
-                                            thing.reference.update(temp);
-                                          });
-                                          sendPushNotification(
-                                              'Your offer has been accepted');
-                                        },
-                                        child: Text(
-                                          "Accept",
-                                          style: WidgetStyle.forgotTExtStyle(
-                                            fontSize: ScreenUtil().setSp(11),
-                                            color: AppColor.white,
-                                          ),
-                                        ),
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                            Colors.green,
-                                          ),
-                                        ),
-                                      ),
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('chats')
+                                        .doc('chatsScreen')
+                                        .collection('$largeId-$smallId')
+                                        .where('timeStamp',
+                                        isEqualTo: timeStamp)
+                                        .get()
+                                        .then((value) {
+                                      var thing = value.docs[0];
+                                      var temp = thing.data();
+                                      temp['status'] = 'accept';
+                                      thing.reference.update(temp);
+                                    });
+                                    sendPushNotification(
+                                        'Your offer has been accepted');
+                                  },
+                                  child: Text(
+                                    "Accept",
+                                    style: WidgetStyle.forgotTExtStyle(
+                                      fontSize: ScreenUtil().setSp(11),
+                                      color: AppColor.white,
                                     ),
-                                    const SizedBox(
-                                      width: 10,
+                                  ),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                      Colors.green,
                                     ),
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          FirebaseFirestore.instance
-                                              .collection('chats')
-                                              .doc('chatsScreen')
-                                              .collection('$largeId-$smallId')
-                                              .where('timeStamp',
-                                                  isEqualTo: timeStamp)
-                                              .get()
-                                              .then((value) {
-                                            var thing = value.docs[0];
-                                            var temp = thing.data();
-                                            temp['status'] = 'reject';
-                                            thing.reference.update(temp);
-                                          });
-                                          sendPushNotification(
-                                              'Your offer has been rejected');
-                                        },
-                                        child: Text(
-                                          "Reject",
-                                          style: WidgetStyle.forgotTExtStyle(
-                                            fontSize: ScreenUtil().setSp(11),
-                                            color: AppColor.white,
-                                          ),
-                                        ),
-                                        style: ButtonStyle(
-                                          side: MaterialStateProperty.all(
-                                              const BorderSide(
-                                                  color:
-                                                      AppColor.primaryColor)),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                            AppColor.primaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          FirebaseFirestore.instance
-                                              .collection('chats')
-                                              .doc('chatsScreen')
-                                              .collection('$largeId-$smallId')
-                                              .where('timeStamp',
-                                                  isEqualTo: timeStamp)
-                                              .get()
-                                              .then((value) {
-                                            var thing = value.docs[0];
-                                            var temp = thing.data();
-                                            temp['status'] = 'reject';
-                                            thing.reference.update(temp);
-                                            sendPushNotification(
-                                                'You received an counter offer');
-                                          });
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return _counterOffer();
-                                              });
-                                        },
-                                        child: Text(
-                                          "Counter Offer",
-                                          style: WidgetStyle.forgotTExtStyle(
-                                            fontSize: ScreenUtil().setSp(11),
-                                            color: AppColor.white,
-                                          ),
-                                        ),
-                                        style: ButtonStyle(
-                                          side: MaterialStateProperty.all(
-                                              const BorderSide(
-                                                  color: AppColor.grey)),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                            AppColor.grey,
-                                          ),
-                                        ),
-                                      ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('chats')
+                                        .doc('chatsScreen')
+                                        .collection('$largeId-$smallId')
+                                        .where('timeStamp',
+                                        isEqualTo: timeStamp)
+                                        .get()
+                                        .then((value) {
+                                      var thing = value.docs[0];
+                                      var temp = thing.data();
+                                      temp['status'] = 'reject';
+                                      thing.reference.update(temp);
+                                    });
+                                    sendPushNotification(
+                                        'Your offer has been rejected');
+                                  },
+                                  child: Text(
+                                    "Reject",
+                                    style: WidgetStyle.forgotTExtStyle(
+                                      fontSize: ScreenUtil().setSp(11),
+                                      color: AppColor.white,
                                     ),
-                                  ],
+                                  ),
+                                  style: ButtonStyle(
+                                    side: MaterialStateProperty.all(
+                                        const BorderSide(
+                                            color:
+                                            AppColor.primaryColor)),
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                      AppColor.primaryColor,
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            );
-                          })
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('chats')
+                                        .doc('chatsScreen')
+                                        .collection('$largeId-$smallId')
+                                        .where('timeStamp',
+                                        isEqualTo: timeStamp)
+                                        .get()
+                                        .then((value) {
+                                      var thing = value.docs[0];
+                                      var temp = thing.data();
+                                      temp['status'] = 'reject';
+                                      thing.reference.update(temp);
+                                      sendPushNotification(
+                                          'You received an counter offer');
+                                    });
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return _counterOffer();
+                                        });
+                                  },
+                                  child: Text(
+                                    "Counter Offer",
+                                    style: WidgetStyle.forgotTExtStyle(
+                                      fontSize: ScreenUtil().setSp(11),
+                                      color: AppColor.white,
+                                    ),
+                                  ),
+                                  style: ButtonStyle(
+                                    side: MaterialStateProperty.all(
+                                        const BorderSide(
+                                            color: AppColor.grey)),
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                      AppColor.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    })
                         : status == "accept"
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You accepted the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You rejected the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
+                        ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You accepted the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                        : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You rejected the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -1735,11 +1735,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: media == null
                             ? const SizedBox()
                             : CachedNetworkImage(
-                                imageUrl: media,
-                                height: 50.w,
-                                width: 100.w,
-                                fit: BoxFit.cover,
-                              ),
+                          imageUrl: media,
+                          height: 50.w,
+                          width: 100.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const Divider(
@@ -1791,11 +1791,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         child: media == null
                             ? const SizedBox()
                             : CachedNetworkImage(
-                                imageUrl: media,
-                                height: 200.w,
-                                width: 200.w,
-                                fit: BoxFit.cover,
-                              ),
+                          imageUrl: media,
+                          height: 200.w,
+                          width: 200.w,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -1900,7 +1900,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                         // Get.to(() => ServiceDetail(serviceId: msgId));
+                          // Get.to(() => ServiceDetail(serviceId: msgId));
                         },
                         child: Text(
                           "View Service",
@@ -1921,157 +1921,157 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ),
                     status == ""
                         ? Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'accept';
-                                          thing.reference.update(temp);
-                                        });
-                                        sendPushNotification(
-                                            'Your offer has been accepted');
-                                      },
-                                      child: Text(
-                                        "Accept",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          Colors.green,
-                                        ),
-                                      ),
-                                    ),
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'accept';
+                                    thing.reference.update(temp);
+                                  });
+                                  sendPushNotification(
+                                      'Your offer has been accepted');
+                                },
+                                child: Text(
+                                  "Accept",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
                                   ),
-                                  const SizedBox(
-                                    width: 10,
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    Colors.green,
                                   ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'reject';
-                                          thing.reference.update(temp);
-                                        });
-                                        sendPushNotification(
-                                            'Your offer has been rejected');
-                                      },
-                                      child: Text(
-                                        "Reject",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            const BorderSide(
-                                                color: AppColor.primaryColor)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          AppColor.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'reject';
-                                          thing.reference.update(temp);
-                                        });
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return _counterOffer();
-                                            });
-                                        sendPushNotification(
-                                            'You received an counter offer');
-                                      },
-                                      child: Text(
-                                        "Counter Offer",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            const BorderSide(
-                                                color: AppColor.grey)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          AppColor.grey,
-                                        ),
-                                      ),
-                                    ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'reject';
+                                    thing.reference.update(temp);
+                                  });
+                                  sendPushNotification(
+                                      'Your offer has been rejected');
+                                },
+                                child: Text(
+                                  "Reject",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
                                   ),
-                                ],
+                                ),
+                                style: ButtonStyle(
+                                  side: MaterialStateProperty.all(
+                                      const BorderSide(
+                                          color: AppColor.primaryColor)),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    AppColor.primaryColor,
+                                  ),
+                                ),
                               ),
-                            ],
-                          )
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'reject';
+                                    thing.reference.update(temp);
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return _counterOffer();
+                                      });
+                                  sendPushNotification(
+                                      'You received an counter offer');
+                                },
+                                child: Text(
+                                  "Counter Offer",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  side: MaterialStateProperty.all(
+                                      const BorderSide(
+                                          color: AppColor.grey)),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    AppColor.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
                         : status == "accept"
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You accepted the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You rejected the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
+                        ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You accepted the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                        : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You rejected the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -2124,157 +2124,157 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ),
                     status == ""
                         ? Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'accept';
-                                          thing.reference.update(temp);
-                                        });
-                                        sendPushNotification(
-                                            'Your offer has been accepted');
-                                      },
-                                      child: Text(
-                                        "Accept",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          Colors.green,
-                                        ),
-                                      ),
-                                    ),
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'accept';
+                                    thing.reference.update(temp);
+                                  });
+                                  sendPushNotification(
+                                      'Your offer has been accepted');
+                                },
+                                child: Text(
+                                  "Accept",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
                                   ),
-                                  const SizedBox(
-                                    width: 10,
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    Colors.green,
                                   ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'reject';
-                                          thing.reference.update(temp);
-                                        });
-                                        sendPushNotification(
-                                            'Your offer has been rejected');
-                                      },
-                                      child: Text(
-                                        "Reject",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            const BorderSide(
-                                                color: AppColor.primaryColor)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          AppColor.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FirebaseFirestore.instance
-                                            .collection('chats')
-                                            .doc('chatsScreen')
-                                            .collection('$largeId-$smallId')
-                                            .where('timeStamp',
-                                                isEqualTo: timeStamp)
-                                            .get()
-                                            .then((value) {
-                                          var thing = value.docs[0];
-                                          var temp = thing.data();
-                                          temp['status'] = 'reject';
-                                          thing.reference.update(temp);
-                                        });
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return _counterOffer();
-                                            });
-                                        sendPushNotification(
-                                            'You received an counter offer');
-                                      },
-                                      child: Text(
-                                        "Counter Offer",
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          fontSize: ScreenUtil().setSp(11),
-                                          color: AppColor.white,
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        side: MaterialStateProperty.all(
-                                            const BorderSide(
-                                                color: AppColor.grey)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                          AppColor.grey,
-                                        ),
-                                      ),
-                                    ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'reject';
+                                    thing.reference.update(temp);
+                                  });
+                                  sendPushNotification(
+                                      'Your offer has been rejected');
+                                },
+                                child: Text(
+                                  "Reject",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
                                   ),
-                                ],
+                                ),
+                                style: ButtonStyle(
+                                  side: MaterialStateProperty.all(
+                                      const BorderSide(
+                                          color: AppColor.primaryColor)),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    AppColor.primaryColor,
+                                  ),
+                                ),
                               ),
-                            ],
-                          )
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc('chatsScreen')
+                                      .collection('$largeId-$smallId')
+                                      .where('timeStamp',
+                                      isEqualTo: timeStamp)
+                                      .get()
+                                      .then((value) {
+                                    var thing = value.docs[0];
+                                    var temp = thing.data();
+                                    temp['status'] = 'reject';
+                                    thing.reference.update(temp);
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return _counterOffer();
+                                      });
+                                  sendPushNotification(
+                                      'You received an counter offer');
+                                },
+                                child: Text(
+                                  "Counter Offer",
+                                  style: WidgetStyle.forgotTExtStyle(
+                                    fontSize: ScreenUtil().setSp(11),
+                                    color: AppColor.white,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  side: MaterialStateProperty.all(
+                                      const BorderSide(
+                                          color: AppColor.grey)),
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                    AppColor.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
                         : status == "accept"
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You accepted the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'You rejected the offer',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
+                        ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You accepted the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                        : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You rejected the offer',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -2310,169 +2310,169 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 ),
                 type == 'image'
                     ? GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            () => FullFileView(
-                              image: media ?? '',
-                              type: type,
-                            ),
-                          );
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: media ?? '',
-                          width: 200.w,
-                          height: 200.w,
-                          fit: BoxFit.cover,
-                        ),
-                      )
+                  onTap: () {
+                    Get.to(
+                          () => FullFileView(
+                        image: media ?? '',
+                        type: type,
+                      ),
+                    );
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: media ?? '',
+                    width: 200.w,
+                    height: 200.w,
+                    fit: BoxFit.cover,
+                  ),
+                )
                     : type == 'video'
-                        ? GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                () => FullFileView(
-                                  image: media ?? '',
-                                  type: type,
-                                ),
-                              );
-                            },
-                            child: ChatVideoPlayer(url: media ?? ''),
-                          )
-                        : type == 'audio'
-                            ? ChatAudioPlayer(
-                                url: media ?? '',
-                                user: 'receiver',
-                              )
-                            : type == 'pdf'
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _launched =
-                                            _launchInBrowser(media ?? '');
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          AppImages.pdfIcon,
-                                          height: 40.w,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Pdf',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(15),
-                                            color: AppColor.black,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 35,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : type == 'xls'
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _launched =
-                                                _launchInBrowser(media ?? '');
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.excelIcon,
-                                              height: 40.w,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'Excel',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(15),
-                                                color: AppColor.black,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 35,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : type == 'docx'
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _launched = _launchInBrowser(
-                                                    media ?? '');
-                                              });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Image.asset(
-                                                  AppImages.wordIcon,
-                                                  height: 40.w,
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  'Word',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(15),
-                                                    color: AppColor.black,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 35,
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : type != 'text'
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _launched =
-                                                        _launchInBrowser(
-                                                            media ?? '');
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.file_open,
-                                                      color:
-                                                          AppColor.primaryColor,
-                                                      size: 30.h,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      'File',
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(15),
-                                                        color: AppColor.black,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 35,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : const SizedBox(),
+                    ? GestureDetector(
+                  onTap: () {
+                    Get.to(
+                          () => FullFileView(
+                        image: media ?? '',
+                        type: type,
+                      ),
+                    );
+                  },
+                  child: ChatVideoPlayer(url: media ?? ''),
+                )
+                    : type == 'audio'
+                    ? ChatAudioPlayer(
+                  url: media ?? '',
+                  user: 'receiver',
+                )
+                    : type == 'pdf'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.pdfIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Pdf',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(15),
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type == 'xls'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.excelIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Excel',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize:
+                          ScreenUtil().setSp(15),
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type == 'docx'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched = _launchInBrowser(
+                          media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppImages.wordIcon,
+                        height: 40.w,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Word',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize:
+                          ScreenUtil().setSp(15),
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : type != 'text'
+                    ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _launched =
+                          _launchInBrowser(
+                              media ?? '');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.file_open,
+                        color:
+                        AppColor.primaryColor,
+                        size: 30.h,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'File',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: ScreenUtil()
+                              .setSp(15),
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                    ],
+                  ),
+                )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 2,
                 ),
@@ -2506,52 +2506,52 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   borderRadius: BorderRadius.circular(20),
                   child: recording
                       ? Text(
-                          'Recording...  $_secondCount',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
+                    'Recording...  $_secondCount',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(14),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                       : TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          style: TextStyle(fontSize: 13.sp),
-                          textCapitalization: TextCapitalization.sentences,
-                          controller: _chatController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            suffixIcon: uploading
-                                ? const SizedBox()
-                                : IconButton(
-                                    onPressed: () async {
-                                      if (_chatController.text == "" &&
-                                          _imageFile == null) {
-                                        print(
-                                            '**********-----***Null imageFile & text');
-                                        print(_imagePath);
-                                      } else {
-                                        String message = _chatController.text;
-                                        _chatController.clear();
-                                        await sendMessage(message);
-                                        setState(() {
-                                          _uploadPath = "";
-                                          _imagePath = null;
-                                          _imageFile = null;
-                                        });
-                                      }
-                                    },
-                                    icon: Icon(
-                                      Icons.send,
-                                      size: 20.h,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                            isDense: true,
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Write Here',
-                            hintStyle: TextStyle(fontSize: 13.sp),
-                          ),
+                    textAlignVertical: TextAlignVertical.center,
+                    style: TextStyle(fontSize: 13.sp),
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: _chatController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      suffixIcon: uploading
+                          ? const SizedBox()
+                          : IconButton(
+                        onPressed: () async {
+                          if (_chatController.text == "" &&
+                              _imageFile == null) {
+                            print(
+                                '**********-----***Null imageFile & text');
+                            print(_imagePath);
+                          } else {
+                            String message = _chatController.text;
+                            _chatController.clear();
+                            await sendMessage(message);
+                            setState(() {
+                              _uploadPath = "";
+                              _imagePath = null;
+                              _imageFile = null;
+                            });
+                          }
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          size: 20.h,
+                          color: AppColor.primaryColor,
                         ),
+                      ),
+                      isDense: true,
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Write Here',
+                      hintStyle: TextStyle(fontSize: 13.sp),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
@@ -2650,128 +2650,128 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 children: [
                   _imagePath!.endsWith('mp4')
                       ? GestureDetector(
-                          onTap: () {
-                            if (_controller.value.isPlaying) {
-                              _controller.pause();
-                            } else {
-                              _controller.play();
-                            }
-                          },
-                          child: SizedBox(
-                            height: 100.w,
-                            width: 100.w,
-                            child: Stack(
-                              children: [
-                                VideoPlayer(_controller),
-                                uploading
-                                    ? const Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppColor.white,
-                                          strokeWidth: 2.0,
-                                        ),
-                                      )
-                                    : const SizedBox()
-                              ],
+                    onTap: () {
+                      if (_controller.value.isPlaying) {
+                        _controller.pause();
+                      } else {
+                        _controller.play();
+                      }
+                    },
+                    child: SizedBox(
+                      height: 100.w,
+                      width: 100.w,
+                      child: Stack(
+                        children: [
+                          VideoPlayer(_controller),
+                          uploading
+                              ? const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColor.white,
+                              strokeWidth: 2.0,
                             ),
+                          )
+                              : const SizedBox()
+                        ],
+                      ),
+                    ),
+                  )
+                      : _imagePath!.endsWith('pdf')
+                      ? Stack(
+                    children: [
+                      Image.asset(
+                        AppImages.pdfIcon,
+                        height: 100.w,
+                      ),
+                      uploading
+                          ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColor.white,
+                          strokeWidth: 2.0,
+                        ),
+                      )
+                          : const SizedBox()
+                    ],
+                  )
+                      : _imagePath!.endsWith('docx')
+                      ? Stack(
+                    children: [
+                      Image.asset(
+                        AppImages.wordIcon,
+                        height: 100.w,
+                      ),
+                      uploading
+                          ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColor.white,
+                          strokeWidth: 2.0,
+                        ),
+                      )
+                          : const SizedBox()
+                    ],
+                  )
+                      : _imagePath!.endsWith('xls')
+                      ? Stack(
+                    children: [
+                      Image.asset(
+                        AppImages.excelIcon,
+                        height: 100.w,
+                      ),
+                      uploading
+                          ? const Center(
+                        child:
+                        CircularProgressIndicator(
+                          color: AppColor.white,
+                          strokeWidth: 2.0,
+                        ),
+                      )
+                          : const SizedBox()
+                    ],
+                  )
+                      : _imagePath!.endsWith('png') ||
+                      _imagePath!.endsWith('jpg')
+                      ? SizedBox(
+                    height: 100.w,
+                    width: 80.w,
+                    child: Stack(
+                      children: [
+                        Image.file(
+                          File(
+                            _imagePath ?? '',
+                          ),
+                        ),
+                        uploading
+                            ? const Center(
+                          child:
+                          CircularProgressIndicator(
+                            color: AppColor.white,
+                            strokeWidth: 2.0,
                           ),
                         )
-                      : _imagePath!.endsWith('pdf')
-                          ? Stack(
-                              children: [
-                                Image.asset(
-                                  AppImages.pdfIcon,
-                                  height: 100.w,
-                                ),
-                                uploading
-                                    ? const Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppColor.white,
-                                          strokeWidth: 2.0,
-                                        ),
-                                      )
-                                    : const SizedBox()
-                              ],
-                            )
-                          : _imagePath!.endsWith('docx')
-                              ? Stack(
-                                  children: [
-                                    Image.asset(
-                                      AppImages.wordIcon,
-                                      height: 100.w,
-                                    ),
-                                    uploading
-                                        ? const Center(
-                                            child: CircularProgressIndicator(
-                                              color: AppColor.white,
-                                              strokeWidth: 2.0,
-                                            ),
-                                          )
-                                        : const SizedBox()
-                                  ],
-                                )
-                              : _imagePath!.endsWith('xls')
-                                  ? Stack(
-                                      children: [
-                                        Image.asset(
-                                          AppImages.excelIcon,
-                                          height: 100.w,
-                                        ),
-                                        uploading
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: AppColor.white,
-                                                  strokeWidth: 2.0,
-                                                ),
-                                              )
-                                            : const SizedBox()
-                                      ],
-                                    )
-                                  : _imagePath!.endsWith('png') ||
-                                          _imagePath!.endsWith('jpg')
-                                      ? SizedBox(
-                                          height: 100.w,
-                                          width: 80.w,
-                                          child: Stack(
-                                            children: [
-                                              Image.file(
-                                                File(
-                                                  _imagePath ?? '',
-                                                ),
-                                              ),
-                                              uploading
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: AppColor.white,
-                                                        strokeWidth: 2.0,
-                                                      ),
-                                                    )
-                                                  : const SizedBox()
-                                            ],
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 100.w,
-                                          width: 80.w,
-                                          child: Stack(
-                                            children: [
-                                              Icon(
-                                                Icons.file_open,
-                                                size: 50.h,
-                                              ),
-                                              uploading
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: AppColor.white,
-                                                        strokeWidth: 2.0,
-                                                      ),
-                                                    )
-                                                  : const SizedBox()
-                                            ],
-                                          ),
-                                        ),
+                            : const SizedBox()
+                      ],
+                    ),
+                  )
+                      : SizedBox(
+                    height: 100.w,
+                    width: 80.w,
+                    child: Stack(
+                      children: [
+                        Icon(
+                          Icons.file_open,
+                          size: 50.h,
+                        ),
+                        uploading
+                            ? const Center(
+                          child:
+                          CircularProgressIndicator(
+                            color: AppColor.white,
+                            strokeWidth: 2.0,
+                          ),
+                        )
+                            : const SizedBox()
+                      ],
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       if (_imagePath!.endsWith('mp4')) {
@@ -2818,16 +2818,16 @@ class _MessagesScreenState extends State<MessagesScreen> {
         "type": _uploadPath.isEmpty
             ? 'text'
             : _uploadPath.endsWith('mp4')
-                ? "video"
-                : _uploadPath.endsWith('aac')
-                    ? 'audio'
-                    : _uploadPath.endsWith('pdf')
-                        ? 'pdf'
-                        : _uploadPath.endsWith('docx')
-                            ? 'docx'
-                            : _uploadPath.endsWith('xls')
-                                ? 'xls'
-                                : "image",
+            ? "video"
+            : _uploadPath.endsWith('aac')
+            ? 'audio'
+            : _uploadPath.endsWith('pdf')
+            ? 'pdf'
+            : _uploadPath.endsWith('docx')
+            ? 'docx'
+            : _uploadPath.endsWith('xls')
+            ? 'xls'
+            : "image",
         "timeStamp": DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
       },
     );
@@ -2847,12 +2847,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
         "lastText": message != ""
             ? message
             : _uploadPath.endsWith('mp4')
-                ? "Video"
-                : _uploadPath.endsWith('aac')
-                    ? "Audio"
-                    : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
-                        ? "Photo"
-                        : "Document",
+            ? "Video"
+            : _uploadPath.endsWith('aac')
+            ? "Audio"
+            : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
+            ? "Photo"
+            : "Document",
         "readStatus": '0',
         "unread": 0,
         "messageKey": "$largeId-$smallId",
@@ -2874,12 +2874,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
         "lastText": message != ""
             ? message
             : _uploadPath.endsWith('mp4')
-                ? "Video"
-                : _uploadPath.endsWith('aac')
-                    ? "Audio"
-                    : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
-                        ? "Photo"
-                        : "Document",
+            ? "Video"
+            : _uploadPath.endsWith('aac')
+            ? "Audio"
+            : _uploadPath.endsWith('png') || _uploadPath.endsWith('jpg')
+            ? "Photo"
+            : "Document",
         "readStatus": readLength,
         "unread": 1,
         "messageKey": "$largeId-$smallId",
@@ -2904,12 +2904,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
     };
     try {
       ApiResponse apiResponse =
-          await NetworkConfig.uploadFileWithToken(url, map, path);
+      await NetworkConfig.uploadFileWithToken(url, map, path);
       print('called');
       print('api response -----******-----***** ${apiResponse.done}');
       if (apiResponse.done ?? false) {
         UploadFileEntity response =
-            UploadFileEntity.fromJson(apiResponse.responseString ?? '');
+        UploadFileEntity.fromJson(apiResponse.responseString ?? '');
 
         if (response.success == 1) {
           print(response.images);
@@ -2939,7 +2939,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 "type": 'audio',
                 "status": "",
                 "timeStamp":
-                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+                DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
               },
             );
 
@@ -2958,7 +2958,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 "messageKey": "$largeId-$smallId",
                 "name": widget.name,
                 "time":
-                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+                DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
               },
             );
 
@@ -2977,7 +2977,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 "messageKey": "$largeId-$smallId",
                 "name": AppConstants.userName,
                 "time":
-                    DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
+                DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
               },
             );
             setState(() {
@@ -3012,13 +3012,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   _scrollListener() {
     if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
+        _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       //    message = "reach the bottom";
 
     }
     if (_scrollController.offset <=
-            _scrollController.position.minScrollExtent &&
+        _scrollController.position.minScrollExtent &&
         !_scrollController.position.outOfRange) {
       //  message = "reach the top";
     }
@@ -3027,8 +3027,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Future<void> sendPushNotification(String title) async {
     Map<String, String> headers = {
       'content-type': 'application/json',
-      'Authorization':
-          'key=AAAArlvuZY0:APA91bFUXWxp69gz1c1Y7CaOCVVG_0w15zRAKhf0OvR9gwUIU6F_ZFsnNsda9WG8soMMBFuHQAFKcQPb73baHDDtFjyKqDAzkuVN2afz37yyE-ndXZjPpW43FTQKJHUXglE8rmFw52is'
+      'Authorization': AppConstants.pushNotificationKey,
     };
     Map map = {
       "registration_ids": _deviceTokens,
@@ -3045,7 +3044,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     );
     print(response.body);
     if (response.statusCode == 200) {
-      print("Sent Notifiaction");
+      print("Sent Notification");
     } else {
       print("error");
     }
@@ -3191,7 +3190,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           child: OutlinedButton(
                             style: ButtonStyle(
                               padding: MaterialStateProperty.all<
-                                      EdgeInsetsGeometry>(
+                                  EdgeInsetsGeometry>(
                                   const EdgeInsets.symmetric(horizontal: 10.0)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
@@ -3226,7 +3225,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 padding: MaterialStateProperty.all<
-                                        EdgeInsetsGeometry>(
+                                    EdgeInsetsGeometry>(
                                     const EdgeInsets.symmetric(
                                         horizontal: 10.0)),
                                 shape: MaterialStateProperty.all<
@@ -3247,8 +3246,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   .doc('chatsScreen')
                                   .collection('$largeId-$smallId')
                                   .doc(DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString())
+                                  .millisecondsSinceEpoch
+                                  .toString())
                                   .set(
                                 {
                                   'message': _priceController.text,

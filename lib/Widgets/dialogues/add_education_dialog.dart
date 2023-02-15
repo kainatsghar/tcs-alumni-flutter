@@ -12,6 +12,7 @@ import 'package:iobm/networkcalls/response_models/add_interest_entity.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/strings.dart';
+import '../../utils/text_styles.dart';
 import '../custom_widgets.dart';
 import '../widget_styles.dart';
 
@@ -104,21 +105,18 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: const BoxDecoration(
+                              decoration:  BoxDecoration(
                                 color: AppColor.primaryColor,
+                                  borderRadius: BorderRadius.only(topRight: Radius.circular(10.r), topLeft: Radius.circular(10.r))
                               ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text('         '),
-                                  const Text(
+                                   Text(
                                     'Add Education',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w300,
-                                      color: AppColor.white,
-                                    ),
+                                    style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.white,),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 5),
@@ -139,8 +137,9 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
                               width: double.infinity,
-                              decoration: const BoxDecoration(
+                              decoration:  BoxDecoration(
                                 color: AppColor.white,
+                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.r), bottomLeft: Radius.circular(10.r))
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,15 +149,10 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                                   ),
                                   Text(
                                     'Degree Title',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(15),
-                                      // //Family: 'Nunito',
-                                      color: AppColor.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
                                   ),
                                   TextFormField(
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: CustomTextStyles.text12RegularW400,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter degree title.';
@@ -177,14 +171,10 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                                   ),
                                   Text(
                                     'Institution Name',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(15),
-                                      color: AppColor.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
                                   ),
                                   TextFormField(
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: CustomTextStyles.text12RegularW400,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter institution name.';
@@ -288,12 +278,7 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
           children: [
             Text(
               'Starting Year',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(15),
-                // //Family: 'Nunito',
-                color: AppColor.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
             ),
             Container(
               height: 35, //
@@ -335,10 +320,7 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               valueItem,
-                              style: TextStyle(
-                                  // fontFamily: 'Nunito',
-                                  fontSize: ScreenUtil().setSp(14),
-                                  fontWeight: FontWeight.w500),
+                              style: CustomTextStyles.text12RegularW400,
                             ),
                           ));
                     },
@@ -354,12 +336,7 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
           children: [
             Text(
               'Ending Year',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(15),
-                // //Family: 'Nunito',
-                color: AppColor.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
             ),
             Container(
               height: 35, //
@@ -390,10 +367,7 @@ class _AddEducationDialogState extends State<AddEducationDialog> {
                         value: valueItem,
                         child: Text(
                           valueItem,
-                          style: TextStyle(
-                              // fontFamily: 'Nunito',
-                              fontSize: ScreenUtil().setSp(14),
-                              fontWeight: FontWeight.w500),
+                          style: CustomTextStyles.text12RegularW400,
                         ));
                   }).toList(),
                 ),

@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iobm/utils/app_color.dart';
 
+import '../utils/text_styles.dart';
+
 class ErrorAlert extends StatefulWidget {
   final String errorMsg;
   final Function? action;
@@ -52,19 +54,14 @@ class _ErrorAlertState extends State<ErrorAlert>
                       children: [
                         Text(
                           "Failed",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(18),
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: CustomTextStyles.text16SemiBoldW600,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         Text(
                           widget.errorMsg,
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(16),
-                          ),
+                          style: CustomTextStyles.text14SemiBoldW600,
                         ),
                         const SizedBox(
                           height: 5,
@@ -75,11 +72,7 @@ class _ErrorAlertState extends State<ErrorAlert>
                           },
                           child: Text(
                             "OK",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
                           ),
                         ),
                       ],

@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:iobm/utils/app_color.dart';
 
+import '../utils/text_styles.dart';
+
 class WidgetStyle {
   static semiBoldText({color, fontSize}) {
     return TextStyle(
@@ -42,9 +44,7 @@ class WidgetStyle {
           color: AppColor.primaryColor,
         ),
       ),
-      hintStyle: TextStyle(
-        fontSize: ScreenUtil().setSp(16),
-      ),
+      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
       hintText: 'example@mail.com',
       isDense: true,
     );
@@ -62,10 +62,7 @@ class WidgetStyle {
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
-      hintStyle: TextStyle(
-        fontSize: ScreenUtil().setSp(12),
-        color: AppColor.greyshade400,
-      ),
+      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
       hintText: hint,
       isDense: true,
     );
@@ -84,10 +81,7 @@ class WidgetStyle {
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
-      hintStyle: TextStyle(
-        fontSize: ScreenUtil().setSp(14),
-        color: AppColor.greyshade400,
-      ),
+      hintStyle: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade400,),
       hintText: hint,
       isDense: true,
     );
@@ -166,11 +160,7 @@ class WidgetStyle {
           size: 20.h,
         ),
       ),
-      hintStyle: TextStyle(
-        // fontFamily: 'Nunito',
-        fontSize: ScreenUtil().setSp(15),
-        color: AppColor.greyshade400,
-      ),
+      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
       hintText: '*******',
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),

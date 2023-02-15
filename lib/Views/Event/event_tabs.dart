@@ -74,6 +74,7 @@ class EventTabsState extends State<EventTabs> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
                   children: [
                     buildScreen(),
                     EventAttendiesView(
@@ -138,8 +139,8 @@ class EventTabsState extends State<EventTabs> {
                 child: Text(
                   AppUtils().calculateEventDifference(_event.startDate ?? "") <
                           0
-                      ? 'Event Started on ${_event.startDate} ${_event.startTime}'
-                      : "Event will start on ${_event.startDate} ${_event.startTime}",
+                      ? 'Event Started on ${_event.startDate ?? ''} ${_event.startTime ?? ''}'
+                      : "Event will start on ${_event.startDate ?? ''} ${_event.startTime ?? ''}",
                   style: boldTextStyle(),
                 ),
               ),
@@ -161,14 +162,14 @@ class EventTabsState extends State<EventTabs> {
                       SizedBox(
                         width: 5.w,
                       ),
-                      Text('${_event.startDate} at ${_event.startTime}',
+                      Text(_event.startTime == null ? '${_event.startDate ?? ''} ${_event.startTime ?? ''}' : '${_event.startDate} at ${_event.startTime}',
                           style: WidgetStyle.semiBoldText(
                               color: AppColor.greyshade600,
                               fontSize: ScreenUtil().setSp(12))),
                       SizedBox(
                         width: 20.w,
                       ),
-                      Text('${_event.endDate} at ${_event.endTime}',
+                      Text(_event.endTime == null ? '${_event.endDate ?? ''}  ${_event.endTime ?? ''}' : '${_event.endDate} at ${_event.endTime}',
                           style: WidgetStyle.semiBoldText(
                               color: AppColor.greyshade600,
                               fontSize: ScreenUtil().setSp(12)))
@@ -250,7 +251,7 @@ class EventTabsState extends State<EventTabs> {
               thickness: 1,
             ),
             CachedNetworkImage(
-              height: 200,
+              height: 200.h,
               fit: BoxFit.cover,
               width: double.infinity,
               imageUrl: _event.image ?? '',
@@ -281,6 +282,7 @@ class EventTabsState extends State<EventTabs> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            //likes
             GestureDetector(
               onTap: () {
                 changeLike();
@@ -314,10 +316,11 @@ class EventTabsState extends State<EventTabs> {
                 ],
               ),
             ),
+            //interested
             GestureDetector(
               onTap: () {
-                changeStatus(
-                    _event.isInterested == "1" ? 'none' : "interested");
+                changeStatus(_event.isInterested == "1" ? 'none' : "interested");
+                print("EventInterested: ${_event.isInterested}");
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -345,15 +348,23 @@ class EventTabsState extends State<EventTabs> {
                 ],
               ),
             ),
+            //going
             GestureDetector(
               onTap: () {
                 changeStatus(_event.isGoing == "0" ? 'going' : "none");
+                print("EventGoing: ${_event.isGoing}");
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
+                  _event.isGoing == '1'
+                  ? Image.asset(
+                    AppImages.goingfill,
+                    height: 24,
+                    width: 24,
+                  )
+                  : Image.asset(
                     AppImages.going,
                     height: 24,
                     width: 24,
@@ -364,45 +375,44 @@ class EventTabsState extends State<EventTabs> {
                     style: TextStyle(
                       // fontFamily: 'Nunito',
                       fontSize: ScreenUtil().setSp(12),
-                      color: _event.isGoing == '1'
-                          ? AppColor.primaryColor
-                          : AppColor.black54,
+                        color: AppColor.greyshade600
                     ),
                   )
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                if (AppConstants.appName == "BOSS") {
-                  Share.share(
-                      "Admin created an event at BOSS Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
-                } else if (AppConstants.appName == "DOW") {
-                  Share.share(
-                      "Admin created an event at DOW Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
-                } else if (AppConstants.appName == "IOBM") {
-                  Share.share(
-                      "Admin created an event at IOBM Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.share,
-                    color: AppColor.greyshade600,
-                  ),
-                  const SizedBox(
-                    height: 1,
-                  ),
-                  Text(Strings.share,
-                      style: WidgetStyle.semiBoldText(
-                          color: AppColor.greyshade600,
-                          fontSize: ScreenUtil().setSp(12)))
-                ],
-              ),
-            ),
+            //share
+            // GestureDetector(
+            //   onTap: () {
+            //     if (AppConstants.appName == "BOSS") {
+            //       Share.share(
+            //           "Admin created an event at BOSS Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
+            //     } else if (AppConstants.appName == "DOW") {
+            //       Share.share(
+            //           "Admin created an event at DOW Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
+            //     } else if (AppConstants.appName == "IOBM") {
+            //       Share.share(
+            //           "Admin created an event at IOBM Alumini\nTitle: ${_event.title}\nDescription: ${_event.description}\nStart At: ${_event.startTime}${_event.startDate}");
+            //     }
+            //   },
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Icon(
+            //         Icons.share,
+            //         color: AppColor.greyshade600,
+            //       ),
+            //       const SizedBox(
+            //         height: 1,
+            //       ),
+            //       Text(Strings.share,
+            //           style: WidgetStyle.semiBoldText(
+            //               color: AppColor.greyshade600,
+            //               fontSize: ScreenUtil().setSp(12)))
+            //     ],
+            //   ),
+            // ),
           ]),
     );
   }
@@ -414,6 +424,7 @@ class EventTabsState extends State<EventTabs> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          //likes
           Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -431,6 +442,7 @@ class EventTabsState extends State<EventTabs> {
                       color: AppColor.black45),
                 )
               ]),
+          //interested
           Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -449,6 +461,7 @@ class EventTabsState extends State<EventTabs> {
                   ),
                 )
               ]),
+          //going
           Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -481,6 +494,7 @@ class EventTabsState extends State<EventTabs> {
       eventId: widget.eventId,
       status: _event.isLike == "1" ? "unlike" : "like",
     );
+    print("wait= $wait");
     if (response is ErrorEntity) {
     } else {
       EventLikeEntity likeEntity = EventLikeEntity().fromJson(response);
@@ -501,6 +515,7 @@ class EventTabsState extends State<EventTabs> {
     setState(() {
       wait = false;
     });
+    print("wait2= $wait");
   }
 
   Future<void> changeStatus(status) async {
@@ -513,6 +528,8 @@ class EventTabsState extends State<EventTabs> {
         eventId: widget.eventId,
         status: status,
       );
+      print("Status Response: ${response}");
+
       if (response is ErrorEntity) {
       } else {
         EventStatusEntity statusEntity = EventStatusEntity().fromJson(response);
@@ -523,6 +540,7 @@ class EventTabsState extends State<EventTabs> {
               widget.eventId ?? '',
               "0",
             );
+
             await database.editGoingStatus(
               widget.eventId ?? '',
               "0",

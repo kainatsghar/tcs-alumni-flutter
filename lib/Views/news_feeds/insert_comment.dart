@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -31,6 +32,7 @@ import 'package:iobm/utils/app_utils.dart';
 import '../../helper_classes/ui_helper.dart';
 import '../../networkcalls/response_models/delete_post_entity.dart';
 import '../../networkcalls/response_models/like_post_entity.dart';
+import '../../utils/text_styles.dart';
 import '../more/profile_screen.dart';
 import 'create_post_screen.dart';
 
@@ -48,6 +50,8 @@ class InsertComments extends StatefulWidget {
 class _InsertCommentsState extends State<InsertComments> {
   TextEditingController commentText = TextEditingController();
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
+
+  bool isLoading = false;
 
   ///Reactions List
   List<Reaction<String>> reactions = [
@@ -70,7 +74,7 @@ class _InsertCommentsState extends State<InsertComments> {
 
   ///Reply Feature
   bool replying = false;
-  String replyName = "";
+  String replyName = '';
   String commentId = '';
   String replyId = '';
   bool updateComment = false;
@@ -156,11 +160,12 @@ class _InsertCommentsState extends State<InsertComments> {
               children: [
                 const Icon(
                   Icons.thumb_up_alt_outlined,
-                  size: 20,
+                  size: 15,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   'Total likes: ${widget.totalLikes}',
+                  style: CustomTextStyles.text12RegularW400,
                 ),
               ],
             ),
@@ -182,9 +187,7 @@ class _InsertCommentsState extends State<InsertComments> {
       return Center(
         child: Text(
           'No Comments Found',
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(14),
-          ),
+          style: CustomTextStyles.text14SemiBoldW600,
         ),
       );
     } else {
@@ -265,79 +268,53 @@ class _InsertCommentsState extends State<InsertComments> {
                                       },
                                       child: Text(
                                         '${_comments[index].firstName}',
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(13),
-                                          color: AppColor.greyshade800,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade800,),
                                       ),
                                     ),
                                     const Spacer(),
                                     Text(
                                       '${AppUtils().calculateFormatDifference(_comments[index].createdDate ?? '')}',
-                                      style: TextStyle(
-                                        color: AppColor.greyshade600,
-                                        fontSize: ScreenUtil().setSp(11),
-                                      ),
+                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
                                     ),
                                     SizedBox(
                                       height: 30,
                                       width: 30,
-                                      child: _comments[index].commentedBy ==
-                                          AppConstants.myId
-                                          ? PopupMenuButton(
-                                          onSelected: (result) {
-                                            if (result == 0) {
-                                              deleteTimeLineComment(
-                                                  _comments[index].id ?? '',
-                                                  "");
+                                      child: _comments[index].commentedBy == AppConstants.myId
+                                          ? PopupMenuButton(onSelected: (result) {
+                                            if (result == 1) {
+                                              deleteTimeLineComment(_comments[index].id ?? '', "");
                                               setState(() {
                                                 count--;
                                               });
-                                            } else if (result == 1) {
+                                            } else if (result == 0) {
                                               print("clicked 1");
                                               setState(() {
                                                 updateComment = true;
-                                                commentId =
-                                                    _comments[index].id ?? '';
+                                                commentId = _comments[index].id ?? '';
                                               });
-                                              String text =
-                                                  _comments[index].comment ??
-                                                      '';
+                                              String text = _comments[index].comment ?? '';
                                               String finalText = "";
                                               if (text.contains("{")) {
-                                                final startIndex =
-                                                text.indexOf("{");
-                                                final endIndex =
-                                                text.indexOf("}");
-                                                final jsonString =
-                                                text.substring(startIndex,
-                                                    endIndex + 1);
-                                                final decodedMap =
-                                                json.decode(jsonString);
-                                                finalText = text.replaceAll(
-                                                    jsonString,
-                                                    "@${decodedMap['name']}");
-                                                key.currentState!.controller!
-                                                    .text = finalText;
+                                                final startIndex = text.indexOf("{");
+                                                final endIndex = text.indexOf("}");
+                                                final jsonString = text.substring(startIndex, endIndex + 1);
+                                                final decodedMap = json.decode(jsonString);
+                                                finalText = text.replaceAll(jsonString, "@${decodedMap['name']}");
+                                                key.currentState!.controller!.text = finalText;
                                               } else {
                                                 setState(() {
-                                                  key.currentState!
-                                                      .controller!.text =
-                                                      _parseHtmlString(text)
-                                                          .replaceAll(
-                                                          '"', '');
+                                                  key.currentState!.controller!.text = _parseHtmlString(text).replaceAll('"', '');
                                                 });
                                               }
                                             }
                                           }, itemBuilder: (context) {
-                                        return [
-                                          const PopupMenuItem(
+                                            return [
+                                          PopupMenuItem(
                                               value: 0,
-                                              child: Text('Delete')),
-                                          const PopupMenuItem(
+                                              child: Text('Edit', style: CustomTextStyles.text12RegularW400,)),
+                                          PopupMenuItem(
                                               value: 1,
-                                              child: Text('Edit')),
+                                              child: Text('Delete', style: CustomTextStyles.text12RegularW400,)),
                                         ];
                                       })
                                           : const SizedBox(),
@@ -345,8 +322,8 @@ class _InsertCommentsState extends State<InsertComments> {
                                   ],
                                 ),
                                 html.HtmlWidget(
-                                  AppUtils().commentString(
-                                      _comments[index].comment ?? ''),
+                                  AppUtils().commentString(_comments[index].comment ?? ''),
+                                  textStyle: CustomTextStyles.text12RegularW400,
                                 ),
 
                                 // Text(
@@ -420,9 +397,7 @@ class _InsertCommentsState extends State<InsertComments> {
                                 },
                                 child: Text(
                                   'Reply',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(13),
-                                  ),
+                                  style: CustomTextStyles.text12RegularW400,
                                 ),
                               ),
                               const Expanded(child: SizedBox()),
@@ -445,9 +420,7 @@ class _InsertCommentsState extends State<InsertComments> {
                                     children: [
                                       Text(
                                         _comments[index].likeCount ?? '',
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14),
-                                        ),
+                                        style: CustomTextStyles.text14SemiBoldW600,
                                       ),
                                       const SizedBox(
                                         width: 5,
@@ -548,100 +521,55 @@ class _InsertCommentsState extends State<InsertComments> {
                                                 },
                                                 child: Text(
                                                   element.firstName ?? '',
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                    ScreenUtil().setSp(13),
-                                                    color:
-                                                    AppColor.greyshade800,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                  style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade800,),
                                                 ),
                                               ),
                                               const Spacer(),
                                               Text(
                                                 '${AppUtils().calculateFormatDifference(element.createdDate ?? '')}',
-                                                style: TextStyle(
-                                                  color: AppColor.greyshade600,
-                                                  fontSize:
-                                                  ScreenUtil().setSp(11),
-                                                ),
+                                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
                                               ),
                                               SizedBox(
                                                 height: 30,
                                                 width: 30,
-                                                child: element.commentedBy ==
-                                                    AppConstants.myId
-                                                    ? PopupMenuButton(
-                                                    onSelected: (result) {
-                                                      if (result == 0) {
-                                                        print(
-                                                            'reply deleted');
-                                                        deleteTimeLineComment(
-                                                            '',
-                                                            element.id ?? '');
-                                                      } else if (result ==
-                                                          1) {
-                                                        print(
-                                                            "Editing Reply");
+                                                child: element.commentedBy == AppConstants.myId
+                                                    ? PopupMenuButton(onSelected: (result) {
+                                                      if (result == 1) {
+                                                        print('reply deleted');
+                                                        deleteTimeLineComment('', element.id ?? '');
+                                                      } else if (result == 0) {
+                                                        print("Editing Reply");
                                                         setState(() {
-                                                          updateComment =
-                                                          true;
-                                                          replyId =
-                                                              element.id ??
-                                                                  '';
-                                                          commentId = element
-                                                              .commentId ??
-                                                              "";
+                                                          updateComment = true;
+                                                          replyId = element.id ?? '';
+                                                          commentId = element.commentId ?? "";
                                                         });
                                                         print(replyId);
-                                                        print(
-                                                            "Editing Reply");
-                                                        String text =
-                                                            element.comment ??
-                                                                '';
+                                                        print("Editing Reply");
+                                                        String text = element.comment ?? '';
                                                         String finalText = "";
-                                                        if (text
-                                                            .contains("{")) {
-                                                          final startIndex =
-                                                          text.indexOf(
-                                                              "{");
-                                                          final endIndex =
-                                                          text.indexOf(
-                                                              "}");
-                                                          final jsonString =
-                                                          text.substring(
-                                                              startIndex,
-                                                              endIndex +
-                                                                  1);
-                                                          final decodedMap =
-                                                          json.decode(
-                                                              jsonString);
-                                                          finalText =
-                                                              text.replaceAll(
-                                                                  jsonString,
-                                                                  "@${decodedMap['name']}");
-                                                          key
-                                                              .currentState!
-                                                              .controller!
-                                                              .text = finalText;
+                                                        if (text.contains("{")) {
+                                                          final startIndex = text.indexOf("{");
+                                                          final endIndex = text.indexOf("}");
+                                                          final jsonString = text.substring(startIndex, endIndex + 1);
+                                                          final decodedMap = json.decode(jsonString);
+                                                          finalText = text.replaceAll(jsonString, "@${decodedMap['name']}");
+                                                          key.currentState!.controller!.text = finalText;
                                                         } else {
-                                                          key
-                                                              .currentState!
-                                                              .controller!
-                                                              .text = text;
+                                                          setState(() {
+                                                            key.currentState!.controller!.text = text;
+                                                          });
                                                         }
                                                       }
-                                                    }, itemBuilder:
-                                                    (context) {
-                                                  return [
-                                                    const PopupMenuItem(
+                                                    }, itemBuilder: (context) {
+                                                      return [
+                                                    PopupMenuItem(
                                                         value: 0,
-                                                        child: Text(
-                                                            'Delete')),
-                                                    const PopupMenuItem(
+                                                        child: Text('Edit', style: CustomTextStyles.text12RegularW400,)),
+                                                    PopupMenuItem(
                                                         value: 1,
                                                         child:
-                                                        Text('Edit')),
+                                                        Text('Delete', style: CustomTextStyles.text12RegularW400,)),
                                                   ];
                                                 })
                                                     : const SizedBox(),
@@ -651,10 +579,7 @@ class _InsertCommentsState extends State<InsertComments> {
                                           Text(
                                             AppUtils().commentString(
                                                 element.comment ?? ''),
-                                            style: TextStyle(
-                                              color: AppColor.greyshade800,
-                                              fontSize: ScreenUtil().setSp(13),
-                                            ),
+                                            style: CustomTextStyles.text12RegularW400,
                                             textAlign: TextAlign.left,
                                           ),
                                           if (element.commentImage != "")
@@ -1133,17 +1058,11 @@ class _InsertCommentsState extends State<InsertComments> {
                   children: [
                     Text(
                       'Replying to ',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                     Text(
                       replyName,
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: AppColor.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.black,),
                     ),
                   ],
                 ),
@@ -1155,7 +1074,7 @@ class _InsertCommentsState extends State<InsertComments> {
                   },
                   icon: Icon(
                     Icons.close,
-                    size: 20.h,
+                    size: 18.h,
                     color: AppColor.primaryColor,
                   ),
                   padding: EdgeInsets.zero,
@@ -1214,6 +1133,7 @@ class _InsertCommentsState extends State<InsertComments> {
                       ),
                       fillColor: AppColor.greyshade200,
                       hintText: replying ? "Write Reply" : "Add Comment",
+                      hintStyle: CustomTextStyles.text14SemiBoldW600,
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -1293,12 +1213,39 @@ class _InsertCommentsState extends State<InsertComments> {
                 ),
               ),
               IconButton(
-                onPressed: () async {
-                  if (key.currentState!.controller!.text != '' ||
-                      _imagePath != null) {
-                    if (replyId == '') {
-                      if (replying) {
-                        await insertReply('');
+                onPressed: ()   {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Future.delayed(Duration(seconds: 1), () async{
+                    print("Executed after 1 seconds");
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (key.currentState!.controller!.text != '' ||
+                        _imagePath != null) {
+                      if (replyId == '') {
+                        if (replying) {
+                          await insertReply('');
+                          key.currentState!.controller!.clear();
+                          FocusScope.of(context).unfocus();
+                          await setDataFromDB();
+                          setState(() {
+                            updateComment = false;
+                            replyId = '';
+                          });
+                        } else {
+                          await insertComment();
+                          key.currentState!.controller!.clear();
+                          FocusScope.of(context).unfocus();
+                          await setDataFromDB();
+                          setState(() {
+                            updateComment = false;
+                            commentId = '';
+                          });
+                        }
+                      } else {
+                        await insertReply(replyId);
                         key.currentState!.controller!.clear();
                         FocusScope.of(context).unfocus();
                         await setDataFromDB();
@@ -1306,29 +1253,14 @@ class _InsertCommentsState extends State<InsertComments> {
                           updateComment = false;
                           replyId = '';
                         });
-                      } else {
-                        await insertComment();
-                        key.currentState!.controller!.clear();
-                        FocusScope.of(context).unfocus();
-                        await setDataFromDB();
-                        setState(() {
-                          updateComment = false;
-                          commentId = '';
-                        });
                       }
-                    } else {
-                      await insertReply(replyId);
-                      key.currentState!.controller!.clear();
-                      FocusScope.of(context).unfocus();
-                      await setDataFromDB();
-                      setState(() {
-                        updateComment = false;
-                        replyId = '';
-                      });
                     }
-                  }
+                  });
                 },
-                icon: Icon(
+                icon: isLoading ? SizedBox(
+                    height: 25.h,
+                    width: 25.w,
+                    child: CircularProgressIndicator(color: AppColor.primaryColor,strokeWidth: 2,)) : Icon(
                   Icons.send,
                   size: 25.h,
                   color: AppColor.primaryColor,
@@ -1471,8 +1403,7 @@ class _InsertCommentsState extends State<InsertComments> {
     if (response is ErrorEntity) {
       print(response.message);
     } else {
-      InsertCommentEntity commentEntity =
-      InsertCommentEntity().fromJson(response);
+      InsertCommentEntity commentEntity = InsertCommentEntity().fromJson(response);
       if (commentEntity.success == 1) {
         setState(() {
           count++;
@@ -1503,44 +1434,91 @@ class _InsertCommentsState extends State<InsertComments> {
   }
 
   Future<void> insertReply(replyId) async {
-    var response = await ApiCalls.addReply(
-      text: key.currentState!.controller!.markupText,
-      commentId: commentId,
-      type: 'timeline',
-      imagePath: _imagePath,
-      replyId: replyId,
-    );
-    if (response is ErrorEntity) {
-      print(response.message);
-    } else {
-      ReplyEntity commentEntity = ReplyEntity.fromJson(jsonEncode(response));
-      if (commentEntity.success == 1) {
-        DBCommentReplie comment = DBCommentReplie(
-          id: commentEntity.result!.commentModel!.id,
-          commentId: commentEntity.result!.commentModel!.commentId,
-          commentedBy: commentEntity.result!.commentModel!.commentedBy,
-          firstName: commentEntity.result!.commentModel!.firstName,
-          type: 'timeline',
-          lastName: commentEntity.result!.commentModel!.lastName,
-          comment: commentEntity.result!.commentModel!.text,
-          createdDate: commentEntity.result!.commentModel!.createdDate,
-          userImage: commentEntity.result!.commentModel!.userImage,
-          commentImage: commentEntity.result!.commentModel!.commentImage,
-          imageType: commentEntity.result!.commentModel!.commentImageType,
-          likeCount: '0',
-          isLike: '0',
-          reaction: '',
-        );
-        database.insertCommentReply(comment);
-        setState(() {
-          updateComment = false;
-          replying = false;
-          _imagePath = null;
-          _imageFile = null;
-        });
-        setState(() {});
+    if (key.currentState != null && key.currentState!.controller != null) {
+      var response = await ApiCalls.addReply(
+        text: key.currentState!.controller!.markupText ?? '',
+        commentId: commentId,
+        type: 'timeline',
+        imagePath: _imagePath,
+        replyId: replyId,
+      );
+      // Rest of the code...
+
+      if (response is ErrorEntity) {
+        print("Erroe= ${response.message}");
+      } else {
+        print("reply= ${response}");
+        ReplyEntity commentEntity = ReplyEntity.fromJson(jsonEncode(response));
+        if (commentEntity.success == 1) {
+          DBCommentReplie comment = DBCommentReplie(
+            id: commentEntity.result?.commentModel?.id,
+            commentId: commentEntity.result?.commentModel?.commentId,
+            commentedBy: commentEntity.result?.commentModel?.commentedBy,
+            firstName: commentEntity.result?.commentModel?.firstName,
+            type: 'timeline',
+            lastName: commentEntity.result?.commentModel?.lastName,
+            comment: commentEntity.result?.commentModel?.text,
+            createdDate: commentEntity.result?.commentModel?.createdDate,
+            userImage: commentEntity.result?.commentModel?.userImage,
+            commentImage: commentEntity.result?.commentModel?.commentImage,
+            imageType: commentEntity.result?.commentModel?.commentImageType,
+            likeCount: '0',
+            isLike: '0',
+            reaction: '',
+          );
+          database.insertCommentReply(comment);
+          setState(() {
+            updateComment = false;
+            replying = false;
+            _imagePath = null;
+            _imageFile = null;
+          });
+          setState(() {});
+        }
       }
     }
+
+
+    //old
+    // var response = await ApiCalls.addReply(
+    //   text: key.currentState!.controller!.markupText,
+    //   commentId: commentId,
+    //   type: 'timeline',
+    //   imagePath: _imagePath,
+    //   replyId: replyId,
+    // );
+    // print("reply= ${response}");
+    // if (response is ErrorEntity) {
+    //   print(response.message);
+    // } else {
+    //   ReplyEntity commentEntity = ReplyEntity.fromJson(jsonEncode(response));
+    //   if (commentEntity.success == 1) {
+    //     DBCommentReplie comment = DBCommentReplie(
+    //       id: commentEntity.result!.commentModel!.id,
+    //       commentId: commentEntity.result!.commentModel!.commentId,
+    //       commentedBy: commentEntity.result!.commentModel!.commentedBy,
+    //       firstName: commentEntity.result!.commentModel!.firstName,
+    //       type: 'timeline',
+    //       lastName: commentEntity.result!.commentModel!.lastName,
+    //       comment: commentEntity.result!.commentModel!.text,
+    //       createdDate: commentEntity.result!.commentModel!.createdDate,
+    //       userImage: commentEntity.result!.commentModel!.userImage,
+    //       commentImage: commentEntity.result!.commentModel!.commentImage,
+    //       imageType: commentEntity.result!.commentModel!.commentImageType,
+    //       likeCount: '0',
+    //       isLike: '0',
+    //       reaction: '',
+    //     );
+    //     database.insertCommentReply(comment);
+    //     setState(() {
+    //       // updateComment = true;
+    //       // replying = true;
+    //       _imagePath = null;
+    //       _imageFile = null;
+    //     });
+    //     // setState(() {});
+    //   }
+    // }
   }
 
   Future<void> getConnectedUsers() async {

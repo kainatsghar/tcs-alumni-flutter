@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iobm/Views/more/about_screens/privacy_policy_screen.dart';
 import 'package:iobm/Views/more/about_us_screen.dart';
 import 'package:iobm/Widgets/sec_appbar.dart';
 import 'package:iobm/utils/app_color.dart';
@@ -9,6 +10,7 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../utils/text_styles.dart';
 import '../connect_screen.dart';
 import '../faq_screen.dart';
 import '../feedback_tle.dart';
@@ -42,9 +44,7 @@ class AboutOptionsView extends StatelessWidget {
                   ),
                   Text(
                     Strings.aboutUs,
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                    ),
+                    style: CustomTextStyles.text14SemiBoldW600,
                   ),
                 ],
               ),
@@ -78,9 +78,7 @@ class AboutOptionsView extends StatelessWidget {
                             ),
                             Text(
                               Strings.feedback,
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                              ),
+                              style: CustomTextStyles.text14SemiBoldW600,
                             ),
                           ],
                         ),
@@ -98,7 +96,7 @@ class AboutOptionsView extends StatelessWidget {
             height: 1.h,
           ),
           _buildMoreItem(
-              title: 'Connect',
+              title: 'Contact Us',
               icon: AppImages.contactMenu,
               onClicked: () {
                 Navigator.push(context,
@@ -124,17 +122,23 @@ class AboutOptionsView extends StatelessWidget {
           _buildMoreItem(
             title: 'Privacy Policy',
             icon: AppImages.privacy,
-            onClicked: () async {
-              if (await canLaunch(AppConstants.privacyUrl)) {
-                await launch(
-                  AppConstants.privacyUrl,
-                  forceSafariVC: false,
-                  forceWebView: false,
-                  headers: <String, String>{'my_header_key': 'my_header_value'},
-                );
-              } else {
-                throw 'Could not launch ${AppConstants.privacyUrl}';
-              }
+            // onClicked: () async {
+            //   if (await canLaunch(AppConstants.privacyUrl)) {
+            //     await launch(
+            //       AppConstants.privacyUrl,
+            //       forceSafariVC: true,
+            //       forceWebView: true,
+            //       headers: <String, String>{'my_header_key': 'my_header_value'},
+            //     );
+            //   } else {
+            //     throw 'Could not launch ${AppConstants.privacyUrl}';
+            //   }
+            // },
+            onClicked: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return const PrivacyPolicyScreen();
+                  }));
             },
           ),
           Divider(
@@ -164,10 +168,7 @@ class AboutOptionsView extends StatelessWidget {
             width: 12.w,
           ),
           Text(title!,
-              style: TextStyle(
-                // //Family: 'Nunito',
-                fontSize: ScreenUtil().setSp(15),
-              )),
+              style: CustomTextStyles.text14SemiBoldW600,),
         ],
       ),
       trailing: const Icon(

@@ -63,12 +63,12 @@ class _OtpScreenState extends State<OtpScreen> {
                 SizedBox(
                   height: 100.h,
                 ),
-                SvgPicture.asset(AppImages.otpIllustration),
+                widget.check ==  'forget' ? SvgPicture.asset(AppImages.forgotPassword) : SvgPicture.asset(AppImages.signupOtp),
                 SizedBox(
                   height: 35.h,
                 ),
                 Text(
-                  'Enter your registered mobile number to verify its you',
+                  'Please enter your registered mobile number to verify your identity.',
                   style: WidgetStyle.forgotTExtStyle(
                       fontSize: 14.0, color: AppColor.greyshade800),
                   textAlign: TextAlign.center,

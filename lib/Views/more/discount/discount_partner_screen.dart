@@ -71,7 +71,7 @@ class _DiscountPartnerScreenState extends State<DiscountPartnerScreen> {
               image: AssetImage(img),
               height: 20.h,
               color: AppColor.primaryColor,
-            ),
+            ), //TODO: discount icon
             SizedBox(
               width: 15.w,
             ),

@@ -16,6 +16,8 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../utils/text_styles.dart';
+
 class JobOpening extends StatefulWidget {
   const JobOpening({Key? key}) : super(key: key);
 
@@ -47,6 +49,7 @@ class JobOpeningState extends State<JobOpening> {
     _myJobs = [];
     _fetchData = getJobs();
 
+    // TODO: implement initState
     super.initState();
   }
 
@@ -60,10 +63,7 @@ class JobOpeningState extends State<JobOpening> {
         ),
         title: Text(
           Strings.jobs,
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(18),
-            fontWeight: FontWeight.w600,
-          ),
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
         centerTitle: true,
       ),
@@ -91,17 +91,11 @@ class JobOpeningState extends State<JobOpening> {
             tabs: [
               Text(
                 Strings.jobopening,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(15),
-                  fontWeight: FontWeight.bold,
-                ),
+                style: CustomTextStyles.text14SemiBoldW600,
               ),
               Text(
                 Strings.myjobs,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(15),
-                  fontWeight: FontWeight.bold,
-                ),
+                style: CustomTextStyles.text14SemiBoldW600,
               ),
             ],
           ),
@@ -145,6 +139,7 @@ class JobOpeningState extends State<JobOpening> {
       itemCount: _jobsList.length,
       itemBuilder: (context, index) {
         return Container(
+          padding: EdgeInsets.only(left: 16.w),
           decoration: const BoxDecoration(
               border: Border(
                   top: BorderSide(
@@ -162,48 +157,16 @@ class JobOpeningState extends State<JobOpening> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            _jobsList[index].designation ?? '',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: ScreenUtil().setSp(13),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            _jobsList[index].companyName ?? '',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: CustomWidget.linkBtn(
-                            title: AppConstants.link,
-                            onclick: () {
-                              setState(
-                                () {
-                                  _launched = _launchInBrowser(
-                                      _jobsList[index].joblink ?? '');
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        _jobsList[index].postedBy == AppConstants.myId
-                            ? const SizedBox(
-                                width: 5,
-                              )
-                            : const SizedBox(),
-                        _jobsList[index].postedBy == AppConstants.myId
-                            ? GestureDetector(
+                          Row(
+                            children: [
+                              Text(
+                                _jobsList[index].designation ?? '',
+                                style: CustomTextStyles.text14SemiBoldW600,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(width: 5.w,),
+                              _jobsList[index].postedBy == AppConstants.myId
+                                  ? GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -212,15 +175,16 @@ class JobOpeningState extends State<JobOpening> {
                                         return PostJobScreen(
                                           dueDate: _jobsList[index].duaDate,
                                           designation:
-                                              _jobsList[index].designation,
+                                          _jobsList[index].designation,
                                           jobLink: _jobsList[index].joblink,
                                           company:
-                                              _jobsList[index].companyName,
+                                          _jobsList[index].companyName,
                                           jobID: _jobsList[index].id,
                                         );
                                       },
                                     ),
                                   ).then((value) => getJobs());
+
                                   // Get.to(
                                   //   () => PostJobScreen(
                                   //     dueDate: _jobsList[index].duaDate,
@@ -235,56 +199,205 @@ class JobOpeningState extends State<JobOpening> {
                                 },
                                 child: const Icon(
                                   Icons.edit,
+                                  size: 15,
                                   color: AppColor.primaryColor,
                                 ),
                               )
-                            : Container(),
-                      ],
+                                  : Container(),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            _jobsList[index].companyName ?? '',
+                            style: CustomTextStyles.text12RegularW400,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Published By: ',
+                                style: CustomTextStyles.text12RegularW400,
+                              ),
+                              Text(
+                                _jobsList[index].firstName ?? '',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Due Date: ',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade500,),
+                              ),
+                              Text(
+                                _jobsList[index].duaDate ?? '',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 7.h,),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: CustomWidget.linkBtn(
+                                  title: AppConstants.link,
+                                  onclick: () {
+                                    setState(
+                                          () {
+                                        _launched = _launchInBrowser(
+                                            _jobsList[index].joblink ?? '');
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              _jobsList[index].postedBy == AppConstants.myId
+                                  ? const SizedBox(
+                                width: 5,
+                              )
+                                  : const SizedBox(),
+
+                              // _jobsList[index].postedBy == AppConstants.myId
+                              //     ? GestureDetector(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (BuildContext context) {
+                              //           return PostJobScreen(
+                              //             dueDate: _jobsList[index].duaDate,
+                              //             designation:
+                              //             _jobsList[index].designation,
+                              //             jobLink: _jobsList[index].joblink,
+                              //             company:
+                              //             _jobsList[index].companyName,
+                              //             jobID: _jobsList[index].id,
+                              //           );
+                              //         },
+                              //       ),
+                              //     ).then((value) => getJobs());
+                              //     // Get.to(
+                              //     //   () => PostJobScreen(
+                              //     //     dueDate: _jobsList[index].duaDate,
+                              //     //     designation:
+                              //     //         _jobsList[index].designation,
+                              //     //     jobLink: _jobsList[index].joblink,
+                              //     //     company: _jobsList[index].companyName,
+                              //     //     jobID: _jobsList[index].id,
+                              //     //   ),
+                              //     // )!
+                              //     //     .then((value) => getJobs());
+                              //   },
+                              //   child: const Icon(
+                              //     Icons.edit,
+                              //     color: AppColor.primaryColor,
+                              //   ),
+                              // )
+                              //     : Container(),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+
+                    // Row(
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () {},
+                    //       child: CustomWidget.linkBtn(
+                    //         title: AppConstants.link,
+                    //         onclick: () {
+                    //           setState(
+                    //             () {
+                    //               _launched = _launchInBrowser(
+                    //                   _jobsList[index].joblink ?? '');
+                    //             },
+                    //           );
+                    //         },
+                    //       ),
+                    //     ),
+                    //     _jobsList[index].postedBy == AppConstants.myId
+                    //         ? const SizedBox(
+                    //             width: 5,
+                    //           )
+                    //         : const SizedBox(),
+                    //     _jobsList[index].postedBy == AppConstants.myId
+                    //         ? GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                   builder: (BuildContext context) {
+                    //                     return PostJobScreen(
+                    //                       dueDate: _jobsList[index].duaDate,
+                    //                       designation:
+                    //                           _jobsList[index].designation,
+                    //                       jobLink: _jobsList[index].joblink,
+                    //                       company:
+                    //                           _jobsList[index].companyName,
+                    //                       jobID: _jobsList[index].id,
+                    //                     );
+                    //                   },
+                    //                 ),
+                    //               ).then((value) => getJobs());
+                    //               // Get.to(
+                    //               //   () => PostJobScreen(
+                    //               //     dueDate: _jobsList[index].duaDate,
+                    //               //     designation:
+                    //               //         _jobsList[index].designation,
+                    //               //     jobLink: _jobsList[index].joblink,
+                    //               //     company: _jobsList[index].companyName,
+                    //               //     jobID: _jobsList[index].id,
+                    //               //   ),
+                    //               // )!
+                    //               //     .then((value) => getJobs());
+                    //             },
+                    //             child: const Icon(
+                    //               Icons.edit,
+                    //               color: AppColor.primaryColor,
+                    //             ),
+                    //           )
+                    //         : Container(),
+                    //   ],
+                    // ),
                   ],
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Due Date: ',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(11),
-                          ),
-                        ),
-                        Text(
-                          _jobsList[index].duaDate ?? '',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(11),
-                            color: AppColor.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Published By: ',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(10),
-                          ),
-                        ),
-                        Text(
-                          _jobsList[index].firstName ?? '',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(10),
-                            color: AppColor.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+
+                // const SizedBox(
+                //   height: 3,
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Row(
+                //       children: [
+                //         Text(
+                //           'Due Date: ',
+                //           style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade500,),
+                //         ),
+                //         Text(
+                //           _jobsList[index].duaDate ?? '',
+                //           style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
+                //         ),
+                //       ],
+                //     ),
+                //     Row(
+                //       children: [
+                //         Text(
+                //           'Published By: ',
+                //           style: CustomTextStyles.text12RegularW400,
+                //         ),
+                //         Text(
+                //           _jobsList[index].firstName ?? '',
+                //           style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -321,19 +434,14 @@ class JobOpeningState extends State<JobOpening> {
                         children: [
                           Text(
                             _myJobs[index].designation ?? '',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: ScreenUtil().setSp(14),
-                            ),
+                            style: CustomTextStyles.text14SemiBoldW600,
                           ),
                           const SizedBox(
                             height: 2,
                           ),
                           Text(
                             _myJobs[index].companyName ?? '',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                            ),
+                            style: CustomTextStyles.text12RegularW400,
                           ),
                         ],
                       ),
@@ -394,17 +502,11 @@ class JobOpeningState extends State<JobOpening> {
                         children: [
                           Text(
                             'Due Date: ',
-                            style: TextStyle(
-                              color: AppColor.greyshade500,
-                              fontSize: ScreenUtil().setSp(10),
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade500,),
                           ),
                           Text(
                             _myJobs[index].duaDate ?? '',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(11),
-                              color: AppColor.primaryColor,
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
                           ),
                         ],
                       ),
@@ -412,16 +514,11 @@ class JobOpeningState extends State<JobOpening> {
                         children: [
                           Text(
                             'Published By: ',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(10),
-                            ),
+                            style: CustomTextStyles.text12RegularW400,
                           ),
                           Text(
                             _myJobs[index].firstName ?? '',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(10),
-                              color: AppColor.primaryColor,
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
                           ),
                         ],
                       ),

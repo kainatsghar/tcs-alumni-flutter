@@ -20,11 +20,18 @@ class ReplyEntity {
 
   String toJson() => json.encode(toMap());
 
+  // factory ReplyEntity.fromMap(Map<String, dynamic> json) => ReplyEntity(
+  //       success: json["success"],
+  //       message: json["message"],
+  //       result: Result.fromMap(json["result"]),
+  //     );
+
   factory ReplyEntity.fromMap(Map<String, dynamic> json) => ReplyEntity(
-        success: json["success"],
-        message: json["message"],
-        result: Result.fromMap(json["result"]),
-      );
+    success: json["success"],
+    message: json["message"],
+    result: json["result"] != null ? Result.fromMap(json["result"]) : null,
+  );
+
 
   Map<String, dynamic> toMap() => {
         "success": success,

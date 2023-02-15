@@ -15,7 +15,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
-import '../../Widgets/custom_widgets.dart';
+import '../../utils/text_styles.dart';
 import 'messages.dart';
 
 class ChatInvitationScreen extends StatefulWidget {
@@ -105,9 +105,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                       ),
                       Text(
                         'Something went wrong. Please try again later',
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                        ),
+                        style: CustomTextStyles.text14SemiBoldW600,
                       ),
                     ],
                   );
@@ -123,9 +121,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                 ),
                 Text(
                   'No Network Connection',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(18),
-                  ),
+                  style: CustomTextStyles.text16SemiBoldW600,
                 ),
               ],
             ),
@@ -220,11 +216,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           Expanded(
             child: Text(
               widget.name != '' ? widget.name ?? '' : name ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(15),
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
-              ),
+              style: CustomTextStyles.text16SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
             ),
           ),
         ],
@@ -255,57 +247,56 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           itemBuilder: (BuildContext context) {
             if (_status.status == "" || _status.status == AppConstants.INVITE) {
               return [
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 0,
-                  child: Text('View Profile'),
+                  child: Text('View Profile', style: CustomTextStyles.text12RegularW400,),
                 )
               ];
-            }
-            else if (_status.status == AppConstants.REJECT && _status.blockBy == AppConstants.myId) {
+            } else if (_status.status == AppConstants.REJECT &&
+                _status.blockBy == AppConstants.myId) {
               return [
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 1,
-                  child: Text('Accept'),
+                  child: Text('Accept', style: CustomTextStyles.text12RegularW400,),
                 ),
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 0,
-                  child: Text('View Profile'),
+                  child: Text('View Profile', style: CustomTextStyles.text12RegularW400,),
                 )
               ];
-            }
-            else if (_status.status == AppConstants.ACCEPT || _status.status == AppConstants.UNBLOCK) {
+            } else if (_status.status == AppConstants.ACCEPT ||
+                _status.status == AppConstants.UNBLOCK) {
               return [
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 0,
-                  child: Text('View Profile'),
+                  child: Text('View Profile', style: CustomTextStyles.text12RegularW400,),
                 ),
                 // const PopupMenuItem(
                 //   value: 4,
                 //   child: Text('Clear Chat'),
                 // ),
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 2,
-                  child: Text('Block'),
+                  child: Text('Block', style: CustomTextStyles.text12RegularW400,),
                 ),
               ];
-            }
-            else if (_status.status == AppConstants.BLOCK && _status.blockBy == AppConstants.myId) {
+            } else if (_status.status == AppConstants.BLOCK &&
+                _status.blockBy == AppConstants.myId) {
               return [
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 3,
-                  child: Text('Unblock'),
+                  child: Text('Unblock', style: CustomTextStyles.text12RegularW400,),
                 ),
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 0,
-                  child: Text('View Profile'),
+                  child: Text('View Profile', style: CustomTextStyles.text12RegularW400,),
                 ),
               ];
-            }
-            else {
+            } else {
               return [
-                const PopupMenuItem(
+                 PopupMenuItem(
                   value: 0,
-                  child: Text('View Profile'),
+                  child: Text('View Profile', style: CustomTextStyles.text12RegularW400,),
                 ),
               ];
             }
@@ -383,11 +374,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
               child: Center(
                 child: Text(
                   'Send Invitation',
-                  style: TextStyle(
-                    color: AppColor.white,
-                    fontSize: ScreenUtil().setSp(14),
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                 ),
               ),
             ),
@@ -417,11 +404,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
               child: Center(
                 child: Text(
                   Strings.invitationSent,
-                  style: TextStyle(
-                    color: AppColor.primaryColor,
-                    fontSize: ScreenUtil().setSp(14),
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
                 ),
               ),
             ),
@@ -587,8 +570,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
   }
 
   Future<void> sendInvitation(status) async {
-    print("_status= ${status}");
-
+    print(status);
     setState(() {
       wait = true;
     });
@@ -598,8 +580,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
       status: status,
     );
     if (response is ErrorEntity) {
-    }
-    else {
+    } else {
       GetInvitationEntity entity = GetInvitationEntity().fromJson(response);
       if (entity.success == 1) {
         _status = ChatInvitation(
@@ -608,8 +589,10 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           status: entity.result.status,
           blockBy: entity.result.blockBy,
         );
+        setState(() {
+
+        });
       }
-      print("_status.blockBy= ${_status.status}");
     }
     setState(() {
       wait = false;
@@ -634,8 +617,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
           blockBy: invitationEntity.result.blockBy,
           name: invitationEntity.result.receiver.firstName,
           image: invitationEntity.result.receiver.image,
+          // devices: invitationEntity.result.devices,
         );
-        print("_status.blocked= ${_status.status}");
         for (var element in invitationEntity.result.devices) {
           _userDevices.add(
             UserDevices(

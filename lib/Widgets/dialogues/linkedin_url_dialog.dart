@@ -11,6 +11,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_utils.dart';
 
+import '../../utils/text_styles.dart';
+
 class LinkedInDialog extends StatefulWidget {
   final String? linkedInUrl;
   const LinkedInDialog({Key? key, this.linkedInUrl}) : super(key: key);
@@ -32,7 +34,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       elevation: 16,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -55,10 +57,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
             ),
             Text(
               "Paste Your LinkedIn Profile URL",
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  color: AppColor.black,
-                  fontWeight: FontWeight.bold),
+              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
             ),
             SizedBox(
               height: 15.h,
@@ -67,11 +66,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Member will be able to view profile by clicking that button",
-                style: TextStyle(
-                  // fontFamily: 'Nunito',
-                  fontSize: 12.sp,
-                  color: AppColor.black54,
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
               ),
             ),
             SizedBox(
@@ -86,7 +81,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: TextField(
-                    style: TextStyle(fontSize: 13.sp,color: AppColor.black54),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54),
                     controller: _urlController,
                     decoration: const InputDecoration(
                         border: InputBorder.none, hintText: "www.LinkedIn.com"),
@@ -123,9 +118,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
                     },
                     child: Text(
                       'View',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
                 ),
@@ -152,9 +145,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
                     },
                     child: Text(
                       'Save',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
                 )

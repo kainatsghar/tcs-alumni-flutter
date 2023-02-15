@@ -11,6 +11,8 @@ import 'package:iobm/networkcalls/response_models/youtube_entity.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iobm/utils/app_constants.dart';
 
+import '../../utils/text_styles.dart';
+
 class YoutubeChannelScreen extends StatefulWidget {
   const YoutubeChannelScreen({Key? key}) : super(key: key);
 
@@ -99,17 +101,15 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
                         ),
                         Text(
                           _youtubeVideos[index].title ?? '',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: CustomTextStyles.text14SemiBoldW600,
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 3,
                         ),
                         Text(
                           convertDateTimeDisplay(
                               _youtubeVideos[index].publishedAt ?? ''),
+                          style: CustomTextStyles.text12RegularW400,
                         )
                       ],
                     ),

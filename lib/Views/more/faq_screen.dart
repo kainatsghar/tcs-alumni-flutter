@@ -4,6 +4,7 @@ import 'package:iobm/local_db/local_db.dart';
 import 'package:iobm/models/data_fetched.dart';
 import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_color.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 import 'customexpansiontile.dart';
 
@@ -33,14 +34,12 @@ class _FaqScreenState extends State<FaqScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
           shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
           backgroundColor: AppColor.primaryColor,
           title: Text(
             'FAQ\'s',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(15),
-            ),
+            style: CustomTextStyles.text16SemiBoldW600,
           )),
       body: dataFetched
           ? _body()
@@ -65,11 +64,7 @@ class _FaqScreenState extends State<FaqScreen> {
       collapsedIconColor: AppColor.black26,
       title: Text(
         _faqs[index].question ?? '',
-        style: TextStyle(
-          fontSize: ScreenUtil().setSp(15),
-          color: AppColor.primaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
       ),
       children: [
         Padding(
@@ -80,10 +75,7 @@ class _FaqScreenState extends State<FaqScreen> {
             color: AppColor.white,
             child: Text(
               _faqs[index].questionAnswer ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(13),
-                // //Family: 'Nunito',
-              ),
+              style: CustomTextStyles.text12RegularW400,
             ),
           ),
         ),

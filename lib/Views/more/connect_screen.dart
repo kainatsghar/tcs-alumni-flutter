@@ -14,6 +14,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
+import '../../utils/text_styles.dart';
 
 class ConnectScreen extends StatefulWidget {
   const ConnectScreen({Key? key}) : super(key: key);
@@ -78,14 +79,12 @@ class ConnectScreenState extends State<ConnectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           shape:
               Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
           title: Text(
             Strings.connect,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: ScreenUtil().setSp(15),
-            ),
+            style: CustomTextStyles.text16SemiBoldW600,
           ),
         ),
         body: dataFetched
@@ -119,17 +118,13 @@ class ConnectScreenState extends State<ConnectScreen> {
             children: [
               Text(
                 "Ver. $versionCode",
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(13),
-                ),
+                style: CustomTextStyles.text12RegularW400,
               ),
               Row(
                 children: [
                   Text(
                     "Product By",
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(13),
-                    ),
+                    style: CustomTextStyles.text12RegularW400,
                   ),
                   const SizedBox(
                     width: 3,
@@ -163,10 +158,7 @@ class ConnectScreenState extends State<ConnectScreen> {
         children: [
           Text(
             Strings.alumniaffairs,
-            style: TextStyle(
-                // //Family: 'Nunito',
-                fontWeight: FontWeight.bold,
-                fontSize: 13.sp),
+            style: CustomTextStyles.text14SemiBoldW600,
           ),
           SizedBox(
             height: 10.h,
@@ -254,12 +246,9 @@ class ConnectScreenState extends State<ConnectScreen> {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              color: isUnderling ? AppColor.primaryColor : AppColor.black,
+            style: CustomTextStyles.text12RegularW400.copyWith(color: isUnderling ? AppColor.primaryColor : AppColor.black,
               decoration:
-                  isUnderling ? TextDecoration.underline : TextDecoration.none,
-              fontSize: ScreenUtil().setSp(12),
-            ),
+              isUnderling ? TextDecoration.underline : TextDecoration.none,),
           ),
         )
       ],
@@ -285,12 +274,9 @@ class ConnectScreenState extends State<ConnectScreen> {
         ),
         Text(
           text,
-          style: TextStyle(
-            color: isUnderling ? AppColor.primaryColor : AppColor.black,
+          style: CustomTextStyles.text12RegularW400.copyWith(color: isUnderling ? AppColor.primaryColor : AppColor.black,
             decoration:
-                isUnderling ? TextDecoration.underline : TextDecoration.none,
-            fontSize: ScreenUtil().setSp(12),
-          ),
+            isUnderling ? TextDecoration.underline : TextDecoration.none,),
         ),
         const SizedBox(
           width: 5.0,
@@ -312,13 +298,13 @@ class ConnectScreenState extends State<ConnectScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Follow us on Social Media:',
-              style: WidgetStyle.boldFont(fontsize: 13.0.sp)),
+              style: CustomTextStyles.text14SemiBoldW600),
           SizedBox(
             height: 10.h,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _contact.whatsappLink != null
                   ? Padding(

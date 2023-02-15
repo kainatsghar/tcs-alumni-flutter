@@ -49,6 +49,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../networkcalls/response_models/get_invitation_entity.dart';
+import '../../utils/text_styles.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({this.userID});
@@ -127,9 +128,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _fetchData = getUserInfo();
+
     loadDesignations();
     loadCompanies();
 
+    // TODO: implement initState
     super.initState();
   }
 
@@ -137,39 +140,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: (){
-        //_firebaseRemote();
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              height: height * 0.4,
-              width: width,
-              color: AppColor.primaryColor,
-            ),
-            FutureBuilder(
-              future: _fetchData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Stack(
-                    children: [
-                      buildScreenWidget(height: height),
-                      wait
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Container(),
-                    ],
-                  );
-                } else {
-                  return buildScreenWidget(height: height);
-                }
-              },
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            height: height * 0.4,
+            width: width,
+            color: AppColor.primaryColor,
+          ),
+          FutureBuilder(
+            future: _fetchData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Stack(
+                  children: [
+                    buildScreenWidget(height: height),
+                    wait
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(),
+                  ],
+                );
+              } else {
+                return buildScreenWidget(height: height);
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -242,16 +240,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Row(
                             children: [
-                              Flexible(
+                              SizedBox(
                                 child: Text(
-                                  "${oneUser?.firstName ?? "-"} ${oneUser?.lastName??"-"}",
+                                  "${oneUser?.firstName} ${oneUser?.lastName}",
                                   maxLines: 2,
-                                  style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: ScreenUtil().setSp(14),
-                                    color: AppColor.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis, color: AppColor.white,),
                                 ),
                               ),
                               SizedBox(
@@ -284,10 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           oneUser?.userId == AppConstants.myId
                               ? Text(
                                   oneUser?.email ?? '-',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(12),
-                                    color: AppColor.white,
-                                  ),
+                                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                                 )
                               : const SizedBox(),
                           SizedBox(
@@ -308,10 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             oneUser?.designation == ''
                                 ? '-'
                                 : oneUser?.designation ?? '-',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: AppColor.white,
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                           ),
                           SizedBox(
                             height: 5.h,
@@ -320,10 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             oneUser?.organizationName == ''
                                 ? '-'
                                 : oneUser?.organizationName ?? '-',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: AppColor.white,
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                           ),
                           SizedBox(
                             height: 5.h,
@@ -332,10 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             oneUser?.currentCityName == ''
                                 ? '-'
                                 : oneUser?.currentCityName ?? '-',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: AppColor.white,
-                            ),
+                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                           ),
                           // SizedBox(
                           //   height: 5.h,
@@ -380,9 +361,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                         child: Text(
                                           'Connect',
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(12),
-                                          ),
+                                          style: CustomTextStyles.text12RegularW400,
                                         ),
                                       ),
                                     )
@@ -404,11 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ),
                                                 child: Text(
                                                   'Pending',
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(12),
-                                                    color: AppColor.white,
-                                                  ),
+                                                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                                                 ),
                                               ),
                                             ),
@@ -435,10 +410,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ),
                                                 child: Text(
                                                   Strings.cancel,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(12),
-                                                  ),
+                                                  style: CustomTextStyles.text12RegularW400,
                                                 ),
                                               ),
                                             )
@@ -470,11 +442,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                     child: Text(
                                                       'Accept',
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12),
-                                                        color: AppColor.white,
-                                                      ),
+                                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                                                     ),
                                                   ),
                                                 ),
@@ -502,11 +470,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                     child: Text(
                                                       Strings.reject,
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12),
-                                                        color: Colors.white,
-                                                      ),
+                                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                                                     ),
                                                   ),
                                                 )
@@ -535,10 +499,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                     child: Text(
                                                       Strings.remove,
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(12),
-                                                      ),
+                                                      style: CustomTextStyles.text12RegularW400,
                                                     ),
                                                   ),
                                                 )
@@ -716,7 +677,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: onPressed,
       child: Image(
         image: AssetImage(mediaIcon),
-        height: 28.w,
+        height: 28.h,
         width: 28.w,
       ),
     );
@@ -831,6 +792,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          style: CustomTextStyles.text12RegularW400,
                           minLines: 1,
                           maxLines: 5,
                           controller: _aboutController,
@@ -884,10 +846,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         textAlign: TextAlign.start,
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppColor.grey,
-                          fontSize: ScreenUtil().setSp(14),
-                        ),
+                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.grey,),
                       ),
                     ),
                   ),
@@ -927,6 +886,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: TextField(
+                            style: CustomTextStyles.text12RegularW400,
                             controller: _interestController,
                             // controller: emailController,
                             maxLength: 17,
@@ -1022,10 +982,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Text(
                               values[i] ?? '',
                               textAlign: TextAlign.start,
-                              style: WidgetStyle.forgotTExtStyle(
-                                color: AppColor.white,
-                                fontSize: ScreenUtil().setSp(14),
-                              ),
+                              style: CustomTextStyles.text12RegularW400.copyWith( color: AppColor.white,),
                             ),
                           ),
                       ],
@@ -1060,10 +1017,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Text(
                                         values[i] ?? '',
                                         textAlign: TextAlign.start,
-                                        style: WidgetStyle.forgotTExtStyle(
-                                          color: AppColor.white,
-                                          fontSize: ScreenUtil().setSp(14),
-                                        ),
+                                        style: CustomTextStyles.text12RegularW400.copyWith( color: AppColor.white,),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -1134,11 +1088,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         'No Experience Added',
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          color: AppColor.black45,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black45,),
                       ),
                     )
                   : ListView.builder(
@@ -1451,11 +1401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     'No Education Added',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                      color: AppColor.black45,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black45,),
                   ),
                 )
               : ListView.builder(

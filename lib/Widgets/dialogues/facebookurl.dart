@@ -11,6 +11,7 @@ import '../../networkcalls/response_models/edit_linkedin_entity.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/text_styles.dart';
 
 class FacebookUrl extends StatefulWidget {
   final String? facebookUrl;
@@ -25,6 +26,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _urlController.text = widget.facebookUrl ?? '';
   }
@@ -54,11 +56,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
             ),
             Text(
               "Paste Your Facebook Profile URL",
-              style: TextStyle(
-                  // fontFamily: 'Nunito',
-                  fontSize: 14.sp,
-                  color: AppColor.black,
-                  fontWeight: FontWeight.bold),
+              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black,),
             ),
             SizedBox(
               height: 15.h,
@@ -67,11 +65,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Member will be able to view profile by clicking that button",
-                style: TextStyle(
-                  // fontFamily: 'Nunito',
-                  fontSize: 12.sp,
-                  color: AppColor.black,
-                ),
+                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,),
               ),
             ),
             SizedBox(
@@ -86,7 +80,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: TextField(
-                    style: TextStyle(fontSize: 13.sp),
+                    style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54),
                     controller: _urlController,
                     decoration: const InputDecoration(
                         border: InputBorder.none, hintText: "www.facebook.com"),
@@ -123,9 +117,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
                     },
                     child: Text(
                       'View',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
                 ),
@@ -152,9 +144,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
                     },
                     child: Text(
                       'Save',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
                 ),

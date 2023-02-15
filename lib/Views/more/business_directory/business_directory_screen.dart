@@ -16,6 +16,7 @@ import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 import 'business_directory_details.dart';
 
@@ -48,6 +49,7 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
       });
     });
 
+    // TODO: implement initState
     super.initState();
   }
 
@@ -155,15 +157,12 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
             child: SizedBox(
               height: 30,
               child: TextField(
-                style: TextStyle(fontSize: 13.sp),
+                style: CustomTextStyles.text12RegularW400,
                 // cursorHeight: 18.h,
                 controller: _searchItems,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  hintStyle: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    color: AppColor.black38,
-                  ),
+                  hintStyle: CustomTextStyles.text12RegularW400,
                   contentPadding: const EdgeInsets.only(bottom: 10),
                   border: const UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -227,11 +226,7 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
                             child: Center(
                               child: Text(
                                 AppUtils().splitText(name!) ?? '',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(15),
-                                  color: AppColor.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.white,),
                               ),
                             ),
                           ),
@@ -249,11 +244,7 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
                           child: Center(
                             child: Text(
                               AppUtils().splitText(name!) ?? '',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(16),
-                                color: AppColor.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.white,),
                             ),
                           ),
                         ),
@@ -261,11 +252,11 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
               ),
               title: Text(
                 name ?? '',
-                style: WidgetStyle.boldFont(fontsize: 14.0.sp),
+                style: CustomTextStyles.text14SemiBoldW600,
               ),
               subtitle: Text(
                 "$workers fellow here",
-                style: const TextStyle(color: AppColor.black),
+                style:  CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black),
               ),
             ),
           ),

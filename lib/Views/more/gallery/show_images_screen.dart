@@ -9,6 +9,8 @@ import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/text_styles.dart';
+
 class ShowImagesScreen extends StatefulWidget {
   final String? galleryId;
   final String? galleryTitle;
@@ -24,6 +26,7 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
 
   @override
   void initState() {
+    // TODO: implement initState
     _galleryImages = [];
     _fetchData = getImages();
 
@@ -37,10 +40,7 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
         centerTitle: true,
         title: Text(
           Strings.gallery,
-          style: TextStyle(
-              // //Family: 'Nunito',
-              // fontWeight: FontWeight.w600,
-              fontSize: 20.sp),
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
       ),
       body: FutureBuilder(
@@ -134,10 +134,7 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
         padding: const EdgeInsets.all(6.0),
         child: Text(
           widget.galleryTitle ?? "",
-          style: TextStyle(
-              // //Family: 'Nunito',
-              fontSize: ScreenUtil().setSp(14),
-              color: const Color(0xff1E398D)),
+          style: CustomTextStyles.text14SemiBoldW600.copyWith(color: const Color(0xff1E398D)),
         ),
       )),
     );

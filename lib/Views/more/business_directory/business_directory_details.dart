@@ -17,6 +17,7 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 class BusinessDirectoryDetail extends StatefulWidget {
   final String? name;
@@ -113,11 +114,7 @@ class _BusinessDirectoryDetailState extends State<BusinessDirectoryDetail> {
                                   child: Center(
                                     child: Text(
                                       AppUtils().splitText(widget.name!) ?? '',
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(14),
-                                        color: AppColor.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.white,),
                                     ),
                                   ),
                                 ),
@@ -129,7 +126,7 @@ class _BusinessDirectoryDetailState extends State<BusinessDirectoryDetail> {
                     ),
                     Text(
                       widget.name ?? '',
-                      style: boldText(),
+                      style: CustomTextStyles.text14SemiBoldW600,
                     ),
                   ],
                 ),
@@ -194,12 +191,10 @@ class _BusinessDirectoryDetailState extends State<BusinessDirectoryDetail> {
             child: SizedBox(
               height: 30,
               child: TextField(
+                style: CustomTextStyles.text12RegularW400,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  hintStyle: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    color: AppColor.black38,
-                  ),
+                  hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
                   contentPadding: const EdgeInsets.only(bottom: 10),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(

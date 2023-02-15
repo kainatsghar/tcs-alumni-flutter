@@ -39,6 +39,7 @@ import 'package:iobm/utils/strings.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../utils/text_styles.dart';
 import 'business_directory/business_directory_screen.dart';
 
 import 'gallery/gallery_screen.dart';
@@ -55,6 +56,7 @@ class MoreScreen extends StatefulWidget {
 class MoreScreenState extends State<MoreScreen> {
   @override
   void initState() {
+    // TODO: implement initState
 
     super.initState();
   }
@@ -317,15 +319,14 @@ class MoreScreenState extends State<MoreScreen> {
                             Icon(
                               (Icons.video_collection),
                               size: 24.h,
+                              color: AppColor.black,
                             ),
                             SizedBox(
                               width: 10.w,
                             ),
                             Text(
                               Strings.youtubechannel,
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                              ),
+                              style: CustomTextStyles.text14SemiBoldW600,
                             ),
                           ],
                         ),
@@ -395,9 +396,7 @@ class MoreScreenState extends State<MoreScreen> {
                   ),
                   Text(
                     Strings.help,
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                    ),
+                    style: CustomTextStyles.text14SemiBoldW600,
                   ),
                 ],
               ),
@@ -440,10 +439,7 @@ class MoreScreenState extends State<MoreScreen> {
               width: 12.w,
             ),
             Text(title!,
-                style: TextStyle(
-                  // //Family: 'Nunito',
-                  fontSize: ScreenUtil().setSp(14),
-                )),
+                style: CustomTextStyles.text14SemiBoldW600),
           ],
         ),
         trailing: const Icon(

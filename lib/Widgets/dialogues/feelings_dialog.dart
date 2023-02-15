@@ -19,6 +19,7 @@ class _FeelingsDialogState extends State<FeelingsDialog> {
 
   @override
   void initState() {
+    // TODO: implement initState
     _fetchData = _feelingController.getFeelings();
     super.initState();
   }

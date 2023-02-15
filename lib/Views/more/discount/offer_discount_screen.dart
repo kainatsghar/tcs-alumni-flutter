@@ -12,6 +12,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/text_styles.dart';
+
 class OfferDiscount extends StatefulWidget {
   const OfferDiscount({Key? key}) : super(key: key);
 
@@ -27,11 +29,10 @@ class OfferDiscountState extends State<OfferDiscount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           Strings.offerediscount,
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(18),
-          ),
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
         shape: Border(
           bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
@@ -53,17 +54,14 @@ class OfferDiscountState extends State<OfferDiscount> {
                 ),
                 Text(
                   'Please enter details of discount',
-                  style: TextStyle(
-                    color: AppColor.primaryColor,
-                    fontSize: ScreenUtil().setSp(18),
-                    // fontWeight: FontWeight.w600,
-                  ),
+                  style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
                 ),
                 SizedBox(
                   height: 12.h,
                 ),
                 TextFormField(
                   controller: _detailsController,
+                  style: CustomTextStyles.text12RegularW400,
                   validator: (value) {
                     return value!.isEmpty
                         ? 'Please Enter Discount Information'
@@ -73,9 +71,7 @@ class OfferDiscountState extends State<OfferDiscount> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Discount Details here',
-                    hintStyle: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                    ),
+                    hintStyle: CustomTextStyles.text12RegularW400,
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
                     border: OutlineInputBorder(
@@ -136,18 +132,14 @@ class OfferDiscountState extends State<OfferDiscount> {
                 children: [
                   Text(
                     'Alert',
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        fontWeight: FontWeight.bold),
+                    style: CustomTextStyles.text14SemiBoldW600,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
                     offerEntity.message,
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14),
-                    ),
+                    style: CustomTextStyles.text12RegularW400,
                   ),
                   const SizedBox(
                     height: 10,
@@ -162,11 +154,7 @@ class OfferDiscountState extends State<OfferDiscount> {
                         child: Center(
                           child: Text(
                             "OK",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.primaryColor,),
                           ),
                         )),
                   ),

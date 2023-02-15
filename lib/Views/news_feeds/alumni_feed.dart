@@ -53,6 +53,8 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:share/share.dart';
 
+import '../../utils/text_styles.dart';
+
 class AlumniFeed extends StatefulWidget {
   const AlumniFeed({Key? key}) : super(key: key);
 
@@ -121,6 +123,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   @override
   void dispose() {
+    // TODO: implement dispose
     _scrollController.dispose();
     super.dispose();
   }
@@ -133,6 +136,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
       appBar: MyAppBar(
         title: Text(
           Strings.alumnifeed,
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
         context: context,
       ),
@@ -214,7 +218,8 @@ class _AlumniFeedState extends State<AlumniFeed> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40.0),
                       border: Border.all(
-                        color: const Color(0xFFa8a8a8),
+                        color: AppColor.SYT,
+                        width: 1
                       ),
                     ),
                     margin: const EdgeInsets.only(left: 20.0, right: 10.0),
@@ -224,10 +229,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                       child: Text(
                         'Share your thoughts',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          color: const Color(0xFFa8a8a8),
-                        ),
+                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.SYT),
                       ),
                     ),
                   ),
@@ -242,7 +244,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () {
-              getStories();
               return loadTimeLinePosts();
             },
             child: SingleChildScrollView(
@@ -421,12 +422,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                       child: Text(
                                         '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
                                         maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(13),
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                        style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
                                       ),
                                     ),
                                   ),
@@ -551,19 +547,20 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                 ],
                               ),
                               const SizedBox(
-                                height: 3,
+                                height: 1,
                               ),
                               Text(
                                 '${_postsTimeLine[index].createdAt}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(11),
-                                  color: AppColor.black54,
-                                ),
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,)
                               )
                             ],
                           ),
                         ),
                         PopupMenuButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.r)
+                          ),
+                          constraints:  BoxConstraints.expand(width: 100.w, height: 35.h),
                           onSelected: (result) async {
                             if (result == 0) {
                               deleteTimeLinePost(
@@ -587,16 +584,22 @@ class _AlumniFeedState extends State<AlumniFeed> {
                             if (_postsTimeLine[index].createdBy ==
                                 AppConstants.myId) {
                               return [
-                                const PopupMenuItem(
+                                 PopupMenuItem(
                                   value: 0,
-                                  child: Text('Delete Post'),
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(bottom: 22),
+                                    child: Text('Delete Post', style: CustomTextStyles.text12RegularW400,),
+                                  ),
                                 )
                               ];
                             } else {
                               return [
-                                const PopupMenuItem(
+                                 PopupMenuItem(
                                   value: 1,
-                                  child: Text('Report'),
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(left: 14,bottom: 22),
+                                    child: Text('Report', style: CustomTextStyles.text12RegularW400,),
+                                  ),
                                 )
                               ];
                             }
@@ -611,11 +614,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                     padding: const EdgeInsets.all(10.0),
                     child: HtmlWidget(
                       AppUtils().htmlString(_postsTimeLine[index].text ?? ''),
-                      textStyle: TextStyle(
-                        fontSize: ScreenUtil().setSp(12),
-                        color: Colors.black,
-                        wordSpacing: 1,
-                      ),
+                      textStyle: CustomTextStyles.text12RegularW400.copyWith(color: Colors.black, wordSpacing: 1,),
                     ),
                   ),
                   _postsTimeLine[index].postImages!.isNotEmpty
@@ -1088,7 +1087,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   //region Horizontal Lion
                   Container(
                     color: const Color(0xFFa8a8a8),
-                    height: 1.0,
+                    height: 0.5,
                   ),
                   //endregion
                   //region Like, share, comment box
@@ -1223,7 +1222,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   //region Horizontal Lion
                   Container(
                     color: const Color(0xFFa8a8a8),
-                    height: 1.0,
+                    height: 0.5,
                   ),
                   //endregion
                 ],
@@ -1568,17 +1567,26 @@ class _AlumniFeedState extends State<AlumniFeed> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding:  EdgeInsets.only(left: 10.w,top: 16.h),
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: AppColor.black,
+                  ),
+                ),
+              ),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
                   'Why are you reporting this?',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(18),
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: CustomTextStyles.text14SemiBoldW600,
                 ),
               ),
               const SizedBox(
@@ -1610,10 +1618,9 @@ class _AlumniFeedState extends State<AlumniFeed> {
                               },
                               title: Text(
                                 _reportTypes[index].reportText ?? '',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(14),
-                                ),
+                                style: CustomTextStyles.text12RegularW400,
                               ),
+                              trailing: Icon(Icons.arrow_forward,color: Colors.black,),
                             ),
                             Divider(
                               height: 1.h,
@@ -1969,10 +1976,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                       child: Text(
                         'Create Story',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: AppColor.white,
-                        ),
+                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
                       ),
                     ),
                   ],

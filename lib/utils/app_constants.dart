@@ -83,4 +83,5 @@ class AppConstants {
       "One centralized area to post or view job opportunities and internships. Post and find talent.";
 
   static const String whatsAppNumber = '+923354604843';
+  static const String pushNotificationKey = 'key=AAAAsgp6bIs:APA91bFB3yMPrQDdiTQ7TvNkQijEuZaXFqEtchHutoNuJf5wYWlfQ5hc8gaydHlpZh6gQaY63cO6jXz82qirXxARWoyRrf-k056aT3xi51Bia4jx6eSvBgyvHdqAk98LILWNwxUbFauN';
 }

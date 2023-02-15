@@ -18,6 +18,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/text_styles.dart';
+
 class PostJobScreen extends StatefulWidget {
   final String? designation;
   final String? company;
@@ -141,18 +143,11 @@ class _PostJobScreenState extends State<PostJobScreen> {
       children: [
         Text(
           title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: ScreenUtil().setSp(15),
-          ),
+          style: CustomTextStyles.text14SemiBoldW600,
         ),
         Text(
           star,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: ScreenUtil().setSp(15),
-            color: AppColor.redshade900,
-          ),
+          style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.redshade900,),
         )
       ],
     );
@@ -160,7 +155,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
 
   designationTextField() {
     return TextFormField(
-        style: TextStyle(fontSize: 13.sp),
+        style: CustomTextStyles.text12RegularW400,
         textCapitalization: TextCapitalization.words,
         validator: (value) {
           return value!.isEmpty ? 'Enter Designation' : null;
@@ -172,7 +167,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
 
   companyTextField() {
     return TextFormField(
-        style: TextStyle(fontSize: 13.sp),
+        style: CustomTextStyles.text12RegularW400,
         validator: (value) {
           return value!.isEmpty ? 'Enter Company Name' : null;
         },
@@ -183,7 +178,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
 
   jobLinkTextField() {
     return TextFormField(
-        style: TextStyle(fontSize: 13.sp),
+        style: CustomTextStyles.text12RegularW400,
         validator: (value) {
           return value!.isEmpty ? 'Enter Link' : null;
         },
@@ -194,6 +189,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
 
   dueDateTextField() {
     return TextFormField(
+      style: CustomTextStyles.text12RegularW400,
         validator: (value) {
           return value!.isEmpty ? 'Enter Date' : null;
         },

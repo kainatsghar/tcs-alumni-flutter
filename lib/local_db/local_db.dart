@@ -57,7 +57,7 @@ MyDatabase database = MyDatabase();
 
 LazyDatabase _openConnection() {
   return LazyDatabase(
-    () async {
+        () async {
       final dbFolder = await getApplicationDocumentsDirectory();
       final file = File(p.join(dbFolder.path, 'db_alumni.sqlite'));
       return VmDatabase(file, logStatements: false);
@@ -158,7 +158,7 @@ class MyDatabase extends _$MyDatabase {
     _select.where((tbl) => tbl.userId.equals(userId));
     _select.orderBy(
       [
-        (t) => OrderingTerm(expression: t.endDate, mode: OrderingMode.asc),
+            (t) => OrderingTerm(expression: t.endDate, mode: OrderingMode.asc),
       ],
     );
     return _select.get();
@@ -251,22 +251,22 @@ class MyDatabase extends _$MyDatabase {
   }
 
   Future<List<DBAllUser>> getCompanyUsers(String company) => (select(dBAllUsers)
-        ..where((tbl) => (tbl.organizationName.equals(company))))
+    ..where((tbl) => (tbl.organizationName.equals(company))))
       .get();
 
   Future deleteAllUsers() => delete(dBAllUsers).go();
 
   Future deleteSpecificUser(
-    String company,
-    String isConnected,
-    String isMentor,
-    String graduationYear,
-    String country,
-    String city,
-    String industry,
-    String name,
-    String branch,
-  ) {
+      String company,
+      String isConnected,
+      String isMentor,
+      String graduationYear,
+      String country,
+      String city,
+      String industry,
+      String name,
+      String branch,
+      ) {
     final _delete = delete(dBAllUsers);
     if (company != '') {
       _delete.where((tbl) => tbl.companyId.equals(company));
@@ -538,12 +538,12 @@ class MyDatabase extends _$MyDatabase {
   }
 
   Future updateJobs(
-    String id,
-    String designation,
-    String company,
-    String jobLink,
-    String dueDate,
-  ) {
+      String id,
+      String designation,
+      String company,
+      String jobLink,
+      String dueDate,
+      ) {
     return (update(dBJobs)..where((t) => t.id.equals(id))).write(
       DBJob(
         designation: designation,
@@ -579,12 +579,12 @@ class MyDatabase extends _$MyDatabase {
   }
 
   Future updateSingleWorkOrder(
-    String id,
-    String designation,
-    String company,
-    String document,
-    String dueDate,
-  ) {
+      String id,
+      String designation,
+      String company,
+      String document,
+      String dueDate,
+      ) {
     return (update(dBWorkOrders)..where((t) => t.id.equals(id))).write(
       DBWorkOrder(
         designation: designation,

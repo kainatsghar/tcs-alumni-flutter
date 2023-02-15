@@ -191,13 +191,13 @@ class ApiCalls {
   }
 
   static postJob(
-    designation,
-    companyName,
-    jobUrl,
-    postedBy,
-    duaDate,
-    jobId,
-  ) async {
+      designation,
+      companyName,
+      jobUrl,
+      postedBy,
+      duaDate,
+      jobId,
+      ) async {
     Map params = {
       Params.DESIGNATION: designation,
       Params.COMPANY_NAME: companyName,

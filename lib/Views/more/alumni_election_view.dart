@@ -6,6 +6,7 @@ import 'package:iobm/Widgets/sec_appbar.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 class AlumniElectionScreen extends StatefulWidget {
   const AlumniElectionScreen({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _AlumniElectionScreenState extends State<AlumniElectionScreen> {
         children: [
           Center(
             child: SvgPicture.asset(
-              AppImages.election,
+              AppImages.nomiElection,
               height: 180.h,
               width: 180.w,
             ),
@@ -36,12 +37,8 @@ class _AlumniElectionScreenState extends State<AlumniElectionScreen> {
             height: 15,
           ),
           Text(
-            "It is not time for election yet",
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
-              fontWeight: FontWeight.w600,
-              color: AppColor.primaryColor,
-            ),
+            "We are not accepting nomination at this point",
+            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
           ),
         ],
       ),

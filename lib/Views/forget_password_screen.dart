@@ -78,7 +78,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 image: const AssetImage(
                   AppImages.alumniLogo,
                 ),
-                height: 120.w,
+                height: 53.h,
+                width: 197.w,
               ),
             ),
             const SizedBox(

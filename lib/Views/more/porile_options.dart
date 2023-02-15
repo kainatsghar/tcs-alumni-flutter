@@ -23,6 +23,7 @@ import 'package:iobm/utils/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../networkcalls/network_config.dart';
+import '../../utils/text_styles.dart';
 import '../login_screen.dart';
 
 class ProfileOptionsView extends StatelessWidget {
@@ -98,11 +99,7 @@ class ProfileOptionsView extends StatelessWidget {
                   width: 12.w,
                 ),
                 Text('Logout',
-                    style: TextStyle(
-                      // //Family: 'Nunito',
-                      color: AppColor.redshade900,
-                      fontSize: 15.sp,
-                    )),
+                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.redshade900,)),
               ],
             ),
             trailing: Icon(
@@ -141,9 +138,7 @@ class ProfileOptionsView extends StatelessWidget {
             width: 12.w,
           ),
           Text(title!,
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(15),
-              )),
+              style: CustomTextStyles.text14SemiBoldW600),
         ],
       ),
       trailing: Icon(
@@ -154,65 +149,6 @@ class ProfileOptionsView extends StatelessWidget {
       onTap: onClicked,
       dense: true,
     );
-  }
-
-  void logout(context) async {
-    DeviceData device = DeviceData();
-    await device.init();
-    UIHelper.apiCallingAlert(context);
-
-    var response = await ApiCalls.logout(
-      userId: AppConstants.myId,
-      manufacturer: device.manufacturer,
-      model: device.model,
-      platform: device.platform,
-      osVersion: device.osVersion,
-      token: device.token,
-      serial: device.serial,
-      appVersion: device.appVersion,
-    );
-    UIHelper.hideApiCallingAlert(context);
-    if (response is ErrorEntity) {
-    } else {
-      LogoutEntity logoutEntity = LogoutEntity().fromJson(response);
-      if (logoutEntity.success == 1) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        database.deleteTimeLinePosts();
-        database.deleteTimeLinePostImages();
-        database.deleteAllUsers();
-        database.deleteAllEducations();
-        database.deleteAllComments();
-        database.deleteAllInterests();
-        database.deleteGalleries();
-        database.deleteGalleryImages();
-        database.deleteAllComments();
-        database.deleteCompanies();
-        database.deleteNotifications();
-        database.deleteAllProducts();
-        database.deleteAllProductImages();
-        database.deleteAllTimeLineStories();
-
-        localStorage.remove('email');
-        localStorage.remove('password');
-        localStorage.remove('loginWith');
-        localStorage.remove('email');
-        localStorage.remove('userImage');
-        localStorage.remove('last_sync');
-        localStorage.remove('sharingLoc');
-        localStorage.remove('count');
-        localStorage.remove("currentCity");
-        localStorage.remove("selectedIndustry");
-        localStorage.remove('lat');
-        localStorage.remove('lng');
-        localStorage.remove('loginStatus');
-        localStorage.remove('token');
-        fromLogout = true;
-        Get.offUntil(
-          GetPageRoute(page: () => const LoginScreen()),
-          (route) => false,
-        );
-      }
-    }
   }
 
   deleteDialog() {
@@ -315,6 +251,65 @@ class ProfileOptionsView extends StatelessWidget {
       GetPageRoute(page: () => const LoginScreen()),
           (route) => false,
     );
+  }
+
+  void logout(context) async {
+    DeviceData device = DeviceData();
+    await device.init();
+    UIHelper.apiCallingAlert(context);
+
+    var response = await ApiCalls.logout(
+      userId: AppConstants.myId,
+      manufacturer: device.manufacturer,
+      model: device.model,
+      platform: device.platform,
+      osVersion: device.osVersion,
+      token: device.token,
+      serial: device.serial,
+      appVersion: device.appVersion,
+    );
+    UIHelper.hideApiCallingAlert(context);
+    if (response is ErrorEntity) {
+    } else {
+      LogoutEntity logoutEntity = LogoutEntity().fromJson(response);
+      if (logoutEntity.success == 1) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        database.deleteTimeLinePosts();
+        database.deleteTimeLinePostImages();
+        database.deleteAllUsers();
+        database.deleteAllEducations();
+        database.deleteAllComments();
+        database.deleteAllInterests();
+        database.deleteGalleries();
+        database.deleteGalleryImages();
+        database.deleteAllComments();
+        database.deleteCompanies();
+        database.deleteNotifications();
+        database.deleteAllProducts();
+        database.deleteAllProductImages();
+        database.deleteAllTimeLineStories();
+
+        localStorage.remove('email');
+        localStorage.remove('password');
+        localStorage.remove('loginWith');
+        localStorage.remove('email');
+        localStorage.remove('userImage');
+        localStorage.remove('last_sync');
+        localStorage.remove('sharingLoc');
+        localStorage.remove('count');
+        localStorage.remove("currentCity");
+        localStorage.remove("selectedIndustry");
+        localStorage.remove('lat');
+        localStorage.remove('lng');
+        localStorage.remove('loginStatus');
+        localStorage.remove('token');
+        fromLogout = true;
+        Get.offUntil(
+          GetPageRoute(page: () => const LoginScreen()),
+          (route) => false,
+        );
+      }
+    }
   }
 
 }

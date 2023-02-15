@@ -15,6 +15,7 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:iobm/utils/text_styles.dart';
 
 class CsrScreen extends StatefulWidget {
   const CsrScreen({Key? key}) : super(key: key);
@@ -77,9 +78,7 @@ class _CsrScreenState extends State<CsrScreen> {
               ),
               Text(
                 Strings.noCsrFound,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(18),
-                ),
+                style: CustomTextStyles.text14SemiBoldW600,
               ),
             ],
           )
