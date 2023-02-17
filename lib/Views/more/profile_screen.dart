@@ -1100,8 +1100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return detailsWidget(
                           logo: _experienceList[index].companyImage,
-                          date:
-                              '${_experienceList[index].startDate} - ${_experienceList[index].endDate}',
+                          date: '${_experienceList[index].startDate} - ${_experienceList[index].endDate}',
                           title: _experienceList[index].position,
                           subtitle: _experienceList[index].campanyName,
                           isEducation: false,
@@ -1540,6 +1539,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         bottom: 5,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

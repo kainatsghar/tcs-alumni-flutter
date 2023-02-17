@@ -120,7 +120,7 @@ class AppImages {
 
   static const String noInternet = "assets/images/nointernet.png";
 
-  static const String csr = 'assets/images/csrsvg.svg';
+  static const String csr = 'assets/images/csr.svg';
   static const String event = 'assets/images/eventSvg.svg';
   static const String featuredBusiness = 'assets/images/featuredimg.svg';
 

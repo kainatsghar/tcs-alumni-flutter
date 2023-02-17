@@ -112,11 +112,9 @@ class _EventScreenState extends State<EventScreen> {
                                   // ),
                                   _event(
                                       title: _eventList[index].title,
-                                      eventDate:
-                                          '${_eventList[index].startDate} - ${_eventList[index].endDate}',
+                                      eventDate: '${_eventList[index].startDate} - ${_eventList[index].endDate}',
                                       destination: _eventList[index].city,
-                                      interestedPeople:
-                                          _eventList[index].totalInterested,
+                                      interestedPeople: _eventList[index].totalInterested,
                                       image: _eventList[index].image,
                                       onPressed: () {
                                         Get.to(
@@ -210,8 +208,8 @@ class _EventScreenState extends State<EventScreen> {
             CachedNetworkImage(
               imageUrl: image,
               imageBuilder: (context, imageProvider) => Container(
-                width: 60.w,
-                height: 60.w,
+                width: 51.w,
+                height: 51.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   //   color: AppColor.white,

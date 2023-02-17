@@ -21,6 +21,8 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:share/share.dart';
 
+import '../../networkcalls/response_models/event_detail_entity.dart';
+
 class EventTabs extends StatefulWidget {
   final String? eventId;
   final String? title;
@@ -77,9 +79,7 @@ class EventTabsState extends State<EventTabs> {
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     buildScreen(),
-                    EventAttendiesView(
-                      eventId: widget.eventId ?? '',
-                    ),
+                    EventAttendiesView(eventId: widget.eventId ?? '',),
                     EventCommentScreen(eventId: widget.eventId ?? '')
                   ],
                 ),
@@ -252,7 +252,7 @@ class EventTabsState extends State<EventTabs> {
             ),
             CachedNetworkImage(
               height: 200.h,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               width: double.infinity,
               imageUrl: _event.image ?? '',
               errorWidget: (context, url, error) => const Image(
@@ -287,65 +287,71 @@ class EventTabsState extends State<EventTabs> {
               onTap: () {
                 changeLike();
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _event.isLike == "0"
-                      ? Image.asset(
-                          AppImages.like,
-                          height: 24,
-                          width: 24,
-                        )
-                      : Image.asset(
-                          AppImages.likefill,
-                          height: 24,
-                          width: 24,
-                        ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Like',
-                    style: TextStyle(
-                      // fontFamily: 'Nunito',
-                      fontSize: ScreenUtil().setSp(12),
-                      color: _event.isLike == "0"
-                          ? AppColor.black26
-                          : AppColor.primaryColor,
-                    ),
-                  )
-                ],
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _event.isLike == "0"
+                        ? Image.asset(
+                            AppImages.like,
+                            height: 24,
+                            width: 24,
+                          )
+                        : Image.asset(
+                            AppImages.likefill,
+                            height: 24,
+                            width: 24,
+                          ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Like',
+                      style: TextStyle(
+                        // fontFamily: 'Nunito',
+                        fontSize: ScreenUtil().setSp(12),
+                        color: _event.isLike == "0"
+                            ? AppColor.black26
+                            : AppColor.primaryColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             //interested
             GestureDetector(
               onTap: () {
                 changeStatus(_event.isInterested == "1" ? 'none' : "interested");
-                print("EventInterested: ${_event.isInterested}");
+                print("EventInterested: ${changeStatus(_event.isInterested.toString())}");
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _event.isInterested == '0'
-                      ? Image.asset(
-                          AppImages.interest,
-                          height: 24,
-                          width: 24,
-                        )
-                      : Image.asset(
-                          AppImages.interestfill,
-                          height: 24,
-                          width: 24,
-                        ),
-                  const SizedBox(height: 4),
-                  Text(
-                    Strings.interested,
-                    style: TextStyle(
-                        // fontFamily: 'Nunito',
-                        fontSize: ScreenUtil().setSp(12),
-                        color: AppColor.greyshade600),
-                  )
-                ],
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _event.isInterested == '0'
+                        ? Image.asset(
+                            AppImages.interest,
+                            height: 24,
+                            width: 24,
+                          )
+                        : Image.asset(
+                            AppImages.interestfill,
+                            height: 24,
+                            width: 24,
+                          ),
+                    const SizedBox(height: 4),
+                    Text(
+                      Strings.interested,
+                      style: TextStyle(
+                          // fontFamily: 'Nunito',
+                          fontSize: ScreenUtil().setSp(12),
+                          color: AppColor.greyshade600),
+                    )
+                  ],
+                ),
               ),
             ),
             //going
@@ -354,31 +360,34 @@ class EventTabsState extends State<EventTabs> {
                 changeStatus(_event.isGoing == "0" ? 'going' : "none");
                 print("EventGoing: ${_event.isGoing}");
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _event.isGoing == '1'
-                  ? Image.asset(
-                    AppImages.goingfill,
-                    height: 24,
-                    width: 24,
-                  )
-                  : Image.asset(
-                    AppImages.going,
-                    height: 24,
-                    width: 24,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    Strings.going,
-                    style: TextStyle(
-                      // fontFamily: 'Nunito',
-                      fontSize: ScreenUtil().setSp(12),
-                        color: AppColor.greyshade600
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _event.isGoing == '1'
+                    ? Image.asset(
+                      AppImages.goingfill,
+                      height: 24,
+                      width: 24,
+                    )
+                    : Image.asset(
+                      AppImages.going,
+                      height: 24,
+                      width: 24,
                     ),
-                  )
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      Strings.going,
+                      style: TextStyle(
+                        // fontFamily: 'Nunito',
+                        fontSize: ScreenUtil().setSp(12),
+                          color: AppColor.greyshade600
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             //share
@@ -500,22 +509,14 @@ class EventTabsState extends State<EventTabs> {
       EventLikeEntity likeEntity = EventLikeEntity().fromJson(response);
 
       if (likeEntity.success == 1) {
-        await database.editLikeStatus(
-          widget.eventId ?? '',
-          _event.isLike == "1" ? "0" : "1",
-        );
-
-        await database.editTotalLikes(
-          widget.eventId ?? '',
-          likeEntity.result?.likes.toString() ?? '',
-        );
+        await database.editLikeStatus(widget.eventId ?? '', _event.isLike == "1" ? "0" : "1",);
+        await database.editTotalLikes(widget.eventId ?? '', likeEntity.result?.likes.toString() ?? '',);
         await setEventFromDB();
       }
     }
     setState(() {
       wait = false;
     });
-    print("wait2= $wait");
   }
 
   Future<void> changeStatus(status) async {
@@ -531,41 +532,22 @@ class EventTabsState extends State<EventTabs> {
       print("Status Response: ${response}");
 
       if (response is ErrorEntity) {
-      } else {
+      }
+      else {
         EventStatusEntity statusEntity = EventStatusEntity().fromJson(response);
 
         if (statusEntity.success == 1) {
+          print("statusEntity.result.toString()= ${statusEntity.result.interested}");
           if (status == "none") {
-            await database.editInterestedStatus(
-              widget.eventId ?? '',
-              "0",
-            );
-
-            await database.editGoingStatus(
-              widget.eventId ?? '',
-              "0",
-            );
+            await database.editInterestedStatus(widget.eventId ?? '', "0",);
+            await database.editGoingStatus(widget.eventId ?? '', "0",);
           } else {
-            await database.editInterestedStatus(
-              widget.eventId ?? '',
-              _event.isGoing == "1" ? "1" : "0",
-            );
-            await database.editGoingStatus(
-              widget.eventId ?? '',
-              _event.isInterested == "1" ? "1" : "0",
-            );
+            await database.editInterestedStatus(widget.eventId ?? '', _event.isGoing == "1" ? "1" : "0",);
+            await database.editGoingStatus(widget.eventId ?? '', _event.isInterested == "1" ? "1" : "0",);
           }
-
-          await database.editTotalGoing(
-            widget.eventId ?? '',
-            statusEntity.result.going,
-          );
-
-          await database.editTotalInterested(
-            widget.eventId ?? '',
-            statusEntity.result.interested,
-          );
-          await setEventFromDB();
+          await database.editTotalGoing(widget.eventId ?? '', statusEntity.result.going,);
+          await database.editTotalInterested(widget.eventId ?? '', statusEntity.result.interested,);
+          getEventDetails();
         }
       }
       setState(() {
@@ -577,16 +559,61 @@ class EventTabsState extends State<EventTabs> {
   }
 
   Future<void> setEventFromDB() async {
+    print("widget.eventId= ${widget.eventId}");
     _event = await database.getSingleEvent(widget.eventId ?? '1');
+    print("EventUpdate=${_event}");
     setState(() {
       dataFetched = true;
     });
   }
 
+  // Future<void> getEventDetails() async {
+  //   DataFetched dataFetched = await ApiHelper.getEventDetails(widget.eventId);
+  //   if (dataFetched.done) {
+  //     setEventFromDB();
+  //   }
+  // }
+
   Future<void> getEventDetails() async {
-    DataFetched dataFetched = await ApiHelper.getEventDetails(widget.eventId);
-    if (dataFetched.done) {
-      setEventFromDB();
+    print("enter1");
+    var response = await ApiCalls.eventDetails(
+      userId: AppConstants.myId,
+      eventId: widget.eventId,
+    );
+    if (response is ErrorEntity) {
+      print("enter2");
+    } else {
+      print("enter3");
+      EventDetailEntity detailEntity = EventDetailEntity().fromJson(response);
+      if (detailEntity.success == 1) {
+        print("enter4");
+        print("detailEntity= ${detailEntity.result!.first.isInterested}");
+        database.deleteSingleEvent(widget.eventId??"1");
+        for (var element in detailEntity.result!) {
+          DBEvent dbEvent = DBEvent(
+            id: element.id,
+            description: element.description,
+            startDate: element.startDate,
+            startTime: element.startTime,
+            isLike: element.isLike,
+            isInterested: element.isInterested,
+            totalComments: element.totalComments,
+            title: element.title,
+            isGoing: element.isGoing,
+            image: element.image,
+            totalLike: element.totalLike,
+            totalGoing: element.totalGoing,
+            endDate: element.endDate,
+            endTime: element.endTime,
+            totalInterested: element.totalInterested,
+            city: element.city,
+            venue: element.venue,
+          );
+          database.insertSingleEvent(dbEvent);
+        }
+        setEventFromDB();
+        print("Added -----");
+      }
     }
   }
 }

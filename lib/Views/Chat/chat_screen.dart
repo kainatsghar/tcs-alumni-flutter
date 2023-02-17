@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +18,7 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 
 import '../../Widgets/custom_widgets.dart';
-import '../../utils/text_styles.dart';
+import '../../helper_classes/ui_helper.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -28,10 +29,12 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool check = true;
-  List<Color> listColor = [];
   String? largeId;
   String? smallId;
   var nums = [];
+  String? lastText;
+  List<Color> listColor = [];
+
   List<SelectedTile> listSlcTile = [];
   bool isSelected = false;
 
@@ -121,15 +124,19 @@ class _ChatScreenState extends State<ChatScreen> {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else {
+        }
+        else {
           if (snapshot.data!.docs.isEmpty) {
             return Center(
               child: Text(
                 'No Chats Available',
-                style: CustomTextStyles.text14SemiBoldW600,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(14),
+                ),
               ),
             );
-          } else {
+          }
+          else {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
@@ -154,8 +161,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         smallId!,
                         index
                     ));
-
-                    print("selected= $selected");
                     if(listColor[index] == AppColor.greyshade300){
                       listColor[index] = AppColor.white;
                     }
@@ -172,6 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             .data!.docs[index].reference.path
                             .split('/');
                         String selected = split.last;
+
                         nums = [int.parse(AppConstants.myId), int.parse(selected)];
                         nums.sort();
                         largeId = nums.last.toString();
@@ -182,8 +188,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             smallId!,
                             index
                         ));
-
-
                         if(listColor[index] == AppColor.greyshade300){
                           listColor[index] = AppColor.white;
                           for(int i=0; i<listSlcTile.length; i++){
@@ -207,13 +211,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         );
                       }
                     },
-                    // unreadCount: snapshot.data!.docs[index]['unread'].toString(),
+                    unreadCount: snapshot.data!.docs[index]['readStatus'],
                     name: snapshot.data!.docs[index]['name'],
                     image: snapshot.data!.docs[index]['imageUrl'],
                     msg: snapshot.data!.docs[index]['lastText'],
                     slcColor: listColor[index],
-                    time: AppUtils()
-                        .chatDifference(snapshot.data!.docs[index]['time']),
+                    time: AppUtils().chatDifference(snapshot.data!.docs[index]['time']),
                   ),
                 );
               },
@@ -265,104 +268,124 @@ class _ChatScreenState extends State<ChatScreen> {
         String? name,
         String? msg,
         String? time,
+        Color? slcColor,
         String? unreadCount,
         int? index,
-        Color? slcColor,
         Function()? onPressed}) {
     return GestureDetector(
       onTap: onPressed,
-      child: Container(
-        color: slcColor,
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: CircleAvatar(
-                child: image == ''
-                    ? Image(
-                  image: const AssetImage(AppImages.profile),
-                  width: 50.w,
-                  height: 50.h,
-                )
-                    : CachedNetworkImage(
-                  imageUrl: image ?? '',
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 50.h,
-                    width: 50.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image(
-                    image: const AssetImage(AppImages.profile),
-                    height: 50.w,
-                    width: 50.h,
-                  ),
-                  progressIndicatorBuilder:
-                      (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                      ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10.w,
-            ),
-            Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name!,
-                      style: TextStyle(
-                        // //Family: 'Nunito',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Row(
-                      children: [
-                        //
-                        Expanded(
-                          child: Text(
-                            msg ?? '',
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                overflow: TextOverflow.ellipsis,
-                                color: AppColor.grey),
+      child: Stack(
+        children: [
+          Container(
+            color: slcColor,
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: CircleAvatar(
+                    child: image == ''
+                        ? Image(
+                      image: const AssetImage(AppImages.profile),
+                      width: 50.w,
+                      height: 50.h,
+                    )
+                        : CachedNetworkImage(
+                      imageUrl: image ?? '',
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 50.h,
+                        width: 50.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
+                      ),
+                      errorWidget: (context, url, error) => Image(
+                        image: const AssetImage(AppImages.profile),
+                        height: 50.w,
+                        width: 50.h,
+                      ),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                          CircularProgressIndicator(
+                            value: downloadProgress.progress,
+                          ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name!,
+                          style: TextStyle(
+                            // //Family: 'Nunito',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                msg ?? '',
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: AppColor.grey),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                    )
-                  ],
-                )),
-            // Text(
-            //   unreadCount ?? '',
-            //   style: TextStyle(
-            //     fontSize: ScreenUtil().setSp(12),
-            //     color: AppColor.grey,
-            //   ),
-            // ),
-            Text(
-              time ?? '',
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(12),
-                color: AppColor.grey,
-              ),
-            )
-          ],
-        ),
+                    )),
+                // Text(
+                //   unreadCount ?? '',
+                //   style: TextStyle(
+                //     fontSize: ScreenUtil().setSp(12),
+                //     color: AppColor.grey,
+                //   ),
+                // ),
+                Text(
+                  time ?? '',
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(12),
+                    color: AppColor.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          unreadCount != '0' ? Positioned(
+            right: 15.w,
+            top: 4.h,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: AppColor.primaryColor, shape: BoxShape.circle),
+              child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      unreadCount ?? '',
+                      style:
+                      TextStyle(color: AppColor.white, fontSize: 10.sp),
+                    ),
+                  )),
+            ),
+          ) : const SizedBox(),
+        ],
       ),
     );
   }
@@ -431,7 +454,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
 }
-
 
 class SelectedTile{
   int slcIndex;

@@ -135,18 +135,25 @@ class _EventAttendiesViewState extends State<EventAttendiesView> {
   }
 
   Future<void> setDataFromDB() async {
+    print("setData=${_attendies}");
     _attendies = await database.getAttendies();
     setState(() {
-      dataFetched = true;
+      Future.delayed(const Duration(milliseconds: 500), () {
+        dataFetched = true;
+      });
     });
   }
 
   Future<void> getAttendies() async {
     setDataFromDB();
-    DataFetched dataFetched =
-        await ApiHelper.loadAttendies(context, widget.eventId);
-    if (dataFetched.done) {
+    DataFetched _dataFetched = await ApiHelper.loadAttendies(context, widget.eventId);
+    if (_dataFetched.done) {
       setDataFromDB();
+    }else {
+      setState(() {
+        //clearListOfAttendees
+        _attendies.clear();
+      });
     }
   }
 }

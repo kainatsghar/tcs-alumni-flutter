@@ -170,7 +170,7 @@ class NetworkCalls {
   }
 
   static Future postWebWithTokenCall(String url, Map map) async {
-    print(url);
+    print('${AppConstants.baseUrl}$url');
     print(map);
     Map<String, String> headers = {
       'Content-Type': 'application/json',

@@ -434,7 +434,7 @@ class ApiHelper {
       if (eventsEntity.success == 1) {
         database.deleteEvents();
         database.insertAllEvents(eventsEntity.result.post);
-        print(eventsEntity.result);
+        print(eventsEntity.result.post.length);
         return DataFetched(true, eventsEntity.message);
       }
     }
@@ -481,6 +481,8 @@ class ApiHelper {
         database.insertAllAttendies(attendiesEntity.result.memberDetails);
         print("Added -----");
         return DataFetched(true, attendiesEntity.message);
+      }else if(attendiesEntity.success == 0){
+        database.deleteAttendies();
       }
     }
     return DataFetched(false, 'errorMsg');

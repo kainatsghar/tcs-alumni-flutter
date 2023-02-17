@@ -1222,8 +1222,7 @@ class _InsertCommentsState extends State<InsertComments> {
                     setState(() {
                       isLoading = false;
                     });
-                    if (key.currentState!.controller!.text != '' ||
-                        _imagePath != null) {
+                    if (key.currentState!.controller!.text != '' || _imagePath != null) {
                       if (replyId == '') {
                         if (replying) {
                           await insertReply('');
@@ -1386,8 +1385,18 @@ class _InsertCommentsState extends State<InsertComments> {
     await getConnectedUsers();
     DataFetched dataFetched =
     await ApiHelper.loadPostComments(widget.postId, 'timeline');
+    // if (dataFetched.done) {
+    //   setDataFromDB();
+    // }
     if (dataFetched.done) {
       setDataFromDB();
+    }else {
+      setState(() {
+        //clearComments&Reply
+        _comments.clear();
+        _replies.clear();
+        print("Clear Comments and Replys");
+      });
     }
   }
 
@@ -1400,6 +1409,7 @@ class _InsertCommentsState extends State<InsertComments> {
       imagePath: _imagePath,
       commentId: commentId,
     );
+    print("InsertComment=${response}");
     if (response is ErrorEntity) {
       print(response.message);
     } else {
@@ -1443,7 +1453,6 @@ class _InsertCommentsState extends State<InsertComments> {
         replyId: replyId,
       );
       // Rest of the code...
-
       if (response is ErrorEntity) {
         print("Erroe= ${response.message}");
       } else {
@@ -1466,6 +1475,7 @@ class _InsertCommentsState extends State<InsertComments> {
             isLike: '0',
             reaction: '',
           );
+          getComments();
           database.insertCommentReply(comment);
           setState(() {
             updateComment = false;

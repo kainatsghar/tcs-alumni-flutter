@@ -416,13 +416,14 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                         ),
                                       );
                                     },
-                                    child: Container(
-                                      width: 200.w,
-                                      color: Colors.transparent,
-                                      child: Text(
-                                        '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
-                                        maxLines: 2,
-                                        style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                    child: Flexible(
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Text(
+                                          '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+                                          maxLines: 2,
+                                          style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -1137,6 +1138,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                         // ),
                         GestureDetector(
                           onTap: () async {
+                            print("ClickComments");
                             int a = await Get.to(
                               () => InsertComments(
                                   postId: _postsTimeLine[index].id ?? '',

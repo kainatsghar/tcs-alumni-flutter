@@ -462,7 +462,7 @@ class CustomWidget {
     return CachedNetworkImage(
       imageUrl: logoImage ?? '',
       imageBuilder: (context, imageProvider) => Container(
-        width: 40.w,
+        width: 25.w,
         height: 40.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
