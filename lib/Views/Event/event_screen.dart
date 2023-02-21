@@ -80,7 +80,7 @@ class _EventScreenState extends State<EventScreen> {
                     SvgPicture.asset(AppImages.event),
                     const SizedBox(height: 10),
                     Text(
-                      'No Event in the List',
+                      'No Event Available',
                       style: CustomTextStyles.text16SemiBoldW600,
                     ),
                   ],
