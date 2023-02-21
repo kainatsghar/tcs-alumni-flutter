@@ -153,8 +153,15 @@ class AppUtils {
 
   ///Calculate Difference in seconds for event status
   int? calculateDifferenceInSec(String dateTime) {
+    print("dateTime= $dateTime");
+
     DateFormat dft = DateFormat("dd/MM/yyyy");
     DateTime d = dft.parse(dateTime);
+    // DateTime d2 = dft.parse(DateTime.now().toString());
+    // print(d2.toString());
+    // print("d= $d");
+    // print("d= $d2");
+    // print("d= ${d.isBefore(DateTime.now())}");
 
     int difference = d.difference(DateTime.now()).inSeconds;
 

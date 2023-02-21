@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:iobm/Views/Event/avent_attendies_screen.dart';
 import 'package:iobm/Views/Event/event_discussion_screen.dart';
 import 'package:iobm/Widgets/widget_styles.dart';
@@ -39,6 +40,8 @@ class EventTabsState extends State<EventTabs> {
   late DBEvent _event;
   bool wait = false;
   bool dataFetched = false;
+  String myCurrentDate = '';
+  String myCurrentTime = '';
 
   @override
   void initState() {
@@ -47,6 +50,16 @@ class EventTabsState extends State<EventTabs> {
     Future.delayed(const Duration(milliseconds: 100), () {
       getEventDetails();
     });
+    DateTime now = DateTime.now();
+    print("current=${now}");
+    // final DateTime now = DateTime.parse(apiDate);
+    // DateTime now = DateTime.now();
+    // String nowDate = now.toString();
+    final DateFormat formatter = DateFormat("dd/MM/yyyy");
+    myCurrentTime = DateFormat.jm().format(now);
+    print("ourTime: $myCurrentTime");
+    myCurrentDate = formatter.format(now);
+    print("formattedDate: $myCurrentDate");
     super.initState();
   }
 
@@ -124,154 +137,159 @@ class EventTabsState extends State<EventTabs> {
   }
 
   Widget _bodyContainer() {
-    return Container(
-      color: AppColor.white,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Center(
-                child: Text(
-                  AppUtils().calculateEventDifference(_event.startDate ?? "") <
+    return Stack(
+      children: [
+        Container(
+          color: AppColor.white,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Center(
+                    child: Text(
+                      AppUtils().calculateEventDifference(_event.startDate ?? "") <
                           0
-                      ? 'Event Started on ${_event.startDate ?? ''} ${_event.startTime ?? ''}'
-                      : "Event will start on ${_event.startDate ?? ''} ${_event.startTime ?? ''}",
-                  style: boldTextStyle(),
+                          ? 'Event Started on ${_event.startDate ?? ''} ${_event.startTime ?? ''}'
+                          : "Event will start on ${_event.startDate ?? ''} ${_event.startTime ?? ''}",
+                      style: boldTextStyle(),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const Divider(
-              color: AppColor.grey,
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Column(
-                children: [
-                  Row(
+                const Divider(
+                  color: AppColor.grey,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Column(
                     children: [
-                      Icon(
-                        Icons.access_time,
-                        color: AppColor.primaryColor,
-                        size: 15.0.w,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            color: AppColor.primaryColor,
+                            size: 15.0.w,
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Text(_event.startTime == null ? '${_event.startDate ?? ''} ${_event.startTime ?? ''}' : '${_event.startDate} at ${_event.startTime}',
+                              style: WidgetStyle.semiBoldText(
+                                  color: AppColor.greyshade600,
+                                  fontSize: ScreenUtil().setSp(12))),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(_event.endTime == null ? '${_event.endDate ?? ''}  ${_event.endTime ?? ''}' : '${_event.endDate} at ${_event.endTime}',
+                              style: WidgetStyle.semiBoldText(
+                                  color: AppColor.greyshade600,
+                                  fontSize: ScreenUtil().setSp(12)))
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.room_outlined,
+                            color: AppColor.primaryColor,
+                            size: 15.w,
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Text(_event.venue ?? '',
+                              style: WidgetStyle.semiBoldText(
+                                color: AppColor.greyshade600,
+                                fontSize: ScreenUtil().setSp(12),
+                              ))
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Text('Entry Info: ',
+                              style: WidgetStyle.semiBoldText(
+                                color: AppColor.greyshade600,
+                                fontSize: ScreenUtil().setSp(12),
+                              )),
+                          Text(
+                            "Free",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.black,
+                              fontSize: ScreenUtil().setSp(12),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(_event.startTime == null ? '${_event.startDate ?? ''} ${_event.startTime ?? ''}' : '${_event.startDate} at ${_event.startTime}',
-                          style: WidgetStyle.semiBoldText(
-                              color: AppColor.greyshade600,
-                              fontSize: ScreenUtil().setSp(12))),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Text(_event.endTime == null ? '${_event.endDate ?? ''}  ${_event.endTime ?? ''}' : '${_event.endDate} at ${_event.endTime}',
-                          style: WidgetStyle.semiBoldText(
-                              color: AppColor.greyshade600,
-                              fontSize: ScreenUtil().setSp(12)))
+                        height: 5.h,
+                      )
                     ],
                   ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.room_outlined,
-                        color: AppColor.primaryColor,
-                        size: 15.w,
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(_event.venue ?? '',
-                          style: WidgetStyle.semiBoldText(
-                            color: AppColor.greyshade600,
-                            fontSize: ScreenUtil().setSp(12),
-                          ))
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      Text('Entry Info: ',
-                          style: WidgetStyle.semiBoldText(
-                            color: AppColor.greyshade600,
-                            fontSize: ScreenUtil().setSp(12),
-                          )),
-                      Text(
-                        "Free",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.black,
-                          fontSize: ScreenUtil().setSp(12),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  )
-                ],
-              ),
-            ),
-            const Divider(
-              color: AppColor.black,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text('Detail:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.black,
-                    fontSize: ScreenUtil().setSp(14),
-                  )),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                _event.description ?? '',
-                style: TextStyle(
-                  color: AppColor.black45,
-                  fontSize: ScreenUtil().setSp(14),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Divider(
-              color: AppColor.black,
-              thickness: 1,
-            ),
-            CachedNetworkImage(
-              height: 200.h,
-              fit: BoxFit.fill,
-              width: double.infinity,
-              imageUrl: _event.image ?? '',
-              errorWidget: (context, url, error) => const Image(
-                image: AssetImage(
-                  AppImages.noImage,
+                const Divider(
+                  color: AppColor.black,
+                  thickness: 1,
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('Detail:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.black,
+                        fontSize: ScreenUtil().setSp(14),
+                      )),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    _event.description ?? '',
+                    style: TextStyle(
+                      color: AppColor.black45,
+                      fontSize: ScreenUtil().setSp(14),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Divider(
+                  color: AppColor.black,
+                  thickness: 1,
+                ),
+                CachedNetworkImage(
+                  height: 200.h,
+                  fit: BoxFit.fill,
+                  width: double.infinity,
+                  imageUrl: _event.image ?? '',
+                  errorWidget: (context, url, error) => const Image(
+                    image: AssetImage(
+                      AppImages.noImage,
+                    ),
+                  ),
+                ),
+                _feedback(),
+                const Divider(
+                  color: AppColor.grey,
+                ),
+                _feedbackNumbers(),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
-            _feedback(),
-            const Divider(
-              color: AppColor.grey,
-            ),
-            _feedbackNumbers(),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+          ),
         ),
-      ),
+        Center(child: wait == true ? CircularProgressIndicator() : Container(),),
+      ],
     );
   }
 
@@ -519,8 +537,13 @@ class EventTabsState extends State<EventTabs> {
     });
   }
 
+
   Future<void> changeStatus(status) async {
-    if (AppUtils().calculateDifferenceInSec(_event.startDate ?? "")! > 0) {
+    String myTime = myCurrentDate + myCurrentTime;
+    String eventTime = _event.endDate! + _event.endTime!;
+    print("myTime= ${myTime}");
+    print("eventTime= ${eventTime}");
+    if (myTime != eventTime) {
       setState(() {
         wait = true;
       });
@@ -556,6 +579,14 @@ class EventTabsState extends State<EventTabs> {
     } else {
       Fluttertoast.showToast(msg: 'Event already finished');
     }
+  }
+
+  String date(String apiDate) {
+    final DateTime now = DateTime.parse(apiDate);
+    final DateFormat formatter = DateFormat("dd/MMMM/yyyy");
+    final String formatted = formatter.format(now);
+    print("dateFormat: $formatted"); // something like 2013-04-20
+    return formatted;
   }
 
   Future<void> setEventFromDB() async {

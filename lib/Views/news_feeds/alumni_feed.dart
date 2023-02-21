@@ -416,15 +416,16 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                         ),
                                       );
                                     },
-                                    child: Flexible(
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
-                                          maxLines: 2,
-                                          style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+                                            maxLines: 2,
+                                            style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                   if (_postsTimeLine[index].feelingName != "" ||
