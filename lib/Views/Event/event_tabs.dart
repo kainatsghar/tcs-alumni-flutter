@@ -540,10 +540,10 @@ class EventTabsState extends State<EventTabs> {
 
   Future<void> changeStatus(status) async {
     String myTime = myCurrentDate + myCurrentTime;
-    String eventTime = _event.endDate! + _event.endTime!;
+    String eventTime = _event.startDate! +" " + _event.startTime!;
     print("myTime= ${myTime}");
     print("eventTime= ${eventTime}");
-    if (myTime != eventTime) {
+    if (AppUtils().calculateDifferenceInSec(eventTime)! > 0) {
       setState(() {
         wait = true;
       });
@@ -576,7 +576,8 @@ class EventTabsState extends State<EventTabs> {
       setState(() {
         wait = false;
       });
-    } else {
+    }
+    else {
       Fluttertoast.showToast(msg: 'Event already finished');
     }
   }

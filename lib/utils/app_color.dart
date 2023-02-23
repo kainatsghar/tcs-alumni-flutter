@@ -64,4 +64,7 @@ class AppColor {
 
  static Color SYT = Color(0xFFa8a8a8);
 
+  //Story Colors
+  static Color textWhiteColor = Colors.white;
+
 }

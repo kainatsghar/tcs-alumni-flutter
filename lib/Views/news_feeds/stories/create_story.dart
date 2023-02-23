@@ -34,9 +34,9 @@ class _CreateStoryState extends State<CreateStory> {
           titleTextStyle: CustomTextStyles.text16SemiBoldW600,
           centerTitle: true,
           title: const Text(Strings.createStory),
-          actions: const [
-            Icon(Icons.check),
-          ],
+          // actions: const [
+          //   Icon(Icons.check),
+          // ],
         ),
         body: _bodyContainer(),
       ),

@@ -244,6 +244,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () {
+              getStories();
               return loadTimeLinePosts();
             },
             child: SingleChildScrollView(

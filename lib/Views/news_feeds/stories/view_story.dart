@@ -27,6 +27,7 @@ import '../../../networkcalls/api_helper.dart';
 import '../../../networkcalls/response_models/seen_story_entity.dart';
 import '../../../networkcalls/response_models/stories_entity.dart';
 import '../../../networkcalls/response_models/story_seen_by.dart';
+import '../../../utils/text_styles.dart';
 import '../../bottom_navigationbar.dart';
 import '../../more/profile_screen.dart';
 
@@ -39,9 +40,9 @@ class ViewStory extends StatefulWidget {
   // final String? storyId;
   const ViewStory(
       {Key? key,
-      this.name,
-      this.image,
-      this.userId, this.storiesList})
+        this.name,
+        this.image,
+        this.userId, this.storiesList})
       : super(key: key);
 
   @override
@@ -171,40 +172,45 @@ class _ViewStoryState extends State<ViewStory> {
                         icon: Icon(
                           Icons.arrow_back,
                           color: AppColor.white,
-                          size: 25.w,
+                          size: 25.r,
                         ),
                       ),
-                      CircleAvatar(
-                        child: widget.image == ''
-                            ? Image(
-                          image: const AssetImage(AppImages.profile),
-                          width: 45.w,
-                          height: 45.h,
-                        )
-                            : CachedNetworkImage(
-                          imageUrl: widget.image ?? '',
-                          imageBuilder: (context, imageProvider) =>
-                              Container(
-                                height: 45.w,
-                                width: 45.w,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=> ProfileScreen(userID: widget.userId,));
+                        },
+                        child: CircleAvatar(
+                          child: widget.image == ''
+                              ? Image(
+                            image: const AssetImage(AppImages.profile),
+                            width: 45.w,
+                            height: 45.h,
+                          )
+                              : CachedNetworkImage(
+                            imageUrl: widget.image ?? '',
+                            imageBuilder: (context, imageProvider) =>
+                                Container(
+                                  height: 45.w,
+                                  width: 45.w,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                          errorWidget: (context, url, error) => Image(
-                            image: const AssetImage(AppImages.profile),
-                            height: 50.w,
-                            width: 50.h,
+                            errorWidget: (context, url, error) => Image(
+                              image: const AssetImage(AppImages.profile),
+                              height: 50.w,
+                              width: 50.h,
+                            ),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
                           ),
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                value: downloadProgress.progress,
-                              ),
                         ),
                       ),
                       SizedBox(width: 15.w),
@@ -212,27 +218,25 @@ class _ViewStoryState extends State<ViewStory> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 150.w,
-                            height: 18.h,
-                            color: Colors.transparent,
-                            child: Text(
-                              widget.name ?? '',
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 14.sp,
-                                color: AppColor.white,
-                                fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: (){
+                              Get.to(()=> ProfileScreen(userID: widget.userId,));
+                            },
+                            child: Container(
+                              width: 150.w,
+                              height: 20.h,
+                              color: Colors.transparent,
+                              child: Text(
+                                widget.name ?? '',
+                                style: CustomTextStyles.text12SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,
+                                  color: AppColor.white,  ),
                               ),
                             ),
                           ),
                           GetBuilder<UpdateTimeController>(builder: (_){
                             return Text(
                               _.changedDate??"",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: AppColor.white,
-                              ),
+                              style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.white,),
                             );
                           }),
                         ],
@@ -249,10 +253,10 @@ class _ViewStoryState extends State<ViewStory> {
                         // Get.back();
                       },
                       itemBuilder: (BuildContext context) {
-                        return const [
+                        return  [
                           PopupMenuItem(
                             value: 0,
-                            child: Text('Delete Story'),
+                            child: Text('Delete Story', style: CustomTextStyles.text12SemiBoldW600,),
                           )
                         ];
                       },
@@ -314,10 +318,7 @@ class _ViewStoryState extends State<ViewStory> {
                           children: [
                             Text(
                               'Seen By',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.white,
-                              ),
+                              style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                             ),
                             // Text(
                             //   ' (${_seenUsers.length.toString()})',
@@ -357,10 +358,7 @@ class _ViewStoryState extends State<ViewStory> {
                         ),
                         Text(
                           'Reply',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white,
-                          ),
+                          style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                         ),
                       ],
                     ),
@@ -423,17 +421,11 @@ class _ViewStoryState extends State<ViewStory> {
                         children: [
                           Text(
                             'Seen By',
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 18.sp,
-                            ),
+                            style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                           ),
                           Text(
                             ' (${_.seenUsers.length.toString()})',
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 18.sp,
-                            ),
+                            style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                           ),
                         ],
                       ),
@@ -506,10 +498,7 @@ class _ViewStoryState extends State<ViewStory> {
                     children: [
                       Text(
                         'Reply',
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontSize: 18.sp,
-                        ),
+                        style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                       ),
                     ],
                   ),
@@ -729,7 +718,7 @@ class _ViewStoryState extends State<ViewStory> {
     );
     print(response.body);
     if (response.statusCode == 200) {
-      print("Sent Notifiaction");
+      print("Sent Notification");
     }
     else {
       print("error");

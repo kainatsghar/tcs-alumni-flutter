@@ -155,17 +155,24 @@ class AppUtils {
   int? calculateDifferenceInSec(String dateTime) {
     print("dateTime= $dateTime");
 
-    DateFormat dft = DateFormat("dd/MM/yyyy");
-    DateTime d = dft.parse(dateTime);
-    // DateTime d2 = dft.parse(DateTime.now().toString());
-    // print(d2.toString());
+    DateTime date1 = DateTime.now();
+    DateTime date2 = DateTime.parse("2023-02-21 07:00:00");
+    Duration diff = date1.difference(date2);
+    print("date h = ${diff.inHours}");
+
+    // DateFormat dft = DateFormat("dd-MM-yyyy hh:mm");
+    // DateTime d = dft.parse(dateTime.substring(0,dateTime.length - 3));
     // print("d= $d");
-    // print("d= $d2");
-    // print("d= ${d.isBefore(DateTime.now())}");
+    // // DateTime d2 = dft.parse(DateTime.now().toString());
+    // // print(d2.toString());
+    // // print("d= $d");
+    // // print("d= $d2");
+    // // print("d= ${d.isBefore(DateTime.now())}");
+    //
+    // int difference = d.difference(DateTime.now()).inSeconds;
+    // print("TimeDifference=${difference}");
 
-    int difference = d.difference(DateTime.now()).inSeconds;
-
-    return difference;
+    return 1;
   }
 
   Future<bool> isInternetAvailable() async {
