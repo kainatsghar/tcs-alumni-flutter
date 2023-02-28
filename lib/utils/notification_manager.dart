@@ -47,6 +47,7 @@ Future<void> onMessage(RemoteMessage message) async {
   print('message received');
   //if (message?.data == null) return;
   //controller.increment();
+  print(message.data.toString());
   showNotification(message);
 }
 
@@ -68,12 +69,13 @@ void showNotification(RemoteMessage notification) async {
         body,
         const NotificationDetails(
           android: AndroidNotificationDetails(
-            "TLE Notifications",
-            "TLE Notifications",
+            "channel id 3",
+            "channel name",
             enableVibration: true,
             enableLights: true,
             importance: Importance.high,
             playSound: true,
+            sound: RawResourceAndroidNotificationSound('whistle')
           ),
         ),
         payload: "$_PayLoadPrefix:$id",

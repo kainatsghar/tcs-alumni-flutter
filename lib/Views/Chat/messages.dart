@@ -2887,7 +2887,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         "time": DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()),
       },
     );
-    await sendPushNotification('${AppConstants.userName} Send you a message.');
+    await sendPushNotification('${AppConstants.userName} send you a message.');
   }
 
   Future<void> uploadChatFile(path) async {
