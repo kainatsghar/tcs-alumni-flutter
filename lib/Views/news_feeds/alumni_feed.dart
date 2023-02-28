@@ -396,11 +396,8 @@ class _AlumniFeedState extends State<AlumniFeed> {
                             children: [
                               Wrap(
                                 spacing: 1,
-
                                 direction: Axis.horizontal,
-
                                 alignment: WrapAlignment.start,
-
                                 runAlignment: WrapAlignment.start,
                                 runSpacing: 0.0,
                                 crossAxisAlignment: WrapCrossAlignment.start,
@@ -417,16 +414,9 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                         ),
                                       );
                                     },
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
-                                            maxLines: 2,
-                                            style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
-                                          ),
-                                        ),
-                                      ],
+                                    child: Text(
+                                      '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+                                      style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
                                     ),
                                   ),
                                   if (_postsTimeLine[index].feelingName != "" ||
@@ -437,9 +427,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                           "")
                                     Text(
                                       'is ',
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(13),
-                                      ),
+                                      style: CustomTextStyles.text14SemiBoldW600,
                                     ),
                                   _postsTimeLine[index].feelingName != ""
                                       ? Wrap(
@@ -452,18 +440,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                                     ''),
                                             Text(
                                               ' Feeling ',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(13),
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                             Text(
                                               '${_postsTimeLine[index].feelingName}',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(13),
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             )
                                           ],
                                         )
@@ -474,11 +455,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                           children: [
                                             Text(
                                               'with ',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(13),
-                                                color: Colors.black,
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                             _postsTimeLine[index]
                                                         .tagsDetails!
@@ -495,13 +472,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                                     },
                                                     child: Text(
                                                       '${_postsTimeLine[index].tagsDetails![0].firstName} & ${_postsTimeLine[index].tagsDetails!.length - 1} more',
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(13),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black,
-                                                      ),
+                                                      style: CustomTextStyles.text14SemiBoldW600,
                                                     ),
                                                   )
                                                 : GestureDetector(
@@ -515,13 +486,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                                     },
                                                     child: Text(
                                                       '${_postsTimeLine[index].tagsDetails![0].firstName} ',
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(13),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black,
-                                                      ),
+                                                      style: CustomTextStyles.text14SemiBoldW600,
                                                     ),
                                                   ),
                                           ],
@@ -532,17 +497,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                           children: [
                                             Text(
                                               'in ',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(13),
-                                              ),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                             Text(
                                               '${_postsTimeLine[index].checkinLocation}',
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(13),
-                                                  fontWeight: FontWeight.bold),
+                                              style: CustomTextStyles.text14SemiBoldW600,
                                             ),
                                           ],
                                         )

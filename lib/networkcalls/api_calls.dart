@@ -1194,7 +1194,7 @@ class ApiCalls {
   }
 
   /// Add all stories
-  static addTimelineStory({imagePath}) async {
+  static addTimelineStory({imagePath, map}) async {
     return await NetworkCalls.uploadFileWithToken(
       url: apiAddTimeLineStory,
       imagePath: imagePath,

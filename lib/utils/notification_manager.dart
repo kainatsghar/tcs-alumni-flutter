@@ -17,8 +17,7 @@ class MessagingManager {
         alert: true, sound: true, badge: true);
     await messaging!.setAutoInitEnabled(true);
     var notificationSettings = await messaging!.requestPermission();
-    if (notificationSettings.authorizationStatus ==
-        AuthorizationStatus.authorized) {
+    if (notificationSettings.authorizationStatus == AuthorizationStatus.authorized) {
       print('permission granted');
     }
 

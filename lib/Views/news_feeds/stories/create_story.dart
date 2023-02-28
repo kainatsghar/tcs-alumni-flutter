@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:iobm/Views/news_feeds/stories/upload_story.dart';
-import 'package:iobm/Widgets/sec_appbar.dart';
+
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
-
-import '../../../utils/text_styles.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -31,12 +28,15 @@ class _CreateStoryState extends State<CreateStory> {
       },
       child: Scaffold(
         appBar: AppBar(
-          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: ScreenUtil().setSp(18),
+          ),
           centerTitle: true,
           title: const Text(Strings.createStory),
-          // actions: const [
-          //   Icon(Icons.check),
-          // ],
+          actions: const [
+            Icon(Icons.check),
+          ],
         ),
         body: _bodyContainer(),
       ),
@@ -51,7 +51,8 @@ class _CreateStoryState extends State<CreateStory> {
         children: [
           GestureDetector(
             onTap: () {
-              _imgFromCamera();
+              _showCameraPicker();
+              //_imgFromCamera();
             },
             child: Stack(
               alignment: Alignment.center,
@@ -61,20 +62,25 @@ class _CreateStoryState extends State<CreateStory> {
                   width: 160.w,
                   color: AppColor.black,
                 ),
-                const Icon(Icons.camera_alt, color: AppColor.white),
-                 Positioned(
-                    bottom: 5,
-                    left: 5,
-                    child: Text(
-                      Strings.camera,
-                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
-                    )),
+                const Icon(
+                  Icons.camera_alt,
+                  color: AppColor.white,
+                ),
+                const Positioned(
+                  bottom: 5,
+                  left: 5,
+                  child: Text(
+                    Strings.camera,
+                    style: TextStyle(color: AppColor.white),
+                  ),
+                ),
               ],
             ),
           ),
           GestureDetector(
             onTap: () {
-              _imgFromGallery();
+              _showGalleryPicker();
+              //_imgFromGallery();
             },
             child: Stack(
               children: [
@@ -84,19 +90,76 @@ class _CreateStoryState extends State<CreateStory> {
                   color: AppColor.grey,
                   child: Image.asset(AppImages.gallerypng),
                 ),
-                 Positioned(
-                    bottom: 5,
-                    left: 5,
-                    child: Text(
-                      Strings.viewGallery,
-                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
-                    )),
+                const Positioned(
+                  bottom: 5,
+                  left: 5,
+                  child: Text(
+                    Strings.viewGallery,
+                    style: TextStyle(color: AppColor.white),
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _showGalleryPicker() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.video_camera_back),
+                    title: const Text('Video'),
+                    onTap: () {
+                      _videoFromGallery();
+                      Navigator.of(context).pop(); //dismiss the dialog
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo),
+                  title: const Text('Image'),
+                  onTap: () {
+                    _imgFromGallery();
+                    Navigator.of(context).pop(); //dismiss the dialog
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void _showCameraPicker() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.video_camera_back),
+                    title: const Text('Video'),
+                    onTap: () {
+                      _videoFromCamera();
+                      Navigator.of(context).pop(); //dismiss the dialog
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo),
+                  title: const Text('Image'),
+                  onTap: () {
+                    _imgFromCamera();
+                    Navigator.of(context).pop(); //dismiss the dialog
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   _imgFromGallery() async {
@@ -108,6 +171,34 @@ class _CreateStoryState extends State<CreateStory> {
       });
       Get.to(() => UploadStory(file: image));
     } else {}
+  }
+
+  _videoFromGallery() async {
+    XFile? file = await picker.pickVideo(
+      source: ImageSource.gallery,
+      maxDuration: const Duration(seconds: 10),
+    );
+    if (file != null) {
+      // _controller = VideoPlayerController.network(file.path)..initialize();
+      setState(() {
+        image = File(file.path);
+      });
+      Get.to(() => UploadStory(file: image));
+    }
+  }
+
+  _videoFromCamera() async {
+    XFile? file = await picker.pickVideo(
+      source: ImageSource.camera,
+      maxDuration: const Duration(seconds: 10),
+    );
+    if (file != null) {
+      // _controller = VideoPlayerController.network(file.path)..initialize();
+      setState(() {
+        image = File(file.path);
+      });
+      Get.to(() => UploadStory(file: image));
+    }
   }
 
   _imgFromCamera() async {

@@ -57,9 +57,9 @@ class EventTabsState extends State<EventTabs> {
     // String nowDate = now.toString();
     final DateFormat formatter = DateFormat("dd/MM/yyyy");
     myCurrentTime = DateFormat.jm().format(now);
-    print("ourTime: $myCurrentTime");
+    // print("ourTime: $myCurrentTime");
     myCurrentDate = formatter.format(now);
-    print("formattedDate: $myCurrentDate");
+    // print("formattedDate: $myCurrentDate");
     super.initState();
   }
 
@@ -540,10 +540,18 @@ class EventTabsState extends State<EventTabs> {
 
   Future<void> changeStatus(status) async {
     String myTime = myCurrentDate + myCurrentTime;
-    String eventTime = _event.startDate! +" " + _event.startTime!;
-    print("myTime= ${myTime}");
-    print("eventTime= ${eventTime}");
-    if (AppUtils().calculateDifferenceInSec(eventTime)! > 0) {
+    String eventStartTime = _event.startDate! +" " + _event.startTime!;
+    String eventEndTime = _event.endDate! +" " + _event.endTime!;
+    String startDateTimeStr = eventStartTime;
+    String endDateTimeStr = eventEndTime;
+    print("startDateTimeStr ${startDateTimeStr}");
+    print("endDateTimeStr ${endDateTimeStr}");
+    
+    DateTime startDateTime = DateFormat("dd/MM/yyyy hh:mm a").parse(startDateTimeStr);
+    DateTime endDateTime = DateFormat("dd/MM/yyyy hh:mm a").parse(endDateTimeStr);
+
+    if (DateTime.now().isBefore(endDateTime)) {
+      print("CheckTimeB=${DateTime.now().isBefore(endDateTime)}");
       setState(() {
         wait = true;
       });

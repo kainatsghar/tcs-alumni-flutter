@@ -170,6 +170,7 @@ class Params {
   static const String REDIRECT_URI = "redirect_uri";
   static const String CLIENT_ID = "client_id";
   static const String CLIENT_SECRET = "client_secret";
+  static const String LINK = "link";
 
   //report params
   static const String CONTENT_ID = "content_id";
