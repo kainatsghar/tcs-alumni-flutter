@@ -240,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Row(
                             children: [
-                              SizedBox(
+                              Flexible(
                                 child: Text(
                                   "${oneUser?.firstName} ${oneUser?.lastName}",
                                   maxLines: 2,
