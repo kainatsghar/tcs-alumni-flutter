@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/text_styles.dart';
 
@@ -117,52 +118,40 @@ class MyAppBar extends AppBar {
             // ),
             Padding(
               padding: const EdgeInsets.only(right: 15),
-              child: GestureDetector(
-                onTap: () {
-                  Get.to(() => const NotificationsView());
-                },
-                child: Container(
-                  height: 30.h,
-                  width: 30.w,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(Icons.notifications, size: 22.h),
-                      GetBuilder<ProfileController>(
-                        init: ProfileController(),
-                        builder: (_) {
-                          return _.notificationCount == "0"
-                              ? Container()
-                              : Positioned(
-                                  right: 0,
-                                  top: 3,
-                                  child: Container(
-                                    height: 18.h,
-                                    width: 18.w,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: GetBuilder<ProfileController>(
-                                        init: ProfileController(),
-                                        builder: (_) => Text(
-                                          '${_.notificationCount}',
-                                          style: TextStyle(
-                                            color: AppColor.white,
-                                            fontSize: ScreenUtil().setSp(12),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                        },
-                      ),
-                    ],
+              child: GetBuilder<ProfileController>(builder: (_){
+                return GestureDetector(
+                  onTap: () async {
+                    _.notificationCount = 0;
+                    _.update();
+                    SharedPreferences localStorage = await SharedPreferences.getInstance();
+                    localStorage.remove('count');
+                    Get.to(() => const NotificationsView());
+                  },
+                  child: Container(
+                    height: 30.h,
+                    width: 30.w,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Badge(
+                            isLabelVisible: _.notificationCount == 0
+                                ? false: true,
+                            label: GetBuilder<ProfileController>(
+                              init: ProfileController(),
+                              builder: (_) => Text(
+                                '${_.notificationCount}',
+                                style: TextStyle(
+                                  color: AppColor.white,
+                                  fontSize: 10.sp,
+                                ),
+                              ),
+                            ),
+                            child: Icon(Icons.notifications, size: 22.h, color: AppColor.iconColor,)),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ],
         );

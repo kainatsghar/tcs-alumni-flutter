@@ -67,4 +67,7 @@ class AppColor {
   //Story Colors
   static Color textWhiteColor = Colors.white;
 
+  //Icons Colors
+  static Color iconColor = Colors.white;
+
 }

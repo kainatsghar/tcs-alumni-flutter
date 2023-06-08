@@ -26,6 +26,8 @@ class DBJobs extends Table {
   TextColumn get lastName => text().withLength(min: 0, max: 1000).nullable()();
   @JsonKey('user_image')
   TextColumn get userImage => text().withLength(min: 0, max: 1000).nullable()();
+  @JsonKey('job_image')
+  TextColumn get jobImage => text().withLength(min: 0, max: 1000).nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

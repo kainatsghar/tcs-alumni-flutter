@@ -144,9 +144,39 @@ class AboutOptionsView extends StatelessWidget {
           Divider(
             height: 1.h,
           ),
+          Spacer(),
+          Padding(
+            padding:  EdgeInsets.only(bottom: 10.h,right: 10.w),
+            child: InkWell(
+              onTap: (){
+                _launchInBrowser(AppConstants.linkMembia);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Developed by', style: CustomTextStyles.text12RegularW400.copyWith(color: Color(0xff979797)),),
+                  Image.asset('assets/viion_logo.png', width: 80,height: 14,),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   _buildMoreItem({

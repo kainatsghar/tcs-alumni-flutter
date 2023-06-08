@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 
 import 'package:iobm/Views/Chat/send_invation_screen.dart';
 import 'package:iobm/Widgets/app_bar.dart';
+import 'package:iobm/controllers/profile_controller.dart';
+import 'package:iobm/main.dart';
 
 import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
@@ -34,6 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var nums = [];
   String? lastText;
   List<Color> listColor = [];
+  final ProfileController _profileController = Get.put(ProfileController());
 
   List<SelectedTile> listSlcTile = [];
   bool isSelected = false;
@@ -55,6 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     checkConnectivity();
+    _profileController.updateFirebaseCount();
     super.initState();
   }
 
@@ -143,6 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 for(int i=0; i<snapshot.data!.docs.length; i++){
                   listColor.add(AppColor.white);
                 }
+                print('unReadCountOnChat: ${snapshot.data!.docs[index]['readStatus']}');
                 return GestureDetector(
                   onLongPress: () {
                     listSlcTile.clear();
@@ -368,9 +373,10 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
             ),
           ),
-          unreadCount != '0' ? Positioned(
-            right: 15.w,
-            top: 4.h,
+          unreadCount != '0'
+              ? Positioned(
+            right: 20,
+            top: 5,
             child: Container(
               decoration: const BoxDecoration(
                   color: AppColor.primaryColor, shape: BoxShape.circle),
@@ -384,7 +390,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   )),
             ),
-          ) : const SizedBox(),
+          )
+              : const SizedBox(),
         ],
       ),
     );

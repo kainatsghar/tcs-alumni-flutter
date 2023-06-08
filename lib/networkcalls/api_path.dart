@@ -118,3 +118,6 @@ const String apiSeenByStory = "api/seen_by";
 
 const String apiDeleteComment = "api/delete_comment";
 
+///Counter
+const String apiCounter = "api/get_user_unread_count";
+

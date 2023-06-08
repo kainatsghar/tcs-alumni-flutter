@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart' as html;
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -71,6 +72,9 @@ class _InsertCommentsState extends State<InsertComments> {
   late List<DBAllUser> _tagUsers;
   late List<SelectableUser> _users;
   late List tagUsersList;
+
+  bool commentsVisible = true;
+  int _currentindex = 0;
 
   ///Reply Feature
   bool replying = false;
@@ -246,135 +250,210 @@ class _InsertCommentsState extends State<InsertComments> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: AppColor.greyshade200,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
+                          GestureDetector(
+                            onLongPress: (){
+                              setState(() {
+                                _currentindex = index;
+                                print('_currentindex on longPress: $_currentindex');
+                              });
+                              showModalBottomSheet(
+                                  context: context,
+                                  shape:  RoundedRectangleBorder( // <-- SEE HERE
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20.r),
+                                    ),
+                                  ),
+                                  builder: (BuildContext context){
+                                    return Container(
+                                      height: Get.height * 0.18,
+                                      child: Padding(
+                                        padding:  EdgeInsets.only(left: 16.w,top: 16.h),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async{
+                                                print("Click on Report Comment");
+                                                // await showDialog(
+                                                //     barrierDismissible: false,
+                                                //     context: context,
+                                                //     builder: (BuildContext context) {
+                                                //   return _bodyColumn(
+                                                //       _reportTypes[index].id);
+                                                // });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(AppImages.reportIcon),
+                                                  SizedBox(width: 10.w,),
+                                                  Text('Report Comment', style: CustomTextStyles.text14SemiBoldW600,),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 20.h,),
+                                            GestureDetector(
+                                              onTap: (){
+                                                print("Click on Hide Comment");
+                                                print("CurrentIndex=$_currentindex");
+
+                                                Navigator.pop(context);
+                                                if(commentsVisible && _currentindex == index){
+                                                  setState(() {
+                                                    commentsVisible = false;
+                                                    print('index in If: $_currentindex');
+                                                  });
+                                                }
+                                                else {
+                                                  setState(() {
+                                                    commentsVisible = true;
+                                                    print('index in Else: $_currentindex');
+                                                  });
+                                                }
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(AppImages.hideIcon),
+                                                  SizedBox(width: 15.w,),
+                                                  commentsVisible && _currentindex == index ? Text('Hide Comment', style: CustomTextStyles.text14SemiBoldW600,)
+                                                      : Text('Unhide Comment', style: CustomTextStyles.text14SemiBoldW600,),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: AppColor.greyshade200,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                                () => ProfileScreen(
+                                              userID:
+                                              _comments[index].commentedBy,
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          '${_comments[index].firstName}',
+                                          style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade800,),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        '${AppUtils().calculateFormatDifference(_comments[index].createdDate ?? '')}',
+                                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: _comments[index].commentedBy == AppConstants.myId
+                                            ? PopupMenuButton(onSelected: (result) {
+                                              if (result == 1) {
+                                                deleteTimeLineComment(_comments[index].id ?? '', "");
+                                                setState(() {
+                                                  count--;
+                                                });
+                                              } else if (result == 0) {
+                                                print("clicked 1");
+                                                setState(() {
+                                                  updateComment = true;
+                                                  commentId = _comments[index].id ?? '';
+                                                });
+                                                String text = _comments[index].comment ?? '';
+                                                String finalText = "";
+                                                if (text.contains("{")) {
+                                                  final startIndex = text.indexOf("{");
+                                                  final endIndex = text.indexOf("}");
+                                                  final jsonString = text.substring(startIndex, endIndex + 1);
+                                                  final decodedMap = json.decode(jsonString);
+                                                  finalText = text.replaceAll(jsonString, "@${decodedMap['name']}");
+                                                  key.currentState!.controller!.text = finalText;
+                                                } else {
+                                                  setState(() {
+                                                    key.currentState!.controller!.text = _parseHtmlString(text).replaceAll('"', '');
+                                                  });
+                                                }
+                                              }
+                                            }, itemBuilder: (context) {
+                                              return [
+                                            PopupMenuItem(
+                                                value: 0,
+                                                child: Text('Edit', style: CustomTextStyles.text12RegularW400,)),
+                                            PopupMenuItem(
+                                                value: 1,
+                                                child: Text('Delete', style: CustomTextStyles.text12RegularW400,)),
+                                          ];
+                                        })
+                                            : const SizedBox(),
+                                      ),
+                                    ],
+                                  ),
+                                  html.HtmlWidget(
+                                    AppUtils().commentString(_comments[index].comment ?? ''),
+                                    textStyle: CustomTextStyles.text12RegularW400,
+                                  ),
+
+                                  // Text(
+                                  //   AppUtils().commentString(
+                                  //       _comments[index].comment ?? ''),
+                                  //   style: TextStyle(
+                                  //     color:
+                                  //          AppColor.greyshade800,
+                                  //     fontSize: ScreenUtil().setSp(13),
+                                  //   ),
+                                  //   textAlign: TextAlign.left,
+                                  // ),
+                                  // AppUtils().commentString(_comments[index].comment ?? '').startsWith('@') ? AppColor.blue :
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  if (_comments[index].commentImage != "")
                                     GestureDetector(
                                       onTap: () {
                                         Get.to(
-                                              () => ProfileScreen(
-                                            userID:
-                                            _comments[index].commentedBy,
-                                          ),
-                                        );
+                                                () => FullViewImage(
+                                              image: _comments[index]
+                                                  .commentImage ??
+                                                  '',
+                                            ),
+                                            duration:
+                                            const Duration(milliseconds: 300),
+                                            curve: Curves.easeIn);
                                       },
-                                      child: Text(
-                                        '${_comments[index].firstName}',
-                                        style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade800,),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '${AppUtils().calculateFormatDifference(_comments[index].createdDate ?? '')}',
-                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade600,),
-                                    ),
-                                    SizedBox(
-                                      height: 30,
-                                      width: 30,
-                                      child: _comments[index].commentedBy == AppConstants.myId
-                                          ? PopupMenuButton(onSelected: (result) {
-                                            if (result == 1) {
-                                              deleteTimeLineComment(_comments[index].id ?? '', "");
-                                              setState(() {
-                                                count--;
-                                              });
-                                            } else if (result == 0) {
-                                              print("clicked 1");
-                                              setState(() {
-                                                updateComment = true;
-                                                commentId = _comments[index].id ?? '';
-                                              });
-                                              String text = _comments[index].comment ?? '';
-                                              String finalText = "";
-                                              if (text.contains("{")) {
-                                                final startIndex = text.indexOf("{");
-                                                final endIndex = text.indexOf("}");
-                                                final jsonString = text.substring(startIndex, endIndex + 1);
-                                                final decodedMap = json.decode(jsonString);
-                                                finalText = text.replaceAll(jsonString, "@${decodedMap['name']}");
-                                                key.currentState!.controller!.text = finalText;
-                                              } else {
-                                                setState(() {
-                                                  key.currentState!.controller!.text = _parseHtmlString(text).replaceAll('"', '');
-                                                });
-                                              }
-                                            }
-                                          }, itemBuilder: (context) {
-                                            return [
-                                          PopupMenuItem(
-                                              value: 0,
-                                              child: Text('Edit', style: CustomTextStyles.text12RegularW400,)),
-                                          PopupMenuItem(
-                                              value: 1,
-                                              child: Text('Delete', style: CustomTextStyles.text12RegularW400,)),
-                                        ];
-                                      })
-                                          : const SizedBox(),
-                                    ),
-                                  ],
-                                ),
-                                html.HtmlWidget(
-                                  AppUtils().commentString(_comments[index].comment ?? ''),
-                                  textStyle: CustomTextStyles.text12RegularW400,
-                                ),
-
-                                // Text(
-                                //   AppUtils().commentString(
-                                //       _comments[index].comment ?? ''),
-                                //   style: TextStyle(
-                                //     color:
-                                //          AppColor.greyshade800,
-                                //     fontSize: ScreenUtil().setSp(13),
-                                //   ),
-                                //   textAlign: TextAlign.left,
-                                // ),
-                                // AppUtils().commentString(_comments[index].comment ?? '').startsWith('@') ? AppColor.blue :
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                if (_comments[index].commentImage != "")
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                              () => FullViewImage(
-                                            image: _comments[index]
-                                                .commentImage ??
-                                                '',
-                                          ),
-                                          duration:
-                                          const Duration(milliseconds: 300),
-                                          curve: Curves.easeIn);
-                                    },
-                                    child: Hero(
-                                      tag: 'fullImage',
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                        _comments[index].commentImage ?? '',
-                                        height: 200,
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                            Center(
-                                              child: CircularProgressIndicator(
-                                                value: downloadProgress.progress,
-                                                strokeWidth: 2.0,
+                                      child: Hero(
+                                        tag: 'fullImage',
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                          _comments[index].commentImage ?? '',
+                                          height: 200,
+                                          progressIndicatorBuilder:
+                                              (context, url, downloadProgress) =>
+                                              Center(
+                                                child: CircularProgressIndicator(
+                                                  value: downloadProgress.progress,
+                                                  strokeWidth: 2.0,
+                                                ),
                                               ),
-                                            ),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                              AppImages.noImage,
-                                            ),
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                                AppImages.noImage,
+                                              ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Row(

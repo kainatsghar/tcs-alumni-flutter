@@ -85,7 +85,62 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                     onPressed: () {
                       if (fKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
-                        updatePassword();
+                        if(_passwordController.text == _confirmPasswordController.text){
+                          updatePassword();
+                        }
+                        else{
+                          print("Passwords don't match. Please retry.");
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(3.r)), //this right here
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                                    child: Container(
+                                      height: 170.h,
+                                      width: double.infinity,
+
+                                      decoration: BoxDecoration(
+                                        color: AppColor.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Failed",
+                                            style: CustomTextStyles.text16SemiBoldW600,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "The 'New Password' and 'Confirm Password' doest not match",
+                                            style: CustomTextStyles.text14SemiBoldW600,
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: Text(
+                                              "OK",
+                                              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        }
                       }
                     },
                     child: Text(

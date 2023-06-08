@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'package:iobm/Widgets/dialogues/app_bar_checkin.dart';
 import 'package:iobm/Widgets/dialogues/feelings_dialog.dart';
@@ -55,23 +56,49 @@ class CustomWidget {
     );
   }
 
+  // static Widget linkBtn({String? title, VoidCallback? onclick}) {
+  //   return GestureDetector(
+  //     onTap: onclick,
+  //     child: Container(
+  //       width: 100,
+  //       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+  //       decoration: BoxDecoration(
+  //         color: AppColor.primaryColor,
+  //         borderRadius: BorderRadius.circular(20.r),
+  //       ),
+  //       child: Center(
+  //         child: Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+  //           child: Text(
+  //             title!,
+  //             style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   static Widget linkBtn({String? title, VoidCallback? onclick}) {
     return GestureDetector(
       onTap: onclick,
       child: Container(
-        width: 100,
+        width: Get.width * 0.29,
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         decoration: BoxDecoration(
-          color: AppColor.primaryColor,
+          border: Border.all(color: AppColor.blue, width: 1.5),
           borderRadius: BorderRadius.circular(20.r),
         ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
-            child: Text(
-              title!,
-              style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-            ),
+        child: Padding(
+          padding:  EdgeInsets.symmetric(vertical: 1.h),
+          child: Row(
+            children: [
+              ImageIcon(AssetImage('assets/icons/job_link.png'), size: 20,color: AppColor.blue,),
+              SizedBox(width: Get.width * 0.07,),
+              Text(
+                title!,
+                style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.blue,),
+              ),
+            ],
           ),
         ),
       ),

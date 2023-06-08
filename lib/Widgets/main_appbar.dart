@@ -124,7 +124,7 @@ class MainAppBar extends AppBar {
                 GetBuilder<ProfileController>(
                   init: ProfileController(),
                   builder: (_) {
-                    return _.notificationCount == "0"
+                    return _.notificationCount == 0
                         ? Container()
                         : Positioned(
                       right: 0,

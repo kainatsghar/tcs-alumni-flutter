@@ -1,7 +1,10 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:iobm/Views/more/career/career_screen.dart';
 import 'package:iobm/Widgets/app_bar.dart';
@@ -12,11 +15,14 @@ import 'package:iobm/helper_classes/ui_helper.dart';
 import 'package:iobm/local_db/local_db.dart';
 import 'package:iobm/models/error_entity.dart';
 import 'package:iobm/networkcalls/api_calls.dart';
+import 'package:iobm/networkcalls/api_path.dart';
 import 'package:iobm/networkcalls/response_models/insert_job_entity.dart';
 import 'package:iobm/utils/app_color.dart';
 
 import 'package:iobm/utils/app_constants.dart';
+import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/text_styles.dart';
 
@@ -72,6 +78,21 @@ class _PostJobScreenState extends State<PostJobScreen> {
     });
   }
 
+  /// Image Picker
+  final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
+  String? _imagePath;
+
+  Future galleryImage() async {
+    var pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+      _imagePath = pickedFile!.path;
+    });
+  }
+
   @override
   void initState() {
     _designationController.text = widget.designation ?? '';
@@ -110,11 +131,47 @@ class _PostJobScreenState extends State<PostJobScreen> {
                     titleRow(title: 'Company', star: "*"),
                     companyTextField(),
                     SizedBox(height: 15.h),
-                    titleRow(title: 'Job Link', star: "*"),
+                    titleRow(title: 'Job Link', star: ""),
                     jobLinkTextField(),
                     SizedBox(height: 15.h),
-                    titleRow(title: 'Due Date', star: "*"),
+                    titleRow(title: 'Due Date', star: ""),
                     dueDateTextField(),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    titleRow(title: 'Upload Image', star: ""),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    DottedBorder(
+                      color: const Color(0xff164892),
+                      borderType: BorderType.RRect,
+                      strokeWidth: 1,
+                      dashPattern: const <double>[3, 3],
+                      child: GestureDetector(
+                        onTap: () async {
+                          var pickedFile = await _picker.pickImage(
+                            source: ImageSource.gallery,
+                          );
+                          _imagePath = pickedFile!.path;
+                          print("PickImageFromGallery${pickedFile!.path.toString()}");
+                        },
+                        child: Container(
+                          height: 75.h,
+                          width: double.infinity,
+                          margin: const EdgeInsets.all(5),
+                          color: const Color(0xff164892).withOpacity(0.10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(AppImages.jobImageIcon),
+                              const Text('Upload Image',style: TextStyle(color: Color(0xff164892)),),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 30.h,
                     ),
@@ -124,9 +181,9 @@ class _PostJobScreenState extends State<PostJobScreen> {
                         size: Size(100, 30.h),
                         isBorder: false,
                         onClicked: () {
-                          if (fKey.currentState!.validate()) {
+
                             postJob();
-                          }
+
                         },
                       ),
                     ),
@@ -179,9 +236,9 @@ class _PostJobScreenState extends State<PostJobScreen> {
   jobLinkTextField() {
     return TextFormField(
         style: CustomTextStyles.text12RegularW400,
-        validator: (value) {
-          return value!.isEmpty ? 'Enter Link' : null;
-        },
+        // validator: (value) {
+        //   return value!.isEmpty ? 'Enter Link' : null;
+        // },
         controller: _jobLinkController,
         decoration:
             WidgetStyle.nameTextFieldDecoration(hint: "Enter Job Link"));
@@ -190,9 +247,9 @@ class _PostJobScreenState extends State<PostJobScreen> {
   dueDateTextField() {
     return TextFormField(
       style: CustomTextStyles.text12RegularW400,
-        validator: (value) {
-          return value!.isEmpty ? 'Enter Date' : null;
-        },
+        // validator: (value) {
+        //   return value!.isEmpty ? 'Enter Date' : null;
+        // },
         readOnly: true,
         onTap: () {
           _selectPostDate(context);
@@ -220,6 +277,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
   // }
 
   Future<void> postJob() async {
+    print('postJob Called.');
     UIHelper.apiCallingAlert(context);
     var response = await ApiCalls.postJob(
       _designationController.text,
@@ -228,12 +286,18 @@ class _PostJobScreenState extends State<PostJobScreen> {
       AppConstants.myId,
       _dueDateController.text,
       widget.jobID,
+      _imagePath,
     );
+    print("Params=${_imagePath.toString()}");
+    print('response: ${response.toString()}');
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
+      print('errorResponse: ${response.toString()}');
     } else {
+      print('success');
       InsertJobEntity jobEntity = InsertJobEntity().fromJson(response);
       if (jobEntity.success == 1) {
+        print('success: 1');
         if (widget.jobID != "") {
           database.updateJobs(
             widget.jobID ?? '',

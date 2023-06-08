@@ -45,7 +45,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../networkcalls/response_models/get_invitation_entity.dart';
@@ -197,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               oneUser?.userId == AppConstants.myId ?const SizedBox() :GestureDetector(
                 onTap: (){
-                  showMaterialModalBottomSheet(
+                  showBottomSheet(
                     context: context,
                     builder: (context) => Container(
                       height: 50.h,
@@ -1789,6 +1789,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await database.getUserProduct(int.parse(widget.userID ?? '0'));
 
     oneUser = await database.getSingleUser(widget.userID ?? '');
+    print("ChekNull=${oneUser}");
     print("Db LinkedIn= ${oneUser?.linkedinUrl}");
     print("Db fb= ${oneUser?.facebookUrl}");
     await getData();

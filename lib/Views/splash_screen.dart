@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:geolocator/geolocator.dart';
@@ -34,6 +35,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final ProfileController _controller = Get.put(ProfileController());
+  MessagingManager notificationServices = MessagingManager();
   Timer? _timer;
   int _count = 2;
   String? sharingLocation;
@@ -50,6 +52,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    notificationServices.requestPermission();
+    notificationServices.firebaseOnMessage();
+    notificationServices.setupInteractMessage();
+    notificationServices.getDeviceToken().then((value){if (kDebugMode) {
+      print('\x1B[33m FCM Token: $value\x1B[0m');
+    }});
     _timer = Timer.periodic(
       const Duration(seconds: 3),
       (timer) {
@@ -94,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _getInfo() async {
     await addData();
-    await MessagingManager.initialize();
+    // await MessagingManager.initialize();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
     setState(() {

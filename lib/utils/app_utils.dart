@@ -145,6 +145,8 @@ class AppUtils {
         dif = DateTime.now().difference(d).inDays.toString() + " days ago";
       }
     } else {
+      // DateFormat outputFormat = DateFormat("d MMM, yyyy"); // create a new DateFormat object with the desired format
+      // dif = outputFormat.format(d);
       dif = dateTime;
     }
 

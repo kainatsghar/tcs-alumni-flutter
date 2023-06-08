@@ -11,6 +11,8 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:iobm/utils/text_styles.dart';
 
+import '../../utils/app_color.dart';
+
 class SpotlightScreen extends StatefulWidget {
   const SpotlightScreen({Key? key}) : super(key: key);
 
@@ -104,41 +106,53 @@ class SpotlightScreenState extends State<SpotlightScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 80,
-              height: 80,
-              // decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-              child: CircleAvatar(
-                child: alumini?.image == ''
-                    ? const Image(
-                        image: AssetImage(AppImages.profile),
-                        width: 80,
-                        height: 80,
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: alumini?.image ?? '',
-                        imageBuilder: (context, imageProvider) => Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 102.w,
+                  height: 102.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColor.primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 44.r,
+                  child: alumini?.image == ''
+                      ? const Image(
+                    image: AssetImage(AppImages.profile),
+                    width: 80,
+                    height: 80,
+                  )
+                      : CachedNetworkImage(
+                    imageUrl: alumini?.image ?? '',
+                    imageBuilder: (context, imageProvider) => Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
                         ),
-                        errorWidget: (context, url, error) => const Image(
-                          image: AssetImage(AppImages.profile),
-                          width: 80,
-                          height: 80,
-                        ),
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
                       ),
-              ),
+                    ),
+                    errorWidget: (context, url, error) => const Image(
+                      image: AssetImage(AppImages.profile),
+                      width: 80,
+                      height: 80,
+                    ),
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                        CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 15,

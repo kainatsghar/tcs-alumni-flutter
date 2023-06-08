@@ -6,6 +6,7 @@ class AppConstants {
 
   static const testUrl = 'http://192.168.1.250/dev/tle_laravel/public/';
   //static const testUrl = 'https://tle.viion.net/';
+  static const linkMembia = "https://viiontech.com/";
 
   static const liveUrl = 'https://tcsalumni.linkalumniapp.com/';
 

@@ -3024,16 +3024,47 @@ class _MessagesScreenState extends State<MessagesScreen> {
     }
   }
 
+  // Future<void> sendPushNotification(String title) async {
+  //   Map<String, String> headers = {
+  //     'content-type': 'application/json',
+  //     'Authorization': AppConstants.pushNotificationKey,
+  //   };
+  //   Map map = {
+  //     "registration_ids": _deviceTokens,
+  //     "notification": {
+  //       "body": title,
+  //       "title": "New message",
+  //     }
+  //   };
+  //
+  //   var response = await http.post(
+  //     Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //     body: jsonEncode(map),
+  //     headers: headers,
+  //   );
+  //   print(response.body);
+  //   if (response.statusCode == 200) {
+  //     print("Sent Notification");
+  //   } else {
+  //     print("error");
+  //   }
+  // }
+
   Future<void> sendPushNotification(String title) async {
     Map<String, String> headers = {
       'content-type': 'application/json',
       'Authorization': AppConstants.pushNotificationKey,
     };
+
     Map map = {
       "registration_ids": _deviceTokens,
-      "notification": {
+      "data":{
         "body": title,
         "title": "New message",
+        "image": _profileController.image??"",
+        "name": AppConstants.userName,
+        "messageKey": widget.messageKey,
+        "receiverId": AppConstants.myId
       }
     };
 

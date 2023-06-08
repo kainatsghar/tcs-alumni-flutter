@@ -304,6 +304,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
 
   Future<void> getData() async {
     _countries = await database.getAllCountries();
+    print("_countries=${_countries}");
     var country =
         _countries.where((element) => element.countryName == 'Pakistan');
     String? id = country.first.countryId;

@@ -51,7 +51,12 @@ String? chapterId;
 bool fromLogout = false;
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, this.comeFromNotification, this.image, this.receiverId, this.name, this.fromNotification}) : super(key: key);
+  final String? comeFromNotification;
+  final String? image;
+  final String? receiverId;
+  final String? name;
+  final String? fromNotification;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

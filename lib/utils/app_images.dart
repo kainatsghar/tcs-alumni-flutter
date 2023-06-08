@@ -36,6 +36,7 @@ class AppImages {
   static const String biometric = "assets/icons/biometric.png";
 
   //moreicons
+  static const String playButton = 'assets/icons/playButton.png';
   static const String jobopening = 'assets/icons/jobopening.svg';
   static const String postjob = 'assets/icons/postjob.svg';
   static const String spotlighticon = 'assets/icons/spotlight.svg';
@@ -178,4 +179,14 @@ class AppImages {
   static const String pdfIcon = "assets/icons/pdf.png";
   static const String wordIcon = "assets/icons/doc.png";
   static const String excelIcon = "assets/icons/xls.png";
+
+  ///Report&Hide
+  static const String reportIcon = 'assets/icons/report.svg';
+  static const String hideIcon = 'assets/icons/hide.svg';
+
+  static const String reportUserIcon = 'assets/icons/report_user.svg';
+  static const String blockUserIcon = 'assets/icons/block.svg';
+
+
+  static const String jobImageIcon = 'assets/icons/job_image.svg';
 }

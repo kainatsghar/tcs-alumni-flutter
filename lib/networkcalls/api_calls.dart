@@ -197,6 +197,7 @@ class ApiCalls {
       postedBy,
       duaDate,
       jobId,
+      imagePath
       ) async {
     Map params = {
       Params.DESIGNATION: designation,
@@ -204,9 +205,22 @@ class ApiCalls {
       Params.JOB_URL: jobUrl,
       Params.POSTED_BY: postedBy,
       Params.DUE_DATE: duaDate,
-      Params.JOB_ID: jobId,
+      Params.JOB_IMAGE: imagePath,
+
     };
-    return _condition(apiPostJob, params);
+    if (imagePath == null) {
+      print("If part");
+      return _condition(apiPostJob, params);
+    }
+    else {
+      print("else part=${params}");
+      return await NetworkCalls.uploadFileWithToken(
+        url: apiPostJob,
+        map: params,
+        imagePath: imagePath,
+        param: "image",
+      );
+    }
   }
 
   /// Post or Save Work order

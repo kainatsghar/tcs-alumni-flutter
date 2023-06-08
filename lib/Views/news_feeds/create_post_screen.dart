@@ -49,6 +49,7 @@ class _CreatePostState extends State<CreatePost> {
   final TagController _tagController = Get.put(TagController());
   final CityController _cityController = Get.put(CityController());
   final FeelingController _feelingController = Get.put(FeelingController());
+  final ProfileController profileController = Get.put(ProfileController());
   bool isPostingStory = true;
 
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
@@ -91,6 +92,7 @@ class _CreatePostState extends State<CreatePost> {
   void initState() {
     _users = [];
     _fetchData = getConnectedUsers();
+    profileController.getInfo();
     super.initState();
   }
 

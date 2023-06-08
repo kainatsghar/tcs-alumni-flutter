@@ -38,6 +38,7 @@ class FullPostScreen extends StatefulWidget {
 class _FullPostScreenState extends State<FullPostScreen> {
   int currentIndex = 0;
   bool isLoading = false;
+  late VideoPlayerController _controllers;
   YoutubePlayerController _controller = YoutubePlayerController(
     initialVideoId: 'iLnmTe5Q2Qw',
     flags: YoutubePlayerFlags(
@@ -50,6 +51,14 @@ class _FullPostScreenState extends State<FullPostScreen> {
   void initState() {
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Ensure disposing of the VideoPlayerController to free up resources.
+    _controllers.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -222,7 +231,7 @@ class _FullPostScreenState extends State<FullPostScreen> {
                       FlickVideoPlayer(
                           flickManager: FlickManager(
                             videoPlayerController:
-                            VideoPlayerController.network(
+                            _controllers = VideoPlayerController.network(
                                 widget.postImages[index].postMedia ??
                                     ''),
                           ))

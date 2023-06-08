@@ -47,6 +47,7 @@ class Params {
   static const String JOB_ID = "job_id";
   static const String DUE_DATE = "due_date";
   static const String POSTED_BY = "posted_by";
+  static const String JOB_IMAGE = "image";
 
   // Work Order
   static const String WORK_ORDER_ID = "work_order_id";

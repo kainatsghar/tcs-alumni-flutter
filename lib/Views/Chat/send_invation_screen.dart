@@ -22,7 +22,8 @@ class ChatInvitationScreen extends StatefulWidget {
   final String? image;
   final String? name;
   final String? receiverId;
-  const ChatInvitationScreen({Key? key, this.image, this.name, this.receiverId})
+  final String? fromNotification;
+  const ChatInvitationScreen({Key? key, this.image, this.name, this.receiverId, this.fromNotification})
       : super(key: key);
 
   @override
@@ -309,6 +310,13 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
   Widget _bodyContainer() {
     return Stack(
       children: [
+        widget.fromNotification == "yes" ? MessagesScreen(
+          name: widget.name,
+          image: widget.image,
+          receiverId: widget.receiverId,
+          messageKey: "",
+          devices: _userDevices,
+        ) :
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,

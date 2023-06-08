@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:iobm/Views/Event/event_tabs.dart';
 import 'package:iobm/Views/buy_and_sell_tle/product_detail_screen.dart';
 
@@ -65,6 +66,7 @@ class AlumniFeed extends StatefulWidget {
 class _AlumniFeedState extends State<AlumniFeed> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _contentController = TextEditingController();
+  final ProfileController profileController = Get.put(ProfileController());
   GlobalKey<FormState> fKey = GlobalKey<FormState>();
 
   late List<DBTimeLinePost> _timeLinePosts;
@@ -104,7 +106,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
     _postsTimeLine = [];
     _storiesList = [];
     _storiesByList = [];
-
+    profileController.updateFirebaseCount();
     _scrollController.addListener(_scrollListener);
 
     if (AppConstants.appName == "TLE") {
@@ -132,20 +134,25 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: Text(
-          Strings.alumnifeed,
-          style: CustomTextStyles.text16SemiBoldW600,
+    return GestureDetector(
+      onTap: (){
+        profileController.updateFirebaseCount();
+      },
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: Text(
+            Strings.alumnifeed,
+            style: CustomTextStyles.text16SemiBoldW600,
+          ),
+          context: context,
         ),
-        context: context,
+        backgroundColor: AppColor.backGroundColor,
+        body: dataFetched
+            ? _bodyContainer()
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
-      backgroundColor: AppColor.backGroundColor,
-      body: dataFetched
-          ? _bodyContainer()
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
     );
   }
 
@@ -512,7 +519,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                 height: 1,
                               ),
                               Text(
-                                '${_postsTimeLine[index].createdAt}',
+                                  calculateDifference(_postsTimeLine[index].createdAt!),
                                 style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,)
                               )
                             ],
@@ -2271,6 +2278,51 @@ class _AlumniFeedState extends State<AlumniFeed> {
         storyFetch = true;
       });
     }
+  }
+
+  String calculateDifference(String dateTime) {
+    String dif;
+    DateFormat dft = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime d = dft.parse(dateTime);
+
+    int difference = DateTime.now().difference(d).inSeconds;
+
+    if (difference <= 60) {
+      dif = "Now";
+    } else if (difference <= 3600) {
+      dif = DateTime.now().difference(d).inMinutes.toString();
+      if (dif == "1") {
+        dif = DateTime.now().difference(d).inMinutes.toString() + " min ago";
+      } else {
+        dif = DateTime.now().difference(d).inMinutes.toString() + " mins ago";
+      }
+    } else if (difference <= 86400) {
+      dif = DateTime.now().difference(d).inHours.toString();
+      if (dif == "1") {
+        dif = DateTime.now().difference(d).inHours.toString() + " hour ago";
+      } else {
+        dif = DateTime.now().difference(d).inHours.toString() + " hours ago";
+      }
+    } else if (difference <= 2592000) {
+      dif = DateTime.now().difference(d).inDays.toString();
+      if (dif == "1") {
+        dif = DateTime.now().difference(d).inDays.toString() + " day ago";
+      } else {
+        dif = DateTime.now().difference(d).inDays.toString() + " days ago";
+      }
+    } else if(difference <= 604800){
+      dif = (DateTime.now().difference(d).inDays / 7).toString();
+      if (dif == "1") {
+        dif = (DateTime.now().difference(d).inDays / 7).toString() + " week ago";
+      } else {
+        dif = (DateTime.now().difference(d).inDays / 7).toString() + " weeks ago";
+      }
+    }
+    else {
+      DateFormat outputFormat = DateFormat("d MMM, yyyy"); // create a new DateFormat object with the desired format
+      dif = outputFormat.format(d);
+    }
+    return dif;
   }
 
 }

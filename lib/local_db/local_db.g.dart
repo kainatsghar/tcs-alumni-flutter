@@ -5965,6 +5965,7 @@ class DBJob extends DataClass implements Insertable<DBJob> {
   final String? firstName;
   final String? lastName;
   final String? userImage;
+  final String? jobImage;
   DBJob(
       {this.id,
       this.designation,
@@ -5974,7 +5975,8 @@ class DBJob extends DataClass implements Insertable<DBJob> {
       this.postedBy,
       this.firstName,
       this.lastName,
-      this.userImage});
+      this.userImage,
+      this.jobImage});
   factory DBJob.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -5997,6 +5999,8 @@ class DBJob extends DataClass implements Insertable<DBJob> {
           .mapFromDatabaseResponse(data['${effectivePrefix}last_name']),
       userImage: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_image']),
+      jobImage: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}job_image']),
     );
   }
   @override
@@ -6029,6 +6033,9 @@ class DBJob extends DataClass implements Insertable<DBJob> {
     if (!nullToAbsent || userImage != null) {
       map['user_image'] = Variable<String?>(userImage);
     }
+    if (!nullToAbsent || jobImage != null) {
+      map['job_image'] = Variable<String?>(jobImage);
+    }
     return map;
   }
 
@@ -6059,6 +6066,9 @@ class DBJob extends DataClass implements Insertable<DBJob> {
       userImage: userImage == null && nullToAbsent
           ? const Value.absent()
           : Value(userImage),
+      jobImage: jobImage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jobImage),
     );
   }
 
@@ -6075,6 +6085,7 @@ class DBJob extends DataClass implements Insertable<DBJob> {
       firstName: serializer.fromJson<String?>(json['first_name']),
       lastName: serializer.fromJson<String?>(json['last_name']),
       userImage: serializer.fromJson<String?>(json['user_image']),
+      jobImage: serializer.fromJson<String?>(json['job_image']),
     );
   }
   @override
@@ -6090,6 +6101,7 @@ class DBJob extends DataClass implements Insertable<DBJob> {
       'first_name': serializer.toJson<String?>(firstName),
       'last_name': serializer.toJson<String?>(lastName),
       'user_image': serializer.toJson<String?>(userImage),
+      'job_image': serializer.toJson<String?>(jobImage),
     };
   }
 
@@ -6102,7 +6114,8 @@ class DBJob extends DataClass implements Insertable<DBJob> {
           String? postedBy,
           String? firstName,
           String? lastName,
-          String? userImage}) =>
+          String? userImage,
+          String? jobImage}) =>
       DBJob(
         id: id ?? this.id,
         designation: designation ?? this.designation,
@@ -6113,6 +6126,7 @@ class DBJob extends DataClass implements Insertable<DBJob> {
         firstName: firstName ?? this.firstName,
         lastName: lastName ?? this.lastName,
         userImage: userImage ?? this.userImage,
+        jobImage: jobImage ?? this.jobImage,
       );
   @override
   String toString() {
@@ -6125,14 +6139,15 @@ class DBJob extends DataClass implements Insertable<DBJob> {
           ..write('postedBy: $postedBy, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
-          ..write('userImage: $userImage')
+          ..write('userImage: $userImage, ')
+          ..write('jobImage: $jobImage')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, designation, companyName, joblink,
-      duaDate, postedBy, firstName, lastName, userImage);
+      duaDate, postedBy, firstName, lastName, userImage, jobImage);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6145,7 +6160,8 @@ class DBJob extends DataClass implements Insertable<DBJob> {
           other.postedBy == this.postedBy &&
           other.firstName == this.firstName &&
           other.lastName == this.lastName &&
-          other.userImage == this.userImage);
+          other.userImage == this.userImage &&
+          other.jobImage == this.jobImage);
 }
 
 class DBJobsCompanion extends UpdateCompanion<DBJob> {
@@ -6158,6 +6174,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
   final Value<String?> firstName;
   final Value<String?> lastName;
   final Value<String?> userImage;
+  final Value<String?> jobImage;
   const DBJobsCompanion({
     this.id = const Value.absent(),
     this.designation = const Value.absent(),
@@ -6168,6 +6185,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
     this.firstName = const Value.absent(),
     this.lastName = const Value.absent(),
     this.userImage = const Value.absent(),
+    this.jobImage = const Value.absent(),
   });
   DBJobsCompanion.insert({
     this.id = const Value.absent(),
@@ -6179,6 +6197,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
     this.firstName = const Value.absent(),
     this.lastName = const Value.absent(),
     this.userImage = const Value.absent(),
+    this.jobImage = const Value.absent(),
   });
   static Insertable<DBJob> custom({
     Expression<String?>? id,
@@ -6190,6 +6209,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
     Expression<String?>? firstName,
     Expression<String?>? lastName,
     Expression<String?>? userImage,
+    Expression<String?>? jobImage,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -6201,6 +6221,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
       if (firstName != null) 'first_name': firstName,
       if (lastName != null) 'last_name': lastName,
       if (userImage != null) 'user_image': userImage,
+      if (jobImage != null) 'job_image': jobImage,
     });
   }
 
@@ -6213,7 +6234,8 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
       Value<String?>? postedBy,
       Value<String?>? firstName,
       Value<String?>? lastName,
-      Value<String?>? userImage}) {
+      Value<String?>? userImage,
+      Value<String?>? jobImage}) {
     return DBJobsCompanion(
       id: id ?? this.id,
       designation: designation ?? this.designation,
@@ -6224,6 +6246,7 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       userImage: userImage ?? this.userImage,
+      jobImage: jobImage ?? this.jobImage,
     );
   }
 
@@ -6257,6 +6280,9 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
     if (userImage.present) {
       map['user_image'] = Variable<String?>(userImage.value);
     }
+    if (jobImage.present) {
+      map['job_image'] = Variable<String?>(jobImage.value);
+    }
     return map;
   }
 
@@ -6271,7 +6297,8 @@ class DBJobsCompanion extends UpdateCompanion<DBJob> {
           ..write('postedBy: $postedBy, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
-          ..write('userImage: $userImage')
+          ..write('userImage: $userImage, ')
+          ..write('jobImage: $jobImage')
           ..write(')'))
         .toString();
   }
@@ -6356,6 +6383,14 @@ class $DBJobsTable extends DBJobs with TableInfo<$DBJobsTable, DBJob> {
           minTextLength: 0, maxTextLength: 1000),
       type: const StringType(),
       requiredDuringInsert: false);
+  final VerificationMeta _jobImageMeta = const VerificationMeta('jobImage');
+  @override
+  late final GeneratedColumn<String?> jobImage = GeneratedColumn<String?>(
+      'job_image', aliasedName, true,
+      additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 0, maxTextLength: 1000),
+      type: const StringType(),
+      requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -6366,7 +6401,8 @@ class $DBJobsTable extends DBJobs with TableInfo<$DBJobsTable, DBJob> {
         postedBy,
         firstName,
         lastName,
-        userImage
+        userImage,
+        jobImage
       ];
   @override
   String get aliasedName => _alias ?? 'd_b_jobs';
@@ -6415,6 +6451,10 @@ class $DBJobsTable extends DBJobs with TableInfo<$DBJobsTable, DBJob> {
     if (data.containsKey('user_image')) {
       context.handle(_userImageMeta,
           userImage.isAcceptableOrUnknown(data['user_image']!, _userImageMeta));
+    }
+    if (data.containsKey('job_image')) {
+      context.handle(_jobImageMeta,
+          jobImage.isAcceptableOrUnknown(data['job_image']!, _jobImageMeta));
     }
     return context;
   }

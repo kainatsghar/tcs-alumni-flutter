@@ -2,6 +2,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import 'package:iobm/Views/buy_and_sell_tle/buy_sell_screen.dart';
 import 'package:iobm/Views/news_feeds/alumni_feed.dart';
@@ -12,6 +13,7 @@ import 'package:iobm/utils/app_constants.dart';
 
 import 'package:iobm/utils/strings.dart';
 
+import '../controllers/profile_controller.dart';
 import '../utils/text_styles.dart';
 import 'Chat/chat_screen.dart';
 import 'Event/event_screen.dart';
@@ -143,7 +145,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.chat, size: 22.h, color: AppColor.white),
               ) : Column(
-                children: [Icon(Icons.chat, size: 22.h, color: AppColor.white), Text("Chat", style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),)],
+                children: [
+                  GetBuilder<ProfileController>(builder: (controller){
+                    return Badge(
+                      isLabelVisible: controller.firebaseNotificationCount == 0 ? false : true,
+                      label: Text(controller.firebaseNotificationCount.toString()),
+                      child: Icon(Icons.chat, size: 22.h, color: AppColor.white),
+                    );
+                  }),
+                  Text("Chat", style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.iconColor),)
+                ],
               ),
             ),
             Container(

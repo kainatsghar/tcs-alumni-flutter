@@ -66,36 +66,36 @@ class SecAppBar extends AppBar {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Icon(Icons.notifications,size: 22.h,),
+                      Icon(Icons.notifications,size: 22.h,color: AppColor.iconColor,),
                       GetBuilder<ProfileController>(
                         init: ProfileController(),
                         builder: (_) {
-                          return _.notificationCount == "0"
+                          return _.notificationCount == 0
                               ? Container()
                               : Positioned(
-                                  right: 0,
-                                  top: 3,
-                                  child: Container(
-                                    height: 18.h,
-                                    width: 18.w,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: GetBuilder<ProfileController>(
-                                        init: ProfileController(),
-                                        builder: (_) => Text(
-                                          '${_.notificationCount}',
-                                          style: TextStyle(
-                                            color: AppColor.white,
-                                            fontSize: ScreenUtil().setSp(12),
-                                          ),
-                                        ),
-                                      ),
+                            right: 0,
+                            top: 3,
+                            child: Container(
+                              height: 18.h,
+                              width: 18.w,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: GetBuilder<ProfileController>(
+                                  init: ProfileController(),
+                                  builder: (_) => Text(
+                                    '${_.notificationCount}',
+                                    style: TextStyle(
+                                      color: AppColor.white,
+                                      fontSize: ScreenUtil().setSp(12),
                                     ),
                                   ),
-                                );
+                                ),
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ],

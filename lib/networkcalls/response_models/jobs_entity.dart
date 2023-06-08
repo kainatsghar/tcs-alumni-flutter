@@ -31,4 +31,6 @@ class JobsResultJobs with JsonConvert<JobsResultJobs> {
   late String lastName;
   @JSONField(name: "user_image")
   late String userImage;
+  @JSONField(name: "job_image")
+  late String jobImage;
 }

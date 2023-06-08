@@ -11,6 +11,8 @@ import 'package:iobm/networkcalls/response_models/youtube_entity.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iobm/utils/app_constants.dart';
 
+import '../../utils/app_color.dart';
+import '../../utils/app_images.dart';
 import '../../utils/text_styles.dart';
 
 class YoutubeChannelScreen extends StatefulWidget {
@@ -74,19 +76,40 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
           child: GestureDetector(
             onTap: () {
               Get.to(
-                () => YoutubeFullScreen(
+                    () => YoutubeFullScreen(
                   videoId: _youtubeVideos[index].videoId,
                 ),
               );
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.r),
+                color: AppColor.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColor.greyshade300.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: const Offset(0, 2), // changes position of shadow
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.h),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: _youtubeVideos[index].thumbnail ?? '',
-                    width: 120.w,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: _youtubeVideos[index].thumbnail ?? '',
+                          width: 120.w,
+                        ),
+                        Image.asset(AppImages.playButton, height: 30.h,width: 30.w,),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -125,6 +148,67 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
       },
     );
   }
+  // Widget _bodyList() {
+  //   return ListView.separated(
+  //     controller: _scrollController,
+  //     itemCount: _youtubeVideos.length,
+  //     itemBuilder: (context, index) {
+  //       return Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+  //         child: GestureDetector(
+  //           onTap: () {
+  //             Get.to(
+  //               () => YoutubeFullScreen(
+  //                 videoId: _youtubeVideos[index].videoId,
+  //               ),
+  //             );
+  //           },
+  //           child: Container(
+  //             padding: const EdgeInsets.symmetric(horizontal: 10),
+  //             child: Row(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 CachedNetworkImage(
+  //                   imageUrl: _youtubeVideos[index].thumbnail ?? '',
+  //                   width: 120.w,
+  //                 ),
+  //                 const SizedBox(
+  //                   width: 10,
+  //                 ),
+  //                 Expanded(
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       const SizedBox(
+  //                         height: 5,
+  //                       ),
+  //                       Text(
+  //                         _youtubeVideos[index].title ?? '',
+  //                         style: CustomTextStyles.text14SemiBoldW600,
+  //                       ),
+  //                       const SizedBox(
+  //                         height: 3,
+  //                       ),
+  //                       Text(
+  //                         convertDateTimeDisplay(
+  //                             _youtubeVideos[index].publishedAt ?? ''),
+  //                         style: CustomTextStyles.text12RegularW400,
+  //                       )
+  //                     ],
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //     separatorBuilder: (BuildContext context, int index) {
+  //       return const Divider();
+  //     },
+  //   );
+  // }
 
   Future<void> getChannelVideos() async {
     String url =

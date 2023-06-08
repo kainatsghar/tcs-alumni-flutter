@@ -14,9 +14,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/notification_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String versionCode = '0.0.0';
 String packageName = '';
+late SharedPreferences preferencesFromMain;
 
 class MyHttpoverrides extends HttpOverrides {
   @override
@@ -33,6 +35,7 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   versionCode = packageInfo.version;
   packageName = packageInfo.packageName;
+  preferencesFromMain = await SharedPreferences.getInstance();
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
