@@ -47,7 +47,7 @@ class CustomWidget {
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.r),
-                  side: const BorderSide(color: AppColor.primaryColor))),
+                  side:  BorderSide(color: AppColor.primaryColor))),
           backgroundColor: MaterialStateProperty.all<Color>(
               isBorder ? AppColor.white : AppColor.primaryColor),
           minimumSize: MaterialStateProperty.all<Size>(Size(120.w, 30.h)),
@@ -160,7 +160,7 @@ class CustomWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: const BorderSide(color: AppColor.primaryColor))),
+                      side:  BorderSide(color: AppColor.primaryColor))),
               backgroundColor: MaterialStateProperty.all<Color>(
                   isBorderColor ? AppColor.white : AppColor.primaryColor),
               minimumSize: MaterialStateProperty.all<Size>(Size(65.w, 20.h)))),
@@ -186,7 +186,7 @@ class CustomWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: const BorderSide(color: AppColor.primaryColor))),
+                      side:  BorderSide(color: AppColor.primaryColor))),
               backgroundColor:
                   MaterialStateProperty.all<Color>(AppColor.backGroundColor),
               minimumSize: MaterialStateProperty.all<Size>(Size(65.w, 20.h)))),

@@ -257,7 +257,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
         controller: _dueDateController,
         decoration: WidgetStyle.suffixNameTextFieldDecoration(
             hint: "Enter Due Date",
-            sufIcon: const Icon(
+            sufIcon:  Icon(
               Icons.calendar_today_outlined,
               color: AppColor.primaryColor,
             )));

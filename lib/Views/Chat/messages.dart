@@ -1613,7 +1613,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   ),
                                   style: ButtonStyle(
                                     side: MaterialStateProperty.all(
-                                        const BorderSide(
+                                         BorderSide(
                                             color:
                                             AppColor.primaryColor)),
                                     backgroundColor:
@@ -1989,7 +1989,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 ),
                                 style: ButtonStyle(
                                   side: MaterialStateProperty.all(
-                                      const BorderSide(
+                                       BorderSide(
                                           color: AppColor.primaryColor)),
                                   backgroundColor:
                                   MaterialStateProperty.all<Color>(
@@ -2192,7 +2192,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 ),
                                 style: ButtonStyle(
                                   side: MaterialStateProperty.all(
-                                      const BorderSide(
+                                       BorderSide(
                                           color: AppColor.primaryColor)),
                                   backgroundColor:
                                   MaterialStateProperty.all<Color>(
@@ -3227,7 +3227,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  side: const BorderSide(
+                                  side:  BorderSide(
                                     color: AppColor.primaryColor,
                                   ),
                                 ),
@@ -3263,7 +3263,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    side: const BorderSide(
+                                    side:  BorderSide(
                                       color: AppColor.primaryColor,
                                     ),
                                   ),

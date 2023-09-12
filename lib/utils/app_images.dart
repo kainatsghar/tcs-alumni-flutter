@@ -189,4 +189,6 @@ class AppImages {
 
 
   static const String jobImageIcon = 'assets/icons/job_image.svg';
+
+  static const String iobmSplash = 'assets/images/iobm_splash.png';
 }

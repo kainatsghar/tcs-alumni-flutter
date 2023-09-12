@@ -1437,7 +1437,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                     viewBanner();
                   },
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                       color: AppColor.primaryColor,
                       shape: BoxShape.circle,
                     ),
@@ -1624,7 +1624,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                     },
                                     decoration: InputDecoration(
                                       errorStyle: TextStyle(fontSize: 12.sp),
-                                      focusedBorder: const UnderlineInputBorder(
+                                      focusedBorder:  UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: AppColor.primaryColor,
                                         ),
@@ -1924,7 +1924,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                 bottom: 0,
                                 right: 0,
                                 child: Container(
-                                  decoration: const BoxDecoration(
+                                  decoration:  BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColor.primaryColor,
                                   ),

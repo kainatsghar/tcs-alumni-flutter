@@ -141,7 +141,7 @@ class IntroScreen extends StatelessWidget {
                 },
                 child: Obx(() {
                   return _controller.isLastPage == true ? Container(
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                       color: AppColor.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),

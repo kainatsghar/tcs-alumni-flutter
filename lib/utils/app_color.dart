@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 
+import 'app_constants.dart';
+
 class AppColor {
-  static const MaterialColor primaryColor = MaterialColor(
-    0xff243960,
-    <int, Color>{
-      50: Color(0xff243960),
-      100: Color(0xff243960),
-      200: Color(0xff243960),
-      300: Color(0xff243960),
-      400: Color(0xff243960),
-      500: Color(0xff243960),
-      600: Color(0xff243960),
-      700: Color(0xff243960),
-      800: Color(0xff243960),
-      900: Color(0xff243960),
-    },
-  );
+  // static const MaterialColor primaryColor = MaterialColor(
+  //   0xff243960,
+  //   <int, Color>{
+  //     50: Color(0xff243960),
+  //     100: Color(0xff243960),
+  //     200: Color(0xff243960),
+  //     300: Color(0xff243960),
+  //     400: Color(0xff243960),
+  //     500: Color(0xff243960),
+  //     600: Color(0xff243960),
+  //     700: Color(0xff243960),
+  //     800: Color(0xff243960),
+  //     900: Color(0xff243960),
+  //   },
+  // );
+
+  static late MaterialColor primaryColor = _getPrimaryColor();
+
+  static MaterialColor _getPrimaryColor() {
+    final colorValue = AppConstants.appName == "TCS Alumni" ? 0xff243960 : AppConstants.appName == "IoBM" ? 0xffBA000D : 0xff13BFB1;
+    return MaterialColor(
+      colorValue,
+      <int, Color>{
+        50: Color(colorValue),
+        100: Color(colorValue),
+        200: Color(colorValue),
+        300: Color(colorValue),
+        400: Color(colorValue),
+        500: Color(colorValue),
+        600: Color(colorValue),
+        700: Color(colorValue),
+        800: Color(colorValue),
+        900: Color(colorValue),
+      },
+    );
+  }
+
   static const greenColor = Color(0xff22CD43);
   static const backGroundColor = Color(0xFFE3E4E4);
   static const drakgray = Color(0xFFa9a9a9);

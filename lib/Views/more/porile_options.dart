@@ -156,7 +156,7 @@ class ProfileOptionsView extends StatelessWidget {
       titlePadding: EdgeInsets.only(top: 25.h),
       contentPadding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.w),
       title: 'Delete My Account',
-      titleStyle: const TextStyle(color: AppColor.primaryColor),
+      titleStyle:  TextStyle(color: AppColor.primaryColor),
       middleText: 'Are you sure you want to delete your account?',
       actions: [
         Row(

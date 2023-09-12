@@ -39,7 +39,7 @@ class WidgetStyle {
           size: 20.h,
         ),
       ),
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(
           color: AppColor.primaryColor,
         ),
@@ -59,7 +59,7 @@ class WidgetStyle {
         minWidth: 23,
         maxHeight: 25,
       ),
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
@@ -78,7 +78,7 @@ class WidgetStyle {
         minWidth: 23,
         maxHeight: 23,
       ),
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       hintStyle: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.greyshade400,),
@@ -90,7 +90,7 @@ class WidgetStyle {
   static InputDecoration secNameTextFieldDecoration({hint}) {
     return InputDecoration(
       contentPadding: const EdgeInsets.only(top: 30),
-      suffixIcon: const Padding(
+      suffixIcon:  Padding(
         padding: EdgeInsets.only(top: 22),
         child: Icon(
           Icons.arrow_drop_down_sharp,
@@ -103,7 +103,7 @@ class WidgetStyle {
         minWidth: 23,
         maxHeight: 25,
       ),
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       hintStyle: TextStyle(
@@ -117,7 +117,7 @@ class WidgetStyle {
 
   static InputDecoration thirnameTextFieldDecoration({hint}) {
     return InputDecoration(
-      suffixIcon: const Padding(
+      suffixIcon:  Padding(
         padding: EdgeInsets.only(top: 18),
         child: Icon(
           Icons.arrow_drop_down_sharp,
@@ -132,7 +132,7 @@ class WidgetStyle {
         minWidth: 23,
         maxHeight: 25,
       ),
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       hintStyle: TextStyle(
@@ -162,7 +162,7 @@ class WidgetStyle {
       ),
       hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
       hintText: '*******',
-      focusedBorder: const UnderlineInputBorder(
+      focusedBorder:  UnderlineInputBorder(
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       isDense: true,

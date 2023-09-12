@@ -42,7 +42,7 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
+        iconTheme:  IconThemeData(
           color: AppColor.primaryColor, //change your color here
         ),
         backgroundColor: AppColor.transparent,

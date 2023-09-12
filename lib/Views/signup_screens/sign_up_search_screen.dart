@@ -110,7 +110,7 @@ class _SignUpScreenSearchState extends State<SignUpScreenSearch> {
           fontSize: ScreenUtil().setSp(13),
         ),
         //  contentPadding: const EdgeInsets.only(right: 20, bottom: 0),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),

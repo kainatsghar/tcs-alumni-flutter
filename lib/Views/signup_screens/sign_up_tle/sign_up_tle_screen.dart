@@ -252,7 +252,7 @@ class _SignUpTLEState extends State<SignUpTLE> {
         isDense: true,
         hintText: 'Full Name',
         hintStyle: TextStyle(color: AppColor.greyshade400,fontSize: 12.sp),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),
@@ -332,7 +332,7 @@ class _SignUpTLEState extends State<SignUpTLE> {
         isDense: true,
         hintText: 'example@mail.com',
         hintStyle: TextStyle(color: AppColor.greyshade400,fontSize: 12.sp),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),

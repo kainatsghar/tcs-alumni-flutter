@@ -76,14 +76,14 @@ class OfferDiscountState extends State<OfferDiscount> {
                         EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
                     border: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColor.primaryColor),
+                           BorderSide(color: AppColor.primaryColor),
                       borderRadius: BorderRadius.circular(5.r),
                     ),
-                    enabledBorder: const OutlineInputBorder(
+                    enabledBorder:  OutlineInputBorder(
                         borderSide: BorderSide(color: AppColor.primaryColor)),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: AppColor.primaryColor),
+                             BorderSide(color: AppColor.primaryColor),
                         borderRadius: BorderRadius.circular(5.r)),
                   ),
                   maxLines: 8,

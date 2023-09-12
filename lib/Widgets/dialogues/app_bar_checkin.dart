@@ -118,7 +118,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: const BorderSide(
+                            side:  BorderSide(
                               color: AppColor.primaryColor,
                             ),
                           ),
@@ -149,7 +149,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              side: const BorderSide(
+                              side:  BorderSide(
                                 color: AppColor.primaryColor,
                               ),
                             ),

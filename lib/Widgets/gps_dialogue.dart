@@ -124,7 +124,7 @@ class _ApplyForCardState extends State<ApplyForCard> {
     onPressed,
   }) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration:  BoxDecoration(
           color: AppColor.primaryColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(4), topRight: Radius.circular(4))),

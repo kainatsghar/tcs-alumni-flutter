@@ -358,7 +358,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           20.0),
-                                                  side: const BorderSide(
+                                                  side:  BorderSide(
                                                     color:
                                                         AppColor.primaryColor,
                                                   ),
@@ -401,7 +401,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20.0),
-                                                side: const BorderSide(
+                                                side:  BorderSide(
                                                   color: AppColor.primaryColor,
                                                 ),
                                               ),
@@ -575,7 +575,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  side: const BorderSide(
+                                  side:  BorderSide(
                                     color: AppColor.primaryColor,
                                   ),
                                 ),
@@ -611,7 +611,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    side: const BorderSide(
+                                    side:  BorderSide(
                                       color: AppColor.primaryColor,
                                     ),
                                   ),

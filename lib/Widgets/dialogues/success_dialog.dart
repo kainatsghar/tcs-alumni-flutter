@@ -75,7 +75,7 @@ class _SucessDialogState extends State<SucessDialog> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
                   widget.dText!,
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontSize: 12, color: AppColor.primaryColor),
                   textAlign: TextAlign.center,
                 ),

@@ -246,7 +246,7 @@ class PostWorkOrderState extends State<PostWorkOrder> {
         controller: _dueDateController,
         decoration: WidgetStyle.suffixNameTextFieldDecoration(
             hint: "Enter Due Date",
-            sufIcon: const Icon(
+            sufIcon:  Icon(
               Icons.calendar_today_outlined,
               color: AppColor.primaryColor,
             )));
@@ -267,7 +267,7 @@ class PostWorkOrderState extends State<PostWorkOrder> {
         // controller: _dueDateController,
         decoration: WidgetStyle.suffixNameTextFieldDecoration(
             hint: "Chose Document",
-            sufIcon: const Icon(
+            sufIcon:  Icon(
               Icons.document_scanner_sharp,
               color: AppColor.primaryColor,
             )));

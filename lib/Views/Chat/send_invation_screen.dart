@@ -372,7 +372,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: AppColor.primaryColor),
+                    side:  BorderSide(color: AppColor.primaryColor),
                   ),
                 ),
               ),
@@ -442,7 +442,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(color: AppColor.primaryColor),
+                        side:  BorderSide(color: AppColor.primaryColor),
                       ),
                     ),
                   ),
@@ -476,7 +476,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(color: AppColor.primaryColor),
+                        side:  BorderSide(color: AppColor.primaryColor),
                       ),
                     ),
                   ),

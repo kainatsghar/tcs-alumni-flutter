@@ -293,7 +293,7 @@ class _IOBMSearchSignupViewState extends State<IOBMSearchSignupView> {
           fontWeight: FontWeight.w500,
           fontSize: ScreenUtil().setSp(13),
         ),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),
@@ -796,12 +796,12 @@ class _IOBMSearchSignupViewState extends State<IOBMSearchSignupView> {
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                   const EdgeInsets.symmetric(horizontal: 10.0)),
               side: MaterialStateProperty.all<BorderSide>(
-                const BorderSide(color: AppColor.primaryColor),
+                 BorderSide(color: AppColor.primaryColor),
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
-                  side: const BorderSide(
+                  side:  BorderSide(
                     color: AppColor.primaryColor,
                   ),
                 ),
@@ -832,7 +832,7 @@ class _IOBMSearchSignupViewState extends State<IOBMSearchSignupView> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
-                    side: const BorderSide(
+                    side:  BorderSide(
                       color: AppColor.primaryColor,
                     ),
                   ),

@@ -104,7 +104,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.r),
-                          side: const BorderSide(
+                          side:  BorderSide(
                             color: AppColor.primaryColor,
                           ),
                         ),
@@ -134,7 +134,7 @@ class _LinkedInDialogState extends State<LinkedInDialog> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.r),
-                          side: const BorderSide(
+                          side:  BorderSide(
                             color: AppColor.primaryColor,
                           ),
                         ),

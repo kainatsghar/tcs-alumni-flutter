@@ -409,7 +409,7 @@ class _ViewStoryState extends State<ViewStory> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(15),
-                      decoration: const BoxDecoration(
+                      decoration:  BoxDecoration(
                         color: AppColor.primaryColor,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25),
@@ -486,7 +486,7 @@ class _ViewStoryState extends State<ViewStory> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(15),
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     color: AppColor.primaryColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(25),
@@ -591,7 +591,7 @@ class _ViewStoryState extends State<ViewStory> {
                                   BorderRadius.all(Radius.circular(5.r)),
                                   color: AppColor.greyshade400,
                                 ),
-                                child: const Padding(
+                                child:  Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: 3.0, horizontal: 5.0),
                                   child: Icon(

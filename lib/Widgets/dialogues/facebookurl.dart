@@ -103,7 +103,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.r),
-                          side: const BorderSide(
+                          side:  BorderSide(
                             color: AppColor.primaryColor,
                           ),
                         ),
@@ -133,7 +133,7 @@ class _FacebookUrlState extends State<FacebookUrl> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.r),
-                          side: const BorderSide(
+                          side:  BorderSide(
                             color: AppColor.primaryColor,
                           ),
                         ),

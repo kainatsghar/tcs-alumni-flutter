@@ -320,7 +320,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           fontWeight: FontWeight.w500,
           fontSize: ScreenUtil().setSp(13),
         ),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),
@@ -348,7 +348,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         hintStyle: TextStyle(color: AppColor.greyshade400),
         contentPadding: const EdgeInsets.only(top: 13, bottom: 3),
         isDense: true,
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder:  UnderlineInputBorder(
           borderSide: BorderSide(
             color: AppColor.primaryColor,
           ),
@@ -916,12 +916,12 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                   const EdgeInsets.symmetric(horizontal: 20.0)),
               side: MaterialStateProperty.all<BorderSide>(
-                const BorderSide(color: AppColor.primaryColor),
+                 BorderSide(color: AppColor.primaryColor),
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
-                  side: const BorderSide(
+                  side:  BorderSide(
                     color: AppColor.primaryColor,
                   ),
                 ),
@@ -952,7 +952,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
-                    side: const BorderSide(
+                    side:  BorderSide(
                       color: AppColor.primaryColor,
                     ),
                   ),

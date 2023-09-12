@@ -90,7 +90,7 @@ class _OTPDialogState extends State<OTPDialog> {
                         Text('Time Remaining',
                             style: TextStyle(color: AppColor.grey, fontSize: 12.sp)),
                         Text('00 : ${resentTime.toString().padLeft(2, '0')}s',
-                            style: const TextStyle(
+                            style:  TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.primaryColor)),
                         SizedBox(height: 15.h),
@@ -110,7 +110,7 @@ class _OTPDialogState extends State<OTPDialog> {
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
-                                        side: const BorderSide(
+                                        side:  BorderSide(
                                           color: AppColor.primaryColor,
                                         ),
                                       ),

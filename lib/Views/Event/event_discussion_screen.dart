@@ -197,7 +197,7 @@ class _EventCommentScreenState extends State<EventCommentScreen> {
                 duration: const Duration(milliseconds: 300),
               );
             },
-            icon: const Icon(
+            icon:  Icon(
               Icons.send,
               color: AppColor.primaryColor,
             ),

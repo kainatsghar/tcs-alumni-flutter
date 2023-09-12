@@ -52,7 +52,7 @@ class UIHelper {
       child: SizedBox(
         height: width,
         width: height,
-        child: const CircularProgressIndicator(
+        child:  CircularProgressIndicator(
           color: AppColor.primaryColor,
         ),
       ),

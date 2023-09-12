@@ -604,12 +604,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                   const EdgeInsets.symmetric(horizontal: 20.0)),
               side: MaterialStateProperty.all<BorderSide>(
-                const BorderSide(color: AppColor.primaryColor),
+                 BorderSide(color: AppColor.primaryColor),
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  side: const BorderSide(
+                  side:  BorderSide(
                     color: AppColor.primaryColor,
                   ),
                 ),
@@ -640,7 +640,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  side: const BorderSide(
+                  side:  BorderSide(
                     color: AppColor.primaryColor,
                   ),
                 ),

@@ -14,7 +14,7 @@ class _ApiCallingAlertState extends State<ApiCallingAlert> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: const Scaffold(
+      child:  Scaffold(
         backgroundColor: AppColor.transparent,
         body: Center(
           child: CircularProgressIndicator(

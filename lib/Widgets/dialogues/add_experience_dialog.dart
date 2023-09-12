@@ -234,7 +234,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                                           bottom: 15,
                                           right: 10,
                                         ),
-                                        decoration: const BoxDecoration(
+                                        decoration:  BoxDecoration(
                                           color: AppColor.primaryColor, //
                                         ),
                                         child: Row(
