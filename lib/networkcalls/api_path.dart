@@ -118,6 +118,9 @@ const String apiSeenByStory = "api/seen_by";
 
 const String apiDeleteComment = "api/delete_comment";
 
+const String apiSendEmailVerifyCode = "api/send_email_verify_code";
+const String apiOtpVerification = "api/otp_verification";
+
 ///Counter
 const String apiCounter = "api/get_user_unread_count";
 

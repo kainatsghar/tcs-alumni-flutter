@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -11,6 +12,9 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../Views/signup_screens/sign_up_boss/signup_search_screen.dart';
+import '../../networkcalls/api_path.dart';
+import '../../networkcalls/network_config.dart';
+import '../../utils/app_constants.dart';
 
 class OTPDialog extends StatefulWidget {
   final String? phone;
@@ -34,7 +38,9 @@ class _OTPDialogState extends State<OTPDialog> {
 
   @override
   void initState() {
-    _sendOtp();
+    Future.delayed(Duration.zero, () {
+      _fetchOtpCode();
+    });
     super.initState();
   }
 
@@ -71,7 +77,7 @@ class _OTPDialogState extends State<OTPDialog> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "We have sent you a six digit verification code. Please enter below",
+                            "We have sent you a 4 digit verification code. Please enter below",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               // fontFamily: 'Nunito',
@@ -154,7 +160,7 @@ class _OTPDialogState extends State<OTPDialog> {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       if(resentTime == 0){
-                                        _sendOtp();
+                                        reSendEmailCode();
                                         setState(() {
                                           resentTime = 60;
                                         });
@@ -193,7 +199,7 @@ class _OTPDialogState extends State<OTPDialog> {
       child: Pinput(
         // androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
         controller: _otpController,
-        length: 6,
+        length: 4,
         pinAnimationType: PinAnimationType.slide,
         followingPinTheme: PinTheme(
             width: 40.w,height: 40.w,
@@ -230,6 +236,32 @@ class _OTPDialogState extends State<OTPDialog> {
     ),
   );
 
+  Future<void> _fetchOtpCode() async {
+    showTimer = true;
+    resendTimer();
+
+    UIHelper.apiCallingAlert(context);
+    String url = AppConstants.baseUrl + apiOtpVerification;
+    Map map = {
+      "email": widget.phone
+    };
+    print("EmailCheck ${widget.phone}");
+    ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
+    UIHelper.hideApiCallingAlert(context);
+    if(apiResponse.done ?? false){
+      dynamic otpStatus = jsonDecode(apiResponse.responseString??"")["otp"];
+      if(otpStatus == "inactive"){
+        UIHelper.showErrorAlert(context, jsonDecode(apiResponse.responseString??"")["message"]);
+      }
+      else{
+        print("_verificationCode= $otpStatus");
+        _verificationCode = otpStatus;
+      }
+    } else{
+      UIHelper.showErrorAlert(context, apiResponse.errorMsg);
+    }
+  }
+
   Future<void> _sendOtp() async {
     showTimer = true;
     resendTimer();
@@ -264,51 +296,102 @@ class _OTPDialogState extends State<OTPDialog> {
     );
   }
 
+  // Future<void> verifyCode() async {
+  //   UIHelper.apiCallingAlert(context);
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   String smsCode = _otpController.text;
+  //
+  //   // Create a PhoneAuthCredential with the code
+  //   PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+  //     verificationId: _verificationCode ?? '',
+  //     smsCode: smsCode,
+  //   );
+  //
+  //   // Sign the user in (or link) with the credential
+  //   await auth.signInWithCredential(phoneAuthCredential).then(
+  //         (value) {
+  //       if (value.user != null) {
+  //         UIHelper.hideApiCallingAlert(context);
+  //         if (widget.check == 'signup') {
+  //           Navigator.of(context).pop();
+  //           Get.off(
+  //                 () => BossSearchSignupView(
+  //               phone: widget.phone,
+  //               email: "",
+  //               name: "",
+  //               loginWith: 'email',
+  //               password: "",
+  //             ),
+  //           );
+  //         } else {
+  //           Navigator.of(context).pop();
+  //           Get.off(
+  //                 () => ForgetPasswordScreen(
+  //               phone: widget.phone ?? '',
+  //             ),
+  //           );
+  //         }
+  //       } else {
+  //         UIHelper.showErrorAlert(context, "Code is not correct");
+  //       }
+  //     },
+  //   ).catchError(
+  //         (error) {
+  //       UIHelper.hideApiCallingAlert(context);
+  //       UIHelper.showErrorAlert(context, "Code is not correct");
+  //     },
+  //   );
+  // }
+
   Future<void> verifyCode() async {
+    if(_otpController.text == _verificationCode){
+      if (widget.check == 'signup') {
+        Navigator.of(context).pop();
+        Get.off(
+              () => BossSearchSignupView(
+            phone: widget.phone,
+            email: "",
+            name: "",
+            loginWith: 'email',
+            password: "",
+          ),
+        );
+      }
+      else {
+        Navigator.of(context).pop();
+        Get.off(
+              () => ForgetPasswordScreen(
+            phone: widget.phone ?? '',
+          ),
+        );
+      }
+    }
+    else{
+      UIHelper.showErrorAlert(context, "OTP code is not correct");
+    }
+  }
+
+  Future<void> reSendEmailCode() async{
     UIHelper.apiCallingAlert(context);
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String smsCode = _otpController.text;
-
-    // Create a PhoneAuthCredential with the code
-    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-      verificationId: _verificationCode ?? '',
-      smsCode: smsCode,
-    );
-
-    // Sign the user in (or link) with the credential
-    await auth.signInWithCredential(phoneAuthCredential).then(
-          (value) {
-        if (value.user != null) {
-          UIHelper.hideApiCallingAlert(context);
-          if (widget.check == 'signup') {
-            Navigator.of(context).pop();
-            Get.off(
-                  () => BossSearchSignupView(
-                phone: widget.phone,
-                email: "",
-                name: "",
-                loginWith: 'email',
-                password: "",
-              ),
-            );
-          } else {
-            Navigator.of(context).pop();
-            Get.off(
-                  () => ForgetPasswordScreen(
-                phone: widget.phone ?? '',
-              ),
-            );
-          }
-        } else {
-          UIHelper.showErrorAlert(context, "Code is not correct");
-        }
-      },
-    ).catchError(
-          (error) {
-        UIHelper.hideApiCallingAlert(context);
-        UIHelper.showErrorAlert(context, "Code is not correct");
-      },
-    );
+    String url = AppConstants.baseUrl + apiSendEmailVerifyCode;
+    Map map = {
+      "email": widget.phone,
+      "forgot": widget.check == "forget" ? "yes" : ""
+    };
+    ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
+    UIHelper.hideApiCallingAlert(context);
+    if(apiResponse.done ?? false){
+      dynamic otpStatus = jsonDecode(apiResponse.responseString??"")["otp"] ?? "";
+      if(otpStatus == "active"){
+        _fetchOtpCode();
+      }
+      else{
+        UIHelper.showErrorAlert(context, jsonDecode(apiResponse.responseString??"")["message"]);
+      }
+    }
+    else{
+      UIHelper.showErrorAlert(context, apiResponse.errorMsg);
+    }
   }
 
   resendTimer() {

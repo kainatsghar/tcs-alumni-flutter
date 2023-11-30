@@ -12,6 +12,8 @@ import '../../Widgets/widget_styles.dart';
 import '../../helper_classes/ui_helper.dart';
 import '../../models/error_entity.dart';
 import '../../networkcalls/api_calls.dart';
+import '../../networkcalls/api_path.dart';
+import '../../networkcalls/network_config.dart';
 import '../../networkcalls/response_models/verify_phone_entity.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
@@ -28,7 +30,9 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _countryCodeController = TextEditingController();
+  GlobalKey<FormState> fKey = GlobalKey<FormState>();
   String number = '';
 
   @override
@@ -68,20 +72,23 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: 35.h,
                 ),
                 Text(
-                  'Please enter your registered mobile number to verify your identity.',
+                  'Enter your registered email address to verify its you',
                   style: WidgetStyle.forgotTExtStyle(
                       fontSize: 14.0, color: AppColor.greyshade800),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30.h),
-                otpTextField(),
+                otpTextEmailField(),
                 SizedBox(height: 40.h),
                 CustomWidget.myButton(
                     isBorder: false,
                     name: AppConstants.sendcode,
                     // size: Size(110.w, 30.h),
                     onClicked: () {
-                      verifyPhoneNumber();
+                      if (fKey.currentState!.validate()) {
+                        sendEmailCode();
+                      }
+
                     }),
                 SizedBox(height: 40.h),
                 backToLogin(),
@@ -169,6 +176,25 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
+  Widget otpTextEmailField() {
+    return Form(
+      key: fKey,
+      child: TextFormField(
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          hintText: 'Enter Your Email',
+          hintStyle: const TextStyle(),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColor.redshade900)),
+        ),
+        validator: (value) {
+          return value!.isEmpty ? 'Email is required' : null;
+        },
+      ),
+    );
+  }
+
   Future<void> verifyPhoneNumber() async {
     if (_phoneController.text[0] == "0") {
       _phoneController.text = _phoneController.text.substring(1);
@@ -201,6 +227,28 @@ class _OtpScreenState extends State<OtpScreen> {
               context: context, phone: number, check: widget.check);
         }
       }
+    }
+  }
+
+  Future<void> sendEmailCode() async{
+    UIHelper.apiCallingAlert(context);
+    String url = AppConstants.baseUrl + apiSendEmailVerifyCode;
+    Map map = {
+      "email": _emailController.text,
+      "forgot": widget.check == "forget" ? "1" : "0"
+    };
+    ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
+    UIHelper.hideApiCallingAlert(context);
+    if(apiResponse.done ?? false){
+      dynamic otpStatus = jsonDecode(apiResponse.responseString??"")["otp"] ?? "";
+      if(otpStatus == "active"){
+        CustomWidget.otpDialog(context: context, phone: _emailController.text, check: widget.check);
+      }
+      else{
+        UIHelper.showErrorAlert(context, jsonDecode(apiResponse.responseString??"")["message"]);
+      }
+    } else{
+      UIHelper.showErrorAlert(context, apiResponse.errorMsg);
     }
   }
 

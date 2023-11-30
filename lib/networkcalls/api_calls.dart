@@ -750,7 +750,7 @@ class ApiCalls {
   ///
   static forgetPassword({phone, password}) async {
     Map params = {
-      Params.USER_PHONE: phone,
+      Params.USER_EMAIL: phone,
       Params.USER_PASSWORD: password,
     };
     return await NetworkCalls.postMultipartCall(

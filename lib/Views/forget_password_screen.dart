@@ -378,6 +378,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     UIHelper.apiCallingAlert(context);
     var response = await ApiCalls.forgetPassword(
         phone: widget.phone, password: _passwordController.text);
+    print("UserEmail: ${widget.phone}");
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
       print(response.message);
