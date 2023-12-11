@@ -376,7 +376,7 @@ class _OTPDialogState extends State<OTPDialog> {
     String url = AppConstants.baseUrl + apiSendEmailVerifyCode;
     Map map = {
       "email": widget.phone,
-      "forgot": widget.check == "forget" ? "yes" : ""
+      "forgot": widget.check == "forget" ? "1" : "0"
     };
     ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
     UIHelper.hideApiCallingAlert(context);

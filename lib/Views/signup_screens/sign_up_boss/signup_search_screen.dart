@@ -807,13 +807,15 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       if (searchEntity.success == 1) {
         if (searchEntity.result!.isEmpty) {
           setState(() {
-            _phoneController.text = widget.phone ?? '';
+            //_phoneController.text = widget.phone ?? '';
+            _emailController.text = widget.phone ?? '';
           });
           return signUpSearchDialogue(context: context);
         } else {
           setState(() {
             searched = true;
-            _phoneController.text = widget.phone ?? '';
+            //_phoneController.text = widget.phone ?? '';
+            _emailController.text = widget.phone ?? '';
             _nameController.text = searchEntity.result!.first.firstName ?? '';
             _emailController.text = searchEntity.result!.first.email ?? '';
             // _branchId = searchEntity.result!.first!.branchId;
