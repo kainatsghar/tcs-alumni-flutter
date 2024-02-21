@@ -175,46 +175,46 @@ class _AlumniFeedState extends State<AlumniFeed> {
           ),
           child: Row(
             children: [
-              GetBuilder<ProfileController>(
-                init: ProfileController(),
-                builder: (_) {
-                  return CircleAvatar(
-                    child: _.image == ''
-                        ? Image(
-                            image:
-                                const AssetImage("assets/images/profile.png"),
-                            width: 80.w,
-                            height: 80.w,
-                          )
-                        : CachedNetworkImage(
-                            imageUrl: _.image ?? '',
-                            imageBuilder: (context, imageProvider) => Container(
-                              width: 80.w,
-                              height: 80.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                //   color: Colors.white,
-                                image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                              ),
-                            ),
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) => CircleAvatar(
-                              //profile image
-                              backgroundColor: Colors.white,
-                              backgroundImage:
-                                  const AssetImage("assets/images/profile.png"),
-                              radius: 20.r,
-                            ),
-                          ),
-                    radius: 20.r,
-                    //backgroundColor: Colors.black,
-                  );
-                },
-              ),
+              // GetBuilder<ProfileController>(
+              //   init: ProfileController(),
+              //   builder: (_) {
+              //     return CircleAvatar(
+              //       child: _.image == ''
+              //           ? Image(
+              //               image:
+              //                   const AssetImage("assets/images/profile.png"),
+              //               width: 80.w,
+              //               height: 80.w,
+              //             )
+              //           : CachedNetworkImage(
+              //               imageUrl: _.image ?? '',
+              //               imageBuilder: (context, imageProvider) => Container(
+              //                 width: 80.w,
+              //                 height: 80.w,
+              //                 decoration: BoxDecoration(
+              //                   shape: BoxShape.circle,
+              //                   //   color: Colors.white,
+              //                   image: DecorationImage(
+              //                       image: imageProvider, fit: BoxFit.cover),
+              //                 ),
+              //               ),
+              //               progressIndicatorBuilder:
+              //                   (context, url, downloadProgress) =>
+              //                       CircularProgressIndicator(
+              //                           value: downloadProgress.progress),
+              //               errorWidget: (context, url, error) => CircleAvatar(
+              //                 //profile image
+              //                 backgroundColor: Colors.white,
+              //                 backgroundImage:
+              //                     const AssetImage("assets/images/profile.png"),
+              //                 radius: 20.r,
+              //               ),
+              //             ),
+              //       radius: 20.r,
+              //       //backgroundColor: Colors.black,
+              //     );
+              //   },
+              // ),
               Flexible(
                 child: GestureDetector(
                   onTap: () {

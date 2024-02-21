@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String rEmail = '';
   String rPass = '';
 
-  //biometric
+  //region Biometric
   final LocalAuthentication auth = LocalAuthentication();
 
   bool? canAuthenticate;
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
   }
-  //biometric closed
+  //endregion
 
   void toggle() {
     setState(
@@ -180,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
+                    //Biometric here
                     Stack(
                       alignment: Alignment.center,
                       children: [
