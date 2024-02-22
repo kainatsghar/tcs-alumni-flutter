@@ -64,9 +64,11 @@ class _SplashScreenState extends State<SplashScreen> {
       print('\x1B[33m FCM Token: $value\x1B[0m');
     }});
     _timer = Timer.periodic(
-      const Duration(seconds: 3),
+      const Duration(milliseconds: 1900),
       (timer) {
-        print(_count);
+        if (kDebugMode) {
+          print(_count);
+        }
         if (_count > 0) {
           _count--;
         } else {
@@ -95,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
           //color: Colors.grey,
           image: DecorationImage(
             image: AssetImage(
-              "assets/splash_gif.gif",
+              "assets/new_splash_tcs.gif",
             ),
             fit: BoxFit.cover,
           ),
@@ -110,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration:  BoxDecoration(
+            decoration:  const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AppImages.iobmSplash),
                 fit: BoxFit.cover,
