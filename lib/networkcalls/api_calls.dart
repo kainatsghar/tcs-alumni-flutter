@@ -800,6 +800,8 @@ class ApiCalls {
     osVersion,
     serial,
     status = 'A',
+    city = "",
+    country = "",
   }) async {
     Map params = {
       Params.USER_EMAIL: email,
@@ -822,6 +824,8 @@ class ApiCalls {
       Params.DEVICE_UUID: serial,
       Params.DEVICE_STATUS: status,
       Params.USER_ID: userId,
+      Params.USER_CITY: city,
+      Params.USER_COUNTRY: country,
     };
     return await NetworkCalls.postMultipartCall(apiAutoSignUpCityzens, params);
   }
@@ -846,6 +850,8 @@ class ApiCalls {
     osVersion,
     serial,
     status = 'A',
+    city = "",
+    country = "",
   }) async {
     Map params = {
       Params.USER_EMAIL: email,
@@ -866,6 +872,8 @@ class ApiCalls {
       Params.DEVICE_VERSION: osVersion,
       Params.DEVICE_UUID: serial,
       Params.DEVICE_STATUS: status,
+      Params.USER_CITY: city,
+      Params.USER_COUNTRY: country,
     };
     return await NetworkCalls.postMultipartCall(apiManualSignupCityzens, params);
   }

@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -18,11 +17,13 @@ import '../../../local_db/local_db.dart';
 import '../../../models/error_entity.dart';
 import '../../../networkcalls/api_calls.dart';
 import '../../../networkcalls/response_models/boss_search_entity.dart';
+import '../../../networkcalls/response_models/cities_entity.dart';
 import '../../../networkcalls/response_models/login_entity_entity.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/app_images.dart';
 import '../../../utils/device_data.dart';
+import '../../../utils/text_styles.dart';
 import '../../bottom_navigationbar.dart';
 import '../../login_screen.dart';
 
@@ -54,8 +55,13 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   final ProfileController _controller = Get.put(ProfileController());
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+
+
+  late List<DBCitie> _listCities;
+  late List<DBCountrie> _listCountries;
 
   bool showValue = false;
   Future<void>? _launched;
@@ -147,12 +153,15 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     print('this is email ${widget.email}');
     _branchList = [];
     _students = [];
-    print(widget.loginWith);
+    _listCities = [];
+    _listCountries = [];
     _nameController.text = widget.name ?? '';
     _emailController.text = widget.email ?? '';
     _passwordController.text = widget.password ?? '';
     _confirmPasswordController.text = widget.password ?? '';
     _fetchData = getData();
+    _countryController.text = 'Pakistan';
+    _cityController.text = 'Lahore';
     super.initState();
   }
 
@@ -161,7 +170,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        print(_students.length);
+        print(_listCountries.toString());
       },
       child: Scaffold(
         backgroundColor: AppColor.white,
@@ -214,6 +223,10 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   ),
                   WidgetStyle.signUpName(title: 'Father\'s/Guardian\'s Name*'),
                   fatherNameTextField(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  cityTextField(),
                   const SizedBox(
                     height: 15,
                   ),
@@ -736,6 +749,161 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     );
   }
 
+  cityTextField() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _country(),
+            SizedBox(
+              width: 10.w,
+            ),
+            _city(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _country() {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Country*',
+            // filterTextstyle()
+            style: CustomTextStyles.text14SemiBoldW600,
+          ),
+          TypeAheadFormField<DBCountrie>(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: _countryController,
+              style: CustomTextStyles.text12RegularW400,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(top: 17),
+                suffixIcon:  Padding(
+                  padding: const EdgeInsets.only(top: 9),
+                  child: Icon(
+                    Icons.arrow_drop_down_sharp,
+                    color: AppColor.primaryColor,
+                    size: 25,
+                  ),
+                ),
+                focusedBorder:  UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.primaryColor),
+                ),
+                hintStyle: TextStyle(
+                  fontSize: ScreenUtil().setSp(12),
+                  color: AppColor.greyshade400,
+                ),
+                isDense: true,
+              ),
+            ),
+            suggestionsCallback: (pattern) async {
+              return _listCountries
+                  .where(
+                    (item) => item.countryName!.toLowerCase().startsWith(
+                  pattern.toLowerCase(),
+                ),
+              )
+                  .toList();
+            },
+            transitionBuilder: (context, child, controller) {
+              return child;
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(
+                  suggestion.countryName ?? '',
+                  style: CustomTextStyles.text12RegularW400,
+                ),
+                dense: true,
+              );
+            },
+            getImmediateSuggestions: false,
+            onSuggestionSelected: (suggestion) {
+              _countryController.text = suggestion.countryName ?? '';
+              getCities(suggestion.countryId);
+              // setState(() {
+              //   //selectedCountryId = suggestion.countryId ?? '';
+              // });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _city() {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'City*',
+            style: CustomTextStyles.text14SemiBoldW600,
+          ),
+          TypeAheadFormField<DBCitie>(
+            textFieldConfiguration: TextFieldConfiguration(
+              textCapitalization: TextCapitalization.sentences,
+              controller: _cityController,
+              style: CustomTextStyles.text12RegularW400,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(top: 17),
+                suffixIcon:  Padding(
+                  padding: const EdgeInsets.only(top: 9),
+                  child: Icon(
+                    Icons.arrow_drop_down_sharp,
+                    color: AppColor.primaryColor,
+                    size: 25,
+                  ),
+                ),
+                focusedBorder:  UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.primaryColor),
+                ),
+                hintStyle: TextStyle(
+                  fontSize: ScreenUtil().setSp(12),
+                  color: AppColor.greyshade400,
+                ),
+                isDense: true,
+              ),
+            ),
+            suggestionsCallback: (pattern) async {
+              return _listCities
+                  .where(
+                    (item) => item.cityName!.toLowerCase().startsWith(
+                  pattern.toLowerCase(),
+                ),
+              )
+                  .toList();
+            },
+            transitionBuilder: (context, child, controller) {
+              return child;
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(
+                  suggestion.cityName ?? '',
+                  style: CustomTextStyles.text12RegularW400,
+                ),
+                dense: true,
+              );
+            },
+            getImmediateSuggestions: false,
+            onSuggestionSelected: (suggestion) {
+              _cityController.text = suggestion.cityName ?? '';
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _checkbox() {
     return Row(
       children: [
@@ -780,8 +948,11 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   }
 
   Future<void> getData() async {
+    _listCountries = await database.getAllCountries();
     _branchList = await database.getAllBranches();
-    addingYear();
+
+    getCities(_listCountries.first.countryId);
+    await addingYear();
   }
 
   Future<void> signUpSearch() async {
@@ -807,11 +978,12 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       if (searchEntity.success == 1) {
         if (searchEntity.result!.isEmpty) {
           setState(() {
-            //_phoneController.text = widget.phone ?? '';
+            searched = true;
             _emailController.text = widget.phone ?? '';
           });
-          return signUpSearchDialogue(context: context);
-        } else {
+          // return signUpSearchDialogue(context: context);
+        }
+        else {
           setState(() {
             searched = true;
             //_phoneController.text = widget.phone ?? '';
@@ -1042,6 +1214,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       token: device.token,
       serial: device.serial,
       appVersion: device.appVersion,
+      city: _cityController.text,
+      country: _countryController.text
     );
     UIHelper.hideApiCallingAlert(context);
 
@@ -1134,13 +1308,16 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       token: device.token,
       serial: device.serial,
       appVersion: device.appVersion,
+      city: _cityController.text,
+      country: _countryController.text
     );
     UIHelper.hideApiCallingAlert(context);
 
     if (response is ErrorEntity) {
       print(response.success);
       UIHelper.showErrorAlert(context, response.message);
-    } else {
+    }
+    else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
       if (loginEntity.success == 1) {
         if (loginEntity.result!.isUpdate == "1" &&
@@ -1208,6 +1385,22 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       }
     }
   }
+
+  Future<void> getCities(countryId) async {
+    var response = await ApiCalls.getCities(countryId: countryId);
+    print(response.toString());
+    if (response is ErrorEntity) {
+    }
+    else {
+      CitiesEntity citiesEntity = CitiesEntity().fromJson(response);
+      if (citiesEntity.success == 1) {
+        print('added cities');
+        _listCities = citiesEntity.cities;
+        setState(() {});
+      }
+    }
+  }
+
 }
 
 //Model for students dropdown
@@ -1218,3 +1411,5 @@ class Student {
   String email;
   Student(this.name, this.id, this.phone, this.email);
 }
+
+

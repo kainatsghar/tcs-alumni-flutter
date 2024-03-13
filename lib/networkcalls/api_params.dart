@@ -41,6 +41,8 @@ class Params {
   static const String REFERENCE_EMAIL2 = "reference_email2";
   static const String IMAGE = "image";
   static const String FILE = "file";
+  static const String USER_CITY = "city_id";
+  static const String USER_COUNTRY = "country_id";
 
   //Jobs
   static const String JOB_URL = "job_url";

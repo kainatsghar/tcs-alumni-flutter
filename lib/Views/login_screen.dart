@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -144,8 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
     bioMetricFunc();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -625,15 +624,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  loginCall(
-      {String loginWith = 'email',
+  loginCall({String loginWith = 'email',
         required String email,
         required String name,
         required String password}) async {
     UIHelper.apiCallingAlert(context);
     DeviceData device = DeviceData();
     await device.init();
-    print('loginEmail from logincall $email');
 
     var response = await ApiCalls.login(
       email: email,
@@ -652,14 +649,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
-      UIHelper.showErrorAlert(context, response.message);
+      if(response.success == -2){
+        Get.to(
+              () => BossSearchSignupView(
+            name: name,
+            password: password,
+            loginWith: loginWith,
+            email: email,
+          ),
+        );
+      }
+      else{
+        UIHelper.showErrorAlert(context, response.message);
+      }
     }
     else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
 
       if (loginEntity.success == 1 || loginEntity.success == -4) {
-        print(
-            'This is token from Alumni LoginScreen ${loginEntity.result!.token}');
         if (loginEntity.result!.isVerified == "1") {
           AppConstants.myId = loginEntity.result!.userId ?? '';
           print(AppConstants.myId);
@@ -744,13 +751,16 @@ class _LoginScreenState extends State<LoginScreen> {
               loginEntity.message,
             );
           }
-        } else {
+        }
+        else {
           UIHelper.showErrorAlert(context,
               "Dear user, your profile is under review. You will receive an email of approval soon. Thank you for signing up");
         }
-      } else if (loginEntity.success == -5) {
+      }
+      else if (loginEntity.success == -5) {
         UIHelper.showForceUpdateAlert(context);
-      } else if (loginEntity.success == -1) {
+      }
+      else if (loginEntity.success == -1) {
         /// **************************************
         /// DOW SignUp
         // Get.to(
@@ -813,17 +823,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     final GoogleSignInAccount? accountInfos = await GoogleSignIn().signIn();
     if (accountInfos != null) {
-      // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
       await accountInfos.authentication;
 
-      // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       _handleSocialLogin(credential, 'google');
-    } else {
+    }
+    else {
       UIHelper.showErrorAlert(context,
           'Unable to fetch Google\'s account details. Please try again');
       debugPrint('google user sign in object is null');
