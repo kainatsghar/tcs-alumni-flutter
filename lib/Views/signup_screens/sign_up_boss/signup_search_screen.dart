@@ -160,8 +160,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     _passwordController.text = widget.password ?? '';
     _confirmPasswordController.text = widget.password ?? '';
     _fetchData = getData();
-    _countryController.text = 'Pakistan';
-    _cityController.text = 'Lahore';
+    // _countryController.text = 'Pakistan';
+    // _cityController.text = 'Lahore';
     super.initState();
   }
 
@@ -801,6 +801,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   fontSize: ScreenUtil().setSp(12),
                   color: AppColor.greyshade400,
                 ),
+                hintText: "Select Country",
                 isDense: true,
               ),
             ),
@@ -832,6 +833,9 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
               // setState(() {
               //   //selectedCountryId = suggestion.countryId ?? '';
               // });
+            },
+            validator: (value) {
+              return value!.isEmpty ? 'Country is required' : null;
             },
           ),
         ],
@@ -871,6 +875,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   color: AppColor.greyshade400,
                 ),
                 isDense: true,
+                hintText: "Select City",
               ),
             ),
             suggestionsCallback: (pattern) async {
@@ -897,6 +902,9 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             getImmediateSuggestions: false,
             onSuggestionSelected: (suggestion) {
               _cityController.text = suggestion.cityName ?? '';
+            },
+            validator: (value) {
+              return value!.isEmpty ? 'City is required' : null;
             },
           ),
         ],
