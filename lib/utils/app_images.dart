@@ -9,6 +9,8 @@ class AppImages {
   static const String csrIcon = 'assets/icons/csricon.svg';
   static const String mentorIcon = 'assets/icons/menumentor.png';
   static const String aboutIcon = "assets/icons/aboutus.png";
+  static const String eyeIcon = "assets/icons/password_eye.png";
+  static const String hiddenEyeIcon = "assets/icons/hidden_eye.png";
 
   static const String profileMenu = 'assets/icons/person.png';
   static const String contactMenu = 'assets/icons/contact.png';

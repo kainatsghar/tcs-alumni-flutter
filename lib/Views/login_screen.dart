@@ -18,6 +18,7 @@ import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart
 import 'package:iobm/Views/signup_screens/sign_up_iobm/iobm_signup_search_screen.dart';
 import 'package:iobm/Views/signup_screens/sign_up_screen.dart';
 import 'package:iobm/Views/signup_screens/sign_up_tle/sign_up_tle_screen.dart';
+import 'package:iobm/Views/signup_screens/signup_welcome.dart';
 
 import 'package:iobm/Widgets/custom_widgets.dart';
 
@@ -551,9 +552,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     /// **********
                     /// Dow Signup
 
-                    Get.to(
-                          () => const OtpScreen(check: 'signup',),
-                    );
+                    Get.to(() => const SignupWelcome());
 
                     /// **********
                     /// Boss
@@ -624,10 +623,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  loginCall({String loginWith = 'email',
-        required String email,
-        required String name,
-        required String password}) async {
+  loginCall({String loginWith = 'email', required String email, required String name, required String password}) async {
     UIHelper.apiCallingAlert(context);
     DeviceData device = DeviceData();
     await device.init();
@@ -649,19 +645,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
-      if(response.success == -2){
-        Get.to(
-              () => BossSearchSignupView(
-            name: name,
-            password: password,
-            loginWith: loginWith,
-            email: email,
-          ),
-        );
-      }
-      else{
-        UIHelper.showErrorAlert(context, response.message);
-      }
+      // if(response.success == -2){
+      //   Get.to(() => BossSearchSignupView(
+      //       name: name,
+      //       password: password,
+      //       loginWith: loginWith,
+      //       email: email,
+      //     ));
+      // }
+      // else{
+      //
+      // }
+      UIHelper.showErrorAlert(context, response.message);
     }
     else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:iobm/utils/app_color.dart';
+import 'package:iobm/utils/app_images.dart';
 
 import '../utils/text_styles.dart';
 
@@ -166,6 +167,29 @@ class WidgetStyle {
         borderSide: BorderSide(color: AppColor.primaryColor),
       ),
       isDense: true,
+    );
+  }
+
+  static InputDecoration passwordEyeDecoration({required bool seeEye, required VoidCallback onPressed}) {
+    return InputDecoration(
+      errorStyle: TextStyle(fontSize: 12.sp),
+      prefixIconConstraints: const BoxConstraints(
+        minWidth: 15,
+        maxHeight: 30,
+      ),
+      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
+      hintText: '*******',
+      focusedBorder:  UnderlineInputBorder(
+        borderSide: BorderSide(color: AppColor.primaryColor),
+      ),
+      isDense: true,
+      suffix: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.only(right: 5.w),
+        constraints: const BoxConstraints(),
+        iconSize: 20,
+        icon: Image.asset(seeEye ? AppImages.hiddenEyeIcon : AppImages.eyeIcon),
+      ),
     );
   }
 

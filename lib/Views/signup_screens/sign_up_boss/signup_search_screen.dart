@@ -85,20 +85,9 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
 
   bool showPass = true;
   void toggle() {
-    setState(
-          () {
+    setState(() {
         showPass = !showPass;
-      },
-    );
-  }
-
-  bool showPass2 = true;
-  void toggle2() {
-    setState(
-          () {
-        showPass2 = !showPass2;
-      },
-    );
+      },);
   }
 
   late List<DBBranche> _branchList;
@@ -111,6 +100,14 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   String? _branchId;
 
   String? _studentId;
+  bool seePassword = true;
+
+  void updateEye() {
+    setState(() {
+      seePassword = !seePassword;
+    });
+  }
+
 
   addingYear() {
     for (var i = 0; i <= 47; i++) {
@@ -160,7 +157,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     _passwordController.text = widget.password ?? '';
     _confirmPasswordController.text = widget.password ?? '';
     _fetchData = getData();
-    // _countryController.text = 'Pakistan';
+    _countryController.text = 'Pakistan';
+    getCities("166");
     // _cityController.text = 'Lahore';
     super.initState();
   }
@@ -570,16 +568,15 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       children: [
         WidgetStyle.signUpName(title: 'Password*'),
         TextFormField(
-          // 18.h,
           validator: (value) {
             return value!.isEmpty ? 'Password is required' : null;
           },
           style: TextStyle(
             fontSize: ScreenUtil().setSp(14),
           ),
-          obscureText: showPass,
+          obscureText: seePassword,
           controller: _passwordController,
-          decoration: WidgetStyle.nameTextFieldDecoration(hint: "**********"),
+          decoration: WidgetStyle.passwordEyeDecoration(seeEye: seePassword, onPressed: updateEye),
         )
       ],
     );
@@ -603,9 +600,9 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
           style: TextStyle(
             fontSize: ScreenUtil().setSp(14),
           ),
-          obscureText: showPass2,
+          obscureText: showPass,
           controller: _confirmPasswordController,
-          decoration: WidgetStyle.nameTextFieldDecoration(hint: "**********"),
+          decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass, onPressed: toggle)
         )
       ],
     );
@@ -775,7 +772,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Country*',
+            'Current Country*',
             // filterTextstyle()
             style: CustomTextStyles.text14SemiBoldW600,
           ),
@@ -801,7 +798,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   fontSize: ScreenUtil().setSp(12),
                   color: AppColor.greyshade400,
                 ),
-                hintText: "Select Country",
+                hintText: "Current Country",
                 isDense: true,
               ),
             ),
@@ -849,7 +846,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'City*',
+            'Current City*',
             style: CustomTextStyles.text14SemiBoldW600,
           ),
           TypeAheadFormField<DBCitie>(
@@ -875,7 +872,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                   color: AppColor.greyshade400,
                 ),
                 isDense: true,
-                hintText: "Select City",
+                hintText: "Current City",
               ),
             ),
             suggestionsCallback: (pattern) async {

@@ -1,24 +1,34 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
+import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Widgets/custom_widgets.dart';
 import '../../Widgets/widget_styles.dart';
+import '../../controllers/profile_controller.dart';
 import '../../helper_classes/ui_helper.dart';
+import '../../local_db/local_db.dart';
 import '../../models/error_entity.dart';
 import '../../networkcalls/api_calls.dart';
 import '../../networkcalls/api_path.dart';
 import '../../networkcalls/network_config.dart';
+import '../../networkcalls/response_models/login_entity_entity.dart';
 import '../../networkcalls/response_models/verify_phone_entity.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_images.dart';
-
+import '../../utils/device_data.dart';
+import '../bottom_navigationbar.dart';
 
 class OtpScreen extends StatefulWidget {
   final String check;
@@ -33,6 +43,8 @@ class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _countryCodeController = TextEditingController();
   GlobalKey<FormState> fKey = GlobalKey<FormState>();
+  final ProfileController _controller = Get.put(ProfileController());
+
   String number = '';
 
   @override

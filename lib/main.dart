@@ -96,6 +96,7 @@ class MyApp extends StatelessWidget {
             fontFamily: AppConstants.appFontFamily,
             primaryColor: AppColor.primaryColor,
             primarySwatch: AppColor.primaryColor,
+            platform: TargetPlatform.iOS
           ),
           //home: const LoginScreen(),
           home: const SplashScreen(),

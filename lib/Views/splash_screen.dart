@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print('\x1B[33m FCM Token: $value\x1B[0m');
     }});
     _timer = Timer.periodic(
-      const Duration(milliseconds: 1900),
+      const Duration(milliseconds: 3200),
       (timer) {
         if (kDebugMode) {
           print(_count);
@@ -97,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
           //color: Colors.grey,
           image: DecorationImage(
             image: AssetImage(
-              "assets/new_splash_tcs.gif",
+              "assets/cityzen-alumni-splash.gif",
             ),
             fit: BoxFit.cover,
           ),

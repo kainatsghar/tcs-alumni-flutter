@@ -314,7 +314,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               controller: _passwordController,
               obscureText: showPass,
               obscuringCharacter: '*',
-              decoration: WidgetStyle.passwordDecoration(),
+              decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass, onPressed: toggle),
             ),
             Positioned(
               right: 10,
@@ -355,7 +355,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               controller: _confirmPasswordController,
               obscureText: showPass2,
               obscuringCharacter: '*',
-              decoration: WidgetStyle.passwordDecoration(),
+              decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass2, onPressed: toggle2),
             ),
             Positioned(
               right: 10,
