@@ -302,33 +302,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WidgetStyle.signUpName(title: 'Password*'),
-        Stack(
-          children: [
-            TextFormField(
-              validator: (value) {
-                return value!.isEmpty ? 'Password is required' : null;
-              },
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
-              controller: _passwordController,
-              obscureText: showPass,
-              obscuringCharacter: '*',
-              decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass, onPressed: toggle),
-            ),
-            Positioned(
-              right: 10,
-              top: 5,
-              child: GestureDetector(
-                onTap: toggle,
-                child: Icon(
-                  Icons.remove_red_eye,
-                  color: showPass ? AppColor.black26 : AppColor.primaryColor,
-                ),
-              ),
-            ),
-          ],
-        ),
+        TextFormField(
+          validator: (value) {
+            return value!.isEmpty ? 'Password is required' : null;
+          },
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(14),
+          ),
+          controller: _passwordController,
+          obscureText: showPass,
+          obscuringCharacter: '*',
+          decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass, onPressed: toggle),
+        )
       ],
     );
   }
@@ -339,36 +324,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WidgetStyle.signUpName(title: 'Confirm Password*'),
-        Stack(
-          children: [
-            TextFormField(
-              validator: (value) {
-                return value!.isEmpty
-                    ? 'Please confirm password'
-                    : value != _passwordController.text
-                        ? "Password does not match"
-                        : null;
-              },
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(14),
-              ),
-              controller: _confirmPasswordController,
-              obscureText: showPass2,
-              obscuringCharacter: '*',
-              decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass2, onPressed: toggle2),
-            ),
-            Positioned(
-              right: 10,
-              top: 5,
-              child: GestureDetector(
-                onTap: toggle2,
-                child: Icon(
-                  Icons.remove_red_eye,
-                  color: showPass2 ? AppColor.black26 : AppColor.primaryColor,
-                ),
-              ),
-            ),
-          ],
+        TextFormField(
+          validator: (value) {
+            return value!.isEmpty
+                ? 'Please confirm password'
+                : value != _passwordController.text
+                ? "Password does not match"
+                : null;
+          },
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(14),
+          ),
+          controller: _confirmPasswordController,
+          obscureText: showPass2,
+          obscuringCharacter: '*',
+          decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass2, onPressed: toggle2),
         ),
       ],
     );
@@ -393,4 +363,5 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       }
     }
   }
+
 }

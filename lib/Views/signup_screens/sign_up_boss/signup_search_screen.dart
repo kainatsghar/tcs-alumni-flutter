@@ -58,7 +58,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
-
+  String slcCountryId = "166";
+  String slcCityId = "48358";
 
   late List<DBCitie> _listCities;
   late List<DBCountrie> _listCountries;
@@ -827,6 +828,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             getImmediateSuggestions: false,
             onSuggestionSelected: (suggestion) {
               _countryController.text = suggestion.countryName ?? '';
+              setState(() => slcCountryId = suggestion.countryId ?? '166');
+              print("slcCountryId= $slcCountryId");
               getCities(suggestion.countryId);
               // setState(() {
               //   //selectedCountryId = suggestion.countryId ?? '';
@@ -900,6 +903,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             getImmediateSuggestions: false,
             onSuggestionSelected: (suggestion) {
               _cityController.text = suggestion.cityName ?? '';
+              setState(() => slcCityId = suggestion.cityId ?? '48358');
+              print("slcCityId= $slcCityId");
             },
             validator: (value) {
               return value!.isEmpty ? 'City is required' : null;
@@ -1230,8 +1235,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       token: device.token,
       serial: device.serial,
       appVersion: device.appVersion,
-      city: _cityController.text,
-      country: _countryController.text
+      city: slcCityId,
+      country: slcCountryId
     );
     UIHelper.hideApiCallingAlert(context);
 
@@ -1324,8 +1329,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       token: device.token,
       serial: device.serial,
       appVersion: device.appVersion,
-      city: _cityController.text,
-      country: _countryController.text
+      city: slcCityId,
+      country: slcCountryId
     );
     print("ManualEmail: ${_emailController.text}");
     UIHelper.hideApiCallingAlert(context);

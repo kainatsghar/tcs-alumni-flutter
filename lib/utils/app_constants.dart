@@ -16,14 +16,11 @@ class AppConstants {
   static String userName = "";
   static String chapterId = "";
 
-  static String pdf =
-      'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
+  static String pdf = 'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
 
   //Store Urls
-  static const String androidUrl =
-      "https://play.google.com/store/apps/details?id=com.viion.tcsalumniapp";
-  static const String iosUrl =
-      "https://apps.apple.com/tt/app/cityzens/id1630070364";
+  static const String androidUrl = "https://play.google.com/store/apps/details?id=com.viion.tcsalumniapp";
+  static const String iosUrl = "https://apps.apple.com/tt/app/cityzens/id1630070364";
 
   static const linkAlumni = "https://linkalumniapp.com/";
 
