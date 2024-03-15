@@ -10,7 +10,6 @@ import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../Widgets/custom_widgets.dart';
 import '../../controllers/profile_controller.dart';
 import '../../helper_classes/ui_helper.dart';
 import '../../local_db/local_db.dart';
@@ -21,7 +20,6 @@ import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_images.dart';
 import '../../utils/device_data.dart';
-import '../../utils/strings.dart';
 import '../../utils/text_styles.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -29,7 +27,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
 
 import '../bottom_navigationbar.dart';
 import 'otp_screen.dart';
-
 
 class SignupWelcome extends StatefulWidget {
   const SignupWelcome({Key? key}) : super(key: key);
@@ -51,7 +48,7 @@ class _SignupWelcomeState extends State<SignupWelcome> {
   }
 
   Widget _body(){
-    return Expanded(
+    return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(height: 15.h,),
@@ -123,12 +120,10 @@ class _SignupWelcomeState extends State<SignupWelcome> {
                 ),
               ),
           ),
-          const Spacer(),
-          _privacyPolicy(),
           SizedBox(
-            height: 35.h,
+            height: 130.h,
           ),
-
+          _privacyPolicy(),
         ],
       ),
     );
@@ -634,3 +629,4 @@ class _SignupWelcomeState extends State<SignupWelcome> {
   }
 
 }
+

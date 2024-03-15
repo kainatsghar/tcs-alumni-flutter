@@ -159,6 +159,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     _fetchData = getData();
     _countryController.text = 'Pakistan';
     getCities("166");
+    print("email: ${_emailController.text}");
     // _cityController.text = 'Lahore';
     super.initState();
   }
@@ -976,15 +977,22 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     setState(() {
       wait = false;
     });
+    print("SearchResponse: ${response.toString()}");
     if (response is ErrorEntity) {
       print(response.message);
-    } else {
+    }
+    else {
       BossSearchEntity searchEntity = BossSearchEntity().fromJson(response);
       if (searchEntity.success == 1) {
         if (searchEntity.result!.isEmpty) {
           setState(() {
             searched = true;
-            _emailController.text = widget.phone ?? '';
+            // if(widget.phone!.isEmpty){
+            //   _emailController.text = widget.email ?? '';
+            // }
+            // else{
+            //   _emailController.text = widget.phone ?? '';
+            // }
           });
           // return signUpSearchDialogue(context: context);
         }
@@ -1008,6 +1016,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             print('Student first name ${element.firstName}');
           }
           _phoneController.text = _students.first.phone;
+          _emailController.text = widget.email ?? '';
           print('This is list student ${_students.first.name}');
           print('This is list email ${_students.first.email}');
           print('This is list student ${_students.first.phone}');
@@ -1191,6 +1200,8 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     DeviceData device = DeviceData();
     await device.init();
     print('student id ${_students.first.id}');
+    print("Auto: ${_emailController.text}");
+
     // if(widget.email != '' || widget.email != 'email'){
     //   setState(() {
     //     _emailController.text = widget.email!;
@@ -1316,6 +1327,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       city: _cityController.text,
       country: _countryController.text
     );
+    print("ManualEmail: ${_emailController.text}");
     UIHelper.hideApiCallingAlert(context);
 
     if (response is ErrorEntity) {
@@ -1325,31 +1337,20 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
       if (loginEntity.success == 1) {
-        if (loginEntity.result!.isUpdate == "1" &&
-            loginEntity.result!.isVerified == "1") {
+        if (loginEntity.result!.isUpdate == "1" && loginEntity.result!.isVerified == "1") {
+          AppConstants.bearerToken = loginEntity.result!.token ?? '';
           AppConstants.myId = loginEntity.result!.userId ?? '';
           AppConstants.userName = loginEntity.result!.firstName ?? '';
-          SharedPreferences localStorage =
-          await SharedPreferences.getInstance();
+          SharedPreferences localStorage = await SharedPreferences.getInstance();
           localStorage.setString('email', loginEntity.result!.email ?? '');
           localStorage.setString('password', _passwordController.text);
           localStorage.setString('loginWith', "email");
-          localStorage.setString(
-              'firstName', loginEntity.result!.firstName ?? '');
-          localStorage.setString(
-              'lastName', loginEntity.result!.lastName ?? '');
-          localStorage.setString(
-              'selectedIndustry', loginEntity.result!.industryName ?? '');
-          localStorage.setString(
-            'userImage',
-            loginEntity.result!.image ?? '',
-          );
-          localStorage.setString(
-            'count',
-            loginEntity.unreadCount ?? '0',
-          );
-          localStorage.setString(
-              'sharingLoc', loginEntity.result!.isSharingLoc ?? '');
+          localStorage.setString('firstName', loginEntity.result!.firstName ?? '');
+          localStorage.setString('lastName', loginEntity.result!.lastName ?? '');
+          localStorage.setString('selectedIndustry', loginEntity.result!.industryName ?? '');
+          localStorage.setString('userImage', loginEntity.result!.image ?? '',);
+          localStorage.setString('count', loginEntity.unreadCount ?? '0',);
+          localStorage.setString('sharingLoc', loginEntity.result!.isSharingLoc ?? '');
           localStorage.setString('user_id', loginEntity.result!.userId ?? '');
           localStorage.setBool('is_first', false);
 
@@ -1376,8 +1377,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
             branchId: loginEntity.result!.branchId,
           );
           await database.insertUser(allUser);
-          Get.offUntil(GetPageRoute(page: () => const BottomNavigationScreen()),
-                  (route) => false);
+          Get.offUntil(GetPageRoute(page: () => const BottomNavigationScreen()), (route) => false);
         } else {
           UIHelper.showSuccessAlert(context, loginEntity.message, () {
             Get.offUntil(GetPageRoute(page: () => const LoginScreen()),

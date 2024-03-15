@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppConstants.appName == 'TCS Alumni' ? Scaffold(
+    return Scaffold(
       backgroundColor: const Color(0Xff1F2D65),
       body: Container(
         // height: Get.height,width: Get.width,
@@ -103,99 +103,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         // child: null /* add child content here */,
-      ),
-    ) :
-    AppConstants.appName == 'IoBM' ? Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration:  const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.iobmSplash),
-                fit: BoxFit.cover,
-              ),
-            ),
-            // child: Center(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(30.0),
-            //     child: Image(
-            //       height: 63.h,
-            //       width: 234.w,
-            //       image: const AssetImage(AppImages.splashLogo),
-            //     ),
-            //   ),
-            // ),
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                "ver $versionCode",
-                style: TextStyle(
-                    color: AppConstants.appName == 'TLE'
-                        ? AppColor.black
-                        : AppColor.white,
-                    fontSize: ScreenUtil().setSp(12)),
-              ),
-            ),
-          ),
-          // Positioned(
-          //   bottom: 30,
-          //   // right: 10,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(12.0),
-          //     child: Row(
-          //       children: [
-          //         Text(
-          //           "Powered by",
-          //           style: TextStyle(
-          //               color: AppColor.black,
-          //               fontSize: ScreenUtil().setSp(14)),
-          //         ),
-          //         const SizedBox(width: 5),
-          //         Image.asset(
-          //           AppImages.viion,
-          //           height: 25,
-          //           width: 45,
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
-    ) : Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Spacer(),
-          Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 49.w),
-            child: Center(
-              child: Image.asset('assets/splash_logo.png'),
-            ),
-          ),
-          Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding:  EdgeInsets.only(right: 12.w,bottom: 12.h),
-                child: Text(
-                  "ver $versionCode",
-                  style: CustomTextStyles.text12RegularW400.copyWith(color: Color(0xff979797)),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

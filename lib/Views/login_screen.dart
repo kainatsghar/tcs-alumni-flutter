@@ -642,7 +642,7 @@ class _LoginScreenState extends State<LoginScreen> {
       serial: device.serial,
       appVersion: device.appVersion,
     );
-
+    print("😂😂😂= ${response.toString()}");
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
       // if(response.success == -2){
@@ -883,8 +883,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleSocialLogin(OAuthCredential credential, String loginWith) async {
     try {
-      UserCredential user =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
+
       _handleLoggedUser(user, loginWith);
     } catch (e) {
       print(e);
