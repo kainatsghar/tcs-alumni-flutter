@@ -53,25 +53,20 @@ class _CheckInDialogState extends State<CheckInDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print(currentCityName);
-      },
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-        ),
-        elevation: 16,
-        child: FutureBuilder(
-          future: _fetchData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return _bodyColumn();
-            } else {
-              return Container();
-            }
-          },
-        ),
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)
+      ),
+      elevation: 16,
+      child: FutureBuilder(
+        future: _fetchData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _bodyColumn();
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
@@ -315,7 +310,9 @@ class _CheckInDialogState extends State<CheckInDialog> {
   Future<void> getCities(countryId) async {
     var response = await ApiCalls.getCities(countryId: countryId);
     if (response is ErrorEntity) {
-    } else {
+      print(jsonEncode(response));
+    }
+    else {
       CitiesEntity citiesEntity = CitiesEntity().fromJson(response);
       if (citiesEntity.success == 1) {
         print('added cities');

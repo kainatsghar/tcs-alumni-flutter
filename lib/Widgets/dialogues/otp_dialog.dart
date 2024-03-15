@@ -38,6 +38,7 @@ class _OTPDialogState extends State<OTPDialog> {
 
   @override
   void initState() {
+    print("OTP Mail: ${widget.phone}");
     Future.delayed(Duration.zero, () {
       _fetchOtpCode();
     });
@@ -350,7 +351,7 @@ class _OTPDialogState extends State<OTPDialog> {
         Get.off(
               () => BossSearchSignupView(
             phone: widget.phone,
-            email: "",
+            email: widget.phone,
             name: "",
             loginWith: 'email',
             password: "",

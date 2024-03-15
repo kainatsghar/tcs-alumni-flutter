@@ -106,6 +106,7 @@ class NetworkCalls {
               "The connection has timed out, Please check your internet connection's health and try again!");
         },
       );
+
       return _checkResponse(response);
     } on SocketException {
       return ErrorEntity()
@@ -131,6 +132,50 @@ class NetworkCalls {
       'Accept': 'application/json',
       if (AppConstants.bearerToken != "")
         'Authorization': 'Bearer ${AppConstants.bearerToken}',
+    };
+
+    try {
+      var postUri = Uri.parse('${AppConstants.baseUrl}$url');
+      var request = http.MultipartRequest("POST", postUri);
+      request.headers.addAll(headers);
+
+      map.forEach((key, value) {
+        request.fields[key] = value;
+      });
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse).timeout(
+        const Duration(
+          seconds: 45,
+        ),
+        onTimeout: () async {
+          throw TimeoutException(
+              "The connection has timed out, Please check your internet connection's health and try again!");
+        },
+      );
+
+      return _checkResponse(response);
+    } on SocketException {
+      return ErrorEntity()
+        ..success = 0
+        ..message = 'There is problem with the internet connection';
+    } on TimeoutException catch (e) {
+      return ErrorEntity()
+        ..success = 0
+        ..message =
+            e.message ?? 'The connection has timed out, Please try again!';
+    } catch (e) {
+      return ErrorEntity()
+        ..success = 0
+        ..message = e.toString();
+    }
+  }
+
+  static Future postMultipartCityCall(String url, Map map) async {
+    print(url);
+    print(map);
+    Map<String, String> headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
     };
 
     try {
@@ -388,7 +433,8 @@ class NetworkCalls {
   }
 
   static dynamic _checkResponse(http.Response response) {
-    print(response.statusCode);
+    print("ResponseApi: ${response.body}");
+    print("ResponseApiStatus: ${response.statusCode}");
     switch (response.statusCode) {
       case 200:
         ErrorEntity normalEntity =

@@ -345,7 +345,9 @@ class ApiCalls {
     Map params = {
       Params.COUNTRY_ID: countryId.toString(),
     };
-    return _condition(apiFetchCities, params);
+    print('${AppConstants.baseUrl}$apiFetchCities');
+    print(params);
+    return _conditionCity(apiFetchCities, params);
   }
 
   /// Comments *************************************
@@ -1250,6 +1252,10 @@ class ApiCalls {
     return AppConstants.appName != 'BOSS'
         ? await NetworkCalls.postWebWithTokenCall(url, params)
         : await NetworkCalls.postMultipartCall(url, params);
+  }
+
+  static _conditionCity(url, params) async {
+    return await NetworkCalls.postMultipartCityCall(url, params);
   }
 
   static getReactionDetails({postId, commentId, replyId}) async {

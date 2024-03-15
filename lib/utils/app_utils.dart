@@ -275,6 +275,7 @@ class AppUtils {
   /// Calculate Difference to check wheather event started or not
   ///
   int calculateEventDifference(String dateTime) {
+    print("DateBro: ${dateTime}");
     DateFormat dft = DateFormat("dd/MM/yyyy");
     DateTime d = dft.parse(dateTime);
 

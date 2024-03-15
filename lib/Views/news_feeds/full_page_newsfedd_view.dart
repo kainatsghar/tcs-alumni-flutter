@@ -39,13 +39,13 @@ class _FullPostScreenState extends State<FullPostScreen> {
   int currentIndex = 0;
   bool isLoading = false;
   late VideoPlayerController _controllers;
-  YoutubePlayerController _controller = YoutubePlayerController(
-    initialVideoId: 'iLnmTe5Q2Qw',
-    flags: YoutubePlayerFlags(
-      autoPlay: true,
-      mute: true,
-    ),
-  );
+  // final YoutubePlayerController _controller = YoutubePlayerController(
+  //   initialVideoId: 'iLnmTe5Q2Qw',
+  //   flags: const YoutubePlayerFlags(
+  //     autoPlay: true,
+  //     mute: true,
+  //   ),
+  // );
 
   @override
   void initState() {
@@ -195,6 +195,9 @@ class _FullPostScreenState extends State<FullPostScreen> {
             width: double.infinity,
             child: PageView.builder(
               itemCount: widget.postImages.length,
+              onPageChanged: (element){
+                _controllers.pause();
+              },
               itemBuilder: (context, index) {
                 currentIndex = index;
                 return widget.postImages[index].mediaType == "IMAGE"
@@ -230,8 +233,7 @@ class _FullPostScreenState extends State<FullPostScreen> {
                       child: Center(child:
                       FlickVideoPlayer(
                           flickManager: FlickManager(
-                            videoPlayerController:
-                            _controllers = VideoPlayerController.network(
+                            videoPlayerController: _controllers = VideoPlayerController.network(
                                 widget.postImages[index].postMedia ??
                                     ''),
                           ))
@@ -327,4 +329,5 @@ class _FullPostScreenState extends State<FullPostScreen> {
       ),
     );
   }
+
 }

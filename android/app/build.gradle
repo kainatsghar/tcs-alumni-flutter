@@ -61,7 +61,7 @@ android {
         release {
             keyAlias 'upload'
             keyPassword 'viper@1000'
-            storeFile file('C:/Users/all/Downloads/keyStore values/TCS Alumni/upload-keystore.jks')
+            storeFile file('C:/Users/viion pc/Downloads/keyStore values/TCS Alumni/upload-keystore.jks')
             storePassword 'viper@1000'
         }
     }

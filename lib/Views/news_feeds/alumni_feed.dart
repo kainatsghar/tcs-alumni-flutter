@@ -134,25 +134,20 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        profileController.updateFirebaseCount();
-      },
-      child: Scaffold(
-        appBar: MyAppBar(
-          title: Text(
-            Strings.alumnifeed,
-            style: CustomTextStyles.text16SemiBoldW600,
-          ),
-          context: context,
+    return Scaffold(
+      appBar: MyAppBar(
+        title: Text(
+          Strings.alumnifeed,
+          style: CustomTextStyles.text16SemiBoldW600,
         ),
-        backgroundColor: AppColor.backGroundColor,
-        body: dataFetched
-            ? _bodyContainer()
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        context: context,
       ),
+      backgroundColor: AppColor.backGroundColor,
+      body: dataFetched
+          ? _bodyContainer()
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
@@ -316,12 +311,897 @@ class _AlumniFeedState extends State<AlumniFeed> {
     );
   }
 
+  // Widget _builder() {
+  //   return Container(
+  //     color: Colors.transparent,
+  //     margin: const EdgeInsets.only(top: 10.0),
+  //     child: ListView.builder(
+  //         //  controller: _scrollController,
+  //         itemCount: _postsTimeLine.length,
+  //         physics: const NeverScrollableScrollPhysics(),
+  //         shrinkWrap: true,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return Container(
+  //             color: Colors.white,
+  //             padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+  //             child: Column(
+  //               children: [
+  //                 //region Row User name, time, image
+  //                 Container(
+  //                   padding: const EdgeInsets.symmetric(horizontal: 10),
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     children: [
+  //                       GestureDetector(
+  //                         onTap: () {
+  //                           Get.to(
+  //                             ProfileScreen(
+  //                               userID: _postsTimeLine[index].createdBy,
+  //                             ),
+  //                           );
+  //                         },
+  //                         child: CircleAvatar(
+  //                           child: _postsTimeLine[index].userImage == ''
+  //                               ? Image(
+  //                                   image: const AssetImage(
+  //                                       "assets/images/profile.png"),
+  //                                   width: 50.w,
+  //                                   height: 50.w,
+  //                                 )
+  //                               : CachedNetworkImage(
+  //                                   imageUrl:
+  //                                       _postsTimeLine[index].userImage ?? '',
+  //                                   imageBuilder: (context, imageProvider) =>
+  //                                       Container(
+  //                                     width: 50.w,
+  //                                     height: 50.w,
+  //                                     decoration: BoxDecoration(
+  //                                       shape: BoxShape.circle,
+  //                                       //   color: Colors.white,
+  //                                       image: DecorationImage(
+  //                                         image: imageProvider,
+  //                                         fit: BoxFit.cover,
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                   progressIndicatorBuilder:
+  //                                       (context, url, downloadProgress) =>
+  //                                           Center(
+  //                                     child: SizedBox(
+  //                                       height: 20,
+  //                                       width: 20,
+  //                                       child: CircularProgressIndicator(
+  //                                           value: downloadProgress.progress),
+  //                                     ),
+  //                                   ),
+  //                                   errorWidget: (context, url, error) =>
+  //                                       CircleAvatar(
+  //                                     //profile image
+  //                                     backgroundColor: Colors.white,
+  //                                     backgroundImage: const AssetImage(
+  //                                       "assets/images/profile.png",
+  //                                     ),
+  //                                     radius: 20.r,
+  //                                   ),
+  //                                 ),
+  //                           radius: 20.r,
+  //                           backgroundColor: Colors.black,
+  //                         ),
+  //                       ),
+  //                       const SizedBox(
+  //                         width: 10.0,
+  //                       ),
+  //                       Expanded(
+  //                         child: Column(
+  //                           mainAxisSize: MainAxisSize.min,
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Wrap(
+  //                               spacing: 1,
+  //                               direction: Axis.horizontal,
+  //                               alignment: WrapAlignment.start,
+  //                               runAlignment: WrapAlignment.start,
+  //                               runSpacing: 0.0,
+  //                               crossAxisAlignment: WrapCrossAlignment.start,
+  //                               //  textDirection,
+  //                               verticalDirection: VerticalDirection.down,
+  //                               clipBehavior: Clip.hardEdge,
+  //                               children: [
+  //                                 GestureDetector(
+  //                                   onTap: () {
+  //                                     Get.to(
+  //                                       ProfileScreen(
+  //                                         userID:
+  //                                             _postsTimeLine[index].createdBy,
+  //                                       ),
+  //                                     );
+  //                                   },
+  //                                   child: Text(
+  //                                     '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+  //                                     style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+  //                                   ),
+  //                                 ),
+  //                                 if (_postsTimeLine[index].feelingName != "" ||
+  //                                     _postsTimeLine[index]
+  //                                         .tagsDetails!
+  //                                         .isNotEmpty ||
+  //                                     _postsTimeLine[index].checkinLocation !=
+  //                                         "")
+  //                                   Text(
+  //                                     'is ',
+  //                                     style: CustomTextStyles.text14SemiBoldW600,
+  //                                   ),
+  //                                 _postsTimeLine[index].feelingName != ""
+  //                                     ? Wrap(
+  //                                         children: [
+  //                                           CachedNetworkImage(
+  //                                               height: 16.w,
+  //                                               width: 16.w,
+  //                                               imageUrl: _postsTimeLine[index]
+  //                                                       .feelingIcon ??
+  //                                                   ''),
+  //                                           Text(
+  //                                             ' Feeling ',
+  //                                             style: CustomTextStyles.text14SemiBoldW600,
+  //                                           ),
+  //                                           Text(
+  //                                             '${_postsTimeLine[index].feelingName}',
+  //                                             style: CustomTextStyles.text14SemiBoldW600,
+  //                                           )
+  //                                         ],
+  //                                       )
+  //                                     : const SizedBox(),
+  //                                 _postsTimeLine[index].tagsDetails!.isNotEmpty
+  //                                     ? Row(
+  //                                         mainAxisSize: MainAxisSize.min,
+  //                                         children: [
+  //                                           Text(
+  //                                             'with ',
+  //                                             style: CustomTextStyles.text14SemiBoldW600,
+  //                                           ),
+  //                                           _postsTimeLine[index]
+  //                                                       .tagsDetails!
+  //                                                       .length >
+  //                                                   1
+  //                                               ? GestureDetector(
+  //                                                   onTap: () {
+  //                                                     Get.to(ProfileScreen(
+  //                                                       userID: _postsTimeLine[
+  //                                                               index]
+  //                                                           .tagsDetails![0]
+  //                                                           .userId,
+  //                                                     ));
+  //                                                   },
+  //                                                   child: Text(
+  //                                                     '${_postsTimeLine[index].tagsDetails![0].firstName} & ${_postsTimeLine[index].tagsDetails!.length - 1} more',
+  //                                                     style: CustomTextStyles.text14SemiBoldW600,
+  //                                                   ),
+  //                                                 )
+  //                                               : GestureDetector(
+  //                                                   onTap: () {
+  //                                                     Get.to(ProfileScreen(
+  //                                                       userID: _postsTimeLine[
+  //                                                               index]
+  //                                                           .tagsDetails![0]
+  //                                                           .userId,
+  //                                                     ));
+  //                                                   },
+  //                                                   child: Text(
+  //                                                     '${_postsTimeLine[index].tagsDetails![0].firstName} ',
+  //                                                     style: CustomTextStyles.text14SemiBoldW600,
+  //                                                   ),
+  //                                                 ),
+  //                                         ],
+  //                                       )
+  //                                     : const SizedBox(),
+  //                                 _postsTimeLine[index].checkinLocation != ""
+  //                                     ? Wrap(
+  //                                         children: [
+  //                                           Text(
+  //                                             'in ',
+  //                                             style: CustomTextStyles.text14SemiBoldW600,
+  //                                           ),
+  //                                           Text(
+  //                                             '${_postsTimeLine[index].checkinLocation}',
+  //                                             style: CustomTextStyles.text14SemiBoldW600,
+  //                                           ),
+  //                                         ],
+  //                                       )
+  //                                     : const SizedBox(),
+  //                               ],
+  //                             ),
+  //                             const SizedBox(
+  //                               height: 1,
+  //                             ),
+  //                             Text(
+  //                                 calculateDifference(_postsTimeLine[index].createdAt!),
+  //                               style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,)
+  //                             )
+  //                           ],
+  //                         ),
+  //                       ),
+  //                       PopupMenuButton(
+  //                         shape: RoundedRectangleBorder(
+  //                           borderRadius: BorderRadius.circular(4.r)
+  //                         ),
+  //                         constraints:  BoxConstraints.expand(width: 100.w, height: 35.h),
+  //                         onSelected: (result) async {
+  //                           if (result == 0) {
+  //                             deleteTimeLinePost(
+  //                               _postsTimeLine[index].id ?? '',
+  //                             );
+  //                           } else if (result == 1) {
+  //                             await showDialog(
+  //                                 barrierDismissible: false,
+  //                                 context: context,
+  //                                 builder: (BuildContext context) {
+  //                                   return _bodyColumn(
+  //                                       _postsTimeLine[index].id);
+  //                                 });
+  //                             setState(() {
+  //                               click = false;
+  //                             });
+  //                             _contentController.clear();
+  //                           }
+  //                         },
+  //                         itemBuilder: (BuildContext context) {
+  //                           if (_postsTimeLine[index].createdBy ==
+  //                               AppConstants.myId) {
+  //                             return [
+  //                                PopupMenuItem(
+  //                                 value: 0,
+  //                                 child: Padding(
+  //                                   padding:  EdgeInsets.only(bottom: 22),
+  //                                   child: Text('Delete Post', style: CustomTextStyles.text12RegularW400,),
+  //                                 ),
+  //                               )
+  //                             ];
+  //                           } else {
+  //                             return [
+  //                                PopupMenuItem(
+  //                                 value: 1,
+  //                                 child: Padding(
+  //                                   padding:  EdgeInsets.only(left: 14,bottom: 22),
+  //                                   child: Text('Report', style: CustomTextStyles.text12RegularW400,),
+  //                                 ),
+  //                               )
+  //                             ];
+  //                           }
+  //                         },
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   //
+  //                 ),
+  //                 Container(
+  //                   alignment: Alignment.centerLeft,
+  //                   padding: const EdgeInsets.all(10.0),
+  //                   child: HtmlWidget(
+  //                     AppUtils().htmlString(_postsTimeLine[index].text ?? ''),
+  //                     textStyle: CustomTextStyles.text12RegularW400.copyWith(color: Colors.black, wordSpacing: 1,),
+  //                   ),
+  //                 ),
+  //                 _postsTimeLine[index].postImages!.isNotEmpty
+  //                     ? GestureDetector(
+  //                         onTap: () {
+  //                           Get.to(
+  //                             () => FullPostScreen(
+  //                               text: _postsTimeLine[index].text ?? '',
+  //                               postImages: _postsTimeLine[index].postImages!,
+  //                               likes: _postsTimeLine[index].totalLike ?? '',
+  //                               comments:
+  //                                   _postsTimeLine[index].totalComments ?? '',
+  //                             ),
+  //                           );
+  //                         },
+  //                         child: Stack(
+  //                           children: [
+  //                             Container(
+  //                               padding:
+  //                                   const EdgeInsets.symmetric(horizontal: 10),
+  //                               height: 220.h,
+  //                               child: _postsTimeLine[index]
+  //                                           .postImages!
+  //                                           .length <
+  //                                       2
+  //                                   ? Container(
+  //                                       height: 220.h,
+  //                                       color: AppColor.greyshade200,
+  //                                       child: _postsTimeLine[index]
+  //                                                   .postImages![0]
+  //                                                   .mediaType ==
+  //                                               "IMAGE"
+  //                                           ? CachedNetworkImage(
+  //                                               imageUrl: _postsTimeLine[index]
+  //                                                       .postImages![0]
+  //                                                       .postMedia ??
+  //                                                   '',
+  //                                               fit: BoxFit.fitWidth,
+  //                                               imageBuilder:
+  //                                                   (context, imageProvider) =>
+  //                                                       Container(
+  //                                                 decoration: BoxDecoration(
+  //                                                   image: DecorationImage(
+  //                                                     image: imageProvider,
+  //                                                   ),
+  //                                                 ),
+  //                                               ),
+  //                                               progressIndicatorBuilder:
+  //                                                   (context, url,
+  //                                                           downloadProgress) =>
+  //                                                       Center(
+  //                                                 child: SizedBox(
+  //                                                   height: 20,
+  //                                                   width: 20,
+  //                                                   child:
+  //                                                       CircularProgressIndicator(
+  //                                                           strokeWidth: 0.5,
+  //                                                           value:
+  //                                                               downloadProgress
+  //                                                                   .progress),
+  //                                                 ),
+  //                                               ),
+  //                                               errorWidget:
+  //                                                   (context, url, error) =>
+  //                                                       const Image(
+  //                                                 image: AssetImage(
+  //                                                   AppImages.noImage,
+  //                                                 ),
+  //                                               ),
+  //                                             )
+  //                                           : VideoPlayerRemote(
+  //                                               height: 150,
+  //                                               url: _postsTimeLine[index]
+  //                                                       .postImages![0]
+  //                                                       .postMedia ??
+  //                                                   '',
+  //                                             ),
+  //                                     )
+  //                                   : _postsTimeLine[index]
+  //                                               .postImages!
+  //                                               .length ==
+  //                                           2
+  //                                       ? Row(
+  //                                           children: [
+  //                                             for (var element
+  //                                                 in _postsTimeLine[index]
+  //                                                     .postImages!)
+  //                                               Expanded(
+  //                                                 child: Padding(
+  //                                                   padding:
+  //                                                       const EdgeInsets.only(
+  //                                                           left: 3),
+  //                                                   child: Container(
+  //                                                     height: 220.h,
+  //                                                     color:
+  //                                                         AppColor.greyshade200,
+  //                                                     child: element
+  //                                                                 .mediaType ==
+  //                                                             "IMAGE"
+  //                                                         ? CachedNetworkImage(
+  //                                                             imageUrl: element
+  //                                                                     .postMedia ??
+  //                                                                 '',
+  //                                                             fit: BoxFit
+  //                                                                 .fitHeight,
+  //                                                             imageBuilder:
+  //                                                                 (context,
+  //                                                                         imageProvider) =>
+  //                                                                     Container(
+  //                                                               decoration:
+  //                                                                   BoxDecoration(
+  //                                                                 image:
+  //                                                                     DecorationImage(
+  //                                                                   image:
+  //                                                                       imageProvider,
+  //                                                                 ),
+  //                                                               ),
+  //                                                             ),
+  //                                                             progressIndicatorBuilder:
+  //                                                                 (context, url,
+  //                                                                         downloadProgress) =>
+  //                                                                     Center(
+  //                                                               child: SizedBox(
+  //                                                                 height: 20,
+  //                                                                 width: 20,
+  //                                                                 child: CircularProgressIndicator(
+  //                                                                     strokeWidth:
+  //                                                                         0.5,
+  //                                                                     value: downloadProgress
+  //                                                                         .progress),
+  //                                                               ),
+  //                                                             ),
+  //                                                             errorWidget: (context,
+  //                                                                     url,
+  //                                                                     error) =>
+  //                                                                 const Image(
+  //                                                               image:
+  //                                                                   AssetImage(
+  //                                                                 AppImages
+  //                                                                     .noImage,
+  //                                                               ),
+  //                                                             ),
+  //                                                           )
+  //                                                         : VideoPlayerRemote(
+  //                                                             height: 150,
+  //                                                             url: element
+  //                                                                     .postMedia ??
+  //                                                                 '',
+  //                                                           ),
+  //                                                   ),
+  //                                                 ),
+  //                                               ),
+  //                                           ],
+  //                                         )
+  //                                       : Row(
+  //                                           children: [
+  //                                             Flexible(
+  //                                               child: Container(
+  //                                                 height: 220.h,
+  //                                                 color: AppColor.greyshade200,
+  //                                                 child: _postsTimeLine[index]
+  //                                                             .postImages![0]
+  //                                                             .mediaType ==
+  //                                                         "IMAGE"
+  //                                                     ? CachedNetworkImage(
+  //                                                         imageUrl: _postsTimeLine[
+  //                                                                     index]
+  //                                                                 .postImages![
+  //                                                                     0]
+  //                                                                 .postMedia ??
+  //                                                             '',
+  //                                                         fit: BoxFit.fitHeight,
+  //                                                         imageBuilder: (context,
+  //                                                                 imageProvider) =>
+  //                                                             Container(
+  //                                                           decoration:
+  //                                                               BoxDecoration(
+  //                                                             image:
+  //                                                                 DecorationImage(
+  //                                                               image:
+  //                                                                   imageProvider,
+  //                                                             ),
+  //                                                           ),
+  //                                                         ),
+  //                                                         progressIndicatorBuilder:
+  //                                                             (context, url,
+  //                                                                     downloadProgress) =>
+  //                                                                 Center(
+  //                                                           child: SizedBox(
+  //                                                             height: 20,
+  //                                                             width: 20,
+  //                                                             child: CircularProgressIndicator(
+  //                                                                 strokeWidth:
+  //                                                                     0.5,
+  //                                                                 value: downloadProgress
+  //                                                                     .progress),
+  //                                                           ),
+  //                                                         ),
+  //                                                         errorWidget: (context,
+  //                                                                 url, error) =>
+  //                                                             const Image(
+  //                                                           image: AssetImage(
+  //                                                             AppImages.noImage,
+  //                                                           ),
+  //                                                         ),
+  //                                                       )
+  //                                                     : VideoPlayerRemote(
+  //                                                         height: 150,
+  //                                                         url: _postsTimeLine[
+  //                                                                     index]
+  //                                                                 .postImages![
+  //                                                                     0]
+  //                                                                 .postMedia ??
+  //                                                             '',
+  //                                                       ),
+  //                                               ),
+  //                                             ),
+  //                                             const SizedBox(
+  //                                               width: 4,
+  //                                             ),
+  //                                             Expanded(
+  //                                               child: Column(
+  //                                                 children: [
+  //                                                   Expanded(
+  //                                                     child: Container(
+  //                                                       color: AppColor
+  //                                                           .greyshade200,
+  //                                                       child: _postsTimeLine[
+  //                                                                       index]
+  //                                                                   .postImages![
+  //                                                                       1]
+  //                                                                   .mediaType ==
+  //                                                               "IMAGE"
+  //                                                           ? CachedNetworkImage(
+  //                                                               imageUrl: _postsTimeLine[
+  //                                                                           index]
+  //                                                                       .postImages![
+  //                                                                           1]
+  //                                                                       .postMedia ??
+  //                                                                   '',
+  //                                                               fit: BoxFit
+  //                                                                   .fitWidth,
+  //                                                               imageBuilder:
+  //                                                                   (context,
+  //                                                                           imageProvider) =>
+  //                                                                       Container(
+  //                                                                 decoration:
+  //                                                                     BoxDecoration(
+  //                                                                   image:
+  //                                                                       DecorationImage(
+  //                                                                     image:
+  //                                                                         imageProvider,
+  //                                                                   ),
+  //                                                                 ),
+  //                                                               ),
+  //                                                               progressIndicatorBuilder:
+  //                                                                   (context,
+  //                                                                           url,
+  //                                                                           downloadProgress) =>
+  //                                                                       Center(
+  //                                                                 child:
+  //                                                                     SizedBox(
+  //                                                                   height: 20,
+  //                                                                   width: 20,
+  //                                                                   child: CircularProgressIndicator(
+  //                                                                       strokeWidth:
+  //                                                                           0.5,
+  //                                                                       value: downloadProgress
+  //                                                                           .progress),
+  //                                                                 ),
+  //                                                               ),
+  //                                                               errorWidget: (context,
+  //                                                                       url,
+  //                                                                       error) =>
+  //                                                                   const Image(
+  //                                                                 image:
+  //                                                                     AssetImage(
+  //                                                                   AppImages
+  //                                                                       .noImage,
+  //                                                                 ),
+  //                                                               ),
+  //                                                             )
+  //                                                           : VideoPlayerRemote(
+  //                                                               height: 150,
+  //                                                               url: _postsTimeLine[
+  //                                                                           index]
+  //                                                                       .postImages![
+  //                                                                           1]
+  //                                                                       .postMedia ??
+  //                                                                   '',
+  //                                                             ),
+  //                                                     ),
+  //                                                   ),
+  //                                                   const SizedBox(
+  //                                                     height: 4,
+  //                                                   ),
+  //                                                   Flexible(
+  //                                                     child: Container(
+  //                                                       color: AppColor
+  //                                                           .greyshade200,
+  //                                                       child: Center(
+  //                                                         child: Text(
+  //                                                           "${_postsTimeLine[index].postImages!.length - 2} more",
+  //                                                           style: TextStyle(
+  //                                                             fontSize:
+  //                                                                 ScreenUtil()
+  //                                                                     .setSp(
+  //                                                                         16),
+  //                                                             fontWeight:
+  //                                                                 FontWeight
+  //                                                                     .bold,
+  //                                                           ),
+  //                                                         ),
+  //                                                       ),
+  //                                                     ),
+  //                                                   )
+  //                                                 ],
+  //                                               ),
+  //                                             ),
+  //                                             Container(),
+  //                                           ],
+  //                                         ),
+  //                             ),
+  //                             _postsTimeLine[index].postType == "event"
+  //                                 ? Positioned(
+  //                                     bottom: 0,
+  //                                     child: GestureDetector(
+  //                                       onTap: () {
+  //                                         Get.to(
+  //                                           () => EventTabs(
+  //                                             eventId:
+  //                                                 _postsTimeLine[index].eventId,
+  //                                             title: '',
+  //                                           ),
+  //                                         );
+  //                                       },
+  //                                       child: Container(
+  //                                         width:
+  //                                             MediaQuery.of(context).size.width,
+  //                                         padding: const EdgeInsets.symmetric(
+  //                                             vertical: 10),
+  //                                         decoration: BoxDecoration(
+  //                                           color: AppColor.primaryColor
+  //                                               .withOpacity(0.2),
+  //                                         ),
+  //                                         child: Center(
+  //                                           child: Text(
+  //                                             'View Event',
+  //                                             style: TextStyle(
+  //                                               fontSize:
+  //                                                   ScreenUtil().setSp(14),
+  //                                               color: AppColor.primaryColor,
+  //                                               decoration:
+  //                                                   TextDecoration.underline,
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   )
+  //                                 : _postsTimeLine[index].postType == "product"
+  //                                     ? Positioned(
+  //                                         bottom: 0,
+  //                                         child: GestureDetector(
+  //                                           onTap: () {
+  //                                             Get.to(
+  //                                               () => ProductDetailScreen(
+  //                                                 productId: int.parse(
+  //                                                     _postsTimeLine[index]
+  //                                                             .eventId ??
+  //                                                         ''),
+  //                                               ),
+  //                                             );
+  //                                           },
+  //                                           child: Container(
+  //                                             width: MediaQuery.of(context)
+  //                                                 .size
+  //                                                 .width,
+  //                                             padding:
+  //                                                 const EdgeInsets.symmetric(
+  //                                                     vertical: 10),
+  //                                             decoration: BoxDecoration(
+  //                                               color: AppColor.primaryColor
+  //                                                   .withOpacity(0.5),
+  //                                             ),
+  //                                             child: Center(
+  //                                               child: Text(
+  //                                                 'View Product Details',
+  //                                                 style: TextStyle(
+  //                                                   fontSize:
+  //                                                       ScreenUtil().setSp(14),
+  //                                                   color: AppColor.white,
+  //                                                   decoration: TextDecoration
+  //                                                       .underline,
+  //                                                 ),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                       )
+  //                                     : const SizedBox(),
+  //                           ],
+  //                         ),
+  //                       )
+  //                     : _postsTimeLine[index].postType == "event"
+  //                         ? GestureDetector(
+  //                             onTap: () {
+  //                               Get.to(
+  //                                 () => EventTabs(
+  //                                   eventId: _postsTimeLine[index].eventId,
+  //                                   title: '',
+  //                                 ),
+  //                               );
+  //                             },
+  //                             child: Container(
+  //                               width: MediaQuery.of(context).size.width,
+  //                               padding:
+  //                                   const EdgeInsets.symmetric(vertical: 10),
+  //                               decoration: BoxDecoration(
+  //                                 color: AppColor.primaryColor.withOpacity(0.2),
+  //                               ),
+  //                               child: Center(
+  //                                 child: Text(
+  //                                   'View Event',
+  //                                   style: TextStyle(
+  //                                     fontSize: ScreenUtil().setSp(14),
+  //                                     color: AppColor.primaryColor,
+  //                                     decoration: TextDecoration.underline,
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           )
+  //                         : _postsTimeLine[index].postType == "product"
+  //                             ? GestureDetector(
+  //                                 onTap: () {
+  //                                   Get.to(
+  //                                     () => ProductDetailScreen(
+  //                                       productId: int.parse(
+  //                                           _postsTimeLine[index].eventId ??
+  //                                               ''),
+  //                                     ),
+  //                                   );
+  //                                 },
+  //                                 child: Container(
+  //                                   width: MediaQuery.of(context).size.width,
+  //                                   padding: const EdgeInsets.symmetric(
+  //                                       vertical: 10),
+  //                                   decoration: BoxDecoration(
+  //                                     color: AppColor.primaryColor
+  //                                         .withOpacity(0.5),
+  //                                   ),
+  //                                   child: Center(
+  //                                     child: Text(
+  //                                       'View Product Details',
+  //                                       style: TextStyle(
+  //                                         fontSize: ScreenUtil().setSp(14),
+  //                                         color: AppColor.white,
+  //                                         decoration: TextDecoration.underline,
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               )
+  //                             : const SizedBox(),
+  //
+  //                 const SizedBox(
+  //                   height: 7.0,
+  //                 ),
+  //                 //region Horizontal Lion
+  //                 Container(
+  //                   color: const Color(0xFFa8a8a8),
+  //                   height: 0.5,
+  //                 ),
+  //                 //endregion
+  //                 //region Like, share, comment box
+  //                 Container(
+  //                   padding: const EdgeInsets.only(
+  //                       left: 15.0, right: 15.0, top: 8.0, bottom: 8.0),
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                     children: [
+  //                       // GestureDetector(
+  //                       //   onTap: () {
+  //                       //     _reaction(index);
+  //                       //     // await likeDislikePost(
+  //                       //     //   index,
+  //                       //     //   _postsTimeLine[index].id,
+  //                       //     //   _postsTimeLine[index].isLike == "0"
+  //                       //     //       ? 'like'
+  //                       //     //       : "unlike",
+  //                       //     // );
+  //                       //   },
+  //                       //   child:
+  //                       Row(
+  //                         children: [
+  //                           _reaction(index),
+  //                           // Icon(
+  //                           //   Icons.favorite,
+  //                           //   size: 27.h,
+  //                           //   color: _postsTimeLine[index].isLike == "1"
+  //                           //       ? AppColor.primaryColor
+  //                           //       : Colors.black26,
+  //                           // ),
+  //                           const SizedBox(
+  //                             width: 5.0,
+  //                           ),
+  //                           Text(
+  //                             '${_postsTimeLine[index].totalLike}',
+  //                             style: TextStyle(
+  //                               fontSize: ScreenUtil().setSp(13),
+  //                               color: Colors.grey,
+  //                             ),
+  //                           ),
+  //                           const SizedBox(
+  //                             width: 5.0,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                       // ),
+  //                       GestureDetector(
+  //                         onTap: () async {
+  //                           print("ClickComments");
+  //                           int a = await Get.to(
+  //                             () => InsertComments(
+  //                                 postId: _postsTimeLine[index].id ?? '',
+  //                                 totalLikes:
+  //                                     _postsTimeLine[index].totalLike ?? ''),
+  //                             transition: Transition.downToUp,
+  //                             curve: Curves.easeInOut,
+  //                           );
+  //                           setState(() {
+  //                             commentCount = a;
+  //                           });
+  //                           increaseCount(index);
+  //                           // .then((value) => increaseCount(index));
+  //                         },
+  //                         child: Row(
+  //                           children: [
+  //                             Icon(
+  //                               Icons.message_sharp,
+  //                               color: AppColor.grey,
+  //                               size: 22.w,
+  //                             ),
+  //                             const SizedBox(
+  //                               width: 5.0,
+  //                             ),
+  //                             Text(
+  //                               '${_postsTimeLine[index].totalComments}',
+  //                               style: TextStyle(
+  //                                 fontSize: ScreenUtil().setSp(13),
+  //                                 color: Colors.grey,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                       GestureDetector(
+  //                         onTap: () {
+  //                           internalShare(_postsTimeLine[index].id);
+  //                         },
+  //                         child: Row(
+  //                           children: [
+  //                             SvgPicture.asset(
+  //                               AppImages.shareIcon,
+  //                               height: 22.w,
+  //                               color: AppColor.grey,
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                       GestureDetector(
+  //                         onTap: () {
+  //                           if (Platform.isAndroid) {
+  //                             Share.share(
+  //                                 "${_postsTimeLine[index].firstName} posted in DOW Alumini\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+  //                           } else if (Platform.isIOS) {
+  //                             Share.share(
+  //                                 "${_postsTimeLine[index].firstName} posted in DOW Alumini\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+  //                           }
+  //                         },
+  //                         child: Row(
+  //                           children: [
+  //                             Icon(
+  //                               Icons.share_outlined,
+  //                               color: AppColor.grey,
+  //                               size: 22.w,
+  //                             ),
+  //                             // const SizedBox(
+  //                             //   width: 5.0,
+  //                             // ),
+  //                             // Text(
+  //                             //   'Share',
+  //                             //   style: TextStyle(
+  //                             //     fontSize: ScreenUtil().setSp(14),
+  //                             //     color: const Color(0xFFa8a8a8),
+  //                             //   ),
+  //                             // )
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 //endregion
+  //                 //region Horizontal Lion
+  //                 Container(
+  //                   color: const Color(0xFFa8a8a8),
+  //                   height: 0.5,
+  //                 ),
+  //                 //endregion
+  //               ],
+  //             ),
+  //           );
+  //         }),
+  //   );
+  // }
   Widget _builder() {
     return Container(
       color: Colors.transparent,
       margin: const EdgeInsets.only(top: 10.0),
       child: ListView.builder(
-          //  controller: _scrollController,
+        //  controller: _scrollController,
           itemCount: _postsTimeLine.length,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -348,47 +1228,47 @@ class _AlumniFeedState extends State<AlumniFeed> {
                           child: CircleAvatar(
                             child: _postsTimeLine[index].userImage == ''
                                 ? Image(
-                                    image: const AssetImage(
-                                        "assets/images/profile.png"),
+                              image: const AssetImage(
+                                  "assets/images/profile.png"),
+                              width: 50.w,
+                              height: 50.w,
+                            )
+                                :  CachedNetworkImage(
+                              imageUrl:
+                              _postsTimeLine[index].userImage ?? '',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
                                     width: 50.w,
                                     height: 50.w,
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl:
-                                        _postsTimeLine[index].userImage ?? '',
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      width: 50.w,
-                                      height: 50.w,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        //   color: Colors.white,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      //   color: Colors.white,
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
                                       ),
-                                    ),
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            Center(
-                                      child: SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        CircleAvatar(
-                                      //profile image
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: const AssetImage(
-                                        "assets/images/profile.png",
-                                      ),
-                                      radius: 20.r,
                                     ),
                                   ),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                  Center(
+                                    child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                    ),
+                                  ),
+                              errorWidget: (context, url, error) =>
+                                  CircleAvatar(
+                                    //profile image
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: const AssetImage(
+                                      "assets/images/profile.png",
+                                    ),
+                                    radius: 20.r,
+                                  ),
+                            ),
                             radius: 20.r,
                             backgroundColor: Colors.black,
                           ),
@@ -403,8 +1283,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
                             children: [
                               Wrap(
                                 spacing: 1,
+
                                 direction: Axis.horizontal,
+
                                 alignment: WrapAlignment.start,
+
                                 runAlignment: WrapAlignment.start,
                                 runSpacing: 0.0,
                                 crossAxisAlignment: WrapCrossAlignment.start,
@@ -417,13 +1300,18 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                       Get.to(
                                         ProfileScreen(
                                           userID:
-                                              _postsTimeLine[index].createdBy,
+                                          _postsTimeLine[index].createdBy,
                                         ),
                                       );
                                     },
-                                    child: Text(
-                                      '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
-                                      style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                    child: Container(
+                                      width: 200.w,
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        '${_postsTimeLine[index].firstName} ${_postsTimeLine[index].lastName}',
+                                        maxLines: 2,
+                                        style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,),
+                                      ),
                                     ),
                                   ),
                                   if (_postsTimeLine[index].feelingName != "" ||
@@ -434,84 +1322,115 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                           "")
                                     Text(
                                       'is ',
-                                      style: CustomTextStyles.text14SemiBoldW600,
+                                      style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(13),
+                                      ),
                                     ),
                                   _postsTimeLine[index].feelingName != ""
                                       ? Wrap(
-                                          children: [
-                                            CachedNetworkImage(
-                                                height: 16.w,
-                                                width: 16.w,
-                                                imageUrl: _postsTimeLine[index]
-                                                        .feelingIcon ??
-                                                    ''),
-                                            Text(
-                                              ' Feeling ',
-                                              style: CustomTextStyles.text14SemiBoldW600,
-                                            ),
-                                            Text(
-                                              '${_postsTimeLine[index].feelingName}',
-                                              style: CustomTextStyles.text14SemiBoldW600,
-                                            )
-                                          ],
-                                        )
+                                    children: [
+                                      CachedNetworkImage(
+                                          height: 16.w,
+                                          width: 16.w,
+                                          imageUrl: _postsTimeLine[index]
+                                              .feelingIcon ??
+                                              ''),
+                                      Text(
+                                        ' Feeling ',
+                                        style: TextStyle(
+                                          fontSize:
+                                          ScreenUtil().setSp(13),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_postsTimeLine[index].feelingName}',
+                                        style: TextStyle(
+                                          fontSize:
+                                          ScreenUtil().setSp(13),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],
+                                  )
                                       : const SizedBox(),
                                   _postsTimeLine[index].tagsDetails!.isNotEmpty
                                       ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'with ',
-                                              style: CustomTextStyles.text14SemiBoldW600,
-                                            ),
-                                            _postsTimeLine[index]
-                                                        .tagsDetails!
-                                                        .length >
-                                                    1
-                                                ? GestureDetector(
-                                                    onTap: () {
-                                                      Get.to(ProfileScreen(
-                                                        userID: _postsTimeLine[
-                                                                index]
-                                                            .tagsDetails![0]
-                                                            .userId,
-                                                      ));
-                                                    },
-                                                    child: Text(
-                                                      '${_postsTimeLine[index].tagsDetails![0].firstName} & ${_postsTimeLine[index].tagsDetails!.length - 1} more',
-                                                      style: CustomTextStyles.text14SemiBoldW600,
-                                                    ),
-                                                  )
-                                                : GestureDetector(
-                                                    onTap: () {
-                                                      Get.to(ProfileScreen(
-                                                        userID: _postsTimeLine[
-                                                                index]
-                                                            .tagsDetails![0]
-                                                            .userId,
-                                                      ));
-                                                    },
-                                                    child: Text(
-                                                      '${_postsTimeLine[index].tagsDetails![0].firstName} ',
-                                                      style: CustomTextStyles.text14SemiBoldW600,
-                                                    ),
-                                                  ),
-                                          ],
-                                        )
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'with ',
+                                        style: TextStyle(
+                                          fontSize:
+                                          ScreenUtil().setSp(13),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      _postsTimeLine[index]
+                                          .tagsDetails!
+                                          .length >
+                                          1
+                                          ? GestureDetector(
+                                        onTap: () {
+                                          Get.to(ProfileScreen(
+                                            userID: _postsTimeLine[
+                                            index]
+                                                .tagsDetails![0]
+                                                .userId,
+                                          ));
+                                        },
+                                        child: Text(
+                                          '${_postsTimeLine[index].tagsDetails![0].firstName} & ${_postsTimeLine[index].tagsDetails!.length - 1} more',
+                                          style: TextStyle(
+                                            fontSize: ScreenUtil()
+                                                .setSp(13),
+                                            fontWeight:
+                                            FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      )
+                                          : GestureDetector(
+                                        onTap: () {
+                                          Get.to(ProfileScreen(
+                                            userID: _postsTimeLine[
+                                            index]
+                                                .tagsDetails![0]
+                                                .userId,
+                                          ));
+                                        },
+                                        child: Text(
+                                          '${_postsTimeLine[index].tagsDetails![0].firstName} ',
+                                          style: TextStyle(
+                                            fontSize: ScreenUtil()
+                                                .setSp(13),
+                                            fontWeight:
+                                            FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                       : const SizedBox(),
                                   _postsTimeLine[index].checkinLocation != ""
                                       ? Wrap(
-                                          children: [
-                                            Text(
-                                              'in ',
-                                              style: CustomTextStyles.text14SemiBoldW600,
-                                            ),
-                                            Text(
-                                              '${_postsTimeLine[index].checkinLocation}',
-                                              style: CustomTextStyles.text14SemiBoldW600,
-                                            ),
-                                          ],
-                                        )
+                                    children: [
+                                      Text(
+                                        'in ',
+                                        style: TextStyle(
+                                          fontSize:
+                                          ScreenUtil().setSp(13),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_postsTimeLine[index].checkinLocation}',
+                                        style: TextStyle(
+                                            fontSize:
+                                            ScreenUtil().setSp(13),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )
                                       : const SizedBox(),
                                 ],
                               ),
@@ -520,16 +1439,16 @@ class _AlumniFeedState extends State<AlumniFeed> {
                               ),
                               Text(
                                   calculateDifference(_postsTimeLine[index].createdAt!),
-                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,)
+                                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black54,)
                               )
                             ],
                           ),
                         ),
                         PopupMenuButton(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r)
+                              borderRadius: BorderRadius.circular(4.r)
                           ),
-                          constraints:  BoxConstraints.expand(width: 100.w, height: 35.h),
+                          // constraints:  _postsTimeLine[index].createdBy == AppConstants.myId ? BoxConstraints.expand(width: 115.w, height: 35.h) : BoxConstraints.expand(width: 115.w, height: 90.h),
                           onSelected: (result) async {
                             if (result == 0) {
                               deleteTimeLinePost(
@@ -547,29 +1466,28 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                 click = false;
                               });
                               _contentController.clear();
+                            } else if(result == 2){
+                              print("Click On HidePost");
                             }
                           },
                           itemBuilder: (BuildContext context) {
-                            if (_postsTimeLine[index].createdBy ==
-                                AppConstants.myId) {
+                            if (_postsTimeLine[index].createdBy == AppConstants.myId) {
                               return [
-                                 PopupMenuItem(
+                                PopupMenuItem(
                                   value: 0,
-                                  child: Padding(
-                                    padding:  EdgeInsets.only(bottom: 22),
-                                    child: Text('Delete Post', style: CustomTextStyles.text12RegularW400,),
-                                  ),
+                                  child: Text('Delete Post', style: CustomTextStyles.text12RegularW400,),
                                 )
                               ];
                             } else {
                               return [
-                                 PopupMenuItem(
+                                PopupMenuItem(
                                   value: 1,
-                                  child: Padding(
-                                    padding:  EdgeInsets.only(left: 14,bottom: 22),
-                                    child: Text('Report', style: CustomTextStyles.text12RegularW400,),
-                                  ),
-                                )
+                                  child: Text('Report Post', style: CustomTextStyles.text12RegularW400,),
+                                ),
+                                PopupMenuItem(
+                                  value: 2,
+                                  child: Text('Hide Post', style: CustomTextStyles.text12RegularW400,),
+                                ),
                               ];
                             }
                           },
@@ -588,467 +1506,466 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   ),
                   _postsTimeLine[index].postImages!.isNotEmpty
                       ? GestureDetector(
-                          onTap: () {
-                            Get.to(
-                              () => FullPostScreen(
-                                text: _postsTimeLine[index].text ?? '',
-                                postImages: _postsTimeLine[index].postImages!,
-                                likes: _postsTimeLine[index].totalLike ?? '',
-                                comments:
-                                    _postsTimeLine[index].totalComments ?? '',
+                    onTap: () {
+                      Get.to(
+                            () => FullPostScreen(
+                          text: _postsTimeLine[index].text ?? '',
+                          postImages: _postsTimeLine[index].postImages!,
+                          likes: _postsTimeLine[index].totalLike ?? '',
+                          comments:
+                          _postsTimeLine[index].totalComments ?? '',
+                        ),
+                      );
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                          height: 220.h,
+                          child: _postsTimeLine[index]
+                              .postImages!
+                              .length < 2
+                              ? Container(
+                            height: 220.h,
+                            color: AppColor.greyshade200,
+                            child: _postsTimeLine[index]
+                                .postImages![0]
+                                .mediaType ==
+                                "IMAGE"
+                                ? CachedNetworkImage(
+                              imageUrl: _postsTimeLine[index]
+                                  .postImages![0]
+                                  .postMedia ??
+                                  '',
+                              fit: BoxFit.fitWidth,
+                              imageBuilder:
+                                  (context, imageProvider) =>
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.fitWidth
+                                      ),
+                                    ),
+                                  ),
+                              progressIndicatorBuilder:
+                                  (context, url,
+                                  downloadProgress) =>
+                                  Center(
+                                    child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child:
+                                      CircularProgressIndicator(
+                                          strokeWidth: 0.5,
+                                          value:
+                                          downloadProgress
+                                              .progress),
+                                    ),
+                                  ),
+                              errorWidget:
+                                  (context, url, error) =>
+                              const Image(
+                                image: AssetImage(
+                                  AppImages.noImage,
+                                ),
                               ),
-                            );
-                          },
-                          child: Stack(
+                            )
+                                : VideoPlayerRemote(
+                              height: 150,
+                              url: _postsTimeLine[index]
+                                  .postImages![0]
+                                  .postMedia ??
+                                  '',
+                            ),
+                          )
+                              : _postsTimeLine[index]
+                              .postImages!
+                              .length == 2
+                              ? Row(
                             children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                height: 220.h,
-                                child: _postsTimeLine[index]
-                                            .postImages!
-                                            .length <
-                                        2
-                                    ? Container(
-                                        height: 220.h,
-                                        color: AppColor.greyshade200,
-                                        child: _postsTimeLine[index]
-                                                    .postImages![0]
-                                                    .mediaType ==
-                                                "IMAGE"
-                                            ? CachedNetworkImage(
-                                                imageUrl: _postsTimeLine[index]
-                                                        .postImages![0]
-                                                        .postMedia ??
-                                                    '',
-                                                fit: BoxFit.fitWidth,
-                                                imageBuilder:
-                                                    (context, imageProvider) =>
-                                                        Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                    ),
-                                                  ),
-                                                ),
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                            downloadProgress) =>
-                                                        Center(
-                                                  child: SizedBox(
-                                                    height: 20,
-                                                    width: 20,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                            strokeWidth: 0.5,
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress),
-                                                  ),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Image(
-                                                  image: AssetImage(
-                                                    AppImages.noImage,
-                                                  ),
-                                                ),
-                                              )
-                                            : VideoPlayerRemote(
-                                                height: 150,
-                                                url: _postsTimeLine[index]
-                                                        .postImages![0]
-                                                        .postMedia ??
-                                                    '',
-                                              ),
-                                      )
-                                    : _postsTimeLine[index]
-                                                .postImages!
-                                                .length ==
-                                            2
-                                        ? Row(
-                                            children: [
-                                              for (var element
-                                                  in _postsTimeLine[index]
-                                                      .postImages!)
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 3),
-                                                    child: Container(
-                                                      height: 220.h,
-                                                      color:
-                                                          AppColor.greyshade200,
-                                                      child: element
-                                                                  .mediaType ==
-                                                              "IMAGE"
-                                                          ? CachedNetworkImage(
-                                                              imageUrl: element
-                                                                      .postMedia ??
-                                                                  '',
-                                                              fit: BoxFit
-                                                                  .fitHeight,
-                                                              imageBuilder:
-                                                                  (context,
-                                                                          imageProvider) =>
-                                                                      Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  image:
-                                                                      DecorationImage(
-                                                                    image:
-                                                                        imageProvider,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              progressIndicatorBuilder:
-                                                                  (context, url,
-                                                                          downloadProgress) =>
-                                                                      Center(
-                                                                child: SizedBox(
-                                                                  height: 20,
-                                                                  width: 20,
-                                                                  child: CircularProgressIndicator(
-                                                                      strokeWidth:
-                                                                          0.5,
-                                                                      value: downloadProgress
-                                                                          .progress),
-                                                                ),
-                                                              ),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  const Image(
-                                                                image:
-                                                                    AssetImage(
-                                                                  AppImages
-                                                                      .noImage,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : VideoPlayerRemote(
-                                                              height: 150,
-                                                              url: element
-                                                                      .postMedia ??
-                                                                  '',
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              Flexible(
-                                                child: Container(
-                                                  height: 220.h,
-                                                  color: AppColor.greyshade200,
-                                                  child: _postsTimeLine[index]
-                                                              .postImages![0]
-                                                              .mediaType ==
-                                                          "IMAGE"
-                                                      ? CachedNetworkImage(
-                                                          imageUrl: _postsTimeLine[
-                                                                      index]
-                                                                  .postImages![
-                                                                      0]
-                                                                  .postMedia ??
-                                                              '',
-                                                          fit: BoxFit.fitHeight,
-                                                          imageBuilder: (context,
-                                                                  imageProvider) =>
-                                                              Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image:
-                                                                    imageProvider,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          progressIndicatorBuilder:
-                                                              (context, url,
-                                                                      downloadProgress) =>
-                                                                  Center(
-                                                            child: SizedBox(
-                                                              height: 20,
-                                                              width: 20,
-                                                              child: CircularProgressIndicator(
-                                                                  strokeWidth:
-                                                                      0.5,
-                                                                  value: downloadProgress
-                                                                      .progress),
-                                                            ),
-                                                          ),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              const Image(
-                                                            image: AssetImage(
-                                                              AppImages.noImage,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : VideoPlayerRemote(
-                                                          height: 150,
-                                                          url: _postsTimeLine[
-                                                                      index]
-                                                                  .postImages![
-                                                                      0]
-                                                                  .postMedia ??
-                                                              '',
-                                                        ),
+                              for (var element
+                              in _postsTimeLine[index]
+                                  .postImages!)
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets.only(
+                                        left: 3),
+                                    child: Container(
+                                      height: 220.h,
+                                      color:
+                                      AppColor.greyshade200,
+                                      child: element
+                                          .mediaType ==
+                                          "IMAGE"
+                                          ? CachedNetworkImage(
+                                        imageUrl: element
+                                            .postMedia ??
+                                            '',
+                                        fit: BoxFit
+                                            .fitHeight,
+                                        imageBuilder:
+                                            (context,
+                                            imageProvider) =>
+                                            Container(
+                                              decoration:
+                                              BoxDecoration(
+                                                image:
+                                                DecorationImage(
+                                                  image:
+                                                  imageProvider,
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                width: 4,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        color: AppColor
-                                                            .greyshade200,
-                                                        child: _postsTimeLine[
-                                                                        index]
-                                                                    .postImages![
-                                                                        1]
-                                                                    .mediaType ==
-                                                                "IMAGE"
-                                                            ? CachedNetworkImage(
-                                                                imageUrl: _postsTimeLine[
-                                                                            index]
-                                                                        .postImages![
-                                                                            1]
-                                                                        .postMedia ??
-                                                                    '',
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                                imageBuilder:
-                                                                    (context,
-                                                                            imageProvider) =>
-                                                                        Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    image:
-                                                                        DecorationImage(
-                                                                      image:
-                                                                          imageProvider,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                progressIndicatorBuilder:
-                                                                    (context,
-                                                                            url,
-                                                                            downloadProgress) =>
-                                                                        Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    height: 20,
-                                                                    width: 20,
-                                                                    child: CircularProgressIndicator(
-                                                                        strokeWidth:
-                                                                            0.5,
-                                                                        value: downloadProgress
-                                                                            .progress),
-                                                                  ),
-                                                                ),
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    const Image(
-                                                                  image:
-                                                                      AssetImage(
-                                                                    AppImages
-                                                                        .noImage,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : VideoPlayerRemote(
-                                                                height: 150,
-                                                                url: _postsTimeLine[
-                                                                            index]
-                                                                        .postImages![
-                                                                            1]
-                                                                        .postMedia ??
-                                                                    '',
-                                                              ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 4,
-                                                    ),
-                                                    Flexible(
-                                                      child: Container(
-                                                        color: AppColor
-                                                            .greyshade200,
-                                                        child: Center(
-                                                          child: Text(
-                                                            "${_postsTimeLine[index].postImages!.length - 2} more",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          16),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(),
-                                            ],
-                                          ),
-                              ),
-                              _postsTimeLine[index].postType == "event"
-                                  ? Positioned(
-                                      bottom: 0,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Get.to(
-                                            () => EventTabs(
-                                              eventId:
-                                                  _postsTimeLine[index].eventId,
-                                              title: '',
                                             ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          decoration: BoxDecoration(
-                                            color: AppColor.primaryColor
-                                                .withOpacity(0.2),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              'View Event',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                color: AppColor.primaryColor,
-                                                decoration:
-                                                    TextDecoration.underline,
+                                        progressIndicatorBuilder:
+                                            (context, url,
+                                            downloadProgress) =>
+                                            Center(
+                                              child: SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child: CircularProgressIndicator(
+                                                    strokeWidth:
+                                                    0.5,
+                                                    value: downloadProgress
+                                                        .progress),
                                               ),
+                                            ),
+                                        errorWidget: (context,
+                                            url,
+                                            error) =>
+                                        const Image(
+                                          image:
+                                          AssetImage(
+                                            AppImages
+                                                .noImage,
+                                          ),
+                                        ),
+                                      )
+                                          : VideoPlayerRemote(
+                                        height: 150,
+                                        url: element
+                                            .postMedia ??
+                                            '',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          )
+                              : Row(
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  height: 220.h,
+                                  color: AppColor.greyshade200,
+                                  child: _postsTimeLine[index]
+                                      .postImages![0]
+                                      .mediaType ==
+                                      "IMAGE"
+                                      ? CachedNetworkImage(
+                                    imageUrl: _postsTimeLine[
+                                    index]
+                                        .postImages![
+                                    0]
+                                        .postMedia ??
+                                        '',
+                                    fit: BoxFit.fitHeight,
+                                    imageBuilder: (context,
+                                        imageProvider) =>
+                                        Container(
+                                          decoration:
+                                          BoxDecoration(
+                                            image:
+                                            DecorationImage(
+                                              image:
+                                              imageProvider,
+                                            ),
+                                          ),
+                                        ),
+                                    progressIndicatorBuilder:
+                                        (context, url,
+                                        downloadProgress) =>
+                                        Center(
+                                          child: SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                                strokeWidth:
+                                                0.5,
+                                                value: downloadProgress
+                                                    .progress),
+                                          ),
+                                        ),
+                                    errorWidget: (context,
+                                        url, error) =>
+                                    const Image(
+                                      image: AssetImage(
+                                        AppImages.noImage,
+                                      ),
+                                    ),
+                                  )
+                                      : VideoPlayerRemote(
+                                    height: 150,
+                                    url: _postsTimeLine[
+                                    index]
+                                        .postImages![
+                                    0]
+                                        .postMedia ??
+                                        '',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        color: AppColor
+                                            .greyshade200,
+                                        child: _postsTimeLine[
+                                        index]
+                                            .postImages![
+                                        1]
+                                            .mediaType ==
+                                            "IMAGE"
+                                            ? CachedNetworkImage(
+                                          imageUrl: _postsTimeLine[
+                                          index]
+                                              .postImages![
+                                          1]
+                                              .postMedia ??
+                                              '',
+                                          fit: BoxFit
+                                              .fitWidth,
+                                          imageBuilder:
+                                              (context,
+                                              imageProvider) =>
+                                              Container(
+                                                decoration:
+                                                BoxDecoration(
+                                                  image:
+                                                  DecorationImage(
+                                                    image:
+                                                    imageProvider,
+                                                  ),
+                                                ),
+                                              ),
+                                          progressIndicatorBuilder:
+                                              (context,
+                                              url,
+                                              downloadProgress) =>
+                                              Center(
+                                                child:
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child: CircularProgressIndicator(
+                                                      strokeWidth:
+                                                      0.5,
+                                                      value: downloadProgress
+                                                          .progress),
+                                                ),
+                                              ),
+                                          errorWidget: (context,
+                                              url,
+                                              error) =>
+                                          const Image(
+                                            image:
+                                            AssetImage(
+                                              AppImages
+                                                  .noImage,
+                                            ),
+                                          ),
+                                        )
+                                            : VideoPlayerRemote(
+                                          height: 150,
+                                          url: _postsTimeLine[
+                                          index]
+                                              .postImages![
+                                          1]
+                                              .postMedia ??
+                                              '',
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                        color: AppColor
+                                            .greyshade200,
+                                        child: Center(
+                                          child: Text(
+                                            "${_postsTimeLine[index].postImages!.length - 2} more",
+                                            style: TextStyle(
+                                              fontSize:
+                                              ScreenUtil()
+                                                  .setSp(
+                                                  16),
+                                              fontWeight:
+                                              FontWeight
+                                                  .bold,
                                             ),
                                           ),
                                         ),
                                       ),
                                     )
-                                  : _postsTimeLine[index].postType == "product"
-                                      ? Positioned(
-                                          bottom: 0,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Get.to(
-                                                () => ProductDetailScreen(
-                                                  productId: int.parse(
-                                                      _postsTimeLine[index]
-                                                              .eventId ??
-                                                          ''),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              decoration: BoxDecoration(
-                                                color: AppColor.primaryColor
-                                                    .withOpacity(0.5),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  'View Product Details',
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14),
-                                                    color: AppColor.white,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                              Container(),
                             ],
                           ),
-                        )
-                      : _postsTimeLine[index].postType == "event"
-                          ? GestureDetector(
-                              onTap: () {
-                                Get.to(
-                                  () => EventTabs(
-                                    eventId: _postsTimeLine[index].eventId,
-                                    title: '',
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: AppColor.primaryColor.withOpacity(0.2),
+                        ),
+                        _postsTimeLine[index].postType == "event"
+                            ? Positioned(
+                          bottom: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                    () => EventTabs(
+                                  eventId:
+                                  _postsTimeLine[index].eventId,
+                                  title: '',
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'View Event',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14),
-                                      color: AppColor.primaryColor,
-                                      decoration: TextDecoration.underline,
-                                    ),
+                              );
+                            },
+                            child: Container(
+                              width:
+                              MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10),
+                              decoration: BoxDecoration(
+                                color: AppColor.primaryColor
+                                    .withOpacity(0.2),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'View Event',
+                                  style: TextStyle(
+                                    fontSize:
+                                    ScreenUtil().setSp(14),
+                                    color: AppColor.primaryColor,
+                                    decoration:
+                                    TextDecoration.underline,
                                   ),
                                 ),
                               ),
-                            )
-                          : _postsTimeLine[index].postType == "product"
-                              ? GestureDetector(
-                                  onTap: () {
-                                    Get.to(
-                                      () => ProductDetailScreen(
-                                        productId: int.parse(
-                                            _postsTimeLine[index].eventId ??
-                                                ''),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    decoration: BoxDecoration(
-                                      color: AppColor.primaryColor
-                                          .withOpacity(0.5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'View Product Details',
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(14),
-                                          color: AppColor.white,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ),
+                            ),
+                          ),
+                        )
+                            : _postsTimeLine[index].postType == "product"
+                            ? Positioned(
+                          bottom: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                    () => ProductDetailScreen(
+                                  productId: int.parse(
+                                      _postsTimeLine[index]
+                                          .eventId ??
+                                          ''),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context)
+                                  .size
+                                  .width,
+                              padding:
+                              const EdgeInsets.symmetric(
+                                  vertical: 10),
+                              decoration: BoxDecoration(
+                                color: AppColor.primaryColor
+                                    .withOpacity(0.5),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'View Product Details',
+                                  style: TextStyle(
+                                    fontSize:
+                                    ScreenUtil().setSp(14),
+                                    color: AppColor.white,
+                                    decoration: TextDecoration
+                                        .underline,
                                   ),
-                                )
-                              : const SizedBox(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  )
+                      : _postsTimeLine[index].postType == "event"
+                      ? GestureDetector(
+                    onTap: () {
+                      Get.to(
+                            () => EventTabs(
+                          eventId: _postsTimeLine[index].eventId,
+                          title: '',
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppColor.primaryColor.withOpacity(0.2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'View Event',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: AppColor.primaryColor,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                      : _postsTimeLine[index].postType == "product"
+                      ? GestureDetector(
+                    onTap: () {
+                      Get.to(
+                            () => ProductDetailScreen(
+                          productId: int.parse(
+                              _postsTimeLine[index].eventId ??
+                                  ''),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppColor.primaryColor
+                            .withOpacity(0.5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'View Product Details',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: AppColor.white,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
 
                   const SizedBox(
                     height: 7.0,
@@ -1088,8 +2005,8 @@ class _AlumniFeedState extends State<AlumniFeed> {
                             //       ? AppColor.primaryColor
                             //       : Colors.black26,
                             // ),
-                            const SizedBox(
-                              width: 5.0,
+                            SizedBox(
+                              width: 2.w,
                             ),
                             Text(
                               '${_postsTimeLine[index].totalLike}',
@@ -1098,20 +2015,17 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                 color: Colors.grey,
                               ),
                             ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
+
                           ],
                         ),
                         // ),
                         GestureDetector(
                           onTap: () async {
-                            print("ClickComments");
                             int a = await Get.to(
-                              () => InsertComments(
+                                  () => InsertComments(
                                   postId: _postsTimeLine[index].id ?? '',
                                   totalLikes:
-                                      _postsTimeLine[index].totalLike ?? ''),
+                                  _postsTimeLine[index].totalLike ?? ''),
                               transition: Transition.downToUp,
                               curve: Curves.easeInOut,
                             );
@@ -1125,11 +2039,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
                             children: [
                               Icon(
                                 Icons.message_sharp,
-                                color: AppColor.grey,
+                                color: AppColor.primaryColor,
                                 size: 22.w,
                               ),
-                              const SizedBox(
-                                width: 5.0,
+                              SizedBox(
+                                width: 5.w,
                               ),
                               Text(
                                 '${_postsTimeLine[index].totalComments}',
@@ -1150,7 +2064,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                               SvgPicture.asset(
                                 AppImages.shareIcon,
                                 height: 22.w,
-                                color: AppColor.grey,
+                                color: AppColor.primaryColor,
                               ),
                             ],
                           ),
@@ -1159,17 +2073,17 @@ class _AlumniFeedState extends State<AlumniFeed> {
                           onTap: () {
                             if (Platform.isAndroid) {
                               Share.share(
-                                  "${_postsTimeLine[index].firstName} posted in DOW Alumini\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+                                  "${_postsTimeLine[index].firstName} posted in CXO Global\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
                             } else if (Platform.isIOS) {
                               Share.share(
-                                  "${_postsTimeLine[index].firstName} posted in DOW Alumini\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+                                  "${_postsTimeLine[index].firstName} posted in CXO Global\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
                             }
                           },
                           child: Row(
                             children: [
                               Icon(
                                 Icons.share_outlined,
-                                color: AppColor.grey,
+                                color: AppColor.primaryColor,
                                 size: 22.w,
                               ),
                               // const SizedBox(
@@ -2326,3 +3240,5 @@ class _AlumniFeedState extends State<AlumniFeed> {
   }
 
 }
+
+

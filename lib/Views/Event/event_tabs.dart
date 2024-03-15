@@ -89,7 +89,7 @@ class EventTabsState extends State<EventTabs> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     buildScreen(),
                     EventAttendiesView(eventId: widget.eventId ?? '',),
@@ -148,6 +148,16 @@ class EventTabsState extends State<EventTabs> {
                 SizedBox(
                   height: 10.h,
                 ),
+                _event.startDate == null || _event.startDate!.isEmpty ?
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Center(
+                      child: Text(
+                        "--",
+                        style: boldTextStyle(),
+                      ),
+                    ),
+                  ) :
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Center(
@@ -537,7 +547,6 @@ class EventTabsState extends State<EventTabs> {
     });
   }
 
-
   Future<void> changeStatus(status) async {
     String myTime = myCurrentDate + myCurrentTime;
     String eventStartTime = _event.startDate! +" " + _event.startTime!;
@@ -599,9 +608,8 @@ class EventTabsState extends State<EventTabs> {
   }
 
   Future<void> setEventFromDB() async {
-    print("widget.eventId= ${widget.eventId}");
     _event = await database.getSingleEvent(widget.eventId ?? '1');
-    print("EventUpdate=${_event}");
+    print("FetchedEvent= $_event");
     setState(() {
       dataFetched = true;
     });
@@ -622,12 +630,11 @@ class EventTabsState extends State<EventTabs> {
     );
     if (response is ErrorEntity) {
       print("enter2");
-    } else {
-      print("enter3");
+    }
+    else {
+      print("response: $response");
       EventDetailEntity detailEntity = EventDetailEntity().fromJson(response);
       if (detailEntity.success == 1) {
-        print("enter4");
-        print("detailEntity= ${detailEntity.result!.first.isInterested}");
         database.deleteSingleEvent(widget.eventId??"1");
         for (var element in detailEntity.result!) {
           DBEvent dbEvent = DBEvent(
@@ -652,8 +659,8 @@ class EventTabsState extends State<EventTabs> {
           database.insertSingleEvent(dbEvent);
         }
         setEventFromDB();
-        print("Added -----");
       }
     }
   }
+
 }
