@@ -10,7 +10,7 @@ class AppConstants {
   static const devUrl = 'https://dev.linkalumniapp.com/';
   static const liveUrl = 'https://tcsalumni.linkalumniapp.com/';
 
-  static String baseUrl = devUrl;
+  static String baseUrl = liveUrl;
 
   static String myId = "";
   static String userName = "";

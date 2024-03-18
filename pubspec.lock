@@ -65,14 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
-  audio_session:
-    dependency: transitive
-    description:
-      name: audio_session
-      sha256: f952f7a98640ba1d07520465a1cdaed6df0994390ac6fa73920d1741207147b8
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.10"
+#  audio_session:
+#    dependency: transitive
+#    description:
+#      name: audio_session
+#      sha256: f952f7a98640ba1d07520465a1cdaed6df0994390ac6fa73920d1741207147b8
+#      url: "https://pub.dev"
+#    source: hosted
+#    version: "0.1.10"
   audioplayers:
     dependency: "direct main"
     description:

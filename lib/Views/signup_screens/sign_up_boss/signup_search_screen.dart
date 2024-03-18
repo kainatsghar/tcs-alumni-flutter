@@ -153,13 +153,13 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     _students = [];
     _listCities = [];
     _listCountries = [];
+    getCities("166");
     _nameController.text = widget.name ?? '';
     _emailController.text = widget.email ?? '';
     _passwordController.text = widget.password ?? '';
     _confirmPasswordController.text = widget.password ?? '';
     _fetchData = getData();
     _countryController.text = 'Pakistan';
-    getCities("166");
     print("email: ${_emailController.text}");
     // _cityController.text = 'Lahore';
     super.initState();
@@ -432,7 +432,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
         const SizedBox(
           height: 5,
         ),
-        widget.password == "" ? emailTextField() : const SizedBox(),
+        emailTextField(),
         const SizedBox(
           height: 15,
         ),
@@ -525,6 +525,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
                 ? 'Invalid email'
                 : null;
           },
+          enabled: false,
           style: TextStyle(
             fontSize: ScreenUtil().setSp(14),
           ),
@@ -545,7 +546,6 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       children: [
         WidgetStyle.signUpName(title: 'Phone*'),
         TextFormField(
-          enabled: searched && widget.email == 'email' ? false : true,
           // 18.h,
           validator: (value) {
             return value!.isEmpty ? 'Phone is required' : null;
@@ -961,8 +961,6 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   Future<void> getData() async {
     _listCountries = await database.getAllCountries();
     _branchList = await database.getAllBranches();
-
-    getCities(_listCountries.first.countryId);
     await addingYear();
   }
 
@@ -1406,6 +1404,7 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       if (citiesEntity.success == 1) {
         print('added cities');
         _listCities = citiesEntity.cities;
+        print("ListCity: ${_listCities.first.cityName}");
         setState(() {});
       }
     }
