@@ -645,131 +645,129 @@ class _LoginScreenState extends State<LoginScreen> {
     print("😂😂😂= ${response.toString()}");
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
-      // if(response.success == -2){
-      //   Get.to(() => BossSearchSignupView(
-      //       name: name,
-      //       password: password,
-      //       loginWith: loginWith,
-      //       email: email,
-      //     ));
-      // }
-      // else{
-      //
-      // }
-      UIHelper.showErrorAlert(context, response.message);
+      if(response.success == -6){
+        if(loginWith == "google" || loginWith == "facebook" || loginWith == "apple"){
+          Get.to(() => BossSearchSignupView(
+              name: name,
+              password: password,
+              loginWith: loginWith,
+              email: email,
+            ));
+        }
+        else{
+          UIHelper.showErrorAlert(context, response.message, action: ()=> Get.to(() => BossSearchSignupView(
+              name: name,
+              password: password,
+              loginWith: loginWith,
+              email: email,
+            )));
+        }
+      }
+      else{
+        UIHelper.showErrorAlert(context, response.message);
+      }
     }
     else {
       LoginEntityEntity loginEntity = LoginEntityEntity().fromJson(response);
 
       if (loginEntity.success == 1 || loginEntity.success == -4) {
-        if (loginEntity.result!.isVerified == "1") {
-          AppConstants.myId = loginEntity.result!.userId ?? '';
-          print(AppConstants.myId);
-          AppConstants.userName = loginEntity.result!.firstName ?? '';
-          AppConstants.bearerToken = loginEntity.result!.token ?? '';
-          AppConstants.chapterId = loginEntity.result!.chapterId ?? '';
-          SharedPreferences localStorage =
-          await SharedPreferences.getInstance();
-          localStorage.setString('email', loginEntity.result!.email ?? '');
-          localStorage.setString('password', password);
-          localStorage.setString('loginWith', loginWith);
-          localStorage.setString(
-              'firstName', loginEntity.result!.firstName ?? '');
-          localStorage.setString(
-              'lastName', loginEntity.result!.lastName ?? '');
-          localStorage.setString(
-              'selectedIndustry', loginEntity.result!.industryName ?? '');
-          localStorage.setString(
-            'userImage',
-            loginEntity.result!.image ?? '',
-          );
-          localStorage.setString(
-            'branchId',
-            loginEntity.result!.branchId ?? '',
-          );
-          localStorage.setString(
-            'branchName',
-            loginEntity.result!.branchName ?? '',
-          );
-
-          localStorage.setString(
-            'count',
-            loginEntity.unreadCount ?? '',
-          );
-          localStorage.setString(
-              'currentCity', loginEntity.result!.currentCityName ?? '');
-          localStorage.setString(
-              'sharingLoc', loginEntity.result!.isSharingLoc ?? '');
-          localStorage.setString('user_id', loginEntity.result!.userId ?? '');
-          localStorage.setBool('is_first', false);
-          localStorage.setString('loginStatus', '1');
-          localStorage.setString('token', loginEntity.result!.token ?? '');
-          if (remember == true && loginWith == 'email') {
-            localStorage.setString("rEmail", email);
-            localStorage.setString('rPass', password);
-          }
-
-          localStorage.setString("fingerEmail", email);
-          localStorage.setString('fingerPass', password);
-
-          DBAllUser allUser = DBAllUser(
-            userId: loginEntity.result!.userId,
-            firstName: loginEntity.result!.firstName,
-            lastName: loginEntity.result!.lastName,
-            description: loginEntity.result!.description,
-            designation: loginEntity.result!.designation,
-            branchName: loginEntity.result!.branchName,
-            organizationName: loginEntity.result!.organizationName,
-            email: loginEntity.result!.email,
-            currentCityName: loginEntity.result!.currentCityName,
-            isMentor: loginEntity.result!.isMentor,
-            isVerified: loginEntity.result!.isVerified,
-            connectionStatus: loginEntity.result!.connectionStatus,
-            image: loginEntity.result!.image,
-            graduationYear: loginEntity.result!.graduationYear,
-            chatStatus: loginEntity.result!.chatInvitationStatus,
-            linkedinUrl: loginEntity.result!.userLinkedinUrl,
-            sharingLoc: loginEntity.result!.isSharingLoc,
-            industryName: loginEntity.result!.industryName,
-            companyId: loginEntity.result!.companyId,
-            branchId: loginEntity.result!.branchId,
-          );
-          await database.insertUser(allUser);
-          _controller.getInfo();
-          if (loginEntity.success == 1) {
-            Get.offUntil(
-                GetPageRoute(page: () => const BottomNavigationScreen()),
-                    (route) => false);
-          } else {
-            UIHelper.showOptionalUpdateAlert(
-              context,
-              loginEntity.message,
+        try{
+          if (loginEntity.result!.isVerified == "1") {
+            AppConstants.myId = loginEntity.result!.userId ?? '';
+            print(AppConstants.myId);
+            AppConstants.userName = loginEntity.result!.firstName ?? '';
+            AppConstants.bearerToken = loginEntity.result!.token ?? '';
+            AppConstants.chapterId = loginEntity.result!.chapterId ?? '';
+            SharedPreferences localStorage =
+            await SharedPreferences.getInstance();
+            localStorage.setString('email', loginEntity.result!.email ?? '');
+            localStorage.setString('password', password);
+            localStorage.setString('loginWith', loginWith);
+            localStorage.setString(
+                'firstName', loginEntity.result!.firstName ?? '');
+            localStorage.setString(
+                'lastName', loginEntity.result!.lastName ?? '');
+            localStorage.setString(
+                'selectedIndustry', loginEntity.result!.industryName ?? '');
+            localStorage.setString(
+              'userImage',
+              loginEntity.result!.image ?? '',
             );
+            localStorage.setString(
+              'branchId',
+              loginEntity.result!.branchId ?? '',
+            );
+            localStorage.setString(
+              'branchName',
+              loginEntity.result!.branchName ?? '',
+            );
+
+            localStorage.setString(
+              'count',
+              loginEntity.unreadCount ?? '',
+            );
+            localStorage.setString(
+                'currentCity', loginEntity.result!.currentCityName ?? '');
+            localStorage.setString(
+                'sharingLoc', loginEntity.result!.isSharingLoc ?? '');
+            localStorage.setString('user_id', loginEntity.result!.userId ?? '');
+            localStorage.setBool('is_first', false);
+            localStorage.setString('loginStatus', '1');
+            localStorage.setString('token', loginEntity.result!.token ?? '');
+            if (remember == true && loginWith == 'email') {
+              localStorage.setString("rEmail", email);
+              localStorage.setString('rPass', password);
+            }
+
+            localStorage.setString("fingerEmail", email);
+            localStorage.setString('fingerPass', password);
+
+            DBAllUser allUser = DBAllUser(
+              userId: loginEntity.result!.userId,
+              firstName: loginEntity.result!.firstName,
+              lastName: loginEntity.result!.lastName,
+              description: loginEntity.result!.description,
+              designation: loginEntity.result!.designation,
+              branchName: loginEntity.result!.branchName,
+              organizationName: loginEntity.result!.organizationName,
+              email: loginEntity.result!.email,
+              currentCityName: loginEntity.result!.currentCityName,
+              isMentor: loginEntity.result!.isMentor,
+              isVerified: loginEntity.result!.isVerified,
+              connectionStatus: loginEntity.result!.connectionStatus,
+              image: loginEntity.result!.image,
+              graduationYear: loginEntity.result!.graduationYear,
+              chatStatus: loginEntity.result!.chatInvitationStatus,
+              linkedinUrl: loginEntity.result!.userLinkedinUrl,
+              sharingLoc: loginEntity.result!.isSharingLoc,
+              industryName: loginEntity.result!.industryName,
+              companyId: loginEntity.result!.companyId,
+              branchId: loginEntity.result!.branchId,
+            );
+            await database.insertUser(allUser);
+            _controller.getInfo();
+            if (loginEntity.success == 1) {
+              Get.offUntil(
+                  GetPageRoute(page: () => const BottomNavigationScreen()),
+                      (route) => false);
+            } else {
+              UIHelper.showOptionalUpdateAlert(
+                context,
+                loginEntity.message,
+              );
+            }
           }
-        }
-        else {
-          UIHelper.showErrorAlert(context,
-              "Dear user, your profile is under review. You will receive an email of approval soon. Thank you for signing up");
+          else {
+            UIHelper.showErrorAlert(context, loginEntity.message);
+          }
+        }catch(e){
+          UIHelper.showErrorAlert(context, loginEntity.message);
         }
       }
       else if (loginEntity.success == -5) {
         UIHelper.showForceUpdateAlert(context);
       }
       else if (loginEntity.success == -1) {
-        /// **************************************
-        /// DOW SignUp
-        // Get.to(
-        //   () => SignUpScreen(
-        //     phone: "",
-        //     name: name,
-        //     email: email,
-        //     loginWith: loginWith,
-        //     password: password,
-        //   ),
-        // );
-
-        /// **************************************
-        /// Boss Signup
         print('email $email');
         Get.to(
               () => BossSearchSignupView(
@@ -779,22 +777,6 @@ class _LoginScreenState extends State<LoginScreen> {
             email: email,
           ),
         );
-        /// **************************************
-        /// IOBM Signup
-        // Get.to(
-        //   () => IOBMSearchSignupView(
-        //     name: name,
-        //     password: password,
-        //     loginWith: loginWith,
-        //     email: email,
-        //   ),
-        // );
-        // Get.to(() => SignUpTLE(
-        //       name: name,
-        //       loginWith: loginWith,
-        //       email: email,
-        //       password: password,
-        //     ));
       }
     }
   }

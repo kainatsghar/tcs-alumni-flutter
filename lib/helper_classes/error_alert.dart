@@ -18,6 +18,7 @@ class ErrorAlert extends StatefulWidget {
 
 class _ErrorAlertState extends State<ErrorAlert>
     with SingleTickerProviderStateMixin {
+
   @override
   void initState() {
     super.initState();
@@ -86,4 +87,5 @@ class _ErrorAlertState extends State<ErrorAlert>
       ),
     );
   }
+
 }
