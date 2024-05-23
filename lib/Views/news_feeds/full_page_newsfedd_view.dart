@@ -13,9 +13,12 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../../utils/text_styles.dart';
 
 class FullPostScreen extends StatefulWidget {
   final String text;
@@ -262,12 +265,21 @@ class _FullPostScreenState extends State<FullPostScreen> {
             right: 15.w,
             child: Column(
               children: [
-                HtmlWidget(
-                  AppUtils().htmlString(widget.text),
-                  textStyle: TextStyle(
-                    fontSize: ScreenUtil().setSp(13),
-                    color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 300.h,
+                  child: SingleChildScrollView(
+                    child: ReadMoreText(
+                      widget.text,
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.white, wordSpacing: 1,),
+                      trimMode: TrimMode.Line,
+                      trimLines: 2,
+                      colorClickableText: Colors.blue,
+                      trimCollapsedText: 'Show more',
+                      trimExpandedText: 'Show less',
+                      moreStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      lessStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 SizedBox(height: 10.h,),

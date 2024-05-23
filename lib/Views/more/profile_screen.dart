@@ -173,449 +173,456 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildScreenWidget({height}) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return RefreshIndicator(
+      onRefresh: ()async{
+        await getUserInfo();
+      },
+      child: ListView(
         children: [
-          sizedBox(
-            height: 40.h,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: AppColor.white,
-                  ),
-                ),
+              sizedBox(
+                height: 40.h,
               ),
-              oneUser?.userId == AppConstants.myId ?const SizedBox() :GestureDetector(
-                onTap: (){
-                  showBottomSheet(
-                    context: context,
-                    builder: (context) => Container(
-                      height: 50.h,
-                      child: ListTile(
-                        leading: const Icon(Icons.sim_card_alert_rounded),
-                        title: const Text("Block"),
-                        onTap: (){
-                          sendInvitation(AppConstants.BLOCK);
-                        },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: AppColor.white,
                       ),
                     ),
-                  );
-                },
-                child: Container(
-                  height: 30.h,
-                    width: 30.h,
-                    margin: EdgeInsets.only(right: 10.w),
-                    color: Colors.transparent,
-                    child: const Icon(Icons.more_vert_rounded,color: Colors.white,)),
-              )
-            ],
-          ),
-          sizedBox(
-            height: 10.h,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  oneUser?.userId == AppConstants.myId ?const SizedBox() :GestureDetector(
+                    onTap: (){
+                      showBottomSheet(
+                        context: context,
+                        builder: (context) => Container(
+                          height: 50.h,
+                          child: ListTile(
+                            leading: const Icon(Icons.sim_card_alert_rounded),
+                            title: const Text("Block"),
+                            onTap: (){
+                              sendInvitation(AppConstants.BLOCK);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                        height: 30.h,
+                        width: 30.h,
+                        margin: EdgeInsets.only(right: 10.w),
+                        color: Colors.transparent,
+                        child: const Icon(Icons.more_vert_rounded,color: Colors.white,)),
+                  )
+                ],
+              ),
+              sizedBox(
+                height: 10.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
                   children: [
-                    _userImage(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _userImage(),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Flexible(
-                                child: Text(
-                                  "${oneUser?.firstName} ${oneUser?.lastName}",
-                                  maxLines: 2,
-                                  style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis, color: AppColor.white,),
-                                ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      "${oneUser?.firstName} ${oneUser?.lastName}",
+                                      maxLines: 2,
+                                      style: CustomTextStyles.text14SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis, color: AppColor.white,),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.r,
+                                  ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  oneUser?.userId == AppConstants.myId ?
+                                  GestureDetector(
+                                    onTap: (){
+                                      setState(() {
+                                        isUpdateName = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 20.h,
+                                      width: 20.h,
+                                      color: Colors.transparent,
+                                      child: Icon(Icons.edit,size: 15.h,color: Colors.white,),
+                                    ),
+                                  ) :
+                                  Container(),
+                                ],
+                              ),
+                              isUpdateName && oneUser?.userId == AppConstants.myId ? _updateUserName(): Container(),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              oneUser?.userId == AppConstants.myId
+                                  ? Text(
+                                oneUser?.email ?? '-',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+                              )
+                                  : const SizedBox(),
+                              SizedBox(
+                                height:
+                                oneUser?.userId == AppConstants.myId ? 8 : 4,
+                              ),
+                              // Text(
+                              //   "Alumni ID. ${oneUser?.userId ?? '-'}",
+                              //   style: TextStyle(
+                              //     fontSize: ScreenUtil().setSp(12),
+                              //     color: AppColor.white,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 5.h,
+                              // ),
+                              Text(
+                                oneUser?.designation == ''
+                                    ? '-'
+                                    : oneUser?.designation ?? '-',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                               ),
                               SizedBox(
-                                width: 2.r,
+                                height: 5.h,
+                              ),
+                              Text(
+                                oneUser?.organizationName == ''
+                                    ? '-'
+                                    : oneUser?.organizationName ?? '-',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
                               ),
                               SizedBox(
-                                width: 2.w,
+                                height: 5.h,
                               ),
-                              oneUser?.userId == AppConstants.myId ?
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    isUpdateName = true;
-                                  });
+                              Text(
+                                oneUser?.currentCityName == ''
+                                    ? '-'
+                                    : oneUser?.currentCityName ?? '-',
+                                style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+                              ),
+                              // SizedBox(
+                              //   height: 5.h,
+                              // ),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       'Class of ',
+                              //       style: TextStyle(
+                              //         fontSize: ScreenUtil().setSp(12),
+                              //         color: AppColor.white,
+                              //       ),
+                              //     ),
+                              //     Text(
+                              //       oneUser?.graduationYear ?? '',
+                              //       style: TextStyle(
+                              //         fontSize: ScreenUtil().setSp(12),
+                              //         color: AppColor.white,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              widget.userID != AppConstants.myId
+                                  ? oneUser?.connectionStatus == ''
+                                  ? GestureDetector(
+                                onTap: () async {
+                                  await updateConnectStatus(
+                                      status: 'REQUEST',
+                                      connectStatus: "REQUEST SENT");
+                                  setDataFromDB();
                                 },
                                 child: Container(
-                                  height: 20.h,
-                                  width: 20.h,
-                                  color: Colors.transparent,
-                                  child: Icon(Icons.edit,size: 15.h,color: Colors.white,),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 9, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.white,
+                                    borderRadius:
+                                    BorderRadius.circular(15),
+                                  ),
+                                  child: Text(
+                                    'Connect',
+                                    style: CustomTextStyles.text12RegularW400,
+                                  ),
                                 ),
-                              ) :
-                              Container(),
+                              )
+                                  : oneUser?.connectionStatus == "REQUEST SENT"
+                                  ? Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 9,
+                                          vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color:
+                                        const Color(0xffEA8E37),
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                      ),
+                                      child: Text(
+                                        'Pending',
+                                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await updateConnectStatus(
+                                        status: "CANCEL",
+                                        connectStatus: "",
+                                      );
+                                      setDataFromDB();
+                                    },
+                                    child: Container(
+                                      padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 9,
+                                          vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: AppColor.white,
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                      ),
+                                      child: Text(
+                                        Strings.cancel,
+                                        style: CustomTextStyles.text12RegularW400,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                                  : oneUser?.connectionStatus ==
+                                  "REQUEST RECEIVED"
+                                  ? Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await updateConnectStatus(
+                                        status: "ACCEPT",
+                                        connectStatus: "ACCEPT",
+                                      );
+                                      setDataFromDB();
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets
+                                          .symmetric(
+                                          horizontal: 9,
+                                          vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color:
+                                        AppColor.greenColor,
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            15),
+                                      ),
+                                      child: Text(
+                                        'Accept',
+                                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await updateConnectStatus(
+                                        status: "CANCEL",
+                                        connectStatus: "",
+                                      );
+                                      setDataFromDB();
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets
+                                          .symmetric(
+                                          horizontal: 9,
+                                          vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            15),
+                                      ),
+                                      child: Text(
+                                        Strings.reject,
+                                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                                  : oneUser?.connectionStatus ==
+                                  "ACCEPT"
+                                  ? GestureDetector(
+                                onTap: () async {
+                                  await updateConnectStatus(
+                                    status: "CANCEL",
+                                    connectStatus: "",
+                                  );
+                                  setDataFromDB();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets
+                                      .symmetric(
+                                      horizontal: 9,
+                                      vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.white,
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        15),
+                                  ),
+                                  child: Text(
+                                    Strings.remove,
+                                    style: CustomTextStyles.text12RegularW400,
+                                  ),
+                                ),
+                              )
+                                  : Container()
+                                  : Container(),
                             ],
                           ),
-                          isUpdateName && oneUser?.userId == AppConstants.myId ? _updateUserName(): Container(),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          oneUser?.userId == AppConstants.myId
-                              ? Text(
-                                  oneUser?.email ?? '-',
-                                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                                )
-                              : const SizedBox(),
-                          SizedBox(
-                            height:
-                                oneUser?.userId == AppConstants.myId ? 8 : 4,
-                          ),
-                          // Text(
-                          //   "Alumni ID. ${oneUser?.userId ?? '-'}",
-                          //   style: TextStyle(
-                          //     fontSize: ScreenUtil().setSp(12),
-                          //     color: AppColor.white,
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 5.h,
-                          // ),
-                          Text(
-                            oneUser?.designation == ''
-                                ? '-'
-                                : oneUser?.designation ?? '-',
-                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            oneUser?.organizationName == ''
-                                ? '-'
-                                : oneUser?.organizationName ?? '-',
-                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            oneUser?.currentCityName == ''
-                                ? '-'
-                                : oneUser?.currentCityName ?? '-',
-                            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                          ),
-                          // SizedBox(
-                          //   height: 5.h,
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Text(
-                          //       'Class of ',
-                          //       style: TextStyle(
-                          //         fontSize: ScreenUtil().setSp(12),
-                          //         color: AppColor.white,
-                          //       ),
-                          //     ),
-                          //     Text(
-                          //       oneUser?.graduationYear ?? '',
-                          //       style: TextStyle(
-                          //         fontSize: ScreenUtil().setSp(12),
-                          //         color: AppColor.white,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          widget.userID != AppConstants.myId
-                              ? oneUser?.connectionStatus == ''
-                                  ? GestureDetector(
-                                      onTap: () async {
-                                        await updateConnectStatus(
-                                            status: 'REQUEST',
-                                            connectStatus: "REQUEST SENT");
-                                        setDataFromDB();
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 9, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: AppColor.white,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Text(
-                                          'Connect',
-                                          style: CustomTextStyles.text12RegularW400,
-                                        ),
-                                      ),
-                                    )
-                                  : oneUser?.connectionStatus == "REQUEST SENT"
-                                      ? Row(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 9,
-                                                        vertical: 4),
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xffEA8E37),
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: Text(
-                                                  'Pending',
-                                                  style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await updateConnectStatus(
-                                                  status: "CANCEL",
-                                                  connectStatus: "",
-                                                );
-                                                setDataFromDB();
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 9,
-                                                        vertical: 4),
-                                                decoration: BoxDecoration(
-                                                  color: AppColor.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: Text(
-                                                  Strings.cancel,
-                                                  style: CustomTextStyles.text12RegularW400,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : oneUser?.connectionStatus ==
-                                              "REQUEST RECEIVED"
-                                          ? Row(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await updateConnectStatus(
-                                                      status: "ACCEPT",
-                                                      connectStatus: "ACCEPT",
-                                                    );
-                                                    setDataFromDB();
-                                                  },
-                                                  child: Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 9,
-                                                        vertical: 4),
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          AppColor.greenColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: Text(
-                                                      'Accept',
-                                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await updateConnectStatus(
-                                                      status: "CANCEL",
-                                                      connectStatus: "",
-                                                    );
-                                                    setDataFromDB();
-                                                  },
-                                                  child: Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 9,
-                                                        vertical: 4),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: Text(
-                                                      Strings.reject,
-                                                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white,),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          : oneUser?.connectionStatus ==
-                                                  "ACCEPT"
-                                              ? GestureDetector(
-                                                  onTap: () async {
-                                                    await updateConnectStatus(
-                                                      status: "CANCEL",
-                                                      connectStatus: "",
-                                                    );
-                                                    setDataFromDB();
-                                                  },
-                                                  child: Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 9,
-                                                        vertical: 4),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColor.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    child: Text(
-                                                      Strings.remove,
-                                                      style: CustomTextStyles.text12RegularW400,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container()
-                              : Container(),
-                        ],
-                      ),
-                    ),
-                    widget.userID == AppConstants.myId
-                        ? Column(
-                            children: [
-                              // mediaButton(
-                              //     mediaIcon: AppImages.referfriend,
-                              //     onPressed: () {
-                              //       Get.to(
-                              //         () => ReferFriend(
-                              //           email: oneUser?.email ?? '',
-                              //         ),
-                              //       );
-                              //     }),
-                              const SizedBox(
-                                height: 5,
+                        ),
+                        widget.userID == AppConstants.myId
+                            ? Column(
+                          children: [
+                            // mediaButton(
+                            //     mediaIcon: AppImages.referfriend,
+                            //     onPressed: () {
+                            //       Get.to(
+                            //         () => ReferFriend(
+                            //           email: oneUser?.email ?? '',
+                            //         ),
+                            //       );
+                            //     }),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            mediaButton(
+                              mediaIcon: AppImages.linkedinProfile,
+                              onPressed: () async {
+                                await CustomWidget.linkedInDialogue(
+                                  context: context,
+                                  url: oneUser!.linkedinUrl,
+                                );
+                                await setDataFromDB();
+                              },
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            mediaButton(
+                              mediaIcon: AppImages.facebicon,
+                              onPressed: () async {
+                                await CustomWidget.facebookDialogue(
+                                  context: context,
+                                  url: oneUser!.facebookUrl,
+                                );
+                                await setDataFromDB();
+                              },
+                            ),
+                          ],
+                        )
+                            : GestureDetector(
+                          onTap: () {
+                            Get.to(
+                                  () => ChatInvitationScreen(
+                                name:
+                                "${oneUser?.firstName}${oneUser?.lastName}",
+                                image: oneUser?.image,
+                                receiverId: oneUser?.userId,
                               ),
-                              mediaButton(
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 25.w,
+                                width: 25.w,
+                                color: AppColor.transparent,
+                                child: oneUser?.chatStatus == ""
+                                    ? SvgPicture.asset(
+                                  AppImages.chatSend,
+                                  color: AppColor.white,
+                                )
+                                    : oneUser?.chatStatus ==
+                                    AppConstants.INVITE ||
+                                    oneUser?.chatStatus ==
+                                        AppConstants.REJECT
+                                    ? SvgPicture.asset(
+                                  AppImages.chatPending,
+                                  color: AppColor.white,
+                                )
+                                    : SvgPicture.asset(
+                                  AppImages.chatAccept,
+                                  color: AppColor.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              oneUser?.linkedinUrl != null &&
+                                  oneUser?.linkedinUrl != ""
+                                  ? mediaButton(
                                 mediaIcon: AppImages.linkedinProfile,
                                 onPressed: () async {
-                                  await CustomWidget.linkedInDialogue(
-                                    context: context,
-                                    url: oneUser!.linkedinUrl,
+                                  AppUtils().launchSocial(
+                                    'fb://profile/104342767870346',
+                                    '${oneUser!.linkedinUrl}',
                                   );
-                                  await setDataFromDB();
                                 },
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              mediaButton(
-                                mediaIcon: AppImages.facebicon,
-                                onPressed: () async {
-                                  await CustomWidget.facebookDialogue(
-                                    context: context,
-                                    url: oneUser!.facebookUrl,
-                                  );
-                                  await setDataFromDB();
-                                },
-                              ),
+                              )
+                                  : const SizedBox(),
                             ],
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                () => ChatInvitationScreen(
-                                  name:
-                                      "${oneUser?.firstName}${oneUser?.lastName}",
-                                  image: oneUser?.image,
-                                  receiverId: oneUser?.userId,
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 25.w,
-                                  width: 25.w,
-                                  color: AppColor.transparent,
-                                  child: oneUser?.chatStatus == ""
-                                      ? SvgPicture.asset(
-                                          AppImages.chatSend,
-                                          color: AppColor.white,
-                                        )
-                                      : oneUser?.chatStatus ==
-                                                  AppConstants.INVITE ||
-                                              oneUser?.chatStatus ==
-                                                  AppConstants.REJECT
-                                          ? SvgPicture.asset(
-                                              AppImages.chatPending,
-                                              color: AppColor.white,
-                                            )
-                                          : SvgPicture.asset(
-                                              AppImages.chatAccept,
-                                              color: AppColor.white,
-                                            ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                oneUser?.linkedinUrl != null &&
-                                        oneUser?.linkedinUrl != ""
-                                    ? mediaButton(
-                                        mediaIcon: AppImages.linkedinProfile,
-                                        onPressed: () async {
-                                          AppUtils().launchSocial(
-                                            'fb://profile/104342767870346',
-                                            '${oneUser!.linkedinUrl}',
-                                          );
-                                        },
-                                      )
-                                    : const SizedBox(),
-                              ],
-                            ),
                           ),
+                        ),
+                      ],
+                    ),
+                    sizedBox(height: 10.0.h),
+                    _aboutMe(),
+                    sizedBox(height: 10.0.h),
+                    _interest(),
+                    sizedBox(height: 10.0.h),
+                    _experience(),
+                    sizedBox(height: 10.0.h),
+                    AppConstants.appName == 'TLE' ? _product() : _education(),
+                    //sizedBox(height: 5.0.h),
+                    widget.userID == AppConstants.myId ? _checkbox() : Container(),
+                    sizedBox(height: 10.0.h),
                   ],
                 ),
-                sizedBox(height: 10.0.h),
-                _aboutMe(),
-                sizedBox(height: 10.0.h),
-                _interest(),
-                sizedBox(height: 10.0.h),
-                _experience(),
-                sizedBox(height: 10.0.h),
-                AppConstants.appName == 'TLE' ? _product() : _education(),
-                //sizedBox(height: 5.0.h),
-                widget.userID == AppConstants.myId ? _checkbox() : Container(),
-                sizedBox(height: 10.0.h),
-              ],
-            ),
+              )
+            ],
           )
         ],
       ),
@@ -1818,6 +1825,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       AppConstants.myId,
       values,
     );
+    print("CheckInter: ${response.toString()}");
     if (response is ErrorEntity) {
       UIHelper.showErrorAlert(context, response.message);
     } else {

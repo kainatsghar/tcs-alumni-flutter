@@ -52,6 +52,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
+import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
 
 import '../../utils/text_styles.dart';
@@ -1499,9 +1500,16 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.all(10.0),
-                    child: HtmlWidget(
-                      AppUtils().htmlString(_postsTimeLine[index].text ?? ''),
-                      textStyle: CustomTextStyles.text12RegularW400.copyWith(color: Colors.black, wordSpacing: 1,),
+                    child: ReadMoreText(
+                      _postsTimeLine[index].text ?? '',
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.black, wordSpacing: 1,),
+                      trimMode: TrimMode.Line,
+                      trimLines: 2,
+                      colorClickableText: Colors.blue,
+                      trimCollapsedText: 'Show more',
+                      trimExpandedText: 'Show less',
+                      moreStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      lessStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ),
                   _postsTimeLine[index].postImages!.isNotEmpty
