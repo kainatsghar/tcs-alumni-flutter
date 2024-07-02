@@ -30,7 +30,7 @@
 
 
     <application
-        android:label="Cityzen’s Alumni Reunion"
+        android:label="A Cityzen for life"
         android:usesCleartextTraffic="true"
         android:icon="@drawable/ic_launcher">
 

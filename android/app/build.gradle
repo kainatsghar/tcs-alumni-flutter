@@ -61,13 +61,14 @@ android {
         release {
             keyAlias 'upload'
             keyPassword 'viper@1000'
-            storeFile file('C:/Users/all/Downloads/keyStore values/TCS Alumni/upload-keystore.jks')
+            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
             storePassword 'viper@1000'
         }
     }
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            crunchPngs false
         }
     }
 
