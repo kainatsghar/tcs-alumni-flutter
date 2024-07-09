@@ -110,7 +110,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           items: <Widget>[
             Container(
               margin: _selectedIndex==0 ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 12),
-              height: 41.h,
+              height: 42.h,
               child: _selectedIndex==0 ? Padding(
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.home, size: 22.h, color: AppColor.white),
@@ -120,7 +120,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             ),
             Container(
               margin: _selectedIndex==1 ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 12),
-              height: 41.h,
+              height: 42.h,
               child: _selectedIndex==1 ? Padding(
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.people_rounded, size: 22.h, color: AppColor.white),
@@ -130,7 +130,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             ),
             Container(
               margin: _selectedIndex==2 ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 12),
-              height: 41.h,
+              height: 42.h,
               child: _selectedIndex==2 ? Padding(
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.date_range, size: 22.h, color: AppColor.white),
@@ -140,7 +140,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             ),
             Container(
               margin: _selectedIndex==3 ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 12),
-              height: 41.h,
+              height: 42.h,
               child: _selectedIndex==3 ? Padding(
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.chat, size: 22.h, color: AppColor.white),
@@ -159,7 +159,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             ),
             Container(
               margin: _selectedIndex==4 ? EdgeInsets.only(top: 0) : EdgeInsets.only(top: 12),
-              height: 41.h,
+              height: 42.h,
               child: _selectedIndex==4 ? Padding(
                 padding: const EdgeInsets.all(5),
                 child: Icon(Icons.menu, size: 22.h, color: AppColor.white),
