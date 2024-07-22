@@ -1,16 +1,25 @@
-# dow
+# TCS Alumni Flutter
+Alumni for The City School (TCS). This project includes functionalities similar to Facebook and 
+other social media mobile apps. Users can create, update, and delete posts, as well as react to 
+posts made by other alumni. They can also attend events held at the school for alumni and find 
+nearby alumni based on their current location. Additionally, this application offers many other 
+functionalities.
 
-A new Flutter project.
 
 ## Getting Started
+These instructions will get you a copy of the project up and running on your local machine 
+for development and testing purposes.
 
-This project is a starting point for a Flutter application.
+## Setup
+You will need Flutter SDK 3.7.9 Installed on your local machine.
 
-A few resources to get you started if this is your first Flutter project:
+## Built With
+Flutter - Hybrid Mobile Apps Development Framework
+Laravel - Backend Language for Rest Api
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Developers
+Mehboob Iqbal   (Senior Flutter Developer)
+Usama Idrees   (Senior Flutter Developer)
+Muhammad Shoaib Khalid   (Full Stack Flutter Mobile Apps Developer)
+Aqeel Saeed   (Junior Flutter Developer)
+Tayyab Bhatti   (Junior Flutter Developer)
