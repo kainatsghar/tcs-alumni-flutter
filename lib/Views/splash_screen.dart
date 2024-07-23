@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print('\x1B[33m FCM Token: $value\x1B[0m');
     }});
     _timer = Timer.periodic(
-      const Duration(milliseconds: 3200),
+      const Duration(milliseconds: 2500),
       (timer) {
         if (kDebugMode) {
           print(_count);
@@ -91,18 +91,30 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0Xff1F2D65),
-      body: Container(
-        // height: Get.height,width: Get.width,
-        decoration: const BoxDecoration(
-          //color: Colors.grey,
-          image: DecorationImage(
-            image: AssetImage(
-              "assets/cityzen-alumni-splash.gif",
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(70),
+            // height: Get.height,width: Get.width,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              // image: DecorationImage(
+              //   image: AssetImage(
+              //     "assets/cityzen-alumni-splash.gif",
+              //   ),
+              //   fit: BoxFit.cover,
+              // ),
             ),
-            fit: BoxFit.cover,
+            child: Center(
+              child: Image.asset(AppImages.tcsLogo),
+            ),
+            // child: null /* add child content here */,
           ),
-        ),
-        // child: null /* add child content here */,
+          Positioned(
+              bottom: 10,
+              right: 10,
+              child: Text("Ver: $versionCode", style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.black87),))
+        ],
       ),
     );
   }

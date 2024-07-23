@@ -48,11 +48,11 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
-	<string>335901081305921</string>
+	<string>7692099604235446</string>
 	<key>FacebookClientToken</key>
-	<string>1372f4bcb44b13e82f2ad4aefb3fd9bf</string>
+	<string>c10dfdd39ef5327e089fc176f0720183</string>
 	<key>FacebookDisplayName</key>
-	<string>DOW University</string>
+	<string>TCS Alumni</string>
 	<key>NSCameraUsageDescription</key>
 	<string>App needs to access camera for taking images for profile image</string>
 	<key>NSLocalNetworkUsageDescription</key>

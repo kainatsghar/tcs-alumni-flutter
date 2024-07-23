@@ -461,6 +461,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //   width: 25.w,
           // ),
         ),
+
         // AppConstants.appName != 'TLE'
         //     ? Row(
         //         children: [
@@ -822,14 +823,21 @@ class _LoginScreenState extends State<LoginScreen> {
       FirebaseAuth.instance.signOut();
     }
     // Trigger the sign-in flow
-    final fb.LoginResult result = await fb.FacebookAuth.instance.login();
+    final fb.LoginResult result = await fb.FacebookAuth.instance.login(permissions: ["openid", "public_profile", "email"]);
+    final userData = await fb.FacebookAuth.instance.getUserData();
+    print("Result: ${result.accessToken?.token}");
+    print("Result: ${result.accessToken?.grantedPermissions}");
+    print("FacebookUserData: $userData");
 
     if (result.accessToken != null) {
       // Create a credential from the access token
+
+
       final facebookAuthCredential =
       FacebookAuthProvider.credential(result.accessToken!.token);
       _handleSocialLogin(facebookAuthCredential, 'facebook');
-    } else {
+    }
+    else {
       UIHelper.showErrorAlert(context,
           'Unable to fetch Facebook account details. Please try again');
       debugPrint('${result.message}');
@@ -866,14 +874,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleSocialLogin(OAuthCredential credential, String loginWith) async {
     try {
       UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
-
+      print("Facebook: Email: ${user.user}");
       _handleLoggedUser(user, loginWith);
     } catch (e) {
       print(e);
       if (e is FirebaseAuthException) {
         if (e.code == 'account-exists-with-different-credential') {
           UIHelper.showErrorAlert(context,
-              'Your ${e.email} is not registered with $loginWith. Please login with the same provider to continue');
+              'Your email ${e.email} is already registered with Google. Please log in with Google to continue.');
         } else {
           UIHelper.showErrorAlert(context, e.message);
         }
@@ -885,6 +893,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLoggedUser(UserCredential? userCredentials, String loginWith) {
+    print("userCredentials: ${userCredentials?.user}");
     if (userCredentials != null && userCredentials.user != null) {
       _callLoginCallWithSocialLogin(
           email: userCredentials.user?.email,

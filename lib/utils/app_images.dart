@@ -4,6 +4,7 @@ class AppImages {
   static const String splashBackground = "assets/images/splashImage.png";
   static const String alumniLogo = "assets/images/logo.png";
   static const String linkAlumni = "assets/images/linkalumni.png";
+  static const String tcsLogo = "assets/images/tcs_logo.jpeg";
 
   //Menu icons
   static const String csrIcon = 'assets/icons/csricon.svg';
