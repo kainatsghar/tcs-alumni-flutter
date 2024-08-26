@@ -19,6 +19,7 @@ import '../../../networkcalls/api_calls.dart';
 import '../../../networkcalls/response_models/boss_search_entity.dart';
 import '../../../networkcalls/response_models/cities_entity.dart';
 import '../../../networkcalls/response_models/login_entity_entity.dart';
+import '../../../networkcalls/response_models/settings_entity.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/app_images.dart';
@@ -60,11 +61,15 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   final TextEditingController _countryController = TextEditingController();
   String slcCountryId = "166";
   String slcCityId = "48358";
-
+  late List<DBBranche> _branchList;
+  late List<Student> _students;
+  late Future _fetchData;
   late List<DBCitie> _listCities;
   late List<DBCountrie> _listCountries;
 
   bool showValue = false;
+  bool branchTry = false;
+  bool branchLoading = false;
   Future<void>? _launched;
   Future<void> _launchInBrowser(String url) async {
     if (await canLaunch(url)) {
@@ -91,9 +96,6 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       },);
   }
 
-  late List<DBBranche> _branchList;
-  late List<Student> _students;
-  late Future _fetchData;
   bool searched = false;
 
   List graduationYearList = [];
@@ -154,13 +156,15 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
     _listCities = [];
     _listCountries = [];
     getCities("166");
+    _fetchData = getData();
+    // addData();
     _nameController.text = widget.name ?? '';
     _emailController.text = widget.email ?? '';
     _passwordController.text = widget.password ?? '';
     _confirmPasswordController.text = widget.password ?? '';
-    _fetchData = getData();
     _countryController.text = 'Pakistan';
     print("email: ${_emailController.text}");
+    print("_branchList: ${_branchList}");
     // _cityController.text = 'Lahore';
     super.initState();
   }
@@ -375,43 +379,63 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
 
   Widget _programName() {
     return SizedBox(
-      child: DropdownButtonFormField(
-        decoration: InputDecoration(
-          errorStyle: TextStyle(fontSize: 13.sp),
-          contentPadding: const EdgeInsets.only(top: 10),
-          isDense: true,
-        ),
-        validator: (value) {
-          return value == null ? 'Please select branch' : null;
-        },
-        items: _branchList.map((itemValue) {
-          return DropdownMenuItem(
-            value: itemValue.id,
-            child: Text(
-              itemValue.title ?? '',
-              overflow: TextOverflow.ellipsis,
+      child: Row(
+        children: [
+          Expanded(
+            child: DropdownButtonFormField(
+              decoration: InputDecoration(
+                errorStyle: TextStyle(fontSize: 13.sp),
+                contentPadding: const EdgeInsets.only(top: 10),
+                isDense: true,
+              ),
+              validator: (value) {
+                return value == null ? 'Please select branch' : null;
+              },
+              items: _branchList.map((itemValue) {
+                return DropdownMenuItem(
+                  value: itemValue.id,
+                  child: Text(
+                    itemValue.title ?? '',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _branchId = newValue.toString();
+                });
+              },
+              isExpanded: true,
+              value: _branchId,
+              hint: Text(
+                'Select Branch',
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(14),
+                  color: AppColor.greyshade400,
+                ),
+              ),
+              iconEnabledColor: AppColor.primaryColor,
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(14),
+                color: AppColor.black,
+              ),
             ),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          setState(() {
-            _branchId = newValue.toString();
-          });
-        },
-        isExpanded: true,
-        value: _branchId,
-        hint: Text(
-          'Select Branch',
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(14),
-            color: AppColor.greyshade400,
           ),
-        ),
-        iconEnabledColor: AppColor.primaryColor,
-        style: TextStyle(
-          fontSize: ScreenUtil().setSp(14),
-          color: AppColor.black,
-        ),
+          // Add your button here
+          branchLoading == false ? Visibility(
+            visible: branchTry,
+            child: IconButton(
+              icon: const Icon(Icons.refresh),
+              color: AppColor.primaryColor,
+              onPressed: () async{
+                await addData();
+                setState(() {
+                  print("branchLoading $branchLoading");
+                });
+              },
+            ),
+          ) : const CircularProgressIndicator(strokeWidth: 2),
+        ],
       ),
     );
   }
@@ -961,7 +985,48 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
   Future<void> getData() async {
     _listCountries = await database.getAllCountries();
     _branchList = await database.getAllBranches();
+    print("_branchList: ${_branchList}");
+
+    if(_branchList.isEmpty){
+      setState(() => branchTry = true);
+    }
     await addingYear();
+  }
+
+  Future<void> addData() async {
+    branchLoading = true;
+    setState(() {
+
+    });
+    var response = await ApiCalls.signupSettings();
+    print('settingsResponse ${response.toString()}');
+    if (response is ErrorEntity) {
+    } else {
+      SettingsEntity settingsEntity = SettingsEntity().fromJson(response);
+      if (settingsEntity.success == 1) {
+        branchTry = false;
+        branchLoading = false;
+        print('olla ');
+        print('branchTry $branchTry');
+        await database.deleteAllBranches();
+        await database.deleteAllCountries();
+        await database.deleteAllDegrees();
+        await database.deleteAllIndustries();
+        await database.deleteAllReportTypes();
+        database.insertAllBranches(
+            settingsEntity.result!.branches ?? <DBBranche>[]);
+        database.insertAllCountries(
+            settingsEntity.result!.countries ?? <DBCountrie>[]);
+        database.insertAllIndustries(
+            settingsEntity.result!.industries ?? <DBIndustrie>[]);
+        database
+            .insertAllDegrees(settingsEntity.result!.degrees ?? <DBDegree>[]);
+        database.insertAllReportTypes(
+            settingsEntity.result!.reportTypes ?? <DBReportType>[]);
+        getData();
+        print('olla laaaa');
+      }
+    }
   }
 
   Future<void> signUpSearch() async {
