@@ -131,20 +131,23 @@ class TimelineStoriesEntity {
   String? message;
   List<Datum>? data;
 
-  factory TimelineStoriesEntity.fromRawJson(String str) => TimelineStoriesEntity.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory TimelineStoriesEntity.fromJson(Map<String, dynamic> json) => TimelineStoriesEntity(
-    success: json["success"],
-    message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+  factory TimelineStoriesEntity.fromJson(Map<String, dynamic> json) {
+    return TimelineStoriesEntity(
+      success: json["success"],
+      message: json["message"],
+      // Check if the data is null before mapping it
+      data: json["data"] != null
+          ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data != null
+        ? List<dynamic>.from(data!.map((x) => x.toJson()))
+        : null,
   };
 }
 

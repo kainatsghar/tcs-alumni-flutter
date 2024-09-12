@@ -3129,78 +3129,172 @@ class _AlumniFeedState extends State<AlumniFeed> {
     );
   }
 
+  // Future<void> getStories() async {
+  //   setState(() {
+  //     storyFetch = false;
+  //   });
+  //   var response = await ApiCalls.getStories();
+  //   if (response is ErrorEntity) {
+  //   }
+  //   else {
+  //     print("Stories Response= ${response.toString()}");
+  //     TimelineStoriesEntity storiesEntity = TimelineStoriesEntity.fromJson(response);
+  //     if (storiesEntity.success == 1) {
+  //       await database.deleteAllTimeLineStories();
+  //       await database.deleteAllStories();
+  //       int storiesLength = storiesEntity.data!.length;
+  //       replyUserDevices!.clear();
+  //       storyImageList.clear();
+  //
+  //       for(int i=0; i<storiesLength; i++){
+  //         storyImageList.add(storiesEntity.data![i].stories!.first.storyImage!);
+  //         print("storyImageList= $storyImageList");
+  //       }
+  //
+  //       try{
+  //         for(var element in storiesEntity.data!){
+  //           for(var element2 in element.devices!){
+  //             if(element2.token!.isNotEmpty){
+  //               replyUserDevices!.add(UserDevices(
+  //                 token: element2.token,
+  //                 status: element2.status,
+  //               ));
+  //             }
+  //           }
+  //         }
+  //       }catch(e){}
+  //
+  //       var list = [];
+  //       for(int i=0; i<storiesLength; i++){
+  //         list.add(storiesEntity.data![i].stories);
+  //       }
+  //
+  //       _storiesModelList = list;
+  //
+  //       for (var element in storiesEntity.data!) {
+  //         DBStorie dbStorie = DBStorie(
+  //             storyById: element.id,
+  //             name: element.name,
+  //             addedBy: element.addedBy,
+  //             userImage: element.userImage
+  //         );
+  //         database.insertAllTimeLineStories(dbStorie);
+  //       }
+  //
+  //       for (var element in storiesEntity.data!.first.stories!) {
+  //         DbNewStorie dbNewStorie = DbNewStorie(
+  //             storyId: element.id,
+  //             mediaType: element.mediaType,
+  //             storyImage: element.storyImage,
+  //             storyTime: element.storyTime.toString(),
+  //             updatedDate: element.updatedAt.toString(),
+  //             link: element.link);
+  //         database.insertAllStories(dbNewStorie);
+  //       }
+  //
+  //       _storiesByList = await database.getAllTimeLineStories();
+  //       print("_storiesByList= ${_storiesByList.length}");
+  //       _storiesList = await database.getAllStories();
+  //     }
+  //     setState(() {
+  //       storyFetch = true;
+  //     });
+  //   }
+  // }
+
   Future<void> getStories() async {
     setState(() {
       storyFetch = false;
     });
+
     var response = await ApiCalls.getStories();
     if (response is ErrorEntity) {
-    }
-    else {
+      // Handle error response
+    } else {
       print("Stories Response= ${response.toString()}");
       TimelineStoriesEntity storiesEntity = TimelineStoriesEntity.fromJson(response);
+
       if (storiesEntity.success == 1) {
         await database.deleteAllTimeLineStories();
         await database.deleteAllStories();
-        int storiesLength = storiesEntity.data!.length;
-        replyUserDevices!.clear();
-        storyImageList.clear();
 
-        for(int i=0; i<storiesLength; i++){
-          storyImageList.add(storiesEntity.data![i].stories!.first.storyImage!);
-          print("storyImageList= $storyImageList");
-        }
+        // Null safety check for storiesEntity.data
+        if (storiesEntity.data != null) {
+          int storiesLength = storiesEntity.data!.length;
+          replyUserDevices!.clear();
+          storyImageList.clear();
 
-        try{
-          for(var element in storiesEntity.data!){
-            for(var element2 in element.devices!){
-              if(element2.token!.isNotEmpty){
-                replyUserDevices!.add(UserDevices(
-                  token: element2.token,
-                  status: element2.status,
-                ));
-              }
+          // Null safety check for stories in each data
+          for (int i = 0; i < storiesLength; i++) {
+            if (storiesEntity.data![i].stories != null &&
+                storiesEntity.data![i].stories!.isNotEmpty) {
+              storyImageList.add(storiesEntity.data![i].stories!.first.storyImage!);
+              print("storyImageList= $storyImageList");
             }
           }
-        }catch(e){}
 
-        var list = [];
-        for(int i=0; i<storiesLength; i++){
-          list.add(storiesEntity.data![i].stories);
-        }
+          try {
+            for (var element in storiesEntity.data!) {
+              // Null safety check for devices in each data
+              if (element.devices != null) {
+                for (var element2 in element.devices!) {
+                  if (element2.token != null && element2.token!.isNotEmpty) {
+                    replyUserDevices!.add(UserDevices(
+                      token: element2.token,
+                      status: element2.status,
+                    ));
+                  }
+                }
+              }
+            }
+          } catch (e) {
+            print("Error while processing devices: $e");
+          }
 
-        _storiesModelList = list;
+          var list = [];
+          for (int i = 0; i < storiesLength; i++) {
+            if (storiesEntity.data![i].stories != null) {
+              list.add(storiesEntity.data![i].stories);
+            }
+          }
 
-        for (var element in storiesEntity.data!) {
-          DBStorie dbStorie = DBStorie(
+          _storiesModelList = list;
+
+          for (var element in storiesEntity.data!) {
+            DBStorie dbStorie = DBStorie(
               storyById: element.id,
               name: element.name,
               addedBy: element.addedBy,
-              userImage: element.userImage
-          );
-          database.insertAllTimeLineStories(dbStorie);
-        }
+              userImage: element.userImage,
+            );
+            database.insertAllTimeLineStories(dbStorie);
+          }
 
-        for (var element in storiesEntity.data!.first.stories!) {
-          DbNewStorie dbNewStorie = DbNewStorie(
-              storyId: element.id,
-              mediaType: element.mediaType,
-              storyImage: element.storyImage,
-              storyTime: element.storyTime.toString(),
-              updatedDate: element.updatedAt.toString(),
-              link: element.link);
-          database.insertAllStories(dbNewStorie);
-        }
+          if (storiesEntity.data!.first.stories != null) {
+            for (var element in storiesEntity.data!.first.stories!) {
+              DbNewStorie dbNewStorie = DbNewStorie(
+                storyId: element.id,
+                mediaType: element.mediaType,
+                storyImage: element.storyImage,
+                storyTime: element.storyTime.toString(),
+                updatedDate: element.updatedAt.toString(),
+                link: element.link,
+              );
+              database.insertAllStories(dbNewStorie);
+            }
+          }
 
-        _storiesByList = await database.getAllTimeLineStories();
-        print("_storiesByList= ${_storiesByList.length}");
-        _storiesList = await database.getAllStories();
+          _storiesByList = await database.getAllTimeLineStories();
+          print("_storiesByList= ${_storiesByList.length}");
+          _storiesList = await database.getAllStories();
+        }
       }
       setState(() {
         storyFetch = true;
       });
     }
   }
+
 
   String calculateDifference(String dateTime) {
     String dif;

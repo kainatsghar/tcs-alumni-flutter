@@ -276,6 +276,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
     _scrollController.addListener(_scrollListener);
 
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updateChatReads();
+      updateKeyReads();
+    });
   }
 
   @override
@@ -305,8 +309,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 //
 
-                updateChatReads();
-                updateKeyReads();
+                // updateChatReads();
+                // updateKeyReads();
 
                 // snapshot.data!.docs.forEach((element) {
                 //   if(AppConstants.myId != element['senderID']){
@@ -329,6 +333,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
+                  final unreadMessages = snapshot.data!.docs.where((doc) =>
+                  doc['readStatus'] == '1' && doc['receiverId'] == AppConstants.myId);
+
+                  if (unreadMessages.isNotEmpty) {
+                    updateChatReads();  // Only update when there are unread messages
+                  }
                   return Padding(
                     padding: const EdgeInsets.only(right: 5),
                     child: Scrollbar(
@@ -3093,29 +3103,61 @@ class _MessagesScreenState extends State<MessagesScreen> {
     });
   }
 
+  // Future<void> updateChatReads() async {
+  //   final query = await FirebaseFirestore.instance
+  //       .collection('chats')
+  //       .doc('chatsScreen')
+  //       .collection('$largeId-$smallId')
+  //       .where('readStatus', isEqualTo: '1')
+  //       .where('receiverId', isEqualTo: AppConstants.myId)
+  //       .get();
+  //   for (var doc in query.docs) {
+  //     doc.reference.update({'readStatus': '0'});
+  //   }
+  // }
+  //
+  // Future<void> updateKeyReads() async {
+  //   await FirebaseFirestore.instance
+  //       .collection('messageKeys')
+  //       .doc('keys')
+  //       .collection(AppConstants.myId)
+  //       .doc(widget.receiverId)
+  //       .update(
+  //     {'readStatus': '0'},
+  //   );
+  // }
+
   Future<void> updateChatReads() async {
-    final query = await FirebaseFirestore.instance
-        .collection('chats')
-        .doc('chatsScreen')
-        .collection('$largeId-$smallId')
-        .where('readStatus', isEqualTo: '1')
-        .where('receiverId', isEqualTo: AppConstants.myId)
-        .get();
-    for (var doc in query.docs) {
-      doc.reference.update({'readStatus': '0'});
+    try {
+      final query = await FirebaseFirestore.instance
+          .collection('chats')
+          .doc('chatsScreen')
+          .collection('$largeId-$smallId')
+          .where('readStatus', isEqualTo: '1')
+          .where('receiverId', isEqualTo: AppConstants.myId)
+          .get();
+
+      for (var doc in query.docs) {
+        await doc.reference.update({'readStatus': '0'});
+      }
+    } catch (e) {
+      print('Error updating chat reads: $e');
     }
   }
 
   Future<void> updateKeyReads() async {
-    await FirebaseFirestore.instance
-        .collection('messageKeys')
-        .doc('keys')
-        .collection(AppConstants.myId)
-        .doc(widget.receiverId)
-        .update(
-      {'readStatus': '0'},
-    );
+    try {
+      await FirebaseFirestore.instance
+          .collection('messageKeys')
+          .doc('keys')
+          .collection(AppConstants.myId)
+          .doc(widget.receiverId)
+          .update({'readStatus': '0'});
+    } catch (e) {
+      print('Error updating key reads: $e');
+    }
   }
+
 
   deleteMessage(selected) {
     return Get.defaultDialog(

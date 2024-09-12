@@ -30,23 +30,40 @@ class ProfileController extends GetxController {
     update();
   }
 
-  updateFirebaseCount() async{
+  updateFirebaseCount() async {
     List<int> totalCounts = [];
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('messageKeys')
-        .doc('keys')
-        .collection(AppConstants.myId)
-        .orderBy('time', descending: true)
-        .get();
 
-    for(int i=0; i<querySnapshot.docs.length; i++){
-      totalCounts.add(int.parse(querySnapshot.docs[i]['readStatus']));
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('messageKeys')
+          .doc('keys')
+          .collection(AppConstants.myId)
+          .orderBy('time', descending: true)
+          .get();
+
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        totalCounts.add(int.parse(querySnapshot.docs[i]['readStatus']));
+      }
+
+      // Remove duplicates
+      totalCounts = totalCounts.toSet().toList();
+
+      if (totalCounts.isNotEmpty) {
+        // Sum up the counts and save it to preferences
+        preferencesFromMain.setString("firebaseCount", totalCounts.reduce((value, element) => value + element).toString());
+      } else {
+        // Handle the case when totalCounts is empty
+        preferencesFromMain.setString("firebaseCount", "0");
+      }
+
+      getInfo();
+      print("snapshot= $firebaseNotificationCount");
+
+    } catch (e) {
+      print("Error occurred: $e");
     }
-    totalCounts = totalCounts.toSet().toList();
-    preferencesFromMain.setString("firebaseCount", totalCounts.reduce((value, element) => value + element).toString());
-    getInfo();
-    print("snapshot= ${firebaseNotificationCount}");
   }
+
 
   updateImage(String userImage) {
     image = userImage;
