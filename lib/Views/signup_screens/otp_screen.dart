@@ -128,7 +128,7 @@ class _OtpScreenState extends State<OtpScreen> {
         GestureDetector(
             onTap: () {
               Get.back();
-              Navigator.pop(context);
+              // Navigator.pop(context);
             },
             child: Text(
               'Sign In',

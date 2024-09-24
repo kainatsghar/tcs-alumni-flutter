@@ -510,9 +510,11 @@ class _CreatePostState extends State<CreatePost> {
                       color: AppColor.black,
                       width: 0.3,
                     ),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: DropdownButton(
+                    dropdownColor: Colors.white,
                     underline: Container(),
                     icon: const Icon(Icons.keyboard_arrow_down_outlined),
                     value: _dropValue,

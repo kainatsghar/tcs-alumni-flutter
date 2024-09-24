@@ -371,7 +371,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Get.to(
                     () => const BossForgetPassScreen(),
               );
-            } else {
+            }
+            else {
               Get.to(
                     () => const OtpScreen(check: 'forget',),
               );
