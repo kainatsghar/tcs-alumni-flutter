@@ -34,7 +34,7 @@ class _ChatAudioPlayerState extends State<ChatAudioPlayer> {
           maxDuration = d.inMilliseconds;
         });
       });
-      audio.onAudioPositionChanged.listen(
+      audio.onPositionChanged.listen(
         (Duration p) {
           currentPos =
               p.inMilliseconds; //get the current position of playing audio
@@ -81,19 +81,11 @@ class _ChatAudioPlayerState extends State<ChatAudioPlayer> {
               color: widget.user == 'sender' ? AppColor.white : AppColor.black,
               onPressed: () async {
                 if (isPlaying) {
-                  int result = await audio.pause();
-                  if (result == 1) {
-                    setState(() {
-                      isPlaying = false;
-                    });
-                  }
+                  await audio.pause();
+                  setState(() => isPlaying = false);
                 } else {
-                  int result = await audio.play(widget.url);
-                  if (result == 1) {
-                    setState(() {
-                      isPlaying = true;
-                    });
-                  }
+                  await audio.play(AssetSource(widget.url));
+                  setState(() => isPlaying = true);
                 }
               }),
           SizedBox(
@@ -107,17 +99,10 @@ class _ChatAudioPlayerState extends State<ChatAudioPlayer> {
               value: double.parse(currentPos.toString()),
               onChanged: (value) async {
                 int seekVal = value.round();
-                int result = await audio.seek(Duration(milliseconds: seekVal));
-                if (result == 1) {
-                  //seek successful
-                  currentPos = seekVal;
-                } else {
-                  print("Seek unsuccessful.");
-                }
-                audio.onPlayerCompletion.listen((event) {
-                  setState(() {
-                    isPlaying = false;
-                  });
+                await audio.seek(Duration(milliseconds: seekVal));
+                currentPos = seekVal;
+                audio.onPlayerComplete.listen((event) {
+                  setState(() => isPlaying = false);
                 });
               },
             ),

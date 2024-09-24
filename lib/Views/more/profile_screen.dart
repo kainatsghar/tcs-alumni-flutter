@@ -1057,7 +1057,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Card(
       elevation: 2,
       color: Colors.white,
-
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),

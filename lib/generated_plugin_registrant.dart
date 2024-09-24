@@ -7,7 +7,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:audio_session/audio_session_web.dart';
-import 'package:audioplayers/web/audioplayers_web.dart';
 import 'package:cloud_firestore_web/cloud_firestore_web.dart';
 import 'package:connectivity_plus_web/connectivity_plus_web.dart';
 // import 'package:device_info_plus_web/device_info_plus_web.dart';
@@ -31,14 +30,12 @@ import 'package:sign_in_with_apple_web/sign_in_with_apple_web.dart';
 import 'package:smart_auth/smart_auth_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:video_player_web/video_player_web.dart';
-import 'package:wakelock_web/wakelock_web.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 // ignore: public_member_api_docs
 void registerPlugins(Registrar registrar) {
   AudioSessionWeb.registerWith(registrar);
-  AudioplayersPlugin.registerWith(registrar);
   FirebaseFirestoreWeb.registerWith(registrar);
   ConnectivityPlusPlugin.registerWith(registrar);
   // DeviceInfoPlusPlugin.registerWith(registrar);
@@ -63,6 +60,5 @@ void registerPlugins(Registrar registrar) {
   SmartAuthWeb.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);
   VideoPlayerPlugin.registerWith(registrar);
-  WakelockWeb.registerWith(registrar);
   registrar.registerMessageHandler();
 }

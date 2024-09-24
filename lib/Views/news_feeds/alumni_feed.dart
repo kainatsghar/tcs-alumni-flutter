@@ -1491,6 +1491,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
                               ];
                             }
                           },
+                          color: Colors.white,
                         ),
                       ],
                     ),

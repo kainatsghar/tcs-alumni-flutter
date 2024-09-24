@@ -51,61 +51,53 @@ dependencies:
   video_player: ^2.2.10
   pinput: ^2.2.31
   photo_view:
-#  syncfusion_flutter_pdfviewer:
   file_picker:
   card_swiper:
-  flutter_local_notifications: ^13.0.0
-  flick_video_player: ^0.5.0
   maps_launcher: ^2.0.1
   html: ^0.15.0
   google_maps_flutter: ^2.1.1
-  geolocator: ^9.0.2
   location: ^4.3.0
   permission_handler: ^10.1.0
   flutter_mentions: ^2.0.1
   flutter_widget_from_html: any
   youtube_player_flutter: ^8.0.0
-  audioplayers: ^0.20.1
   flutter_sound: ^9.1.7
   local_auth: ^2.1.2
   firebase_crashlytics:
-
-
-  #device info
   device_info_plus:
-  #flutter_udid: ^2.0.0
-
-  #flutter pub run build_runner build --delete-conflicting-outputs
   path_provider:
   moor:
   path:
   moor_flutter:
   sqlite3_flutter_libs:
-
   firebase_messaging:
-  flutter_facebook_auth:  #this lib causing the issue of  plugin exception
+  flutter_facebook_auth:
   sign_in_with_apple:
   google_sign_in:
-  flutter_signin_button:  #no one handling it
+  flutter_signin_button:
   crypto:
-  linkedin_login: ^2.1.0
   curved_navigation_bar: ^1.0.3
-  webview_flutter: ^3.0.1
   app_settings: ^4.2.0
   dotted_border: ^2.0.0+3
   readmore: ^2.2.0
-  cached_network_image: ^3.3.1
-  flutter_svg: ^1.1.6
   story_view: ^0.16.5
-  package_info_plus: ^3.1.2
   chewie: ^1.5.0
-  pod_player: ^0.1.5
   flutter_reaction_button: ^2.0.1+2
+
   firebase_auth: ^5.3.0
   firebase_core: ^3.5.0
   cloud_firestore: ^5.4.2
   firebase_in_app_messaging: ^0.8.0+7
   firebase_database: ^11.1.3
+  audioplayers: ^6.1.0
+  http: ^1.2.2
+  package_info_plus: ^8.0.2
+  flick_video_player: ^0.9.0
+  webview_flutter: ^4.8.0
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.4.1
+  flutter_local_notifications: ^17.2.3
+  geolocator: ^13.0.1
 
 dev_dependencies:
   flutter_test:

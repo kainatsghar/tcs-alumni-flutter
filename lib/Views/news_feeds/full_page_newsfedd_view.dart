@@ -12,7 +12,6 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:pod_player/pod_player.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
 import 'package:video_player/video_player.dart';

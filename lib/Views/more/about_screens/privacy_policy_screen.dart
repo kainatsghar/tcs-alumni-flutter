@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
 import '../../../utils/app_color.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/text_styles.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class PrivacyPolicyScreen extends StatefulWidget {
   const PrivacyPolicyScreen({Key? key}) : super(key: key);
@@ -15,6 +13,16 @@ class PrivacyPolicyScreen extends StatefulWidget {
 }
 
 class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
+  late final WebViewController _controller;
+
+
+  @override
+  void initState() {
+    _controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(AppConstants.privacyUrl));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +46,8 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
             'Privacy Policy',
             style: CustomTextStyles.text16SemiBoldW600,
           )),
-      body: const WebView(
-        initialUrl: AppConstants.privacyUrl,
-        javascriptMode: JavascriptMode.unrestricted,
-      ),
+      body: WebViewWidget(controller: _controller),
     );
   }
+
 }

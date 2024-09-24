@@ -38,7 +38,6 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/device_data.dart';
 
 import 'package:iobm/utils/strings.dart';
-import 'package:linkedin_login/linkedin_login.dart';
 
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher.dart';

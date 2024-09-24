@@ -17,6 +17,7 @@ import 'package:iobm/utils/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/text_styles.dart';
+import '../custom_widgets.dart';
 import '../widget_styles.dart';
 
 class CheckInDialog extends StatefulWidget {
@@ -105,28 +106,29 @@ class _CheckInDialogState extends State<CheckInDialog> {
                 children: [
                   SizedBox(
                     height: 30,
-                    child: OutlinedButton(
+                    child: ElevatedButton(
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(horizontal: 10.0)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.symmetric(horizontal: 10.0),
+                        ),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side:  BorderSide(
-                              color: AppColor.primaryColor,
-                            ),
+                            side: BorderSide(
+                                color: AppColor.primaryColor),
                           ),
                         ),
-                        minimumSize:
-                            MaterialStateProperty.all<Size>(Size(70.w, 20.h)),
+                        minimumSize: WidgetStateProperty.all<Size>(Size(70.w, 20.h)),
+                        backgroundColor: WidgetStateProperty.all<Color>(Colors.white)
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text(
                         Strings.cancel,
-                        style: CustomTextStyles.text12RegularW400,
+                        style: CustomTextStyles.text12RegularW400.copyWith(
+                          color: AppColor.primaryColor,
+                        ),
                       ),
                     ),
                   ),
@@ -137,19 +139,21 @@ class _CheckInDialogState extends State<CheckInDialog> {
                     height: 30,
                     child: ElevatedButton(
                       style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(AppColor.primaryColor),
                           padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              WidgetStateProperty.all<EdgeInsetsGeometry>(
                                   const EdgeInsets.symmetric(horizontal: 10.0)),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                               side:  BorderSide(
                                 color: AppColor.primaryColor,
+                                width: 2.0
                               ),
                             ),
                           ),
-                          minimumSize: MaterialStateProperty.all<Size>(
+                          minimumSize: WidgetStateProperty.all<Size>(
                               Size(70.w, 20.h))),
                       onPressed: () {
                         if (selectedCityId != "") {
@@ -159,7 +163,7 @@ class _CheckInDialogState extends State<CheckInDialog> {
                       },
                       child: Text(
                         'Check In',
-                        style: CustomTextStyles.text12RegularW400,
+                        style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.white),
                       ),
                     ),
                   )

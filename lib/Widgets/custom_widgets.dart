@@ -311,13 +311,15 @@ class CustomWidget {
 
   static editPostAppbar({context, Function()? onPressed}) {
     return AppBar(
-      backgroundColor: AppColor.primaryColor,
+      titleTextStyle: CustomTextStyles.text16SemiBoldW600,
       leading: IconButton(
         onPressed: () {
           Navigator.pop(context);
         },
-        icon: const ImageIcon(
-          AssetImage(AppImages.arrowbackwhite),
+        icon: Icon(
+          Icons.arrow_back,
+          size: 22.h,
+          color: AppColor.white,
         ),
       ),
       centerTitle: true,

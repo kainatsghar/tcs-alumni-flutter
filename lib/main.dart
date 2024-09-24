@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
@@ -13,6 +14,7 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/notification_manager.dart';
+import 'package:iobm/utils/text_styles.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +44,9 @@ void main() async {
   );
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  if(!kDebugMode){
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  }
 
   //region Firebase Notification
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -98,6 +102,7 @@ class MyApp extends StatelessWidget {
             primaryColor: AppColor.primaryColor,
             primarySwatch: AppColor.primaryColor,
             platform: TargetPlatform.iOS,
+            appBarTheme: AppBarTheme(backgroundColor: AppColor.primaryColor, titleTextStyle: CustomTextStyles.text16SemiBoldW600, iconTheme: const IconThemeData(color: Colors.white)),
             progressIndicatorTheme: ProgressIndicatorThemeData(
               color: AppColor.primaryColor,
             ),
