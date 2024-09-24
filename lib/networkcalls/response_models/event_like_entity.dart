@@ -1,11 +1,11 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 
-class EventLikeEntity with JsonConvert<EventLikeEntity> {
+class EventLikeEntity extends JsonConvert<EventLikeEntity> {
   int? success;
   String? message;
   EventLikeResult? result;
 }
 
-class EventLikeResult with JsonConvert<EventLikeResult> {
+class EventLikeResult extends JsonConvert<EventLikeResult> {
   int? likes;
 }

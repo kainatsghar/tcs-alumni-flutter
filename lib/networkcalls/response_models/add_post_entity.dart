@@ -1,14 +1,14 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class AddPostEntity with JsonConvert<AddPostEntity> {
+class AddPostEntity extends JsonConvert<AddPostEntity> {
   late int success;
   late String message;
   @JSONField(name: "timeline_post")
   late List<AddPostTimelinePost> timelinePost;
 }
 
-class AddPostTimelinePost with JsonConvert<AddPostTimelinePost> {
+class AddPostTimelinePost extends JsonConvert<AddPostTimelinePost> {
   late String id;
   @JSONField(name: "is_pinned")
   late String isPinned;
@@ -52,7 +52,7 @@ class AddPostTimelinePost with JsonConvert<AddPostTimelinePost> {
 }
 
 class AddPostTimelinePostPostImages
-    with JsonConvert<AddPostTimelinePostPostImages> {
+    extends JsonConvert<AddPostTimelinePostPostImages> {
   late String id;
   @JSONField(name: "post_id")
   late String postId;

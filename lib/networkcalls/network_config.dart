@@ -196,9 +196,9 @@ class NetworkConfig {
   static Future<ApiResponse> uploadFiles(
       {required String url,
       required Map<String, dynamic> map,
-      String keyName: 'image',
+      String keyName= 'image',
       required List<File> images,
-      bool token: false}) async {
+      bool token= false}) async {
     try {
       Map<String, String> headers = {
         'Content-Type': 'application/json',

@@ -438,8 +438,7 @@ class MoreScreenState extends State<MoreScreen> {
             SizedBox(
               width: 12.w,
             ),
-            Text(title!,
-                style: CustomTextStyles.text14SemiBoldW600),
+            Text(title!, style: CustomTextStyles.text14SemiBoldW600),
           ],
         ),
         trailing: const Icon(

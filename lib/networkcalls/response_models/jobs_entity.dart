@@ -2,17 +2,17 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class JobsEntity with JsonConvert<JobsEntity> {
+class JobsEntity extends JsonConvert<JobsEntity> {
   late int success;
   late String message;
   late JobsResult result;
 }
 
-class JobsResult with JsonConvert<JobsResult> {
+class JobsResult extends JsonConvert<JobsResult> {
   late List<DBJob> jobs;
 }
 
-class JobsResultJobs with JsonConvert<JobsResultJobs> {
+class JobsResultJobs extends JsonConvert<JobsResultJobs> {
   late String id;
   late String designation;
   @JSONField(name: "company_name")

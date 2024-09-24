@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class BossSearchEntity with JsonConvert<BossSearchEntity> {
+class BossSearchEntity extends JsonConvert<BossSearchEntity> {
   int? success;
   String? message;
   List<BossSearchResult>? result;
 }
 
-class BossSearchResult with JsonConvert<BossSearchResult> {
+class BossSearchResult extends JsonConvert<BossSearchResult> {
   @JSONField(name: "user_id")
   String? userId;
   @JSONField(name: "first_name")

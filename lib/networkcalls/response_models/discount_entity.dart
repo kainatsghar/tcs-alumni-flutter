@@ -2,19 +2,19 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class DiscountEntity with JsonConvert<DiscountEntity> {
+class DiscountEntity extends JsonConvert<DiscountEntity> {
   int? success;
   String? message;
   DiscountResult? result;
 }
 
-class DiscountResult with JsonConvert<DiscountResult> {
+class DiscountResult extends JsonConvert<DiscountResult> {
   @JSONField(name: "discount_partners")
   List<DBDiscount>? discountPartners;
 }
 
 class DiscountResultDiscountPartners
-    with JsonConvert<DiscountResultDiscountPartners> {
+    extends JsonConvert<DiscountResultDiscountPartners> {
   String? id;
   String? title;
   String? latitude;

@@ -95,13 +95,13 @@ class MyAppBar extends AppBar {
                 child: Icon(
                   Icons.gps_fixed,
                   size: 22.h,
+                  color: Colors.white,
                 ),
               ),
             ),
             const SizedBox(
               width: 10,
             ),
-
             // GestureDetector(
             //   onTap: () {
             //     Get.to(() => const NotificationsView());

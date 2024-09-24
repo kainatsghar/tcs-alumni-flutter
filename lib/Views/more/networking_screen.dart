@@ -116,6 +116,17 @@ class _NetWorkingScreenState extends State<NetWorkingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 22.h,
+            color: AppColor.white,
+          ),
+        ),
+        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
         titleSpacing: 0,
         shape: Border(
           bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
@@ -148,6 +159,7 @@ class _NetWorkingScreenState extends State<NetWorkingScreen> {
                     child: Slider(
                       min: 0.0,
                       max: 15.0,
+                      activeColor: AppColor.primaryColor,
                       onChanged: (double value) async {
                         setState(
                           () {

@@ -80,8 +80,19 @@ class ConnectScreenState extends State<ConnectScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          shape:
-              Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+          backgroundColor: AppColor.primaryColor,
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
+          ),
+          shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
           title: Text(
             Strings.connect,
             style: CustomTextStyles.text16SemiBoldW600,

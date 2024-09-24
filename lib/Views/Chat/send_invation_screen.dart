@@ -132,6 +132,8 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
   _appBar() {
     return AppBar(
       automaticallyImplyLeading: false,
+      backgroundColor: AppColor.primaryColor,
+      titleTextStyle: CustomTextStyles.text16SemiBoldW600,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -139,7 +141,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
             onTap: () {
               Get.back();
             },
-            child: const Icon(Icons.arrow_back),
+            child: const Icon(Icons.arrow_back, color: Colors.white,),
           ),
           const SizedBox(
             width: 10,
@@ -245,6 +247,7 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
               // FirebaseDatabase.instance.ref().remove();
             }
           },
+          iconColor: Colors.white,
           itemBuilder: (BuildContext context) {
             if (_status.status == "" || _status.status == AppConstants.INVITE) {
               return [

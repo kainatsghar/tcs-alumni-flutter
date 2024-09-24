@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class UserProfileEntity with JsonConvert<UserProfileEntity> {
+class UserProfileEntity extends JsonConvert<UserProfileEntity> {
   int? success;
   String? message;
   UserProfileResult? result;
 }
 
-class UserProfileResult with JsonConvert<UserProfileResult> {
+class UserProfileResult extends JsonConvert<UserProfileResult> {
   @JSONField(name: "user_id")
   String? userId;
   @JSONField(name: "login_with")
@@ -81,14 +81,14 @@ class UserProfileResult with JsonConvert<UserProfileResult> {
   List<UserProfileResultProduct>? product;
 }
 
-class UserProfileResultInterest with JsonConvert<UserProfileResultInterest> {
+class UserProfileResultInterest extends JsonConvert<UserProfileResultInterest> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;
   String? interest;
 }
 
-class UserProfileResultEducation with JsonConvert<UserProfileResultEducation> {
+class UserProfileResultEducation extends JsonConvert<UserProfileResultEducation> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;
@@ -101,7 +101,7 @@ class UserProfileResultEducation with JsonConvert<UserProfileResultEducation> {
 }
 
 class UserProfileResultExperience
-    with JsonConvert<UserProfileResultExperience> {
+    extends JsonConvert<UserProfileResultExperience> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;
@@ -120,7 +120,7 @@ class UserProfileResultExperience
   String? companyId;
 }
 class UserProfileResultProduct
-    with JsonConvert<UserProfileResultProduct> {
+    extends JsonConvert<UserProfileResultProduct> {
   String? id;
   @JSONField(name: "cover_image")
   String? coverImage;

@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class GetInvitationEntity with JsonConvert<GetInvitationEntity> {
+class GetInvitationEntity extends JsonConvert<GetInvitationEntity> {
   late int success;
   late String message;
   late GetInvitationResult result;
 }
 
-class GetInvitationResult with JsonConvert<GetInvitationResult> {
+class GetInvitationResult extends JsonConvert<GetInvitationResult> {
   @JSONField(name: "sender_id")
   late String senderId;
   @JSONField(name: "reciver_id")
@@ -20,7 +20,7 @@ class GetInvitationResult with JsonConvert<GetInvitationResult> {
 }
 
 class GetInvitationResultReceiver
-    with JsonConvert<GetInvitationResultReceiver> {
+    extends JsonConvert<GetInvitationResultReceiver> {
   @JSONField(name: "user_id")
   late String userId;
   @JSONField(name: "login_with")
@@ -92,7 +92,7 @@ class GetInvitationResultReceiver
 }
 
 class GetInvitationResultReceiverExperience
-    with JsonConvert<GetInvitationResultReceiverExperience> {
+    extends JsonConvert<GetInvitationResultReceiverExperience> {
   late String id;
   @JSONField(name: "user_id")
   late String userId;
@@ -111,7 +111,7 @@ class GetInvitationResultReceiverExperience
   late String companyId;
 }
 
-class GetInvitationResultDevices with JsonConvert<GetInvitationResultDevices> {
+class GetInvitationResultDevices extends JsonConvert<GetInvitationResultDevices> {
   late String id;
   @JSONField(name: "user_id")
   late String userId;

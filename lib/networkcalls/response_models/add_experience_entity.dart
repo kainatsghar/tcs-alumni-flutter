@@ -1,18 +1,18 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class AddExperienceEntity with JsonConvert<AddExperienceEntity> {
+class AddExperienceEntity extends JsonConvert<AddExperienceEntity> {
   late int success;
   late String message;
   late AddExperienceResult result;
 }
 
-class AddExperienceResult with JsonConvert<AddExperienceResult> {
+class AddExperienceResult extends JsonConvert<AddExperienceResult> {
   late List<AddExperienceResultExperience> experience;
 }
 
 class AddExperienceResultExperience
-    with JsonConvert<AddExperienceResultExperience> {
+    extends JsonConvert<AddExperienceResultExperience> {
   late String id;
   @JSONField(name: "user_id")
   late String userId;

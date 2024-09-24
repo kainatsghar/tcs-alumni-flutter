@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class AboutEntity with JsonConvert<AboutEntity> {
+class AboutEntity extends JsonConvert<AboutEntity> {
   late int success;
   late String message;
   late AboutResult result;
 }
 
-class AboutResult with JsonConvert<AboutResult> {
+class AboutResult extends JsonConvert<AboutResult> {
   late String mission;
   late String vission;
   @JSONField(name: "message_from_ce")

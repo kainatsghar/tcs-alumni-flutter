@@ -866,6 +866,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _interest() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
@@ -1055,6 +1056,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _experience() {
     return Card(
       elevation: 2,
+      color: Colors.white,
+
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
@@ -1374,6 +1377,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _education() {
     return Card(
+      color: Colors.white,
       elevation: 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -1536,8 +1540,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget detailsWidget(
-      {logo, title, subtitle, date, onPressed, isEducation, userID}) {
+  Widget detailsWidget({logo, title, subtitle, date, onPressed, isEducation, userID}) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20,

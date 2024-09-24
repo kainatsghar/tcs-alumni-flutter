@@ -1,36 +1,9 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:iobm/utils/app_color.dart';
 
 final Duration _kExpand = Duration(milliseconds: 200);
 
-/// A single-line [ListTile] with a trailing button that expands or collapses
-/// the tile to reveal or hide the [children].
-///
-/// This widget is typically used with [ListView] to create an
-/// "expand / collapse" list entry. When used with scrolling widgets like
-/// [ListView], a unique [PageStorageKey] must be specified to enable the
-/// [CustomExpansionTile] to save and restore its expanded state when it is scrolled
-/// in and out of view.
-///
-/// This class overrides the [ListTileTheme.iconColor] and [ListTileTheme.textColor]
-/// theme properties for its [ListTile]. These colors animate between values when
-/// the tile is expanded and collapsed: between [iconColor], [collapsedIconColor] and
-/// between [textColor] and [collapsedTextColor].
-///
-/// See also:
-///
-///  * [ListTile], useful for creating expansion tile [children] when the
-///    expansion tile represents a sublist.
-///  * The "Expand and collapse" section of
-///    <https://material.io/components/lists#types>
 class CustomExpansionTile extends StatefulWidget {
-  /// Creates a single-line [ListTile] with a trailing button that expands or collapses
-  /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
-  /// be non-null.
   const CustomExpansionTile({
     Key? key,
     this.leading,
@@ -294,7 +267,7 @@ class _ExpansionTileState extends State<CustomExpansionTile>
     final ColorScheme colorScheme = theme.colorScheme;
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
-      ..begin = widget.collapsedTextColor ?? theme.textTheme.subtitle1!.color
+      ..begin = widget.collapsedTextColor
       ..end = widget.textColor ?? colorScheme.secondary;
     _iconColorTween
       ..begin = widget.collapsedIconColor ?? theme.unselectedWidgetColor

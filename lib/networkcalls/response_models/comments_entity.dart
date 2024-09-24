@@ -2,20 +2,20 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class CommentsEntity with JsonConvert<CommentsEntity> {
+class CommentsEntity extends JsonConvert<CommentsEntity> {
   int? success;
   String? message;
   CommentsResult? result;
 }
 
-class CommentsResult with JsonConvert<CommentsResult> {
+class CommentsResult extends JsonConvert<CommentsResult> {
   @JSONField(name: "all_comments")
   List<DBComment>? allComments;
   @JSONField(name: "common_connections")
   List<dynamic>? commonConnections;
 }
 
-class CommentsResultAllComments with JsonConvert<CommentsResultAllComments> {
+class CommentsResultAllComments extends JsonConvert<CommentsResultAllComments> {
   String? id;
   String? text;
   @JSONField(name: "created_date")
@@ -45,7 +45,7 @@ class CommentsResultAllComments with JsonConvert<CommentsResultAllComments> {
   List<CommentsReplies>? replies;
 }
 
-class CommentsReplies with JsonConvert<CommentsReplies> {
+class CommentsReplies extends JsonConvert<CommentsReplies> {
   String? id;
   String? text;
   @JSONField(name: "created_date")

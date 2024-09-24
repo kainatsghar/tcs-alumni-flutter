@@ -1,7 +1,7 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class TimeLinePostEntityEntity with JsonConvert<TimeLinePostEntityEntity> {
+class TimeLinePostEntityEntity extends JsonConvert<TimeLinePostEntityEntity> {
   int? success;
   String? message;
   @JSONField(name: "current_page")
@@ -15,7 +15,7 @@ class TimeLinePostEntityEntity with JsonConvert<TimeLinePostEntityEntity> {
   List<TimeLinePostEntityTimeline>? timeline;
 }
 
-class TimeLinePostEntityTimeline with JsonConvert<TimeLinePostEntityTimeline> {
+class TimeLinePostEntityTimeline extends JsonConvert<TimeLinePostEntityTimeline> {
   String? id;
   @JSONField(name: "is_pinned")
   String? isPinned;
@@ -70,7 +70,7 @@ class TimeLinePostEntityTimeline with JsonConvert<TimeLinePostEntityTimeline> {
 }
 
 class TimeLinePostEntityTimelineTagsDetails
-    with JsonConvert<TimeLinePostEntityTimelineTagsDetails> {
+    extends JsonConvert<TimeLinePostEntityTimelineTagsDetails> {
   String? id;
   @JSONField(name: "post_id")
   String? postId;
@@ -95,7 +95,7 @@ class TimeLinePostEntityTimelineTagsDetails
 }
 
 class TimeLinePostEntityTimelinePostImages
-    with JsonConvert<TimeLinePostEntityTimelinePostImages> {
+    extends JsonConvert<TimeLinePostEntityTimelinePostImages> {
   String? id;
   @JSONField(name: "post_id")
   String? postId;

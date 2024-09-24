@@ -2,13 +2,13 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class WorkOrderEntity with JsonConvert<WorkOrderEntity> {
+class WorkOrderEntity extends JsonConvert<WorkOrderEntity> {
   int? success;
   String? message;
   List<DBWorkOrder>? result;
 }
 
-class WorkOrderResult with JsonConvert<WorkOrderResult> {
+class WorkOrderResult extends JsonConvert<WorkOrderResult> {
   String? id;
   String? designation;
   @JSONField(name: "work_description")

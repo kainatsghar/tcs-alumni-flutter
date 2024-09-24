@@ -2,13 +2,13 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class CitiesEntity with JsonConvert<CitiesEntity> {
+class CitiesEntity extends JsonConvert<CitiesEntity> {
   late int success;
   late String message;
   late List<DBCitie> cities;
 }
 
-class CitiesCities with JsonConvert<CitiesCities> {
+class CitiesCities extends JsonConvert<CitiesCities> {
   @JSONField(name: "country_id")
   late String countryId;
   @JSONField(name: "city_id")

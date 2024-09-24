@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class ContactEntity with JsonConvert<ContactEntity> {
+class ContactEntity extends JsonConvert<ContactEntity> {
   int? success;
   String? message;
   ContactResult? result;
 }
 
-class ContactResult with JsonConvert<ContactResult> {
+class ContactResult extends JsonConvert<ContactResult> {
   String? id;
   String? email;
   String? fax;

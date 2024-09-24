@@ -65,24 +65,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(100.w, 30.h)),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(horizontal: 20.0)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                          side:  BorderSide(
-                            color: AppColor.primaryColor,
-                          ),
-                        ),
-                      ),
-                      // minimumSize: MaterialStateProperty.all<Size>(
-                      //   Size(20.w, 20.h),
-                      // ),
-                    ),
-                    onPressed: () {
+                  CustomWidget.myButton(
+                    name: "Update",
+                    size: Size(100.w, 30.h),
+                    isBorder: false,
+                    onClicked: () {
                       if (fKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
                         if(_passwordController.text == _confirmPasswordController.text){
@@ -143,11 +130,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         }
                       }
                     },
-                    child: Text(
-                      'Update',
-                      style: CustomTextStyles.text16SemiBoldW600,
-                    ),
-                  )
+                  ),
                 ],
               ),
             ),

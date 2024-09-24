@@ -1187,10 +1187,9 @@ class JsonConvert<T> {
       return data.map<ErrorEntity>((e) => ErrorEntity().fromJson(e)).toList()
           as M;
     }
-    if (<NormalEntity>[] is M) {
-      return data.map<NormalEntity>((e) => NormalEntity().fromJson(e)).toList()
-          as M;
-    }
+    // if (<NormalEntity>[] is M) {
+    //   return data.map<NormalEntity>((e) => NormalEntity().fromJson(e)).toList() as M;
+    // }
     if (<DiscountEntity>[] is M) {
       return data
           .map<DiscountEntity>((e) => DiscountEntity().fromJson(e))

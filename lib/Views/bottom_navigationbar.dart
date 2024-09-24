@@ -60,46 +60,48 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (_selectedIndex == 0) {
-          final result = await showDialog(
-            context: context,
-            builder: (builder) => AlertDialog(
-              title: const Text(
-                "Exit the App?",
-                textAlign: TextAlign.center,
-              ),
-              actions: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: const Text(Strings.nO),
-                      onPressed: () {
-                        Navigator.pop(context, false);
-                      },
-                    ),
-                    TextButton(
-                      child: const Text(
-                        Strings.yes,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                      },
-                    ),
-                  ],
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (value) async {
+        if(value){
+          if (_selectedIndex == 0) {
+            final result = await showDialog(
+              context: context,
+              builder: (builder) => AlertDialog(
+                title: const Text(
+                  "Exit the App?",
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
-          );
-          return result;
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: const Text(Strings.nO),
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          Strings.yes,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+            return result;
+          }
+          setState(() {
+            _selectedIndex = 0;
+          });
         }
-        setState(() {
-          _selectedIndex = 0;
-        });
-        return false;
       },
       child: Scaffold(
         body: _scValue()[_selectedIndex],
@@ -180,7 +182,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           },
           letIndexChange: (index) => true,
         ),
-
         // bottomNavigationBar: BottomNavigationBar(
         //   selectedLabelStyle: TextStyle(fontSize: 12.sp),
         //   unselectedLabelStyle: TextStyle(fontSize: 11.sp),

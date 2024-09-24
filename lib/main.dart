@@ -93,10 +93,14 @@ class MyApp extends StatelessWidget {
       builder: () => Portal(
         child: GetMaterialApp(
           theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
             fontFamily: AppConstants.appFontFamily,
             primaryColor: AppColor.primaryColor,
             primarySwatch: AppColor.primaryColor,
-            platform: TargetPlatform.iOS
+            platform: TargetPlatform.iOS,
+            progressIndicatorTheme: ProgressIndicatorThemeData(
+              color: AppColor.primaryColor,
+            ),
           ),
           //home: const LoginScreen(),
           home: const SplashScreen(),

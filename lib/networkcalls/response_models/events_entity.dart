@@ -2,17 +2,17 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class EventsEntity with JsonConvert<EventsEntity> {
+class EventsEntity extends JsonConvert<EventsEntity> {
   late int success;
   late String message;
   late EventsResult result;
 }
 
-class EventsResult with JsonConvert<EventsResult> {
+class EventsResult extends JsonConvert<EventsResult> {
   late List<DBEvent> post;
 }
 
-class EventsResultPost with JsonConvert<EventsResultPost> {
+class EventsResultPost extends JsonConvert<EventsResultPost> {
   late String id;
   late String title;
   late String description;

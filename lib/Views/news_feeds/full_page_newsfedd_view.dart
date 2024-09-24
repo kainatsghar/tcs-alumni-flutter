@@ -52,7 +52,7 @@ class _FullPostScreenState extends State<FullPostScreen> {
 
   @override
   void initState() {
-
+    _controllers = VideoPlayerController.network('');
     super.initState();
   }
 

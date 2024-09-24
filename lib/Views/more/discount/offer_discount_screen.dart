@@ -30,6 +30,18 @@ class OfferDiscountState extends State<OfferDiscount> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: AppColor.primaryColor,
+        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 22.h,
+            color: AppColor.white,
+          ),
+        ),
         title: Text(
           Strings.offerediscount,
           style: CustomTextStyles.text16SemiBoldW600,

@@ -1,19 +1,19 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class InternalShareEntity with JsonConvert<InternalShareEntity> {
+class InternalShareEntity extends JsonConvert<InternalShareEntity> {
   int? success;
   String? message;
   InternalShareResult? result;
 }
 
-class InternalShareResult with JsonConvert<InternalShareResult> {
+class InternalShareResult extends JsonConvert<InternalShareResult> {
   @JSONField(name: "TIMELINE_POST")
   InternalShareResultTimelinePost? timelinePost;
 }
 
 class InternalShareResultTimelinePost
-    with JsonConvert<InternalShareResultTimelinePost> {
+    extends JsonConvert<InternalShareResultTimelinePost> {
   String? id;
   @JSONField(name: "post_images")
   List<InternalShareResultTimelinePostPostImages>? postImages;
@@ -36,7 +36,7 @@ class InternalShareResultTimelinePost
 }
 
 class InternalShareResultTimelinePostPostImages
-    with JsonConvert<InternalShareResultTimelinePostPostImages> {
+    extends JsonConvert<InternalShareResultTimelinePostPostImages> {
   String? id;
   @JSONField(name: "post_id")
   String? postId;

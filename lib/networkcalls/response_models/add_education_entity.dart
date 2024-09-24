@@ -1,18 +1,18 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class AddEducationEntity with JsonConvert<AddEducationEntity> {
+class AddEducationEntity extends JsonConvert<AddEducationEntity> {
   late int success;
   late String message;
   late AddEducationResult result;
 }
 
-class AddEducationResult with JsonConvert<AddEducationResult> {
+class AddEducationResult extends JsonConvert<AddEducationResult> {
   late List<AddEducationResultEducation> education;
 }
 
 class AddEducationResultEducation
-    with JsonConvert<AddEducationResultEducation> {
+    extends JsonConvert<AddEducationResultEducation> {
   late String id;
   @JSONField(name: "user_id")
   late String userId;

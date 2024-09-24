@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class SpotlightAluminiEntity with JsonConvert<SpotlightAluminiEntity> {
+class SpotlightAluminiEntity extends JsonConvert<SpotlightAluminiEntity> {
   int? success;
   SpotlightAluminiSpotlight? spotlight;
   String? message;
 }
 
-class SpotlightAluminiSpotlight with JsonConvert<SpotlightAluminiSpotlight> {
+class SpotlightAluminiSpotlight extends JsonConvert<SpotlightAluminiSpotlight> {
   @JSONField(name: "user_id")
   String? userId;
   @JSONField(name: "login_with")

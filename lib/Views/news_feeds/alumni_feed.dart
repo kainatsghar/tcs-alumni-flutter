@@ -143,7 +143,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
         ),
         context: context,
       ),
-      backgroundColor: AppColor.backGroundColor,
       body: dataFetched
           ? _bodyContainer()
           : const Center(

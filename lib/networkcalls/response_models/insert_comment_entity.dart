@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class InsertCommentEntity with JsonConvert<InsertCommentEntity> {
+class InsertCommentEntity extends JsonConvert<InsertCommentEntity> {
   int? success;
   String? message;
   InsertCommentResult? result;
 }
 
-class InsertCommentResult with JsonConvert<InsertCommentResult> {
+class InsertCommentResult extends JsonConvert<InsertCommentResult> {
   int? likes;
   int? comments;
   @JSONField(name: "comment_model")
@@ -15,7 +15,7 @@ class InsertCommentResult with JsonConvert<InsertCommentResult> {
 }
 
 class InsertCommentResultCommentModel
-    with JsonConvert<InsertCommentResultCommentModel> {
+    extends JsonConvert<InsertCommentResultCommentModel> {
   String? id;
   String? text;
   @JSONField(name: "created_date")

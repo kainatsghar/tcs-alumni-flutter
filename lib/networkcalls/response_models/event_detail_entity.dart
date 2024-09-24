@@ -1,13 +1,13 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class EventDetailEntity with JsonConvert<EventDetailEntity> {
+class EventDetailEntity extends JsonConvert<EventDetailEntity> {
   int? success;
   String? message;
   List<EventDetailResult>? result;
 }
 
-class EventDetailResult with JsonConvert<EventDetailResult> {
+class EventDetailResult extends JsonConvert<EventDetailResult> {
   String? id;
   String? title;
   String? description;

@@ -10,6 +10,7 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../utils/text_styles.dart';
 import 'customexpansiontile.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -36,8 +37,19 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          shape:
-              Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+          shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+          backgroundColor: AppColor.primaryColor,
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
+          ),
           title: Text(
             Strings.aboutUs,
             style: TextStyle(
@@ -115,7 +127,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 // ),
                 HtmlWidget(
                   AppUtils().htmlString(_about.aboutMessage ?? ''),
-                  textStyle: TextStyle(fontSize: ScreenUtil().setSp(13)),
+                  textStyle: TextStyle(fontSize: ScreenUtil().setSp(13), color: Colors.black),
                 ),
               ],
             ),
@@ -146,7 +158,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             color: AppColor.white,
             child: HtmlWidget(
               AppUtils().htmlString(_about.message ?? ''),
-              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13)),
+              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13), color: Colors.black),
             ),
           ),
         ),
@@ -175,7 +187,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             color: AppColor.white,
             child: HtmlWidget(
               AppUtils().htmlString(_about.mission ?? ''),
-              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13)),
+              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13), color: Colors.black),
             ),
           ),
         ),
@@ -204,7 +216,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             color: AppColor.white,
             child: HtmlWidget(
               AppUtils().htmlString(_about.vission ?? ''),
-              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13)),
+              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13), color: Colors.black),
             ),
           ),
         ),
@@ -233,7 +245,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             color: AppColor.white,
             child: HtmlWidget(
               AppUtils().htmlString(_about.objective ?? ''),
-              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13)),
+              textStyle: TextStyle(fontSize: ScreenUtil().setSp(13), color: Colors.black),
             ),
           ),
         ),

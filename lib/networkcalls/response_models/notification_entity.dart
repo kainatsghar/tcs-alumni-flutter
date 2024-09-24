@@ -2,19 +2,19 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class NotificationEntity with JsonConvert<NotificationEntity> {
+class NotificationEntity extends JsonConvert<NotificationEntity> {
   late int success;
   late String message;
   late NotificationResult result;
 }
 
-class NotificationResult with JsonConvert<NotificationResult> {
+class NotificationResult extends JsonConvert<NotificationResult> {
   @JSONField(name: "user_notifications")
   late List<DBNotification> userNotifications;
 }
 
 class NotificationResultUserNotifications
-    with JsonConvert<NotificationResultUserNotifications> {
+    extends JsonConvert<NotificationResultUserNotifications> {
   @JSONField(name: "notification_id")
   late String notificationId;
   @JSONField(name: "event_id")

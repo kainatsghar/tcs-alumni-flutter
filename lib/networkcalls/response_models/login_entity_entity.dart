@@ -1,7 +1,7 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class LoginEntityEntity with JsonConvert<LoginEntityEntity> {
+class LoginEntityEntity extends JsonConvert<LoginEntityEntity> {
   int? success;
   String? message;
   @JSONField(name: "unread_count")
@@ -9,7 +9,7 @@ class LoginEntityEntity with JsonConvert<LoginEntityEntity> {
   LoginEntityResult? result;
 }
 
-class LoginEntityResult with JsonConvert<LoginEntityResult> {
+class LoginEntityResult extends JsonConvert<LoginEntityResult> {
   @JSONField(name: "user_id")
   String? userId;
   @JSONField(name: "login_with")
@@ -83,14 +83,14 @@ class LoginEntityResult with JsonConvert<LoginEntityResult> {
   List<LoginEntityResultExperience>? experience;
 }
 
-class LoginEntityResultInterest with JsonConvert<LoginEntityResultInterest> {
+class LoginEntityResultInterest extends JsonConvert<LoginEntityResultInterest> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;
   String? interest;
 }
 
-class LoginEntityResultEducation with JsonConvert<LoginEntityResultEducation> {
+class LoginEntityResultEducation extends JsonConvert<LoginEntityResultEducation> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;
@@ -103,7 +103,7 @@ class LoginEntityResultEducation with JsonConvert<LoginEntityResultEducation> {
 }
 
 class LoginEntityResultExperience
-    with JsonConvert<LoginEntityResultExperience> {
+    extends JsonConvert<LoginEntityResultExperience> {
   String? id;
   @JSONField(name: "user_id")
   String? userId;

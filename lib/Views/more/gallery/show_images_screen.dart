@@ -9,6 +9,7 @@ import 'package:iobm/networkcalls/api_helper.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 
+import '../../../utils/app_color.dart';
 import '../../../utils/text_styles.dart';
 
 class ShowImagesScreen extends StatefulWidget {
@@ -38,6 +39,18 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 22.h,
+            color: AppColor.white,
+          ),
+        ),
+        backgroundColor: AppColor.primaryColor,
+        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
         title: Text(
           Strings.gallery,
           style: CustomTextStyles.text16SemiBoldW600,
@@ -129,6 +142,7 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
   Widget _titleBar() {
     return Card(
       elevation: 2,
+      color: Colors.white,
       child: Center(
           child: Padding(
         padding: const EdgeInsets.all(6.0),

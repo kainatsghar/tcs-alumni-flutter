@@ -63,6 +63,8 @@ class JobOpeningState extends State<JobOpening> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: AppColor.primaryColor,
+        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
         shape: Border(
           bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
         ),
@@ -71,6 +73,16 @@ class JobOpeningState extends State<JobOpening> {
           style: CustomTextStyles.text16SemiBoldW600,
         ),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 22.h,
+            color: AppColor.white,
+          ),
+        ),
       ),
       body: DefaultTabController(
         length: 2,

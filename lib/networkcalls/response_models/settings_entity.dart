@@ -2,13 +2,13 @@ import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 import 'package:iobm/local_db/local_db.dart';
 
-class SettingsEntity with JsonConvert<SettingsEntity> {
+class SettingsEntity extends JsonConvert<SettingsEntity> {
   int? success;
   String? message;
   SettingsResult? result;
 }
 
-class SettingsResult with JsonConvert<SettingsResult> {
+class SettingsResult extends JsonConvert<SettingsResult> {
   List<DBCountrie>? countries;
   List<DBCitie>? cities;
   List<DBBranche>? branches;
@@ -20,7 +20,7 @@ class SettingsResult with JsonConvert<SettingsResult> {
   String? mobileApiBaseUrl;
 }
 
-class SettingsResultCountries with JsonConvert<SettingsResultCountries> {
+class SettingsResultCountries extends JsonConvert<SettingsResultCountries> {
   @JSONField(name: "country_id")
   String? countryId;
   @JSONField(name: "country_name")
@@ -29,7 +29,7 @@ class SettingsResultCountries with JsonConvert<SettingsResultCountries> {
   String? isDeleted;
 }
 
-class SettingsResultCities with JsonConvert<SettingsResultCities> {
+class SettingsResultCities extends JsonConvert<SettingsResultCities> {
   @JSONField(name: "country_id")
   String? countryId;
   @JSONField(name: "city_id")
@@ -40,7 +40,7 @@ class SettingsResultCities with JsonConvert<SettingsResultCities> {
   String? isDeleted;
 }
 
-class SettingsResultBranches with JsonConvert<SettingsResultBranches> {
+class SettingsResultBranches extends JsonConvert<SettingsResultBranches> {
   String? id;
   String? title;
   @JSONField(name: "city_id")
@@ -53,14 +53,14 @@ class SettingsResultBranches with JsonConvert<SettingsResultBranches> {
   String? isDeleted;
 }
 
-class SettingsResultIndustries with JsonConvert<SettingsResultIndustries> {
+class SettingsResultIndustries extends JsonConvert<SettingsResultIndustries> {
   String? id;
   String? title;
   @JSONField(name: "is_deleted")
   String? isDeleted;
 }
 
-class SettingsResultReportTypes with JsonConvert<SettingsResultReportTypes> {
+class SettingsResultReportTypes extends JsonConvert<SettingsResultReportTypes> {
   String? id;
   String? text;
   @JSONField(name: "created_at")
@@ -69,7 +69,7 @@ class SettingsResultReportTypes with JsonConvert<SettingsResultReportTypes> {
   String? isDeleted;
 }
 
-class SettingsResultDegrees with JsonConvert<SettingsResultDegrees> {
+class SettingsResultDegrees extends JsonConvert<SettingsResultDegrees> {
   @JSONField(name: "degree_id")
   String? degreeId;
   @JSONField(name: "branch_id")

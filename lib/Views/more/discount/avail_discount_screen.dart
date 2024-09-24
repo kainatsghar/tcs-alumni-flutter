@@ -122,6 +122,7 @@ class AvailDiscountState extends State<AvailDiscount> {
   Widget _discountWidget({title, city, address, percent, endDate, img, cover}) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

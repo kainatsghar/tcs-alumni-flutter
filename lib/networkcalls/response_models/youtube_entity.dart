@@ -1,7 +1,7 @@
 import 'package:iobm/generated/json/base/json_convert_content.dart';
 import 'package:iobm/generated/json/base/json_field.dart';
 
-class YoutubeEntity with JsonConvert<YoutubeEntity> {
+class YoutubeEntity extends JsonConvert<YoutubeEntity> {
   String? kind;
   String? etag;
   String? nextPageToken;
@@ -9,14 +9,14 @@ class YoutubeEntity with JsonConvert<YoutubeEntity> {
   YoutubePageInfo? pageInfo;
 }
 
-class YoutubeItems with JsonConvert<YoutubeItems> {
+class YoutubeItems extends JsonConvert<YoutubeItems> {
   String? kind;
   String? etag;
   String? id;
   YoutubeItemsSnippet? snippet;
 }
 
-class YoutubeItemsSnippet with JsonConvert<YoutubeItemsSnippet> {
+class YoutubeItemsSnippet extends JsonConvert<YoutubeItemsSnippet> {
   String? publishedAt;
   String? channelId;
   String? title;
@@ -31,7 +31,7 @@ class YoutubeItemsSnippet with JsonConvert<YoutubeItemsSnippet> {
 }
 
 class YoutubeItemsSnippetThumbnails
-    with JsonConvert<YoutubeItemsSnippetThumbnails> {
+    extends JsonConvert<YoutubeItemsSnippetThumbnails> {
   @JSONField(name: "default")
   YoutubeItemsSnippetThumbnailsDefault? xDefault;
   YoutubeItemsSnippetThumbnailsMedium? medium;
@@ -39,33 +39,33 @@ class YoutubeItemsSnippetThumbnails
 }
 
 class YoutubeItemsSnippetThumbnailsDefault
-    with JsonConvert<YoutubeItemsSnippetThumbnailsDefault> {
+    extends JsonConvert<YoutubeItemsSnippetThumbnailsDefault> {
   String? url;
   int? width;
   int? height;
 }
 
 class YoutubeItemsSnippetThumbnailsMedium
-    with JsonConvert<YoutubeItemsSnippetThumbnailsMedium> {
+    extends JsonConvert<YoutubeItemsSnippetThumbnailsMedium> {
   String? url;
   int? width;
   int? height;
 }
 
 class YoutubeItemsSnippetThumbnailsHigh
-    with JsonConvert<YoutubeItemsSnippetThumbnailsHigh> {
+    extends JsonConvert<YoutubeItemsSnippetThumbnailsHigh> {
   String? url;
   int? width;
   int? height;
 }
 
 class YoutubeItemsSnippetResourceId
-    with JsonConvert<YoutubeItemsSnippetResourceId> {
+    extends JsonConvert<YoutubeItemsSnippetResourceId> {
   String? kind;
   String? videoId;
 }
 
-class YoutubePageInfo with JsonConvert<YoutubePageInfo> {
+class YoutubePageInfo extends JsonConvert<YoutubePageInfo> {
   int? totalResults;
   int? resultsPerPage;
 }

@@ -48,6 +48,7 @@ class SecAppBar extends AppBar {
                 child: Icon(
                   Icons.gps_fixed,
                   size: 22.h,
+                  color: Colors.white,
                 ),
               ),
             ),
