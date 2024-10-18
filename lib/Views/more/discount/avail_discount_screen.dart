@@ -95,7 +95,9 @@ class AvailDiscountState extends State<AvailDiscount> {
                   address: '${_discounts[i].address}',
                   percent: '${_discounts[i].percentOff}',
                   cover: "${_discounts[i].coverImage}",
-                  endDate: '${_discounts[i].toDate}');
+                  endDate: '${_discounts[i].toDate}',
+                  codeName: '${_discounts[i].codeName}',
+              );
             },
           )
         : Center(
@@ -119,7 +121,7 @@ class AvailDiscountState extends State<AvailDiscount> {
           );
   }
 
-  Widget _discountWidget({title, city, address, percent, endDate, img, cover}) {
+  Widget _discountWidget({title, city, address, percent, endDate, img, cover, codeName}) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       color: Colors.white,
@@ -154,6 +156,34 @@ class AvailDiscountState extends State<AvailDiscount> {
                     child: Text(
                       percent,
                       style: CustomTextStyles.text12RegularW400,
+                    ),
+                  ),
+                ),
+              ),
+              if(codeName != "")
+              Positioned(
+                top: 10,
+                right: 5,
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: RichText(
+                      text:  TextSpan(
+                        text: 'Promo: ',
+                        style: CustomTextStyles.text12RegularW400,
+                        children: [
+                          TextSpan(
+                            text: codeName,
+                            style: CustomTextStyles.text12SemiBoldW600,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

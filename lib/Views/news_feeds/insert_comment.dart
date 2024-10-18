@@ -826,7 +826,7 @@ class _InsertCommentsState extends State<InsertComments> {
         },
         boxPadding: const EdgeInsets.all(5),
         boxElevation: 5,
-        boxPosition: VerticalPosition.BOTTOM,
+        // boxPosition: VerticalPosition.BOTTOM,
         reactions: reactions,
         initialReaction: _comments[index].reaction == ""
             ? Reaction(
@@ -1003,7 +1003,7 @@ class _InsertCommentsState extends State<InsertComments> {
         },
         boxPadding: const EdgeInsets.all(8),
         boxElevation: 5,
-        boxPosition: VerticalPosition.BOTTOM,
+        boxPosition: VerticalPosition.bottom,
         reactions: reactions,
         initialReaction: _replies[replyIndex].reaction == ""
             ? Reaction(

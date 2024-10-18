@@ -2630,7 +2630,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
         },
         boxPadding: const EdgeInsets.all(8),
         boxElevation: 5,
-        boxPosition: VerticalPosition.BOTTOM,
+        boxPosition: VerticalPosition.bottom,
         reactions: reactions,
         initialReaction: _postsTimeLine[index].reaction == ""
             ? Reaction(

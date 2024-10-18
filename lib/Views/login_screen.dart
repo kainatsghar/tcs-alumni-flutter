@@ -825,8 +825,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // Trigger the sign-in flow
     final fb.LoginResult result = await fb.FacebookAuth.instance.login(permissions: ["openid", "public_profile", "email"]);
     final userData = await fb.FacebookAuth.instance.getUserData();
-    print("Result: ${result.accessToken?.token}");
-    print("Result: ${result.accessToken?.grantedPermissions}");
+    print("Result: ${result.accessToken?.tokenString}");
+    // print("Result: ${result.accessToken?.grantedPermissions}");
     print("FacebookUserData: $userData");
 
     if (result.accessToken != null) {
@@ -834,7 +834,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
       final facebookAuthCredential =
-      FacebookAuthProvider.credential(result.accessToken!.token);
+      FacebookAuthProvider.credential(result.accessToken!.tokenString);
       _handleSocialLogin(facebookAuthCredential, 'facebook');
     }
     else {

@@ -552,7 +552,7 @@ class _SignupWelcomeState extends State<SignupWelcome> {
     if (result.accessToken != null) {
       // Create a credential from the access token
       final facebookAuthCredential =
-      FacebookAuthProvider.credential(result.accessToken!.token);
+      FacebookAuthProvider.credential(result.accessToken!.tokenString);
       _handleSocialLogin(facebookAuthCredential, 'facebook');
     } else {
       UIHelper.showErrorAlert(context,
