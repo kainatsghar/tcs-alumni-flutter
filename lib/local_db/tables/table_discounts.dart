@@ -40,6 +40,9 @@ class DBDiscounts extends Table {
   @JsonKey('code_name')
   TextColumn get codeName => text().withLength(min: 0, max: 100).nullable()();
 
+  @JsonKey('code_used')
+  TextColumn get codeUsed => text().withLength(min: 0, max: 100).nullable()();
+
   @JsonKey('cover_image')
   TextColumn get coverImage => text().withLength(min: 0, max: 500).nullable()();
 

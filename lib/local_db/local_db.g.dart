@@ -12193,6 +12193,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
   final String? isActive;
   final String? addedBy;
   final String? codeName;
+  final String? codeUsed;
   final String? coverImage;
   DBDiscount(
       {this.id,
@@ -12208,6 +12209,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
       this.isActive,
       this.addedBy,
       this.codeName,
+      this.codeUsed,
       this.coverImage});
   factory DBDiscount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -12239,6 +12241,8 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}added_by']),
       codeName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}code_name']),
+      codeUsed: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}code_used']),
       coverImage: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}cover_image']),
     );
@@ -12285,6 +12289,9 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
     if (!nullToAbsent || codeName != null) {
       map['code_name'] = Variable<String?>(codeName);
     }
+    if (!nullToAbsent || codeUsed != null) {
+      map['code_used'] = Variable<String?>(codeUsed);
+    }
     if (!nullToAbsent || coverImage != null) {
       map['cover_image'] = Variable<String?>(coverImage);
     }
@@ -12325,6 +12332,9 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
       codeName: codeName == null && nullToAbsent
           ? const Value.absent()
           : Value(codeName),
+      codeUsed: codeUsed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(codeUsed),
       coverImage: coverImage == null && nullToAbsent
           ? const Value.absent()
           : Value(coverImage),
@@ -12348,6 +12358,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
       isActive: serializer.fromJson<String?>(json['is_active']),
       addedBy: serializer.fromJson<String?>(json['added_by']),
       codeName: serializer.fromJson<String?>(json['code_name']),
+      codeUsed: serializer.fromJson<String?>(json['code_used']),
       coverImage: serializer.fromJson<String?>(json['cover_image']),
     );
   }
@@ -12368,6 +12379,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
       'is_active': serializer.toJson<String?>(isActive),
       'added_by': serializer.toJson<String?>(addedBy),
       'code_name': serializer.toJson<String?>(codeName),
+      'code_used': serializer.toJson<String?>(codeUsed),
       'cover_image': serializer.toJson<String?>(coverImage),
     };
   }
@@ -12386,6 +12398,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
           String? isActive,
           String? addedBy,
           String? codeName,
+          String? codeUsed,
           String? coverImage}) =>
       DBDiscount(
         id: id ?? this.id,
@@ -12401,6 +12414,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
         isActive: isActive ?? this.isActive,
         addedBy: addedBy ?? this.addedBy,
         codeName: codeName ?? this.codeName,
+        codeUsed: codeUsed ?? this.codeUsed,
         coverImage: coverImage ?? this.coverImage,
       );
   @override
@@ -12419,6 +12433,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
           ..write('isActive: $isActive, ')
           ..write('addedBy: $addedBy, ')
           ..write('codeName: $codeName, ')
+          ..write('codeUsed: $codeUsed, ')
           ..write('coverImage: $coverImage')
           ..write(')'))
         .toString();
@@ -12439,6 +12454,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
       isActive,
       addedBy,
       codeName,
+      codeUsed,
       coverImage);
   @override
   bool operator ==(Object other) =>
@@ -12457,6 +12473,7 @@ class DBDiscount extends DataClass implements Insertable<DBDiscount> {
           other.isActive == this.isActive &&
           other.addedBy == this.addedBy &&
           other.codeName == this.codeName &&
+          other.codeUsed == this.codeUsed &&
           other.coverImage == this.coverImage);
 }
 
@@ -12474,6 +12491,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
   final Value<String?> isActive;
   final Value<String?> addedBy;
   final Value<String?> codeName;
+  final Value<String?> codeUsed;
   final Value<String?> coverImage;
   const DBDiscountsCompanion({
     this.id = const Value.absent(),
@@ -12489,6 +12507,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
     this.isActive = const Value.absent(),
     this.addedBy = const Value.absent(),
     this.codeName = const Value.absent(),
+    this.codeUsed = const Value.absent(),
     this.coverImage = const Value.absent(),
   });
   DBDiscountsCompanion.insert({
@@ -12505,6 +12524,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
     this.isActive = const Value.absent(),
     this.addedBy = const Value.absent(),
     this.codeName = const Value.absent(),
+    this.codeUsed = const Value.absent(),
     this.coverImage = const Value.absent(),
   });
   static Insertable<DBDiscount> custom({
@@ -12521,6 +12541,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
     Expression<String?>? isActive,
     Expression<String?>? addedBy,
     Expression<String?>? codeName,
+    Expression<String?>? codeUsed,
     Expression<String?>? coverImage,
   }) {
     return RawValuesInsertable({
@@ -12537,6 +12558,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
       if (isActive != null) 'is_active': isActive,
       if (addedBy != null) 'added_by': addedBy,
       if (codeName != null) 'code_name': codeName,
+      if (codeUsed != null) 'code_used': codeUsed,
       if (coverImage != null) 'cover_image': coverImage,
     });
   }
@@ -12555,6 +12577,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
       Value<String?>? isActive,
       Value<String?>? addedBy,
       Value<String?>? codeName,
+      Value<String?>? codeUsed,
       Value<String?>? coverImage}) {
     return DBDiscountsCompanion(
       id: id ?? this.id,
@@ -12570,6 +12593,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
       isActive: isActive ?? this.isActive,
       addedBy: addedBy ?? this.addedBy,
       codeName: codeName ?? this.codeName,
+      codeUsed: codeUsed ?? this.codeUsed,
       coverImage: coverImage ?? this.coverImage,
     );
   }
@@ -12616,6 +12640,9 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
     if (codeName.present) {
       map['code_name'] = Variable<String?>(codeName.value);
     }
+    if (codeUsed.present) {
+      map['code_used'] = Variable<String?>(codeUsed.value);
+    }
     if (coverImage.present) {
       map['cover_image'] = Variable<String?>(coverImage.value);
     }
@@ -12638,6 +12665,7 @@ class DBDiscountsCompanion extends UpdateCompanion<DBDiscount> {
           ..write('isActive: $isActive, ')
           ..write('addedBy: $addedBy, ')
           ..write('codeName: $codeName, ')
+          ..write('codeUsed: $codeUsed, ')
           ..write('coverImage: $coverImage')
           ..write(')'))
         .toString();
@@ -12754,6 +12782,14 @@ class $DBDiscountsTable extends DBDiscounts
           GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 100),
       type: const StringType(),
       requiredDuringInsert: false);
+  final VerificationMeta _codeUsedMeta = const VerificationMeta('codeUsed');
+  @override
+  late final GeneratedColumn<String?> codeUsed = GeneratedColumn<String?>(
+      'code_used', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 100),
+      type: const StringType(),
+      requiredDuringInsert: false);
   final VerificationMeta _coverImageMeta = const VerificationMeta('coverImage');
   @override
   late final GeneratedColumn<String?> coverImage = GeneratedColumn<String?>(
@@ -12777,6 +12813,7 @@ class $DBDiscountsTable extends DBDiscounts
         isActive,
         addedBy,
         codeName,
+        codeUsed,
         coverImage
       ];
   @override
@@ -12840,6 +12877,10 @@ class $DBDiscountsTable extends DBDiscounts
     if (data.containsKey('code_name')) {
       context.handle(_codeNameMeta,
           codeName.isAcceptableOrUnknown(data['code_name']!, _codeNameMeta));
+    }
+    if (data.containsKey('code_used')) {
+      context.handle(_codeUsedMeta,
+          codeUsed.isAcceptableOrUnknown(data['code_used']!, _codeUsedMeta));
     }
     if (data.containsKey('cover_image')) {
       context.handle(

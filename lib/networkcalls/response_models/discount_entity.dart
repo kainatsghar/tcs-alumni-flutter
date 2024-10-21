@@ -37,4 +37,6 @@ class DiscountResultDiscountPartners
   String? coverImage;
   @JSONField(name: "code_name")
   String? codeName;
+  @JSONField(name: "code_used")
+  String? codeUsed;
 }

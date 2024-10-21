@@ -97,6 +97,7 @@ class AvailDiscountState extends State<AvailDiscount> {
                   cover: "${_discounts[i].coverImage}",
                   endDate: '${_discounts[i].toDate}',
                   codeName: '${_discounts[i].codeName}',
+                  codeUsed: '${_discounts[i].codeUsed}'
               );
             },
           )
@@ -121,7 +122,7 @@ class AvailDiscountState extends State<AvailDiscount> {
           );
   }
 
-  Widget _discountWidget({title, city, address, percent, endDate, img, cover, codeName}) {
+  Widget _discountWidget({title, city, address, percent, endDate, img, cover, codeName, codeUsed}) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       color: Colors.white,
@@ -215,9 +216,13 @@ class AvailDiscountState extends State<AvailDiscount> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      style: CustomTextStyles.text14SemiBoldW600.copyWith(color: Colors.grey.shade800,),
+                    Container(
+                      color: Colors.transparent,
+                      width: Get.width * 0.55,
+                      child: Text(
+                        title,
+                        style: CustomTextStyles.text14SemiBoldW600.copyWith(color: Colors.grey.shade800,),
+                      ),
                     ),
                     Row(
                       children: [
@@ -230,9 +235,10 @@ class AvailDiscountState extends State<AvailDiscount> {
                           width: 5,
                         ),
                         Text(
-                          AppUtils().calculateDiscountDifference(endDate) < 1
-                              ? 'Expired'
-                              : "${AppUtils().calculateDiscountDifference(endDate)} Days",
+                          // endDate == "" ? "--" : AppUtils().calculateDiscountDifference(endDate) < 1
+                          //     ? 'Expired'
+                          //     : "${AppUtils().calculateDiscountDifference(endDate)} Days",
+                          codeUsed,
                           style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.primaryColor,),
                         ),
                       ],
@@ -258,7 +264,48 @@ class AvailDiscountState extends State<AvailDiscount> {
                 ),
               ],
             ),
-          )
+          ),
+          // Container(
+          //   height: 70.h,
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.circular(10.r),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Container(
+          //         width: 70.w,
+          //         decoration: BoxDecoration(
+          //           color: AppColor.primaryColor,
+          //           borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), bottomLeft: Radius.circular(10.r)),
+          //         ),
+          //         child: Center(child: SvgPicture.asset("assets/icons/gift_icon.svg"),),
+          //       ),
+          //       Padding(
+          //         padding: EdgeInsets.symmetric(horizontal: 6.w,vertical: 8.h),
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Text("We have a Gift For You", style: CustomTextStyles.text14SemiBoldW600,),
+          //             Stack(
+          //               clipBehavior: Clip.none,
+          //               children: [
+          //                 Container(
+          //                   color: Colors.transparent,
+          //                     width: Get.width * 0.65,
+          //                     child: Text("Thanks for being part of our community! Enjoy something special.", style: CustomTextStyles.text12RegularW400.copyWith(color: Color(0xff777777)),)),
+          //                 Positioned(
+          //                   bottom: 40.h,
+          //                     right: 0.w,
+          //                     child: SvgPicture.asset("assets/icons/close_cross_icon.svg",height: 10.h,)),
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
