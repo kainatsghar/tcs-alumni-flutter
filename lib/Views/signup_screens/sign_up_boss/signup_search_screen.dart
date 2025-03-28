@@ -593,16 +593,31 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WidgetStyle.signUpName(title: 'Password*'),
-        TextFormField(
-          validator: (value) {
-            return value!.isEmpty ? 'Password is required' : null;
-          },
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(14),
-          ),
-          obscureText: seePassword,
-          controller: _passwordController,
-          decoration: WidgetStyle.passwordEyeDecoration(seeEye: seePassword, onPressed: updateEye),
+        Stack(
+          children: [
+            TextFormField(
+              validator: (value) {
+                return value!.isEmpty ? 'Password is required' : null;
+              },
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(14),
+              ),
+              obscureText: seePassword,
+              controller: _passwordController,
+              decoration: WidgetStyle.passwordDecorationS(),
+            ),
+            Positioned(
+              right: 10,
+              top: 5,
+              child: GestureDetector(
+                onTap: updateEye,
+                child: Icon(
+                   seePassword ? Icons.visibility_off : Icons.visibility,
+                  // color: showPass ? AppColor.black26 : AppColor.red,
+                ),
+              ),
+            ),
+          ],
         )
       ],
     );
@@ -614,21 +629,36 @@ class _BossSearchSignupViewState extends State<BossSearchSignupView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WidgetStyle.signUpName(title: 'Confirm Password*'),
-        TextFormField(
-          // 18.h,
-          validator: (value) {
-            return value!.isEmpty
-                ? 'Please confirm Password'
-                : value != _passwordController.text
-                ? 'Password does not match'
-                : null;
-          },
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(14),
-          ),
-          obscureText: showPass,
-          controller: _confirmPasswordController,
-          decoration: WidgetStyle.passwordEyeDecoration(seeEye: showPass, onPressed: toggle)
+        Stack(
+          children: [
+            TextFormField(
+              // 18.h,
+              validator: (value) {
+                return value!.isEmpty
+                    ? 'Please confirm Password'
+                    : value != _passwordController.text
+                    ? 'Password does not match'
+                    : null;
+              },
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(14),
+              ),
+              obscureText: showPass,
+              controller: _confirmPasswordController,
+              decoration: WidgetStyle.passwordDecorationS()
+            ),
+            Positioned(
+              right: 10,
+              top: 5,
+              child: GestureDetector(
+                onTap: toggle,
+                child: Icon(
+                  showPass ? Icons.visibility_off : Icons.visibility,
+                  // color: showPass ? AppColor.black26 : AppColor.red,
+                ),
+              ),
+            ),
+          ],
         )
       ],
     );

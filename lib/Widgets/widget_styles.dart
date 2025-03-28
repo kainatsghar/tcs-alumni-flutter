@@ -170,6 +170,23 @@ class WidgetStyle {
     );
   }
 
+  static InputDecoration passwordDecorationS() {
+    return InputDecoration(
+      errorStyle: TextStyle(fontSize: 12.sp),
+      prefixIconConstraints: const BoxConstraints(
+        minWidth: 15,
+        maxHeight: 30,
+      ),
+      contentPadding: EdgeInsets.symmetric(vertical: 6.h),
+      hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.greyshade400,),
+      hintText: '*******',
+      focusedBorder:  UnderlineInputBorder(
+        borderSide: BorderSide(color: AppColor.primaryColor),
+      ),
+      isDense: true,
+    );
+  }
+
   static InputDecoration passwordEyeDecoration({required bool seeEye, required VoidCallback onPressed}) {
     return InputDecoration(
       errorStyle: TextStyle(fontSize: 12.sp),

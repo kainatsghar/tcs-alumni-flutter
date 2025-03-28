@@ -69,8 +69,35 @@ class MessagingManager {
   }
 
   Future<String> getDeviceToken() async {
-    String? token = await firebaseMessaging.getToken();
-    return token??"Empty FCM Token";
+    try {
+      if (Platform.isIOS) {
+        String? apnsToken = await firebaseMessaging.getAPNSToken();
+        print("***APNS Token: $apnsToken");
+
+        if (apnsToken == null) {
+          await Future.delayed(const Duration(seconds: 3));
+          apnsToken = await firebaseMessaging.getAPNSToken();
+        }
+
+        if (apnsToken != null) {
+          await firebaseMessaging.subscribeToTopic("TCSALUMNI");
+        }
+
+        String? fcmToken = await firebaseMessaging.getToken();
+        print("***FCM Token: $fcmToken");
+        return fcmToken ?? "Empty FCM Token";
+      }
+      else {
+        String? fcmToken = await firebaseMessaging.getToken();
+        print("***FCM Token: $fcmToken");
+        return fcmToken ?? "Empty FCM Token";
+      }
+    } catch (err) {
+      print("***Error retrieving token: $err");
+      String? fallbackToken = await firebaseMessaging.getToken();
+      print("***Fallback FCM Token: $fallbackToken");
+      return fallbackToken ?? "Empty FCM Token";
+    }
   }
 
   firebaseOnMessage() {

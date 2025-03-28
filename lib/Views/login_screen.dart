@@ -867,6 +867,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final oauthCredential = OAuthProvider("apple.com").credential(
       idToken: appleCredential.identityToken,
       rawNonce: rawNonce,
+      accessToken: appleCredential.authorizationCode,
     );
     _handleSocialLogin(oauthCredential, 'apple');
   }
@@ -897,7 +898,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (userCredentials != null && userCredentials.user != null) {
       _callLoginCallWithSocialLogin(
           email: userCredentials.user?.email,
-          name: userCredentials.user?.displayName,
+          name: userCredentials.user?.displayName ?? userCredentials.user?.providerData.first.displayName,
           signInWith: loginWith);
     } else {
       print('user credential or user data is null');
