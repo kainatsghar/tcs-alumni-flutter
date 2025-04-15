@@ -17,6 +17,8 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:share/share.dart';
 
+import '../../utils/app_images.dart';
+
 class EventDetails extends StatefulWidget {
   final String? id;
   const EventDetails({Key? key, this.id}) : super(key: key);
@@ -169,6 +171,11 @@ class _EventDetailsState extends State<EventDetails> {
               fit: BoxFit.cover,
               width: double.infinity,
               imageUrl: _event.image ?? '',
+              errorWidget: (context, url, error) => const Image(
+                image: AssetImage(
+                  AppImages.noImage,
+                ),
+              ),
             ),
             // Image.asset(
             //   img,

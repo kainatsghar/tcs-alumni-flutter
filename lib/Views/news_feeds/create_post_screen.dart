@@ -242,6 +242,11 @@ class _CreatePostState extends State<CreatePost> {
                                                 CircularProgressIndicator(
                                                     value: downloadProgress
                                                         .progress),
+                                      errorWidget: (context, url, error) => const Image(
+                                        image: AssetImage(
+                                          AppImages.noImage,
+                                        ),
+                                      ),
                                           ),
                                   ),
                                 ),
@@ -434,6 +439,11 @@ class _CreatePostState extends State<CreatePost> {
                               width: 16.w,
                               imageUrl:
                                   _feelingController.feelingIcon.toString(),
+                        errorWidget: (context, url, error) => const Image(
+                          image: AssetImage(
+                            AppImages.noImage,
+                          ),
+                        ),
                             )
                           : const SizedBox(),
                     ),

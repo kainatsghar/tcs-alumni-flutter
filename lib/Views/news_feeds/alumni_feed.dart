@@ -1334,7 +1334,13 @@ class _AlumniFeedState extends State<AlumniFeed> {
                                           width: 16.w,
                                           imageUrl: _postsTimeLine[index]
                                               .feelingIcon ??
-                                              ''),
+                                              '',
+                                        errorWidget: (context, url, error) => const Image(
+                                          image: AssetImage(
+                                            AppImages.noImage,
+                                          ),
+                                        ),
+                                      ),
                                       Text(
                                         ' Feeling ',
                                         style: TextStyle(
@@ -2347,6 +2353,11 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   CachedNetworkImage(
                     fit: BoxFit.cover,
                     imageUrl: url,
+                    errorWidget: (context, url, error) => const Image(
+                      image: AssetImage(
+                        AppImages.noImage,
+                      ),
+                    ),
                   ),
                 ],
               ),

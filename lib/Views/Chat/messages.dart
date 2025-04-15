@@ -502,6 +502,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             height: 200.w,
                             width: 200.w,
                             fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => const Image(
+                              image: AssetImage(
+                                AppImages.noImage,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -732,6 +737,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           height: 50.w,
                           width: 100.w,
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -829,6 +839,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           height: 200.w,
                           width: 200.w,
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -1181,6 +1196,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     width: 200.w,
                     height: 200.w,
                     fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Image(
+                      image: AssetImage(
+                        AppImages.noImage,
+                      ),
+                    ),
                   ),
                 )
                     : type == 'video'
@@ -1429,6 +1449,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           height: 200.w,
                           width: 200.w,
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -1749,6 +1774,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           height: 50.w,
                           width: 100.w,
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -1805,6 +1835,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           height: 200.w,
                           width: 200.w,
                           fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -2333,6 +2368,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     width: 200.w,
                     height: 200.w,
                     fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Image(
+                      image: AssetImage(
+                        AppImages.noImage,
+                      ),
+                    ),
                   ),
                 )
                     : type == 'video'

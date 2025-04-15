@@ -109,7 +109,13 @@ class _BusinessSpotlightState extends State<BusinessSpotlight> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: CachedNetworkImage(
-                            imageUrl: busiList[i].banner ?? '')),
+                            imageUrl: busiList[i].banner ?? '',
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
+                        )),
                   ),
                 );
               }),

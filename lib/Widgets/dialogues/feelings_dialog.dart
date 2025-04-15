@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:iobm/controllers/feeling_controller.dart';
 import 'package:iobm/utils/app_color.dart';
 
+import '../../utils/app_images.dart';
+
 class FeelingsDialog extends StatefulWidget {
   const FeelingsDialog({Key? key}) : super(key: key);
 
@@ -70,6 +72,11 @@ class _FeelingsDialogState extends State<FeelingsDialog> {
                                         width: 25.w,
                                         imageUrl: _feelingController.feelingIcon
                                             .toString(),
+                                        errorWidget: (context, url, error) => const Image(
+                                          image: AssetImage(
+                                            AppImages.noImage,
+                                          ),
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -145,6 +152,11 @@ class _FeelingsDialogState extends State<FeelingsDialog> {
                                             imageUrl: _feelingController
                                                     .feelings[index].emoji ??
                                                 '',
+                                            errorWidget: (context, url, error) => const Image(
+                                              image: AssetImage(
+                                                AppImages.noImage,
+                                              ),
+                                            ),
                                           ),
                                           const SizedBox(
                                             width: 10,

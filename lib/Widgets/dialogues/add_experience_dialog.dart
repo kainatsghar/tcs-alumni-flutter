@@ -460,6 +460,11 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                   height: 25.w,
                   width: 25.w,
                   imageUrl: logoImage!,
+            errorWidget: (context, url, error) => const Image(
+              image: AssetImage(
+                AppImages.noImage,
+              ),
+            ),
                 ),
         ),
       ],

@@ -167,6 +167,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               ),
                             );
                           },
+                          errorWidget: (context, url, error) => const Image(
+                      image: AssetImage(
+                        AppImages.noImage,
+                      ),
+                    ),
                         ),
                 ),
                 GestureDetector(

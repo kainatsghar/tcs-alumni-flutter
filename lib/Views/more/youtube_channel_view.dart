@@ -106,6 +106,11 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
                         CachedNetworkImage(
                           imageUrl: _youtubeVideos[index].thumbnail ?? '',
                           width: 120.w,
+                          errorWidget: (context, url, error) => const Image(
+                            image: AssetImage(
+                              AppImages.noImage,
+                            ),
+                          ),
                         ),
                         Image.asset(AppImages.playButton, height: 30.h,width: 30.w,),
                       ],
