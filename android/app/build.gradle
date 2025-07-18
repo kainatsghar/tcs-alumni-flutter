@@ -27,9 +27,10 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 
-
 android {
-    compileSdkVersion 34
+    namespace 'com.viion.tcsalumniapp'
+    compileSdkVersion 35
+    buildToolsVersion "34.0.0"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,10 +49,9 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.viion.tcsalumniapp"
-        minSdkVersion 23
-        targetSdkVersion 34
+        minSdkVersion 24
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -59,18 +59,33 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'upload'
-            keyPassword 'viper@1000'
-            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
-            storePassword 'viper@1000'
+            storeFile file('E:/keys/tcs_alumni/key.jks') // ✅ correct
+            storePassword 'city@786'
+            keyAlias 'tcs_flutter'
+            keyPassword 'city@786'
         }
     }
+
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
     }
 
+    configurations.all {
+        resolutionStrategy {
+            // Force older compatible versions
+            force 'com.google.android.gms:play-services-measurement:21.5.0'
+            force 'com.google.android.gms:play-services-measurement-api:21.5.0'
+            force 'com.google.android.gms:play-services-measurement-impl:21.5.0'
+            force 'com.google.android.gms:play-services-measurement-base:21.5.0'
+            force 'com.google.android.gms:play-services-measurement-sdk:21.5.0'
+            force 'com.google.android.gms:play-services-measurement-sdk-api:21.5.0'
+
+            force 'androidx.appcompat:appcompat:1.4.2'
+            force 'androidx.appcompat:appcompat-resources:1.4.2'
+        }
+    }
 }
 
 flutter {
@@ -78,9 +93,453 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    // Use older Firebase BOM compatible with Kotlin 1.8
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'  // Update to latest version
-    implementation 'com.google.firebase:firebase-core:19.0.0'  // For Firebase
+
+    // Use compatible location services
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    // Keep your AppCompat versions
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat-resources:1.4.2'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//
+//def flutterRoot = localProperties.getProperty('flutter.sdk')
+//if (flutterRoot == null) {
+//    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+//}
+//
+//def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+//if (flutterVersionCode == null) {
+//    flutterVersionCode = '1'
+//}
+//
+//def flutterVersionName = localProperties.getProperty('flutter.versionName')
+//if (flutterVersionName == null) {
+//    flutterVersionName = '1.0'
+//}
+//
+//apply plugin: 'com.android.application'
+//apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'kotlin-android'
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//
+//
+//android {
+//    namespace 'com.viion.tcsalumniapp'
+//    compileSdkVersion 34
+//    buildToolsVersion "34.0.0"  // Add this line if missing
+//
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//    lintOptions {
+//        checkReleaseBuilds false
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//
+//    sourceSets {
+//        main.java.srcDirs += 'src/main/kotlin'
+//    }
+//
+//    defaultConfig {
+//        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+//        applicationId "com.viion.tcsalumniapp"
+//        minSdkVersion 24
+//        targetSdkVersion 34
+//        versionCode flutterVersionCode.toInteger()
+//        versionName flutterVersionName
+//        multiDexEnabled true
+//    }
+//
+//    signingConfigs {
+//        release {
+//            keyAlias 'tcs_flutter'
+//            keyPassword 'city@786'
+//            storeFile file('E:/keys/tcs_alumni/key.jks')
+//            storePassword 'city@786'
+//        }
+//    }
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//    configurations.all {
+//        resolutionStrategy {
+//            force 'com.google.android.gms:play-services-measurement-api:20.1.2'
+//            force 'com.google.android.gms:play-services-measurement-impl:20.1.2'
+//            force 'com.google.android.gms:play-services-measurement-base:20.1.2'
+//            force 'androidx.appcompat:appcompat:1.4.2'
+//            force 'androidx.appcompat:appcompat-resources:1.4.2'
+//        }
+//    }
+//
+//}
+//
+//flutter {
+//    source '../..'
+//}
+//dependencies {
+//    // Use older Firebase BOM that's compatible with your setup
+//    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.firebase:firebase-core:19.0.0'
+//
+//    // Use older location services
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//
+//    // Explicitly force older measurement services
+//    implementation 'com.google.android.gms:play-services-measurement-api:20.1.2'
+//    implementation 'com.google.android.gms:play-services-measurement-impl:20.1.2'
+//    implementation 'com.google.android.gms:play-services-measurement-base:20.1.2'
+//
+//    // Downgrade AppCompat to compatible version
+//    implementation 'androidx.appcompat:appcompat:1.4.2'
+//    implementation 'androidx.appcompat:appcompat-resources:1.4.2'
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//}
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'  // Update to latest version
+//    implementation 'com.google.firebase:firebase-core:19.0.0'  // For Firebase
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'androidx.appcompat:appcompat-resources:1.6.1'
+//}
+
+//plugins {
+//    id "com.android.application"
+//    id "org.jetbrains.kotlin.android"
+//    id "dev.flutter.flutter-gradle-plugin"
+//    id "com.google.gms.google-services"
+//}
+//
+//// Load local.properties
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//
+//// Get version info safely
+//def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: "1"
+//def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: "1.0.0"
+//
+//android {
+//    namespace 'com.viion.tcsalumniapp'
+//    compileSdk 35
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//
+//    defaultConfig {
+//        applicationId "com.viion.tcsalumniapp"
+//        minSdk 23
+//        targetSdk 35
+//        versionCode flutterVersionCode.toInteger()
+//        versionName flutterVersionName
+//        multiDexEnabled true
+//    }
+//
+//    signingConfigs {
+//        release {
+//            keyAlias 'upload'
+//            keyPassword 'viper@1000'
+//            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
+//            storePassword 'viper@1000'
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//}
+//
+//flutter {
+//    source '../..'
+//}
+//
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//    implementation "androidx.core:core-ktx:1.10.1"
+//}
+//plugins {
+//    id 'com.android.application'
+//    id 'org.jetbrains.kotlin.android'
+//    id 'com.google.gms.google-services'
+//}
+//
+//// Load local.properties
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//
+//// Get Flutter SDK path
+//def flutterRoot = localProperties.getProperty('flutter.sdk')
+//if (flutterRoot == null) {
+//    throw new GradleException("Flutter SDK not found. Make sure 'flutter.sdk' is set in local.properties.")
+//}
+//
+//// Get version info safely
+//def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: "1"
+//def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: "1.0.0"
+//
+//// Apply flutter plugin (traditional way)
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//
+//android {
+//    namespace 'com.viion.tcsalumniapp'
+//    compileSdk 34
+//
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//
+//    defaultConfig {
+//        applicationId "com.viion.tcsalumniapp"
+//        minSdk 23
+//        targetSdk 34
+//        versionCode flutterVersionCode.toInteger()
+//        versionName flutterVersionName
+//        multiDexEnabled true
+//    }
+//
+//    signingConfigs {
+//        release {
+//            keyAlias 'upload'
+//            keyPassword 'viper@1000'
+//            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
+//            storePassword 'viper@1000'
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//}
+//
+//flutter {
+//    source '../..'
+//}
+//
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "androidx.core:core-ktx:1.9.0"
+//}
+//plugins {
+//    id 'com.android.application'
+//    id 'org.jetbrains.kotlin.android'
+//    id 'com.google.gms.google-services'
+//    id 'dev.flutter.flutter-gradle-plugin'
+//}
+//
+//
+//// Load local.properties
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//
+////// Get Flutter SDK path
+////def flutterRoot = localProperties.getProperty('flutter.sdk')
+////if (flutterRoot == null) {
+////    throw new GradleException("Flutter SDK not found. Make sure 'flutter.sdk' is set in local.properties.")
+////}
+////// ✅ ✅ ✅ Add this line right here:
+////apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//
+//// Get version info safely
+//// Get version info safely
+//def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: "1"
+//def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: "1.0.0"
+//
+//// Apply flutter plugin (legacy way)
+////apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+////apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//
+//
+//android {
+//    namespace 'com.viion.tcsalumniapp'
+//    compileSdkVersion 34
+//
+//    compileOptions {
+//            sourceCompatibility JavaVersion.VERSION_1_8
+//            targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//
+//    defaultConfig {
+//        applicationId "com.viion.tcsalumniapp"
+//        minSdkVersion 23
+//        targetSdkVersion 35
+//        versionCode flutterVersionCode.toInteger()
+//        versionName flutterVersionName
+//        multiDexEnabled true
+//    }
+//
+//    signingConfigs {
+//        release {
+//            keyAlias 'upload'
+//            keyPassword 'viper@1000'
+//            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
+//            storePassword 'viper@1000'
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//
+//    sourceSets {
+//        main.java.srcDirs += 'src/main/kotlin'
+//    }
+//}
+//flutter {
+//    source '../..'
+//}
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "androidx.core:core-ktx:1.9.0"
+//
+//    // ✅ This makes Flutter Android embedding available
+//    //    implementation project(':flutter')
+//}
+
+
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//    implementation 'com.google.firebase:firebase-core:19.0.0'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//}
+
+//// 🧩 Apply necessary plugins
+//apply plugin: "com.android.application"
+//apply plugin: "org.jetbrains.kotlin.android"
+//apply plugin: "com.google.gms.google-services"
+//
+//// ✅ Load local.properties file
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//// ✅ Get flutter SDK path
+//def flutterRoot = localProperties.getProperty('flutter.sdk')
+//if (flutterRoot == null) {
+//    throw new GradleException("Flutter SDK not found. Make sure 'flutter.sdk' is set in local.properties.")
+//}
+//// ✅ Apply Flutter's Gradle plugin
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//
+//
+//android {
+//    compileSdkVersion 34
+//
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//
+//    defaultConfig {
+//        applicationId "com.viion.tcsalumniapp"
+//        minSdkVersion 23
+//        targetSdkVersion 35
+//        versionCode 30
+//        versionName 1.0.22
+//        multiDexEnabled true
+//    }
+//
+//    signingConfigs {
+//        release {
+//            keyAlias 'upload'
+//            keyPassword 'viper@1000'
+//            storeFile file('C:/Users/Tayyab/Downloads/All Keystores/TCS Alumni/upload-keystore.jks')
+//            storePassword 'viper@1000'
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//
+//    sourceSets {
+//        main.java.srcDirs += 'src/main/kotlin'
+//    }
+//}
+//
+//flutter {
+//    source '../..'
+//}
+//
+//dependencies {
+//    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//    implementation 'com.google.firebase:firebase-core:19.0.0'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//}
+//
+//

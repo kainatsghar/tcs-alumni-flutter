@@ -8,7 +8,7 @@
 
 import 'package:audio_session/audio_session_web.dart';
 import 'package:cloud_firestore_web/cloud_firestore_web.dart';
-import 'package:connectivity_plus_web/connectivity_plus_web.dart';
+// import 'package:connectivity_plus_web/connectivity_plus_web.dart';
 // import 'package:device_info_plus_web/device_info_plus_web.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
@@ -37,7 +37,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 void registerPlugins(Registrar registrar) {
   AudioSessionWeb.registerWith(registrar);
   FirebaseFirestoreWeb.registerWith(registrar);
-  ConnectivityPlusPlugin.registerWith(registrar);
+  // ConnectivityPlusPlugin.registerWith(registrar);
   // DeviceInfoPlusPlugin.registerWith(registrar);
   FilePickerWeb.registerWith(registrar);
   FirebaseAuthWeb.registerWith(registrar);

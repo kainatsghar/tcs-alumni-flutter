@@ -30,15 +30,12 @@ class MyHttpoverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   versionCode = packageInfo.version;
   packageName = packageInfo.packageName;
   preferencesFromMain = await SharedPreferences.getInstance();
-
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
@@ -47,7 +44,6 @@ void main() async {
   if(!kDebugMode){
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
-
   //region Firebase Notification
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   // var token =  await messaging.getToken();

@@ -45,7 +45,8 @@ class MessagingManager {
       }
     }
     else {
-      AppSettings.openNotificationSettings();
+      AppSettings.openAppSettings(type: AppSettingsType.notification);
+      // AppSettings.openNotificationSettings();
     }
 
   }
