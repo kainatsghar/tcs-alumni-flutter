@@ -29,8 +29,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace 'com.viion.tcsalumniapp'
-    compileSdkVersion 35
-    buildToolsVersion "34.0.0"
+    compileSdkVersion 34
+//    buildToolsVersion "34.0.0"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -59,10 +59,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('E:/keys/tcs_alumni/key.jks') // ✅ correct
-            storePassword 'city@786'
-            keyAlias 'tcs_flutter'
-            keyPassword 'city@786'
+            storeFile file('E:/keys/new_tcs_alumni/upload-keystore.jks')
+            storePassword 'viper@1000'
+            keyAlias 'upload'
+            keyPassword 'viper@1000'
         }
     }
 
@@ -71,7 +71,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
     configurations.all {
         resolutionStrategy {
             // Force older compatible versions
@@ -99,6 +98,7 @@ dependencies {
 
     // Use compatible location services
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0' // 👈 Required for Google Sign-In
 
     // Keep your AppCompat versions
     implementation 'androidx.appcompat:appcompat:1.4.2'
