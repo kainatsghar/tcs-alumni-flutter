@@ -15,7 +15,8 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
-import 'package:share/share.dart';
+// import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../utils/app_images.dart';
 
@@ -297,6 +298,14 @@ class _EventDetailsState extends State<EventDetails> {
               ),
             ),
             GestureDetector(
+              // onTap: () {
+              //   Share.share(
+              //       "Admin created an event at DOW Alumini\n"
+              //           "Title: ${_event.title}\n"
+              //           "Description: ${_event.description}\n"
+              //           "Start At: ${_event.startTime}${_event.startDate}"
+              //   );
+              // },
               onTap: () {
                 if (Platform.isAndroid) {
                   Share.share(

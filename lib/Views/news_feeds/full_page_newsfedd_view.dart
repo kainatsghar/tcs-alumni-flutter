@@ -13,7 +13,7 @@ import 'package:iobm/utils/app_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:readmore/readmore.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -317,7 +317,7 @@ class _FullPostScreenState extends State<FullPostScreen> {
                           setState(() {
                             isLoading = false;
                           });
-                          await Share.shareFiles([path]);
+                          // await Share.shareFiles([path]);
                         },
                         child: Container(
                           color: Colors.transparent,

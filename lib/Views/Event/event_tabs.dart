@@ -20,7 +20,7 @@ import 'package:iobm/utils/app_constants.dart';
 import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
-import 'package:share/share.dart';
+// import 'package:share/share.dart';
 
 import '../../networkcalls/response_models/event_detail_entity.dart';
 

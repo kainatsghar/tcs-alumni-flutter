@@ -53,7 +53,7 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/app_utils.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:readmore/readmore.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../utils/text_styles.dart';
 
