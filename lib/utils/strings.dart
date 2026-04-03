@@ -7,16 +7,22 @@ class Strings {
   static const String event = 'Event';
   static const String events = 'Events';
   static const String chat = 'Chat';
+  static const String call = 'Call';
   static const String home = 'Home';
   static const String more = 'More';
   static String alumni = AppConstants.appName == 'TLE' ? 'Users' : 'Alumni';
   static const String services = "Services";
+  static const String bookAppointment = "Book Appointment";
+  static const String overview = "Overview";
+  static const String servicesOffered = "Services Offered";
+  static const String CountriesWeCover = "Countries We Cover";
 
   //more screen
   static const String myConnections = 'My Connections';
   static const String connections = 'Connections';
   static const String invitations = 'Invitations';
   static const String spotlight = 'Spotlight';
+  static const String consultancy = 'Consultancy';
   static const String featuredMembers = 'Featured Members';
   static const String businessspotlight = 'Featured Business';
   static const String businessdirectory = 'Business Directory';
@@ -99,4 +105,13 @@ class Strings {
 
   static const String upload = 'Upload';
   static const String noCsrFound = 'No CSR Found';
+
+  static const String educationPartners = 'Education Partners';
+  static const String volunteeringPartners = 'Volunteering Partners';
+  static const String partners = 'Partners';
+  static const String viewDetails = 'View Details';
+  static const String contact = 'Contact';
+  static const String cause = 'Cause';
+  static const String location = 'Location';
+  static const String reviews = 'Reviews';
 }
