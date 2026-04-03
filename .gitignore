@@ -22,6 +22,9 @@ dist/
 # Maven
 target/
 dist/
+dart_tool/
+build/
+
 
 # JetBrains IDE
 .idea/
