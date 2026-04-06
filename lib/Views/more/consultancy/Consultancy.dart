@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iobm/Views/more/consultancy/volunteeringPartnerDetails.dart';
 import '../../../controllers/consultancyController.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/strings.dart';
@@ -298,7 +299,7 @@ class Consultancy extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () => Get.to(
-                      () => const ConsultancyDetailScreen(),
+                      () => const Volunteeringpartnerdetails(),
                   arguments: partner,
                 ),
                 style: ElevatedButton.styleFrom(

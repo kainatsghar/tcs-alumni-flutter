@@ -232,29 +232,6 @@ class ConsultancyDetailScreen extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
 
-          // Book Appointment Button
-          Expanded(
-            flex: 2,
-            child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.calendar_month_outlined,
-                  size: 16.sp, color: Colors.white),
-              label: Text(
-                Strings.bookAppointment,
-                style: CustomTextStyles.text12SemiBoldW600.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 12.h),
-                elevation: 0,
-              ),
-            ),
-          ),
         ],
       ),
     );

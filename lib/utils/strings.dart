@@ -114,4 +114,5 @@ class Strings {
   static const String cause = 'Cause';
   static const String location = 'Location';
   static const String reviews = 'Reviews';
+  static const String focus = 'Focus';
 }
