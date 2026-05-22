@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:iobm/Views/bottom_navigationbar.dart';
+import 'package:iobm/Views/privac_&_policy.dart';
 import 'package:iobm/Views/signup_screens/otp_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as fb;
 import 'package:iobm/Views/signup_screens/sign_up_boss/signup_search_screen.dart';
@@ -611,7 +612,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ..onTap = () {
                     setState(
                           () {
-                        _launched = _launchInBrowser(toLaunch!);
+                            Get.to(()=>PrivacyPolicyPage());
+                        // _launched = _launchInBrowser(toLaunch!);
                       },
                     );
                   },
@@ -770,14 +772,16 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       else if (loginEntity.success == -1) {
         print('email $email');
-        Get.to(
-              () => BossSearchSignupView(
-            name: name,
-            password: password,
-            loginWith: loginWith,
-            email: email,
-          ),
-        );
+        UIHelper.showErrorAlert(context, loginEntity.message, action: () {
+          Get.to(
+            () => BossSearchSignupView(
+              name: name,
+              password: password,
+              loginWith: loginWith,
+              email: email,
+            ),
+          );
+        });
       }
     }
   }
@@ -822,25 +826,38 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       FirebaseAuth.instance.signOut();
     }
-    // Trigger the sign-in flow
-    final fb.LoginResult result = await fb.FacebookAuth.instance.login(permissions: ["openid", "public_profile", "email"]);
-    final userData = await fb.FacebookAuth.instance.getUserData();
-    print("Result: ${result.accessToken?.tokenString}");
-    // print("Result: ${result.accessToken?.grantedPermissions}");
-    print("FacebookUserData: $userData");
+    // Ensure previous Facebook session is cleared
+    await fb.FacebookAuth.instance.logOut();
 
-    if (result.accessToken != null) {
-      // Create a credential from the access token
+    // Trigger the sign-in flow with webOnly behavior to force a popup dialog
+    final fb.LoginResult result = await fb.FacebookAuth.instance.login(
+      permissions: ["public_profile", "email"],
+      loginBehavior: fb.LoginBehavior.webOnly,
+    );
 
+    if (result.status == fb.LoginStatus.success) {
+      final userData = await fb.FacebookAuth.instance.getUserData();
+      print("Result: ${result.accessToken?.tokenString}");
+      print("FacebookUserData: $userData");
 
-      final facebookAuthCredential =
-      FacebookAuthProvider.credential(result.accessToken!.tokenString);
-      _handleSocialLogin(facebookAuthCredential, 'facebook');
-    }
-    else {
+      if (result.accessToken != null) {
+        // Create a credential from the access token
+        final facebookAuthCredential =
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+        _handleSocialLogin(facebookAuthCredential, 'facebook');
+      } else {
+        UIHelper.showErrorAlert(context,
+            'Unable to fetch Facebook access token. Please try again');
+      }
+    } else if (result.status == fb.LoginStatus.cancelled) {
+      debugPrint('Facebook login cancelled by user');
+    } else if (result.status == fb.LoginStatus.failed) {
+      UIHelper.showErrorAlert(
+          context, result.message ?? 'Facebook login failed. Please try again');
+      debugPrint('Facebook login failed: ${result.message}');
+    } else {
       UIHelper.showErrorAlert(context,
           'Unable to fetch Facebook account details. Please try again');
-      debugPrint('${result.message}');
     }
   }
 

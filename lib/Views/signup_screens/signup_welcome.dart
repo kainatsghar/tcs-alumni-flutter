@@ -478,14 +478,16 @@ class _SignupWelcomeState extends State<SignupWelcome> {
         /// **************************************
         /// Boss Signup
         print('email $email');
-        Get.to(
-              () => BossSearchSignupView(
-            name: name,
-            password: password,
-            loginWith: loginWith,
-            email: email,
-          ),
-        );
+        UIHelper.showErrorAlert(context, loginEntity.message, action: () {
+          Get.to(
+            () => BossSearchSignupView(
+              name: name,
+              password: password,
+              loginWith: loginWith,
+              email: email,
+            ),
+          );
+        });
         /// **************************************
         /// IOBM Signup
         // Get.to(
@@ -546,18 +548,34 @@ class _SignupWelcomeState extends State<SignupWelcome> {
     if (user != null) {
       FirebaseAuth.instance.signOut();
     }
-    // Trigger the sign-in flow
-    final fb.LoginResult result = await fb.FacebookAuth.instance.login();
+    // Ensure previous Facebook session is cleared
+    await fb.FacebookAuth.instance.logOut();
 
-    if (result.accessToken != null) {
-      // Create a credential from the access token
-      final facebookAuthCredential =
-      FacebookAuthProvider.credential(result.accessToken!.tokenString);
-      _handleSocialLogin(facebookAuthCredential, 'facebook');
+    // Trigger the sign-in flow with webOnly behavior to force a popup dialog
+    final fb.LoginResult result = await fb.FacebookAuth.instance.login(
+      permissions: ["public_profile", "email"],
+      loginBehavior: fb.LoginBehavior.webOnly,
+    );
+
+    if (result.status == fb.LoginStatus.success) {
+      if (result.accessToken != null) {
+        // Create a credential from the access token
+        final facebookAuthCredential =
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+        _handleSocialLogin(facebookAuthCredential, 'facebook');
+      } else {
+        UIHelper.showErrorAlert(context,
+            'Unable to fetch Facebook access token. Please try again');
+      }
+    } else if (result.status == fb.LoginStatus.cancelled) {
+      debugPrint('Facebook login cancelled by user');
+    } else if (result.status == fb.LoginStatus.failed) {
+      UIHelper.showErrorAlert(
+          context, result.message ?? 'Facebook login failed. Please try again');
+      debugPrint('Facebook login failed: ${result.message}');
     } else {
       UIHelper.showErrorAlert(context,
           'Unable to fetch Facebook account details. Please try again');
-      debugPrint('${result.message}');
     }
   }
 

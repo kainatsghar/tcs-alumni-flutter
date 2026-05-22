@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "iobm",
-      "version": "1.0.24+32",
+      "version": "1.0.25+35",
       "dependencies": [
         "app_settings",
         "audioplayers",

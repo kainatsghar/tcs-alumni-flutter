@@ -380,6 +380,7 @@ class _OTPDialogState extends State<OTPDialog> {
       "forgot": widget.check == "forget" ? "1" : "0"
     };
     ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> respone: ${apiResponse}');
     UIHelper.hideApiCallingAlert(context);
     if(apiResponse.done ?? false){
       dynamic otpStatus = jsonDecode(apiResponse.responseString??"")["otp"] ?? "";

@@ -251,6 +251,10 @@ class _OtpScreenState extends State<OtpScreen> {
       "forgot": widget.check == "forget" ? "1" : "0"
     };
     ApiResponse apiResponse = await NetworkConfig.postWebCall(url, map);
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> respone: ${apiResponse.done}');
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> respone: ${apiResponse.errorMsg}');
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> respone: ${apiResponse.responseString}');
+
     UIHelper.hideApiCallingAlert(context);
     if(apiResponse.done ?? false){
       dynamic otpStatus = jsonDecode(apiResponse.responseString??"")["otp"] ?? "";
