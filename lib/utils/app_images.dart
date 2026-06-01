@@ -67,6 +67,7 @@ class AppImages {
   static const String postjobpng = 'assets/icons/postjob.png';
   static const String campusicon = 'assets/icons/campusicon.png';
   static const String privacy = 'assets/icons/privacy.png';
+  static const String privacy_and_policy = 'assets/icons/privacy_and_policy.svg';
   static const String web = 'assets/icons/web.png';
   static const String workorder = 'assets/icons/workorder.png';
   static const String camera = 'assets/images/camera.png';

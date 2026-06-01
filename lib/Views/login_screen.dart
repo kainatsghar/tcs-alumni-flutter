@@ -451,7 +451,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
 
         ///FB login Button
-        GestureDetector(
+        InkWell(
+          splashColor: AppColor.greyshade200,
           onTap: () {
             _facebookSingIn();
           },
@@ -749,15 +750,26 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             await database.insertUser(allUser);
             _controller.getInfo();
-            if (loginEntity.success == 1) {
-              Get.offUntil(
-                  GetPageRoute(page: () => const BottomNavigationScreen()),
-                      (route) => false);
-            } else {
-              UIHelper.showOptionalUpdateAlert(
-                context,
-                loginEntity.message,
+            
+            if (loginWith != 'email') {
+              // Show the Success Dialog for Social Logins (Meta Compliance)
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) => LoginSuccessDialog(userName: AppConstants.userName),
               );
+            } else {
+              // Immediate navigation for standard email login
+              if (loginEntity.success == 1) {
+                Get.offUntil(
+                    GetPageRoute(page: () => const BottomNavigationScreen()),
+                        (route) => false);
+              } else {
+                UIHelper.showOptionalUpdateAlert(
+                  context,
+                  loginEntity.message,
+                );
+              }
             }
           }
           else {
@@ -984,5 +996,105 @@ int validateEmail(String value) {
     return 1;
   }
   return 0;
+}
+
+class LoginSuccessDialog extends StatefulWidget {
+  final String userName;
+  const LoginSuccessDialog({Key? key, required this.userName}) : super(key: key);
+
+  @override
+  State<LoginSuccessDialog> createState() => _LoginSuccessDialogState();
+}
+
+class _LoginSuccessDialogState extends State<LoginSuccessDialog> {
+  @override
+  void initState() {
+    super.initState();
+    // Auto-navigate after 2 seconds
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      if (mounted) {
+        Get.offUntil(
+          GetPageRoute(page: () => const BottomNavigationScreen()),
+          (route) => false,
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.all(24.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(20.r),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10.0,
+              offset: Offset(0.0, 10.0),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TweenAnimationBuilder(
+              duration: const Duration(milliseconds: 600),
+              tween: Tween<double>(begin: 0, end: 1),
+              curve: Curves.elasticOut,
+              builder: (context, double value, child) {
+                return Transform.scale(
+                  scale: value,
+                  child: Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      color: Colors.green,
+                      size: 60.w,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 24.h),
+            Text(
+              "Welcome Back, ${widget.userName.split(' ')[0]}!",
+              textAlign: TextAlign.center,
+              style: CustomTextStyles.text16SemiBoldW600.copyWith(
+                color: AppColor.primaryColor,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              "Securely logging you into\nCityzens Of The Future...",
+              textAlign: TextAlign.center,
+              style: CustomTextStyles.text12RegularW400.copyWith(
+                color: AppColor.greyshade700,
+              ),
+            ),
+            SizedBox(height: 30.h),
+            SizedBox(
+              width: 120.w,
+              child: LinearProgressIndicator(
+                backgroundColor: AppColor.primaryColor.withOpacity(0.1),
+                color: AppColor.primaryColor,
+                minHeight: 3.h,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 

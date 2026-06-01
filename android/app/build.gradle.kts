@@ -14,8 +14,8 @@ android {
         applicationId = "com.viion.tcsalumniapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 32
-        versionName = "1.0.24"
+        versionCode = 34
+        versionName = "1.0.25"
         multiDexEnabled = true
     }
 

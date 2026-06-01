@@ -27,6 +27,7 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../utils/text_styles.dart';
+import '../privac_&_policy.dart';
 import 'business_directory/business_directory_screen.dart';
 import 'consultancy/Consultancy.dart';
 import 'gallery/gallery_screen.dart';
@@ -221,6 +222,13 @@ class MoreScreenState extends State<MoreScreen> {
             MaterialPageRoute(builder: (_) => const GalleryScreen()),
           ),
         ),
+      // Privacy and polocy
+      MoreMenuItem(
+        title: Strings.privacyAndPolicy,
+        color: Colors.deepOrangeAccent,
+        svgAsset: AppImages.privacy_and_policy,
+        onTap: () => Get.to(()=>PrivacyPolicyPage()),
+      ),
 
       // Help
       MoreMenuItem(

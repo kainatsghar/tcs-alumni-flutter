@@ -115,4 +115,5 @@ class Strings {
   static const String location = 'Location';
   static const String reviews = 'Reviews';
   static const String focus = 'Focus';
+  static const String privacyAndPolicy = 'Privace & Policy';
 }
