@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:iobm/Views/login_screen.dart';
 import 'package:iobm/controllers/profile_controller.dart';
 import 'package:iobm/helper_classes/ui_helper.dart';
@@ -65,7 +67,9 @@ class _SplashScreenState extends State<SplashScreen> {
     }});
     _timer = Timer.periodic(
       const Duration(milliseconds: 2500),
+
       (timer) {
+        checkForUpdate();
         if (kDebugMode) {
           print(_count);
         }
@@ -86,7 +90,45 @@ class _SplashScreenState extends State<SplashScreen> {
     _timer?.cancel();
     super.dispose();
   }
+  Future<void> checkForUpdate() async {
+    if (Platform.isAndroid) {
+      try {
+        AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
 
+        print("================================");
+        print("Update Availability: ${updateInfo.updateAvailability}");
+        print("Immediate Allowed: ${updateInfo.immediateUpdateAllowed}");
+        print("Flexible Allowed: ${updateInfo.flexibleUpdateAllowed}");
+        print("Available Version Code: ${updateInfo.availableVersionCode}");
+        print("Install Status: ${updateInfo.installStatus}");
+        print("Package Name: ${updateInfo.packageName}");
+        print("================================");
+
+        if (updateInfo.updateAvailability ==
+            UpdateAvailability.updateAvailable) {
+
+          if (updateInfo.immediateUpdateAllowed) {
+
+            print("Immediate Update Triggered");
+
+            await InAppUpdate.performImmediateUpdate();
+
+          } else if (updateInfo.flexibleUpdateAllowed) {
+
+            print("Flexible Update Triggered");
+
+            await InAppUpdate.startFlexibleUpdate();
+            await InAppUpdate.completeFlexibleUpdate();
+          }
+        } else {
+          print("No Update Available");
+        }
+
+      } catch (e) {
+        print("In-App Update Error: $e");
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -646,6 +646,10 @@ class _LoginScreenState extends State<LoginScreen> {
       serial: device.serial,
       appVersion: device.appVersion,
     );
+    if (response is ErrorEntity) {
+      print("😂😂😂 Error Message: ${response.message}");
+      print("😂😂😂 Error Success: ${response.success}");
+    }
     print("😂😂😂= ${response.toString()}");
     UIHelper.hideApiCallingAlert(context);
     if (response is ErrorEntity) {
@@ -844,7 +848,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // Trigger the sign-in flow with webOnly behavior to force a popup dialog
     final fb.LoginResult result = await fb.FacebookAuth.instance.login(
       permissions: ["public_profile", "email"],
-      loginBehavior: fb.LoginBehavior.webOnly,
+      loginBehavior: fb.LoginBehavior.dialogOnly,
     );
 
     if (result.status == fb.LoginStatus.success) {
