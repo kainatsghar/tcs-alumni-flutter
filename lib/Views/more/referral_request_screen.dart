@@ -12,7 +12,10 @@ class ReferralRequestScreen extends StatefulWidget {
 class _ReferralRequestScreenState extends State<ReferralRequestScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           titleSpacing: 0,
@@ -40,6 +43,6 @@ class _ReferralRequestScreenState extends State<ReferralRequestScreen> {
             AssetImage('assets/icons/add.png'),
             color: AppColor.white,
           )),
-    );
+    ));
   }
 }

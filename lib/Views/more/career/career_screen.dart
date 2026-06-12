@@ -25,64 +25,68 @@ class CareerScreen extends StatefulWidget {
 class CareerScreenState extends State<CareerScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.careers),
-        context: context,
-      ),
-      body: Column(
-        children: [
-          _buildMoreItem(
-            title: 'Job Postings',
-            onClicked: () {
-              Get.to(() => JobOpening());
-            },
-          ),
-          Divider(
-            height: 1.h,
-          ),
-          AppConstants.appName == "BOSS"
-              ? _beconhouse(
-                  title: 'Beaconhouse Jobs',
-                  onClicked: () async {
-                    if (await canLaunch(
-                        "https://beaconhousetimes.net/careers")) {
-                      await launch(
-                        "https://beaconhousetimes.net/careers",
-                        forceSafariVC: false,
-                        forceWebView: false,
-                        headers: <String, String>{
-                          'my_header_key': 'my_header_value'
-                        },
-                      );
-                    } else {
-                      throw 'Could not launch ${AppConstants.privacyUrl}';
-                    }
-                  },
-                )
-              : const SizedBox(),
-          Divider(
-            height: 1.h,
-          ),
-          _postJob(
-            title: 'Post a Job',
-            onClicked: () {
-              Get.to(
-                () => const PostJobScreen(
-                  designation: "",
-                  company: "",
-                  dueDate: "",
-                  jobLink: "",
-                  jobID: "",
-                ),
-              );
-            },
-          ),
-          Divider(
-            height: 1.h,
-          ),
-          //JOb opening container
-        ],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.careers),
+          context: context,
+        ),
+        body: Column(
+          children: [
+            _buildMoreItem(
+              title: 'Job Postings',
+              onClicked: () {
+                Get.to(() => JobOpening());
+              },
+            ),
+            Divider(
+              height: 1.h,
+            ),
+            AppConstants.appName == "BOSS"
+                ? _beconhouse(
+                    title: 'Beaconhouse Jobs',
+                    onClicked: () async {
+                      if (await canLaunch(
+                          "https://beaconhousetimes.net/careers")) {
+                        await launch(
+                          "https://beaconhousetimes.net/careers",
+                          forceSafariVC: false,
+                          forceWebView: false,
+                          headers: <String, String>{
+                            'my_header_key': 'my_header_value'
+                          },
+                        );
+                      } else {
+                        throw 'Could not launch ${AppConstants.privacyUrl}';
+                      }
+                    },
+                  )
+                : const SizedBox(),
+            Divider(
+              height: 1.h,
+            ),
+            _postJob(
+              title: 'Post a Job',
+              onClicked: () {
+                Get.to(
+                  () => const PostJobScreen(
+                    designation: "",
+                    company: "",
+                    dueDate: "",
+                    jobLink: "",
+                    jobID: "",
+                  ),
+                );
+              },
+            ),
+            Divider(
+              height: 1.h,
+            ),
+            //JOb opening container
+          ],
+        ),
       ),
     );
   }

@@ -16,60 +16,64 @@ class Consultancy extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ConsultancyController());
 
-    return Scaffold(
-      backgroundColor: AppColor.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Get.back(),
-        ),
-        backgroundColor: AppColor.primaryColor,
-        centerTitle: true,
-        elevation: 0,
-        title: Text(
-          Strings.partners,
-          style: CustomTextStyles.text14SemiBoldW600.copyWith(
-            color: Colors.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        backgroundColor: AppColor.white,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Get.back(),
           ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.mark_email_unread_rounded,
+          backgroundColor: AppColor.primaryColor,
+          centerTitle: true,
+          elevation: 0,
+          title: Text(
+            Strings.partners,
+            style: CustomTextStyles.text14SemiBoldW600.copyWith(
               color: Colors.white,
             ),
-            onPressed: () {},
           ),
-          SizedBox(width: 4.w),
-        ],
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 10.h),
-          _buildTabBar(controller),
-          Expanded(
-            child: Obx(() {
-              final isEducation = controller.selectedTab.value == 0;
-              final partners = isEducation
-                  ? controller.educationPartners
-                  : controller.volunteeringPartners;
-              return SingleChildScrollView(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 12.h,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.mark_email_unread_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            SizedBox(width: 4.w),
+          ],
+        ),
+        body: Column(
+          children: [
+            SizedBox(height: 10.h),
+            _buildTabBar(controller),
+            Expanded(
+              child: Obx(() {
+                final isEducation = controller.selectedTab.value == 0;
+                final partners = isEducation
+                    ? controller.educationPartners
+                    : controller.volunteeringPartners;
+                return SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
+                    itemCount: partners.length,
+                    itemBuilder: (context, index) => isEducation
+                        ? _buildEducationCard(partners[index])
+                        : _buildVolunteerCard(partners[index]),
                   ),
-                  itemCount: partners.length,
-                  itemBuilder: (context, index) => isEducation
-                      ? _buildEducationCard(partners[index])
-                      : _buildVolunteerCard(partners[index]),
-                ),
-              );
-            }),
-          ),
-        ],
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

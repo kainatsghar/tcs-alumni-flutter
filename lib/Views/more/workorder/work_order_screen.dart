@@ -19,43 +19,47 @@ class WorkOrderScreen extends StatefulWidget {
 class _WorkOrderScreenState extends State<WorkOrderScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.workOrder),
-        context: context,
-      ),
-      body: Column(
-        children: [
-          _workOrderItem(
-            title: 'Work Orders',
-            onClicked: () {
-              Get.to(() => const WorkOrders());
-            },
-          ),
-          Divider(
-            height: 1.h,
-          ),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.workOrder),
+          context: context,
+        ),
+        body: Column(
+          children: [
+            _workOrderItem(
+              title: 'Work Orders',
+              onClicked: () {
+                Get.to(() => const WorkOrders());
+              },
+            ),
+            Divider(
+              height: 1.h,
+            ),
 
-          _workOrderItem(
-            title: 'Post Work Order',
-            onClicked: () {
-              Get.to(
-                () => const PostWorkOrder(
-                  designation: '',
-                  company: '',
-                  description: '',
-                  dueDate: '',
-                  workId: '',
-                  doc: '',
-                ),
-              );
-            },
-          ),
-          Divider(
-            height: 1.h,
-          ),
-          //JOb opening container
-        ],
+            _workOrderItem(
+              title: 'Post Work Order',
+              onClicked: () {
+                Get.to(
+                  () => const PostWorkOrder(
+                    designation: '',
+                    company: '',
+                    description: '',
+                    dueDate: '',
+                    workId: '',
+                    doc: '',
+                  ),
+                );
+              },
+            ),
+            Divider(
+              height: 1.h,
+            ),
+            //JOb opening container
+          ],
+        ),
       ),
     );
   }

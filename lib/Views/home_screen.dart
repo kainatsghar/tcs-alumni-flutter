@@ -42,7 +42,8 @@
 //   ];
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
+//     return SafeArea(
+
 //       appBar: MyAppBar(
 //         userID: '1',
 //         title: const Text('Alumni Feed'),

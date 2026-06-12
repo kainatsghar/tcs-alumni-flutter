@@ -15,94 +15,98 @@ class ConsultancyDetailScreen extends StatelessWidget {
     final controller = Get.find<ConsultancyController>();
     final PartnerModel partner = Get.arguments as PartnerModel;
 
-    return Scaffold(
-      backgroundColor: AppColor.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Get.back(),
-        ),
-        backgroundColor: AppColor.primaryColor,
-        centerTitle: true,
-        elevation: 0,
-        title: Text(
-          partner.name,
-          style: CustomTextStyles.text14SemiBoldW600.copyWith(
-            color: Colors.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        backgroundColor: AppColor.white,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Get.back(),
+          ),
+          backgroundColor: AppColor.primaryColor,
+          centerTitle: true,
+          elevation: 0,
+          title: Text(
+            partner.name,
+            style: CustomTextStyles.text14SemiBoldW600.copyWith(
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Overview Section
-            _buildSectionTitle(Strings.overview),
-            SizedBox(height: 10.h),
-            _buildCard(
-              child: Text(
-                partner.overview ?? 'No overview available.',
-                style: CustomTextStyles.text12RegularW400.copyWith(
-                  color: Colors.grey[700],
-                  height: 1.5,
-                ),
-              ),
-            ),
-            SizedBox(height: 20.h),
-
-            // Services Offered Section
-            if (partner.services != null && partner.services!.isNotEmpty) ...[
-              _buildSectionTitle(Strings.servicesOffered),
+        body: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Overview Section
+              _buildSectionTitle(Strings.overview),
               SizedBox(height: 10.h),
               _buildCard(
-                child: Column(
-                  children: partner.services!
-                      .asMap()
-                      .entries
+                child: Text(
+                  partner.overview ?? 'No overview available.',
+                  style: CustomTextStyles.text12RegularW400.copyWith(
+                    color: Colors.grey[700],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+
+              // Services Offered Section
+              if (partner.services != null && partner.services!.isNotEmpty) ...[
+                _buildSectionTitle(Strings.servicesOffered),
+                SizedBox(height: 10.h),
+                _buildCard(
+                  child: Column(
+                    children: partner.services!
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => Column(
+                        children: [
+                          _buildServiceTile(entry.value),
+                          if (entry.key < partner.services!.length - 1)
+                            Divider(
+                              height: 1,
+                              color: Colors.grey[200],
+                            ),
+                        ],
+                      ),
+                    )
+                        .toList(),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+              ],
+
+              // Countries We Cover Section
+              if(partner.tags.isNotEmpty)
+              _buildSectionTitle(Strings.CountriesWeCover),
+              SizedBox(height: 10.h),
+              if(partner.tags.isNotEmpty)
+              _buildCard(
+                child: Row(
+                  children: partner.tags
                       .map(
-                        (entry) => Column(
-                      children: [
-                        _buildServiceTile(entry.value),
-                        if (entry.key < partner.services!.length - 1)
-                          Divider(
-                            height: 1,
-                            color: Colors.grey[200],
-                          ),
-                      ],
+                        (flag) => Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: Text(
+                        flag,
+                        style: TextStyle(fontSize: 32.sp),
+                      ),
                     ),
                   )
                       .toList(),
                 ),
               ),
-              SizedBox(height: 20.h),
             ],
-
-            // Countries We Cover Section
-            if(partner.tags.isNotEmpty)
-            _buildSectionTitle(Strings.CountriesWeCover),
-            SizedBox(height: 10.h),
-            if(partner.tags.isNotEmpty)
-            _buildCard(
-              child: Row(
-                children: partner.tags
-                    .map(
-                      (flag) => Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: Text(
-                      flag,
-                      style: TextStyle(fontSize: 32.sp),
-                    ),
-                  ),
-                )
-                    .toList(),
-              ),
-            ),
-          ],
+          ),
         ),
+        bottomNavigationBar: _buildBottomBar(),
       ),
-      bottomNavigationBar: _buildBottomBar(),
     );
   }
 

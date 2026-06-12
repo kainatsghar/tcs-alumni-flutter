@@ -26,10 +26,13 @@ class _FeedBackState extends State<FeedBack> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: SecAppBar(title: const Text(Strings.feedback), context: context,),
       body: _form(),
-    );
+    ));
   }
 
   Widget _form() {

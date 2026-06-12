@@ -55,20 +55,24 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: SecAppBar(
-          title: const Text(Strings.businessdirectory),
-          context: context,
+    return SafeArea(
+        top: false,
+        bottom: true,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: SecAppBar(
+            title: const Text(Strings.businessdirectory),
+            context: context,
+          ),
+          body: dataFetched
+              ? _bodyContainer()
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
         ),
-        body: dataFetched
-            ? _bodyContainer()
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
       ),
     );
   }

@@ -109,7 +109,10 @@ class SuccessAlertWithAction extends StatefulWidget {
 class _SuccessAlertWithActionState extends State<SuccessAlertWithAction> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.transparent,
       body: GestureDetector(
         onTap: () {
@@ -189,6 +192,6 @@ class _SuccessAlertWithActionState extends State<SuccessAlertWithAction> {
           ),
         ),
       ),
-    );
+      ));
   }
 }

@@ -40,13 +40,16 @@ class SpotlightScreenState extends State<SpotlightScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: SecAppBar(
         title: const Text(Strings.spotlight),
         context: context,
       ),
       body: _aluminiList.isNotEmpty ? _bodyContainer() : _bodyWithNoUser(),
-    );
+    ));
   }
 
   Widget _bodyContainer() {

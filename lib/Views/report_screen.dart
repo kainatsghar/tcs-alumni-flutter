@@ -13,29 +13,33 @@ class ReportPostScreen extends StatefulWidget {
 class _ReportPostScreenState extends State<ReportPostScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomWidget.reportAppBar(
-          context: context,
-          title: "Report",
-          actionText: "Submit",
-          onSubmitPressed: () {
-            print("Report Submitted");
-          }),
-      body: Container(
-        padding: const EdgeInsets.all(15.0),
-        color: AppColor.white,
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: TextField(
-          style: const TextStyle(
-              // fontFamily: 'Nunito'
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: CustomWidget.reportAppBar(
+            context: context,
+            title: "Report",
+            actionText: "Submit",
+            onSubmitPressed: () {
+              print("Report Submitted");
+            }),
+        body: Container(
+          padding: const EdgeInsets.all(15.0),
+          color: AppColor.white,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: TextField(
+            style: const TextStyle(
+                // fontFamily: 'Nunito'
+            ),
+            decoration: InputDecoration.collapsed(
+                hintText: 'Write Some details here...',
+                hintStyle: TextStyle(
+                    // //Family: 'Nunito',
+                    fontSize: 15.sp)),
+            maxLines: 10,
           ),
-          decoration: InputDecoration.collapsed(
-              hintText: 'Write Some details here...',
-              hintStyle: TextStyle(
-                  // //Family: 'Nunito',
-                  fontSize: 15.sp)),
-          maxLines: 10,
         ),
       ),
     );

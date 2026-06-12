@@ -44,22 +44,26 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: const Text(Strings.events),
-        context: context,
-      ),
-      body: FutureBuilder(
-        future: _fetchData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _bodyColumn();
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: const Text(Strings.events),
+          context: context,
+        ),
+        body: FutureBuilder(
+          future: _fetchData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _bodyColumn();
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

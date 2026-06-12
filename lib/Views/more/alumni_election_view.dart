@@ -18,29 +18,33 @@ class AlumniElectionScreen extends StatefulWidget {
 class _AlumniElectionScreenState extends State<AlumniElectionScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.election),
-        context: context,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: SvgPicture.asset(
-              AppImages.nomiElection,
-              height: 180.h,
-              width: 180.w,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.election),
+          context: context,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: SvgPicture.asset(
+                AppImages.nomiElection,
+                height: 180.h,
+                width: 180.w,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Text(
-            "We are not accepting nomination at this point",
-            style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
-          ),
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            Text(
+              "We are not accepting nomination at this point",
+              style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.primaryColor,),
+            ),
+          ],
+        ),
       ),
     );
   }

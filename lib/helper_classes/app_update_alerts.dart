@@ -20,7 +20,10 @@ class OptionalUpdateAlertScreen extends StatefulWidget {
 class _OptionalUpdateAlertScreenState extends State<OptionalUpdateAlertScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.transparent,
       body: GestureDetector(
         onTap: () {},
@@ -122,7 +125,7 @@ class _OptionalUpdateAlertScreenState extends State<OptionalUpdateAlertScreen> {
           ),
         ),
       ),
-    );
+      ));
   }
 }
 
@@ -136,7 +139,10 @@ class ForceUpdateScreen extends StatefulWidget {
 class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.transparent,
       body: GestureDetector(
         onTap: () {},
@@ -217,6 +223,6 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

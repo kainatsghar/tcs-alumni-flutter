@@ -60,33 +60,37 @@ class JobOpeningState extends State<JobOpening> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColor.primaryColor,
-        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
-        ),
-        title: Text(
-          Strings.jobs,
-          style: CustomTextStyles.text16SemiBoldW600,
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 22.h,
-            color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColor.primaryColor,
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
+          ),
+          title: Text(
+            Strings.jobs,
+            style: CustomTextStyles.text16SemiBoldW600,
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
           ),
         ),
-      ),
-      body: DefaultTabController(
-        length: 2,
-        child: _bodyColumn(),
+        body: DefaultTabController(
+          length: 2,
+          child: _bodyColumn(),
+        ),
       ),
     );
   }

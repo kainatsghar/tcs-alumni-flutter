@@ -35,36 +35,40 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
-          backgroundColor: AppColor.primaryColor,
-          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              size: 22.h,
-              color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+          appBar: AppBar(
+            shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+            backgroundColor: AppColor.primaryColor,
+            titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 22.h,
+                color: AppColor.white,
+              ),
+            ),
+            title: Text(
+              Strings.aboutUs,
+              style: TextStyle(
+                // //Family: 'Nunito',
+                fontWeight: FontWeight.w600,
+                fontSize: ScreenUtil().setSp(15),
+              ),
+              softWrap: true,
             ),
           ),
-          title: Text(
-            Strings.aboutUs,
-            style: TextStyle(
-              // //Family: 'Nunito',
-              fontWeight: FontWeight.w600,
-              fontSize: ScreenUtil().setSp(15),
-            ),
-            softWrap: true,
-          ),
-        ),
-        body: dataFetched
-            ? _bodyContainer()
-            : const Center(
-                child: CircularProgressIndicator(),
-              ));
+          body: dataFetched
+              ? _bodyContainer()
+              : const Center(
+                  child: CircularProgressIndicator(),
+                )),
+    );
   }
 
   Widget _bodyContainer() {

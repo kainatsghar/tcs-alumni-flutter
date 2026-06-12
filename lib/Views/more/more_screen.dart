@@ -107,12 +107,12 @@ class MoreScreenState extends State<MoreScreen> {
       ),
 
       // Counselling / Consultancy
-      MoreMenuItem(
-        title: Strings.consultancy,
-        color: _red,
-        pngAsset: 'assets/images/consultant.png',
-        onTap: () => Get.to(() => const Consultancy()),
-      ),
+      // MoreMenuItem(
+      //   title: Strings.consultancy,
+      //   color: _red,
+      //   pngAsset: 'assets/images/consultant.png',
+      //   onTap: () => Get.to(() => const Consultancy()),
+      // ),
 
       // CSR
       if (AppConstants.appName != 'TLE')
@@ -304,23 +304,27 @@ class MoreScreenState extends State<MoreScreen> {
   Widget build(BuildContext context) {
     final items = _buildMenuItems(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F2F5),
-      appBar: MyAppBar(
-        title: const Text(Strings.more),
-        context: context,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
-        child: GridView.builder(
-          itemCount: items.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10.w,
-            mainAxisSpacing: 10.h,
-            childAspectRatio: 1.0,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF0F2F5),
+        appBar: MyAppBar(
+          title: const Text(Strings.more),
+          context: context,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+          child: GridView.builder(
+            itemCount: items.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10.w,
+              mainAxisSpacing: 10.h,
+              childAspectRatio: 1.0,
+            ),
+            itemBuilder: (context, index) => _buildGridItem(items[index]),
           ),
-          itemBuilder: (context, index) => _buildGridItem(items[index]),
         ),
       ),
     );

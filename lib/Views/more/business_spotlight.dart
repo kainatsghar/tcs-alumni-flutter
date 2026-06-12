@@ -35,12 +35,16 @@ class _BusinessSpotlightState extends State<BusinessSpotlight> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.businessspotlight),
-        context: context,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.businessspotlight),
+          context: context,
+        ),
+        body: _bodyContainer(),
       ),
-      body: _bodyContainer(),
     );
   }
 

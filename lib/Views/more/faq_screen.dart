@@ -32,31 +32,35 @@ class _FaqScreenState extends State<FaqScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: AppColor.primaryColor,
-          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              size: 22.h,
-              color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: AppColor.primaryColor,
+            titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 22.h,
+                color: AppColor.white,
+              ),
             ),
-          ),
-          shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
-          title: Text(
-            'FAQ\'s',
-            style: CustomTextStyles.text16SemiBoldW600,
-          )),
-      body: dataFetched
-          ? _body()
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+            shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+            title: Text(
+              'FAQ\'s',
+              style: CustomTextStyles.text16SemiBoldW600,
+            )),
+        body: dataFetched
+            ? _body()
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
     );
   }
 

@@ -55,56 +55,60 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        iconTheme:  IconThemeData(
-          color: AppColor.primaryColor, //change your color here
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          iconTheme:  IconThemeData(
+            color: AppColor.primaryColor, //change your color here
+          ),
+          backgroundColor: AppColor.transparent,
+          elevation: 0,
         ),
-        backgroundColor: AppColor.transparent,
-        elevation: 0,
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: AppColor.white,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 100.h,
-                ),
-                widget.check ==  'forget' ? SvgPicture.asset(AppImages.forgotPassword) : SvgPicture.asset(AppImages.signupOtp),
-                SizedBox(
-                  height: 35.h,
-                ),
-                Text(
-                  'Enter your registered email address to verify its you',
-                  style: WidgetStyle.forgotTExtStyle(
-                      fontSize: 14.0, color: AppColor.greyshade800),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 30.h),
-                otpTextEmailField(),
-                SizedBox(height: 40.h),
-                CustomWidget.myButton(
-                    isBorder: false,
-                    name: AppConstants.sendcode,
-                    // size: Size(110.w, 30.h),
-                    onClicked: () {
-                      if (fKey.currentState!.validate()) {
-                        sendEmailCode();
-                      }
+        resizeToAvoidBottomInset: true,
+        backgroundColor: AppColor.white,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 100.h,
+                  ),
+                  widget.check ==  'forget' ? SvgPicture.asset(AppImages.forgotPassword) : SvgPicture.asset(AppImages.signupOtp),
+                  SizedBox(
+                    height: 35.h,
+                  ),
+                  Text(
+                    'Enter your registered email address to verify its you',
+                    style: WidgetStyle.forgotTExtStyle(
+                        fontSize: 14.0, color: AppColor.greyshade800),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30.h),
+                  otpTextEmailField(),
+                  SizedBox(height: 40.h),
+                  CustomWidget.myButton(
+                      isBorder: false,
+                      name: AppConstants.sendcode,
+                      // size: Size(110.w, 30.h),
+                      onClicked: () {
+                        if (fKey.currentState!.validate()) {
+                          sendEmailCode();
+                        }
 
-                    }),
-                SizedBox(height: 40.h),
-                backToLogin(),
-              ],
+                      }),
+                  SizedBox(height: 40.h),
+                  backToLogin(),
+                ],
+              ),
             ),
           ),
         ),

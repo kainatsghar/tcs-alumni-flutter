@@ -83,49 +83,53 @@ class _ChatInvitationScreenState extends State<ChatInvitationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: check
-          ? FutureBuilder(
-              future: _fetchData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return _bodyContainer();
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppImages.noInternet,
-                      ),
-                      Text(
-                        'Something went wrong. Please try again later',
-                        style: CustomTextStyles.text14SemiBoldW600,
-                      ),
-                    ],
-                  );
-                }
-              },
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  AppImages.noInternet,
-                ),
-                Text(
-                  'No Network Connection',
-                  style: CustomTextStyles.text16SemiBoldW600,
-                ),
-              ],
-            ),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: _appBar(),
+        body: check
+            ? FutureBuilder(
+                future: _fetchData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return _bodyContainer();
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppImages.noInternet,
+                        ),
+                        Text(
+                          'Something went wrong. Please try again later',
+                          style: CustomTextStyles.text14SemiBoldW600,
+                        ),
+                      ],
+                    );
+                  }
+                },
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    AppImages.noInternet,
+                  ),
+                  Text(
+                    'No Network Connection',
+                    style: CustomTextStyles.text16SemiBoldW600,
+                  ),
+                ],
+              ),
+      ),
     );
   }
 

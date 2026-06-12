@@ -27,7 +27,10 @@ class _BossForgetPassScreenState extends State<BossForgetPassScreen> {
   bool wait = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0,
@@ -114,7 +117,7 @@ class _BossForgetPassScreenState extends State<BossForgetPassScreen> {
               : const SizedBox(),
         ],
       ),
-    );
+    ));
   }
 
   Future<void> submitForget() async {

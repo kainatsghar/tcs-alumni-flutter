@@ -22,7 +22,10 @@ class _CommentScreenState extends State<CommentScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
         appBar: CustomWidget.reportAppBar(
           actionText: "",
           title: "Comment",
@@ -62,7 +65,7 @@ class _CommentScreenState extends State<CommentScreen> {
               buildInput(),
             ],
           ),
-        ]));
+        ])));
   }
 
   comment({String? name, String? image, String? time, String? commentText}) {

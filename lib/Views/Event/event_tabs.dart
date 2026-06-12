@@ -65,40 +65,44 @@ class EventTabsState extends State<EventTabs> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.white,
-      appBar: AppBar(
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
-        ),
-        title: Text(
-          _event.title ?? '',
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(16),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        backgroundColor: AppColor.white,
+        appBar: AppBar(
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
           ),
+          title: Text(
+            _event.title ?? '',
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(16),
+            ),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: DefaultTabController(
-        length: 3,
-        child: Column(
-          children: [
-            tabWidget(),
-            Expanded(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    buildScreen(),
-                    EventAttendiesView(eventId: widget.eventId ?? '',),
-                    EventCommentScreen(eventId: widget.eventId ?? '')
-                  ],
+        body: DefaultTabController(
+          length: 3,
+          child: Column(
+            children: [
+              tabWidget(),
+              Expanded(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      buildScreen(),
+                      EventAttendiesView(eventId: widget.eventId ?? '',),
+                      EventCommentScreen(eventId: widget.eventId ?? '')
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

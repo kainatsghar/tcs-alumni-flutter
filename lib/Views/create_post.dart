@@ -19,7 +19,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: CustomWidget.editPostAppbar(
           context: context,
           onPressed: () {
@@ -53,7 +56,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   emailTextField() {

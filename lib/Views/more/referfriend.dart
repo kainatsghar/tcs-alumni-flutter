@@ -32,7 +32,10 @@ class _ReferFriendState extends State<ReferFriend> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: AppBar(
         title: Text(
           'Refer a Friend',
@@ -106,7 +109,7 @@ class _ReferFriendState extends State<ReferFriend> {
               : const SizedBox(),
         ],
       ),
-    );
+    ));
   }
 
   Future<void> referFriend() async {

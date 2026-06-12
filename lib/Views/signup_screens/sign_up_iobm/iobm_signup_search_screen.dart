@@ -154,7 +154,10 @@ class _IOBMSearchSignupViewState extends State<IOBMSearchSignupView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.white,
       appBar: AppBar(
         backgroundColor: AppColor.white,
@@ -173,7 +176,7 @@ class _IOBMSearchSignupViewState extends State<IOBMSearchSignupView> {
           }
         },
       ),
-    );
+    ));
   }
 
   Widget _bodyColumn() {

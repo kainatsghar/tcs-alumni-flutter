@@ -135,19 +135,23 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: Text(
-          Strings.alumnifeed,
-          style: CustomTextStyles.text16SemiBoldW600,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: Text(
+            Strings.alumnifeed,
+            style: CustomTextStyles.text16SemiBoldW600,
+          ),
+          context: context,
         ),
-        context: context,
+        body: dataFetched
+            ? _bodyContainer()
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
-      body: dataFetched
-          ? _bodyContainer()
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
     );
   }
 
@@ -2466,7 +2470,10 @@ class _AlumniFeedState extends State<AlumniFeed> {
   Widget _bodyColumn(id) {
     return StatefulBuilder(
       builder: (context, setState) {
-        return Scaffold(
+        return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2596,7 +2603,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
               ),
             ],
           ),
-        );
+        ));
       },
     );
   }

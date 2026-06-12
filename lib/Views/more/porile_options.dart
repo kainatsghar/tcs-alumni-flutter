@@ -31,7 +31,10 @@ class ProfileOptionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: SecAppBar(
         title: const Text(Strings.profile),
         context: context,
@@ -115,7 +118,7 @@ class ProfileOptionsView extends StatelessWidget {
           //jobDetailsWidget(title: 'My Profile'),
         ],
       ),
-    );
+    ));
   }
 
   _buildMoreItem({

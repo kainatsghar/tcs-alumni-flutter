@@ -40,7 +40,10 @@ class _UploadStoryState extends State<UploadStory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         systemOverlayStyle:
@@ -100,7 +103,7 @@ class _UploadStoryState extends State<UploadStory> {
         },
         child: const Icon(Icons.send_rounded),
       ),
-    );
+      ));
   }
 
   Future<void> addStory() async {

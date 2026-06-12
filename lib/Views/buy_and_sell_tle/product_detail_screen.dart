@@ -61,29 +61,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Product Detail',
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(16),
-            fontWeight: FontWeight.bold,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Product Detail',
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(16),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
-      body: FutureBuilder(
-        future: _fetchData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _bodyContainer();
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return _bodyContainer();
-          }
-        },
+        body: FutureBuilder(
+          future: _fetchData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _bodyContainer();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return _bodyContainer();
+            }
+          },
+        ),
       ),
     );
   }

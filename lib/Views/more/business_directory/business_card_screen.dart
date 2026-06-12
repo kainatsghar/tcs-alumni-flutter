@@ -14,42 +14,46 @@ class BusinessCardScreen extends StatefulWidget {
 class _BusinessCardScreenState extends State<BusinessCardScreen> {
   @override
   Widget build(BuildContext buildContext) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColor.primaryColor,
-          titleSpacing: 0,
-          shape: Border(bottom: BorderSide(color: Colors.yellow, width: 4.w)),
-          leading: const Padding(
-            padding:  EdgeInsets.all(8.0),
-            child: Image(image: AssetImage(AppImages.profile)),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColor.primaryColor,
+            titleSpacing: 0,
+            shape: Border(bottom: BorderSide(color: Colors.yellow, width: 4.w)),
+            leading: const Padding(
+              padding:  EdgeInsets.all(8.0),
+              child: Image(image: AssetImage(AppImages.profile)),
+            ),
+            centerTitle: true,
+            title: const Text('Digital Business Card',
+                style:
+                    TextStyle(
+                        // //Family: 'Nunito',
+                        fontWeight: FontWeight.w600
+                    ),
+            ),
           ),
-          centerTitle: true,
-          title: const Text('Digital Business Card',
-              style:
-                  TextStyle(
-                      // //Family: 'Nunito',
-                      fontWeight: FontWeight.w600
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _profile(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _button(Strings.shareInfo),
+                  SizedBox(
+                    width: 5.w,
                   ),
-          ),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _profile(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _button(Strings.shareInfo),
-                SizedBox(
-                  width: 5.w,
-                ),
-                _button(Strings.scanInfo),
-              ],
-            )
-          ],
-        ));
+                  _button(Strings.scanInfo),
+                ],
+              )
+            ],
+          )),
+    );
   }
 
   _profile() {

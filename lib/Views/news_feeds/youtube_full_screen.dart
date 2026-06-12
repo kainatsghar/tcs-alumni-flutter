@@ -25,7 +25,10 @@ class _YoutubeFullScreenLiveState extends State<YoutubeFullScreenLive> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.black,
       body: Stack(
         children: [
@@ -67,7 +70,7 @@ class _YoutubeFullScreenLiveState extends State<YoutubeFullScreenLive> {
               : const SizedBox()
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -82,7 +85,10 @@ class YoutubeFullScreen extends StatefulWidget {
 class _YoutubeFullScreenState extends State<YoutubeFullScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.black,
       body: Stack(
         children: [
@@ -123,6 +129,6 @@ class _YoutubeFullScreenState extends State<YoutubeFullScreen> {
               : const SizedBox()
         ],
       ),
-    );
+      )  );
   }
 }

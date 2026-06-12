@@ -26,27 +26,31 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
-          backgroundColor: AppColor.primaryColor,
-          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              size: 22.h,
-              color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+            centerTitle: true,
+            shape: Border(bottom: BorderSide(color: AppColor.secAppBar, width: 3.w)),
+            backgroundColor: AppColor.primaryColor,
+            titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 22.h,
+                color: AppColor.white,
+              ),
             ),
-          ),
-          title: Text(
-            'Privacy Policy',
-            style: CustomTextStyles.text16SemiBoldW600,
-          )),
-      body: WebViewWidget(controller: _controller),
+            title: Text(
+              'Privacy Policy',
+              style: CustomTextStyles.text16SemiBoldW600,
+            )),
+        body: WebViewWidget(controller: _controller),
+      ),
     );
   }
 

@@ -44,25 +44,29 @@ class _CsrScreenState extends State<CsrScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.csr),
-        context: context,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.csr),
+          context: context,
+        ),
+        body: dataFetched
+            ? Stack(
+                children: [
+                  Center(child: _bodyColumn()),
+                  wait
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const SizedBox(),
+                ],
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
-      body: dataFetched
-          ? Stack(
-              children: [
-                Center(child: _bodyColumn()),
-                wait
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : const SizedBox(),
-              ],
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
     );
   }
 

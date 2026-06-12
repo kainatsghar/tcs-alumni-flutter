@@ -44,37 +44,41 @@ class AvailDiscountState extends State<AvailDiscount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.discountpartners),
-        context: context,
-      ),
-      body: FutureBuilder(
-        future: dataFetch,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _bodyColumn();
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-      floatingActionButton: AnimatedOpacity(
-        duration: const Duration(milliseconds: 300),
-        opacity: showFab ? 1 : 0,
-        child: FloatingActionButton(
-          onPressed: () {
-            Get.to(
-              () => const OfferDiscount(),
-            );
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.discountpartners),
+          context: context,
+        ),
+        body: FutureBuilder(
+          future: dataFetch,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _bodyColumn();
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           },
-          backgroundColor: AppColor.primaryColor,
-          child: const Icon(
-            Icons.add,
-            size: 30,
-            color: AppColor.white,
+        ),
+        floatingActionButton: AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: showFab ? 1 : 0,
+          child: FloatingActionButton(
+            onPressed: () {
+              Get.to(
+                () => const OfferDiscount(),
+              );
+            },
+            backgroundColor: AppColor.primaryColor,
+            child: const Icon(
+              Icons.add,
+              size: 30,
+              color: AppColor.white,
+            ),
           ),
         ),
       ),

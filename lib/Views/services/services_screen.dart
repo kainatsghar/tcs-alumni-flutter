@@ -17,7 +17,10 @@ class ServicesScreen extends StatefulWidget {
 class _ServicesScreenState extends State<ServicesScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: MyAppBar(
         title: const Text(
           Strings.services,
@@ -40,7 +43,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
           //     .then((value) => setDataFromDB());
         },
       ),
-    );
+    ));
   }
 
   Widget _bodyContainer() {

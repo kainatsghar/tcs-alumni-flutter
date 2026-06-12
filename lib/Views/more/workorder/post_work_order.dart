@@ -86,90 +86,94 @@ class PostWorkOrderState extends State<PostWorkOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(Strings.postWorkOrder),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 22.h,
-            color: AppColor.white,
-          ),
-        ),
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
-        ),
-        centerTitle: true,
-        titleTextStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: ScreenUtil().setSp(18),
-        ),
-        actions: <Widget>[
-          widget.workId!.isNotEmpty ? GestureDetector(
-            onTap: () {
-              CustomWidget.successDialogue(context: context, icon: AppImages.delete, title: 'Want to Delete',
-                dText: 'Are you sure you want to delete work order?\nyou will not be able to recover them',
-                btnText: 'Cancel', workId: widget.workId,
-              );
-              // delWorkCall(widget.workId);
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(title: const Text(Strings.postWorkOrder),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
             },
-            child: Container(
-              color: AppColor.transparent,
-              child: Icon(
-                Icons.delete,
-                size: 22.h,
-              ),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
             ),
-          ) : Container(),
-          const SizedBox(
-            width: 10,
           ),
-        ],
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 10),
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: SingleChildScrollView(
-          child: Form(
-            key: fKey,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  titleRow(title: 'Designation', star: "*"),
-                  designationTextField(),
-                  SizedBox(height: 15.h),
-                  titleRow(title: 'Company', star: "*"),
-                  companyTextField(),
-                  SizedBox(height: 15.h),
-                  titleRow(title: 'Description', star: "*"),
-                  descriptionTextField(),
-                  SizedBox(height: 15.h),
-                  titleRow(title: 'Due Date', star: "*"),
-                  dueDateTextField(),
-                  SizedBox(height: 15.h),
-                  titleRow(title: 'Document', star: ""),
-                  documentTextField(),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Center(
-                    child: CustomWidget.myButton(
-                      name: widget.workId!.isEmpty ? Strings.postWorkOrder : Strings.updateWorkOrder,
-                      size: Size(120.w, 30.h),
-                      isBorder: false,
-                      onClicked: () {
-                        if (fKey.currentState!.validate()) {
-                          // postJob();
-                          filePath==null ? postWorkOrderN() : postWorkOrder() ;
-                        }
-                      },
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
+          ),
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: ScreenUtil().setSp(18),
+          ),
+          actions: <Widget>[
+            widget.workId!.isNotEmpty ? GestureDetector(
+              onTap: () {
+                CustomWidget.successDialogue(context: context, icon: AppImages.delete, title: 'Want to Delete',
+                  dText: 'Are you sure you want to delete work order?\nyou will not be able to recover them',
+                  btnText: 'Cancel', workId: widget.workId,
+                );
+                // delWorkCall(widget.workId);
+              },
+              child: Container(
+                color: AppColor.transparent,
+                child: Icon(
+                  Icons.delete,
+                  size: 22.h,
+                ),
+              ),
+            ) : Container(),
+            const SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+        body: Container(
+          margin: const EdgeInsets.only(top: 10),
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: SingleChildScrollView(
+            child: Form(
+              key: fKey,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    titleRow(title: 'Designation', star: "*"),
+                    designationTextField(),
+                    SizedBox(height: 15.h),
+                    titleRow(title: 'Company', star: "*"),
+                    companyTextField(),
+                    SizedBox(height: 15.h),
+                    titleRow(title: 'Description', star: "*"),
+                    descriptionTextField(),
+                    SizedBox(height: 15.h),
+                    titleRow(title: 'Due Date', star: "*"),
+                    dueDateTextField(),
+                    SizedBox(height: 15.h),
+                    titleRow(title: 'Document', star: ""),
+                    documentTextField(),
+                    SizedBox(
+                      height: 30.h,
                     ),
-                  ),
-                ]),
+                    Center(
+                      child: CustomWidget.myButton(
+                        name: widget.workId!.isEmpty ? Strings.postWorkOrder : Strings.updateWorkOrder,
+                        size: Size(120.w, 30.h),
+                        isBorder: false,
+                        onClicked: () {
+                          if (fKey.currentState!.validate()) {
+                            // postJob();
+                            filePath==null ? postWorkOrderN() : postWorkOrder() ;
+                          }
+                        },
+                      ),
+                    ),
+                  ]),
+            ),
           ),
         ),
       ),

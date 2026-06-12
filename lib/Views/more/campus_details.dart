@@ -40,54 +40,58 @@ class _CampusDetailsState extends State<CampusDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.universityName),
-        context: context,
-      ),
-      body: FutureBuilder(
-          future: dataFetch,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                children: [
-                  // SizedBox(
-                  //   height: 50.h,
-                  //   child: Center(
-                  //     child: Text(
-                  //       chapRlist.first.rChapterName ?? '',
-                  //       style: TextStyle(
-                  //           color: AppColor.primaryColor, fontSize: 17.sp),
-                  //     ),
-                  //   ),
-                  // ),
-                  const Divider(
-                    height: 1,
-                    color: AppColor.grey,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          _memberListViewWidget(),
-                          Container(
-                            height: 10,
-                            color: AppColor.greyshade100,
-                          ),
-                          _buildListViewWidget(),
-                        ],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.universityName),
+          context: context,
+        ),
+        body: FutureBuilder(
+            future: dataFetch,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Column(
+                  children: [
+                    // SizedBox(
+                    //   height: 50.h,
+                    //   child: Center(
+                    //     child: Text(
+                    //       chapRlist.first.rChapterName ?? '',
+                    //       style: TextStyle(
+                    //           color: AppColor.primaryColor, fontSize: 17.sp),
+                    //     ),
+                    //   ),
+                    // ),
+                    const Divider(
+                      height: 1,
+                      color: AppColor.grey,
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            _memberListViewWidget(),
+                            Container(
+                              height: 10,
+                              color: AppColor.greyshade100,
+                            ),
+                            _buildListViewWidget(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+      ),
     );
   }
 

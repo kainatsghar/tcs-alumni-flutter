@@ -50,17 +50,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColor.transparent,
-        iconTheme: const IconThemeData(
-          color: AppColor.black,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColor.transparent,
+          iconTheme: const IconThemeData(
+            color: AppColor.black,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: _bodyColumn(),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: _bodyColumn(),
+        ),
       ),
     );
   }

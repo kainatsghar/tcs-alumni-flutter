@@ -18,7 +18,10 @@ class _CheckinScreenState extends State<CheckinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: AppBar(
         title: Text(
           'Checkin',
@@ -103,7 +106,7 @@ class _CheckinScreenState extends State<CheckinScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _citiesBuilder() {

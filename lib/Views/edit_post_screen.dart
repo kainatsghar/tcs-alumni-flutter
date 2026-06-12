@@ -18,25 +18,29 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomWidget.editPostAppbar(
-          context: context,
-          onPressed: () {
-            print("Post edited...");
-          }),
-      body: Column(
-        children: [
-          _userprofile(img: widget.profileimage, name: widget.name),
-          Divider(
-            thickness: 1.w,
-          ),
-          _editPostBody(post: widget.post, postImage: widget.postImage),
-          Expanded(child: Container()),
-          Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: bottomWidget(),
-          )
-        ],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: CustomWidget.editPostAppbar(
+            context: context,
+            onPressed: () {
+              print("Post edited...");
+            }),
+        body: Column(
+          children: [
+            _userprofile(img: widget.profileimage, name: widget.name),
+            Divider(
+              thickness: 1.w,
+            ),
+            _editPostBody(post: widget.post, postImage: widget.postImage),
+            Expanded(child: Container()),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: bottomWidget(),
+            )
+          ],
+        ),
       ),
     );
   }

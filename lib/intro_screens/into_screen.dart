@@ -17,7 +17,10 @@ class IntroScreen extends StatelessWidget {
   IntroScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -163,6 +166,6 @@ class IntroScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+      )    );
   }
 }

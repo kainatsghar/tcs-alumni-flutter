@@ -28,7 +28,10 @@ class _FeelingsDialogState extends State<FeelingsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       backgroundColor: AppColor.transparent,
       body: Center(
         child: Material(
@@ -202,6 +205,6 @@ class _FeelingsDialogState extends State<FeelingsDialog> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

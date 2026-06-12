@@ -27,93 +27,97 @@ class OfferDiscountState extends State<OfferDiscount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: AppColor.primaryColor,
-        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 22.h,
-            color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: AppColor.primaryColor,
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
+          ),
+          title: Text(
+            Strings.offerediscount,
+            style: CustomTextStyles.text16SemiBoldW600,
+          ),
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
           ),
         ),
-        title: Text(
-          Strings.offerediscount,
-          style: CustomTextStyles.text16SemiBoldW600,
-        ),
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(15.0),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Form(
-            key: fKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 70,
-                ),
-                Text(
-                  'Please enter details of discount',
-                  style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                TextFormField(
-                  controller: _detailsController,
-                  style: CustomTextStyles.text12RegularW400,
-                  validator: (value) {
-                    return value!.isEmpty
-                        ? 'Please Enter Discount Information'
-                        : value.length < 30
-                            ? 'Discount information should be at least 30 characters '
-                            : null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Discount Details here',
-                    hintStyle: CustomTextStyles.text12RegularW400,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
-                    border: OutlineInputBorder(
-                      borderSide:
-                           BorderSide(color: AppColor.primaryColor),
-                      borderRadius: BorderRadius.circular(5.r),
-                    ),
-                    enabledBorder:  OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.primaryColor)),
-                    focusedBorder: OutlineInputBorder(
+        body: Container(
+          padding: const EdgeInsets.all(15.0),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Form(
+              key: fKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 70,
+                  ),
+                  Text(
+                    'Please enter details of discount',
+                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor,),
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  TextFormField(
+                    controller: _detailsController,
+                    style: CustomTextStyles.text12RegularW400,
+                    validator: (value) {
+                      return value!.isEmpty
+                          ? 'Please Enter Discount Information'
+                          : value.length < 30
+                              ? 'Discount information should be at least 30 characters '
+                              : null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Discount Details here',
+                      hintStyle: CustomTextStyles.text12RegularW400,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                      border: OutlineInputBorder(
                         borderSide:
                              BorderSide(color: AppColor.primaryColor),
-                        borderRadius: BorderRadius.circular(5.r)),
+                        borderRadius: BorderRadius.circular(5.r),
+                      ),
+                      enabledBorder:  OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColor.primaryColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                               BorderSide(color: AppColor.primaryColor),
+                          borderRadius: BorderRadius.circular(5.r)),
+                    ),
+                    maxLines: 8,
                   ),
-                  maxLines: 8,
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                CustomWidget.myButton(
-                  name: AppConstants.submit,
-                  isBorder: false,
-                  onClicked: () {
-                    FocusScope.of(context).unfocus();
-                    if (fKey.currentState!.validate()) {
-                      addDiscountDetails();
-                    }
-                  },
-                ),
-              ],
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  CustomWidget.myButton(
+                    name: AppConstants.submit,
+                    isBorder: false,
+                    onClicked: () {
+                      FocusScope.of(context).unfocus();
+                      if (fKey.currentState!.validate()) {
+                        addDiscountDetails();
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

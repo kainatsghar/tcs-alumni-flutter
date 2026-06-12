@@ -58,55 +58,59 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy Policy'),
-        backgroundColor: AppColor.primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 2,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reload',
-            onPressed: () {
-              _controller.reload();
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-          if (_isLoading)
-            Container(
-              color: Colors.white,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircularProgressIndicator(),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Loading Privacy Policy...',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Privacy Policy'),
+          backgroundColor: AppColor.primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              tooltip: 'Reload',
+              onPressed: () {
+                _controller.reload();
+              },
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_isLoading)
+              Container(
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Loading Privacy Policy...',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[700],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: LinearProgressIndicator(
-                        value: _loadingProgress,
-                        backgroundColor: Colors.grey[300],
-                        valueColor:  AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: LinearProgressIndicator(
+                          value: _loadingProgress,
+                          backgroundColor: Colors.grey[300],
+                          valueColor:  AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -31,57 +31,61 @@ class _AlumniCardScreenState extends State<AlumniCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Alumni Card',
-          style: TextStyle(color: AppColor.white),
-        ),
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
-        ),
-        titleTextStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: ScreenUtil().setSp(18),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  side: const BorderSide(width: 1, color: AppColor.white)),
-              onPressed: () {
-                print('you applied bro');
-                cardApplyCall();
-              },
-              child: const Text(
-                'Apply for Card',
-                style: TextStyle(color: AppColor.white),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Alumni Card',
+            style: TextStyle(color: AppColor.white),
+          ),
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 3.w),
+          ),
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: ScreenUtil().setSp(18),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    side: const BorderSide(width: 1, color: AppColor.white)),
+                onPressed: () {
+                  print('you applied bro');
+                  cardApplyCall();
+                },
+                child: const Text(
+                  'Apply for Card',
+                  style: TextStyle(color: AppColor.white),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        body: SizedBox(
+          // child: SfPdfViewer.network(AppConstants.pdf),
+        ),
+        // body: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   // child: Container(
+        //   //   child: Column(
+        //   //     crossAxisAlignment: CrossAxisAlignment.start,
+        //   //     children: [
+        //   //       Text('IoBM Alumni Card From (Responses)',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600),),
+        //   //       SizedBox(height: 3.h,),
+        //   //       Text('Welcome back to IoBM!',style: TextStyle(fontSize: 13.sp,color: AppColor.grey),),
+        //   //       SizedBox(height: 10.h,),
+        //   //       Text('Your Alumni Card will be given you access to:',style: TextStyle(fontSize: 13.sp,color: AppColor.grey),),
+        //   //
+        //   //     ],
+        //   //   ),
+        //   // ),
+        // ),
       ),
-      body: SizedBox(
-        // child: SfPdfViewer.network(AppConstants.pdf),
-      ),
-      // body: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   // child: Container(
-      //   //   child: Column(
-      //   //     crossAxisAlignment: CrossAxisAlignment.start,
-      //   //     children: [
-      //   //       Text('IoBM Alumni Card From (Responses)',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600),),
-      //   //       SizedBox(height: 3.h,),
-      //   //       Text('Welcome back to IoBM!',style: TextStyle(fontSize: 13.sp,color: AppColor.grey),),
-      //   //       SizedBox(height: 10.h,),
-      //   //       Text('Your Alumni Card will be given you access to:',style: TextStyle(fontSize: 13.sp,color: AppColor.grey),),
-      //   //
-      //   //     ],
-      //   //   ),
-      //   // ),
-      // ),
     );
   }
 

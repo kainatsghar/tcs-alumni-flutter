@@ -41,62 +41,66 @@ class _WorkOrdersState extends State<WorkOrders> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: SecAppBar(
-          title: const Text('Work Order'),
-          context: context,
-        ),
-        body: DefaultTabController(
-          length: 2,
-          child: Column(children: [
-            Container(
-              decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: AppColor.grey))),
-              child: TabBar(
-                indicatorColor: AppColor.redshade900,
-                labelStyle: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold),
-                labelColor: AppColor.black,
-                unselectedLabelColor: AppColor.grey,
-                indicatorWeight: 2,
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: const [
-                  Tab(
-                    text: 'Work Orders',
-                  ),
-                  Tab(text: 'My Work Orders'),
-                ],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+          appBar: SecAppBar(
+            title: const Text('Work Order'),
+            context: context,
+          ),
+          body: DefaultTabController(
+            length: 2,
+            child: Column(children: [
+              Container(
+                decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(color: AppColor.grey))),
+                child: TabBar(
+                  indicatorColor: AppColor.redshade900,
+                  labelStyle: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold),
+                  labelColor: AppColor.black,
+                  unselectedLabelColor: AppColor.grey,
+                  indicatorWeight: 2,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: const [
+                    Tab(
+                      text: 'Work Orders',
+                    ),
+                    Tab(text: 'My Work Orders'),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  FutureBuilder(
-                    future: fetchData,
-                      builder: (context, snapshot){
-                    if(snapshot.connectionState == ConnectionState.done){
-                      return _workorders();
-                    }
-                    else{
-                      return const Center(child: CircularProgressIndicator());
-                        }
-                  }),
-                  FutureBuilder(
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    FutureBuilder(
                       future: fetchData,
-                      builder: (context, snapshot){
-                    if(snapshot.connectionState == ConnectionState.done){
-                      return _myworkorders();
-                    }
-                    else{
-                      return const Center(child:  CircularProgressIndicator(),);
-                    }
-                  }),
-                ],
+                        builder: (context, snapshot){
+                      if(snapshot.connectionState == ConnectionState.done){
+                        return _workorders();
+                      }
+                      else{
+                        return const Center(child: CircularProgressIndicator());
+                          }
+                    }),
+                    FutureBuilder(
+                        future: fetchData,
+                        builder: (context, snapshot){
+                      if(snapshot.connectionState == ConnectionState.done){
+                        return _myworkorders();
+                      }
+                      else{
+                        return const Center(child:  CircularProgressIndicator(),);
+                      }
+                    }),
+                  ],
+                ),
               ),
-            ),
-          ]),
-        ));
+            ]),
+          )),
+    );
   }
 
   _workorders() {

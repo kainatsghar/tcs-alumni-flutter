@@ -40,25 +40,29 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext buildContext) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.gallery),
-        context: context,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.gallery),
+          context: context,
+        ),
+        body: dataFetched
+            ? FutureBuilder(
+                future: _fetchData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return _bodyContainer();
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              )
+            : const Center(child: CircularProgressIndicator()),
       ),
-      body: dataFetched
-          ? FutureBuilder(
-              future: _fetchData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return _bodyContainer();
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            )
-          : const Center(child: CircularProgressIndicator()),
     );
   }
 

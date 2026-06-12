@@ -46,7 +46,10 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
       appBar: SecAppBar(
         title: const Text('Youtube Channel'),
         context: context,
@@ -63,7 +66,7 @@ class _YoutubeChannelScreenState extends State<YoutubeChannelScreen> {
           }
         },
       ),
-    );
+      )    );
   }
 
   Widget _bodyList() {

@@ -64,53 +64,57 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: const Text(Strings.chat),
-        context: context,
-      ),
-      floatingActionButton: isSelected ? Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(onPressed: () {
-            setState(() {
-              isSelected = false;
-            });
-            deleteMessage();
-          },
-            child: const Icon(Icons.delete, color: AppColor.white,),
-          ),
-          SizedBox(height: 15.w,),
-          FloatingActionButton(
-            backgroundColor: AppColor.grey,
-            onPressed: () {
-              for(int i= 0; i<listSlcTile.length; i++){
-                listColor[listSlcTile[i].slcIndex] = AppColor.white;
-              }
-              isSelected = false;
-              listSlcTile.clear();
-              setState(() {});
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: const Text(Strings.chat),
+          context: context,
+        ),
+        floatingActionButton: isSelected ? Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(onPressed: () {
+              setState(() {
+                isSelected = false;
+              });
+              deleteMessage();
             },
-            child: const Icon(Icons.close,color: AppColor.white,),
-          ),
-        ],
-      ) : null,
-      body: check
-          ? _chatList()
-          : Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            AppImages.noInternet,
-          ),
-          Text(
-            'No Network Connection',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(18),
+              child: const Icon(Icons.delete, color: AppColor.white,),
             ),
-          ),
-        ],
+            SizedBox(height: 15.w,),
+            FloatingActionButton(
+              backgroundColor: AppColor.grey,
+              onPressed: () {
+                for(int i= 0; i<listSlcTile.length; i++){
+                  listColor[listSlcTile[i].slcIndex] = AppColor.white;
+                }
+                isSelected = false;
+                listSlcTile.clear();
+                setState(() {});
+              },
+              child: const Icon(Icons.close,color: AppColor.white,),
+            ),
+          ],
+        ) : null,
+        body: check
+            ? _chatList()
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppImages.noInternet,
+            ),
+            Text(
+              'No Network Connection',
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(18),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -41,14 +41,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.myConnections),
-        context: context,
-      ),
-      body: DefaultTabController(
-        length: 2,
-        child: _bodyColumn(),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.myConnections),
+          context: context,
+        ),
+        body: DefaultTabController(
+          length: 2,
+          child: _bodyColumn(),
+        ),
       ),
     );
   }

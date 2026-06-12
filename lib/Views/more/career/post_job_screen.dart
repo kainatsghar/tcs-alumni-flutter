@@ -105,89 +105,93 @@ class _PostJobScreenState extends State<PostJobScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: SecAppBar(
-          title: const Text(Strings.postajob),
-          context: context,
-        ),
-        body: Container(
-          margin: const EdgeInsets.only(top: 10),
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: SingleChildScrollView(
-            child: Form(
-              key: fKey,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    titleRow(title: 'Designation', star: "*"),
-                    designationTextField(),
-                    SizedBox(height: 15.h),
-                    titleRow(title: 'Company', star: "*"),
-                    companyTextField(),
-                    SizedBox(height: 15.h),
-                    titleRow(title: 'Job Link', star: ""),
-                    jobLinkTextField(),
-                    SizedBox(height: 15.h),
-                    titleRow(title: 'Due Date', star: ""),
-                    dueDateTextField(),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    titleRow(title: 'Upload Image', star: ""),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    DottedBorder(
-                      color: const Color(0xff164892),
-                      borderType: BorderType.RRect,
-                      strokeWidth: 1,
-                      dashPattern: const <double>[3, 3],
-                      child: GestureDetector(
-                        onTap: () async {
-                          var pickedFile = await _picker.pickImage(
-                            source: ImageSource.gallery,
-                          );
-                          _imagePath = pickedFile!.path;
-                          print("PickImageFromGallery${pickedFile!.path.toString()}");
-                        },
-                        child: Container(
-                          height: 75.h,
-                          width: double.infinity,
-                          margin: const EdgeInsets.all(5),
-                          color: const Color(0xff164892).withOpacity(0.10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppImages.jobImageIcon),
-                              const Text('Upload Image',style: TextStyle(color: Color(0xff164892)),),
-                            ],
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: SecAppBar(
+            title: const Text(Strings.postajob),
+            context: context,
+          ),
+          body: Container(
+            margin: const EdgeInsets.only(top: 10),
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: SingleChildScrollView(
+              child: Form(
+                key: fKey,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      titleRow(title: 'Designation', star: "*"),
+                      designationTextField(),
+                      SizedBox(height: 15.h),
+                      titleRow(title: 'Company', star: "*"),
+                      companyTextField(),
+                      SizedBox(height: 15.h),
+                      titleRow(title: 'Job Link', star: ""),
+                      jobLinkTextField(),
+                      SizedBox(height: 15.h),
+                      titleRow(title: 'Due Date', star: ""),
+                      dueDateTextField(),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      titleRow(title: 'Upload Image', star: ""),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      DottedBorder(
+                        color: const Color(0xff164892),
+                        borderType: BorderType.RRect,
+                        strokeWidth: 1,
+                        dashPattern: const <double>[3, 3],
+                        child: GestureDetector(
+                          onTap: () async {
+                            var pickedFile = await _picker.pickImage(
+                              source: ImageSource.gallery,
+                            );
+                            _imagePath = pickedFile!.path;
+                            print("PickImageFromGallery${pickedFile!.path.toString()}");
+                          },
+                          child: Container(
+                            height: 75.h,
+                            width: double.infinity,
+                            margin: const EdgeInsets.all(5),
+                            color: const Color(0xff164892).withOpacity(0.10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppImages.jobImageIcon),
+                                const Text('Upload Image',style: TextStyle(color: Color(0xff164892)),),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Center(
-                      child: CustomWidget.myButton(
-                        name: AppConstants.postjob,
-                        size: Size(100, 30.h),
-                        isBorder: false,
-                        onClicked: () {
-
-                            postJob();
-
-                        },
+                      SizedBox(
+                        height: 30.h,
                       ),
-                    ),
-                  ]),
+                      Center(
+                        child: CustomWidget.myButton(
+                          name: AppConstants.postjob,
+                          size: Size(100, 30.h),
+                          isBorder: false,
+                          onClicked: () {
+
+                              postJob();
+
+                          },
+                        ),
+                      ),
+                    ]),
+              ),
             ),
           ),
         ),

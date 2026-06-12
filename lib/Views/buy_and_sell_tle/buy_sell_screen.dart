@@ -66,48 +66,52 @@ class _BuySellScreenState extends State<BuySellScreen> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        appBar: MyAppBar(
-          title: Text(
-            'Buy and Sell',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
-            ),
-          ),
-          context: context,
-        ),
-        body: FutureBuilder(
-          future: _fetchData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return _bodyColumn();
-            } else {
-              return Stack(
-                children: [
-                  _bodyColumn(),
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColor.primaryColor,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () async {
-            Get.to(
-              () => const AddProductScreen(
-                productId: "",
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: Scaffold(
+          backgroundColor: Colors.grey.shade200,
+          appBar: MyAppBar(
+            title: Text(
+              'Buy and Sell',
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(16),
               ),
-            )!
-                .then((value) => setDataFromDB());
-          },
+            ),
+            context: context,
+          ),
+          body: FutureBuilder(
+            future: _fetchData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return _bodyColumn();
+              } else {
+                return Stack(
+                  children: [
+                    _bodyColumn(),
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColor.primaryColor,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              Get.to(
+                () => const AddProductScreen(
+                  productId: "",
+                ),
+              )!
+                  .then((value) => setDataFromDB());
+            },
+          ),
         ),
       ),
     );

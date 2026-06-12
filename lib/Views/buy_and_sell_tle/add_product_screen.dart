@@ -85,46 +85,50 @@ class _AddProductScreenState extends State<AddProductScreen> {
         FocusScope.of(context).unfocus();
         print(_categoryValue);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Add Product',
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(16),
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Add Product',
+              style: TextStyle(
+                fontSize: ScreenUtil().setSp(16),
+              ),
             ),
           ),
-        ),
-        body: FutureBuilder(
-          future: _fetchData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (widget.productId == "") {
-                return _bodyContainer();
+          body: FutureBuilder(
+            future: _fetchData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (widget.productId == "") {
+                  return _bodyContainer();
+                } else {
+                  return FutureBuilder(
+                    future: _fetchData2,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return _bodyContainer();
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  );
+                }
               } else {
-                return FutureBuilder(
-                  future: _fetchData2,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return _bodyContainer();
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
+                return Stack(
+                  children: [
+                    _bodyContainer(),
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
                 );
               }
-            } else {
-              return Stack(
-                children: [
-                  _bodyContainer(),
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            }
-          },
+            },
+          ),
         ),
       ),
     );

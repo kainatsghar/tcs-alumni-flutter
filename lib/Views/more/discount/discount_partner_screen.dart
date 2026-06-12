@@ -18,37 +18,41 @@ class DiscountPartnerScreen extends StatefulWidget {
 class _DiscountPartnerScreenState extends State<DiscountPartnerScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.discounts),
-        context: context,
-      ),
-      body: Container(
-          color: AppColor.white,
-          padding: const EdgeInsets.all(10.0),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              //JOb opening container
-              discountWidget(
-                  img: AppImages.discount,
-                  title: Strings.discountoffered,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return const AvailDiscount();
-                    }));
-                  }),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.discounts),
+          context: context,
+        ),
+        body: Container(
+            color: AppColor.white,
+            padding: const EdgeInsets.all(10.0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                //JOb opening container
+                discountWidget(
+                    img: AppImages.discount,
+                    title: Strings.discountoffered,
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return const AvailDiscount();
+                      }));
+                    }),
 
-              SizedBox(
-                height: 15.h,
-              ),
-            ],
-          )),
+                SizedBox(
+                  height: 15.h,
+                ),
+              ],
+            )),
+      ),
     );
   }
 

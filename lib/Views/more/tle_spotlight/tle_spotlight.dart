@@ -35,12 +35,16 @@ class _TLESpotlightState extends State<TLESpotlight> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SecAppBar(
-        title: const Text(Strings.featuredMembers),
-        context: context,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: SecAppBar(
+          title: const Text(Strings.featuredMembers),
+          context: context,
+        ),
+        body: _bodyContainer(),
       ),
-      body: _bodyContainer(),
     );
   }
 

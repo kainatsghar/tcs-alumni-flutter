@@ -113,115 +113,119 @@ class _NetWorkingScreenState extends State<NetWorkingScreen> {
 
   @override
   Widget build(BuildContext buildContext) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.primaryColor,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 22.h,
-            color: AppColor.white,
-          ),
-        ),
-        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-        titleSpacing: 0,
-        shape: Border(
-          bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
-        ),
-        centerTitle: true,
-        title: Text(
-          Strings.alumniNearme,
-          style: CustomTextStyles.text16SemiBoldW600,
-        ),
-      ),
-      body: Column(
-        children: [
-          FutureBuilder(
-            future: _fetchData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return _mapsContainer();
-              } else {
-                return _mapsContainer();
-              }
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.primaryColor,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
             },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
           ),
-          SizedBox(
-            height: 50,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Slider(
-                      min: 0.0,
-                      max: 15.0,
-                      activeColor: AppColor.primaryColor,
-                      onChanged: (double value) async {
-                        setState(
-                          () {
-                            radius = value;
-                          },
-                        );
-                        _markers.clear();
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          titleSpacing: 0,
+          shape: Border(
+            bottom: BorderSide(color: AppColor.secAppBar, width: 4.w),
+          ),
+          centerTitle: true,
+          title: Text(
+            Strings.alumniNearme,
+            style: CustomTextStyles.text16SemiBoldW600,
+          ),
+        ),
+        body: Column(
+          children: [
+            FutureBuilder(
+              future: _fetchData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return _mapsContainer();
+                } else {
+                  return _mapsContainer();
+                }
+              },
+            ),
+            SizedBox(
+              height: 50,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        min: 0.0,
+                        max: 15.0,
+                        activeColor: AppColor.primaryColor,
+                        onChanged: (double value) async {
+                          setState(
+                            () {
+                              radius = value;
+                            },
+                          );
+                          _markers.clear();
 
-                        for (var element in _users) {
-                          if (element.userId != AppConstants.myId) {
-                            double dif = getDistanceFromCurrentPosition(
-                                currentLat ?? 25.5158522,
-                                currentLng ?? 74.3410614,
-                                double.parse(element.latitude ?? '25.5158522'),
-                                double.parse(
-                                    element.longitude ?? '74.3410614'));
+                          for (var element in _users) {
+                            if (element.userId != AppConstants.myId) {
+                              double dif = getDistanceFromCurrentPosition(
+                                  currentLat ?? 25.5158522,
+                                  currentLng ?? 74.3410614,
+                                  double.parse(element.latitude ?? '25.5158522'),
+                                  double.parse(
+                                      element.longitude ?? '74.3410614'));
 
-                            if (dif <= radius) {
-                              setState(
-                                () {
-                                  _markers.add(
-                                    Marker(
-                                      markerId: MarkerId(element.userId ?? ''),
-                                      position: LatLng(
-                                          double.parse(element.latitude ?? ''),
-                                          double.parse(
-                                              element.longitude ?? '')),
-                                      icon: pinIcon!,
-                                      onTap: () {
-                                        Get.to(
-                                          () => ProfileScreen(
-                                            userID: element.userId,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
+                              if (dif <= radius) {
+                                setState(
+                                  () {
+                                    _markers.add(
+                                      Marker(
+                                        markerId: MarkerId(element.userId ?? ''),
+                                        position: LatLng(
+                                            double.parse(element.latitude ?? ''),
+                                            double.parse(
+                                                element.longitude ?? '')),
+                                        icon: pinIcon!,
+                                        onTap: () {
+                                          Get.to(
+                                            () => ProfileScreen(
+                                              userID: element.userId,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                             }
                           }
-                        }
-                        SharedPreferences localStorage =
-                            await SharedPreferences.getInstance();
-                        localStorage.setDouble('radius', radius);
-                        localStorage.setDouble('lat', currentLat!);
-                        localStorage.setDouble('lng', currentLng!);
-                      },
-                      value: radius,
+                          SharedPreferences localStorage =
+                              await SharedPreferences.getInstance();
+                          localStorage.setDouble('radius', radius);
+                          localStorage.setDouble('lat', currentLat!);
+                          localStorage.setDouble('lng', currentLng!);
+                        },
+                        value: radius,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Radius ${radius.roundToDouble()} Km",
-                    style: CustomTextStyles.text14SemiBoldW600,
-                  ),
-                ],
+                    Text(
+                      "Radius ${radius.roundToDouble()} Km",
+                      style: CustomTextStyles.text14SemiBoldW600,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
+            )
 
-          //_mapsContainer(),
-        ],
+            //_mapsContainer(),
+          ],
+        ),
       ),
     );
   }

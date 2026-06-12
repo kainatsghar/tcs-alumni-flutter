@@ -46,12 +46,16 @@ class _BusinessDirectoryDetailState extends State<BusinessDirectoryDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: SecAppBar(
-          title: const Text(Strings.businessdirectory),
-          context: context,
-        ),
-        body: _bodyColumn());
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+          appBar: SecAppBar(
+            title: const Text(Strings.businessdirectory),
+            context: context,
+          ),
+          body: _bodyColumn()),
+    );
   }
 
   Widget _bodyColumn() {

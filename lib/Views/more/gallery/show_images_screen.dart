@@ -36,37 +36,41 @@ class _ShowImagesScreenState extends State<ShowImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            size: 22.h,
-            color: AppColor.white,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.h,
+              color: AppColor.white,
+            ),
+          ),
+          backgroundColor: AppColor.primaryColor,
+          titleTextStyle: CustomTextStyles.text16SemiBoldW600,
+          title: Text(
+            Strings.gallery,
+            style: CustomTextStyles.text16SemiBoldW600,
           ),
         ),
-        backgroundColor: AppColor.primaryColor,
-        titleTextStyle: CustomTextStyles.text16SemiBoldW600,
-        title: Text(
-          Strings.gallery,
-          style: CustomTextStyles.text16SemiBoldW600,
+        body: FutureBuilder(
+          future: _fetchData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _bodyContainer();
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
-      ),
-      body: FutureBuilder(
-        future: _fetchData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _bodyContainer();
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
       ),
     );
   }

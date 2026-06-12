@@ -42,8 +42,12 @@ class _SignupWelcomeState extends State<SignupWelcome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: _body()),
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        body: SafeArea(child: _body()),
+      ),
     );
   }
 
