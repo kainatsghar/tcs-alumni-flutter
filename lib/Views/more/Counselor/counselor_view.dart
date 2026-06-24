@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iobm/Views/Chat/send_invation_screen.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Counselor {
+  final String id;
   final String name;
   final String email;
   final String? phone;
   final String specialty;
 
   const Counselor({
+    required this.id,
     required this.name,
     required this.email,
-     this.phone,
+    this.phone,
     required this.specialty,
   });
 
@@ -46,36 +50,41 @@ class CounselorView extends StatefulWidget {
 
   static const _counselors = [
     Counselor(
+      id: '101',
       name: 'Dr. Ayesha Khan',
       email: 'ayesha.khan@example.com',
       phone: '+923001234567',
       specialty: 'Therapist',
     ),
     Counselor(
+      id: '102',
       name: 'Sana Raza',
       email: 'sana.raza@example.com',
       phone: '+923119876543',
       specialty: 'Psychologist',
     ),
     Counselor(
+      id: '103',
       name: 'Omar Malik',
       email: 'omar.malik@example.com',
       phone: '+923335554444',
       specialty: 'Life Coach',
     ),
     Counselor(
+      id: '139040',
       name: 'Nadia Baig',
       email: 'nadia.baig@example.com',
       phone: '+923217778888',
       specialty: 'Counselor',
     ),
     Counselor(
+      id: '105',
       name: 'Zaid Ahmed',
       email: 'zaid.ahmed@example.com',
-
       specialty: 'Mental Health Expert',
     ),
     Counselor(
+      id: '106',
       name: 'Hina Pervez',
       email: 'hina.p@example.com',
       phone: '+923000001111',
@@ -307,23 +316,74 @@ class _CounselorCard extends StatelessWidget {
           ),
 
           // Tappable call button
-          if (counselor.phone != null && counselor.phone!.isNotEmpty)
-            GestureDetector(
-              onTap: _launchPhone,
-              child: Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: avatarBg.withOpacity(0.4),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.phone_rounded,
-                  size: 18,
-                  color: avatarText,
+          // Action Buttons
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Chat Button
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => ChatInvitationScreen(
+                        receiverId: counselor.id,
+                        name: counselor.name,
+                        image: "",
+                      ));
+                },
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: avatarBg.withOpacity(0.4),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    size: 18,
+                    color: avatarText,
+                  ),
                 ),
               ),
-            ),
+
+              // Call Button
+              if (counselor.phone != null && counselor.phone!.isNotEmpty) ...[
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: _launchPhone,
+                  child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: avatarBg.withOpacity(0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.phone_rounded,
+                      size: 18,
+                      color: avatarText,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+
+          // if (counselor.phone != null && counselor.phone!.isNotEmpty)
+          //   GestureDetector(
+          //     onTap: _launchPhone,
+          //     child: Container(
+          //       width: 38,
+          //       height: 38,
+          //       decoration: BoxDecoration(
+          //         color: avatarBg.withOpacity(0.4),
+          //         shape: BoxShape.circle,
+          //       ),
+          //       child: Icon(
+          //         Icons.phone_rounded,
+          //         size: 18,
+          //         color: avatarText,
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );
