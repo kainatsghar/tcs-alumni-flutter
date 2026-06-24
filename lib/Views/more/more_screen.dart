@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:iobm/Views/Alumni_Card/alumniCard.dart';
 import 'package:iobm/Views/alumni_screen.dart';
+import 'package:iobm/Views/more/Counselor/counselor_view.dart';
 import 'package:iobm/Views/more/about_screens/about_options_view.dart';
 import 'package:iobm/Views/more/alumni_election_view.dart';
 import 'package:iobm/Views/more/business_spotlight.dart';
@@ -75,6 +76,8 @@ class MoreScreenState extends State<MoreScreen> {
   static const Color _slate      = Color(0xFF3A5A6A);
   static const Color _crimson    = Color(0xFFAA1F2E);
   static const Color _orange     = Color(0xFFE07020);
+  static const Color _counselor     = Color(0xE8224A55);
+
 
   List<MoreMenuItem> _buildMenuItems(BuildContext context) {
     return [
@@ -113,6 +116,13 @@ class MoreScreenState extends State<MoreScreen> {
       //   pngAsset: 'assets/images/consultant.png',
       //   onTap: () => Get.to(() => const Consultancy()),
       // ),
+      // Counselor
+        MoreMenuItem(
+        title: Strings.counselor,
+        color: _counselor,
+        pngAsset: 'assets/images/counselor.png',
+        onTap: () => Get.to(() => const CounselorView()),
+      ),
 
       // CSR
       if (AppConstants.appName != 'TLE')

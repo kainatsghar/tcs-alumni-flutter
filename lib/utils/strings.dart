@@ -23,6 +23,7 @@ class Strings {
   static const String invitations = 'Invitations';
   static const String spotlight = 'Spotlight';
   static const String consultancy = 'Consultancy';
+  static const String counselor = 'Counselor';
   static const String featuredMembers = 'Featured Members';
   static const String businessspotlight = 'Featured Business';
   static const String businessdirectory = 'Business Directory';
