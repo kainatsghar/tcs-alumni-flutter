@@ -646,6 +646,7 @@ class _LoginScreenState extends State<LoginScreen> {
       serial: device.serial,
       appVersion: device.appVersion,
     );
+    print(">>>>>>>>>>>>>>>>>>>>> ${device.token}");
     if (response is ErrorEntity) {
       print("😂😂😂 Error Message: ${response.message}");
       print("😂😂😂 Error Success: ${response.success}");

@@ -1,98 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iobm/Views/Chat/send_invation_screen.dart';
+import 'package:iobm/Views/more/Counselor/councelor_controller.dart';
+import 'package:iobm/Views/more/Counselor/councelor_model.dart';
 import 'package:iobm/utils/app_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Counselor {
-  final String id;
-  final String name;
-  final String email;
-  final String? phone;
-  final String specialty;
-
-  const Counselor({
-    required this.id,
-    required this.name,
-    required this.email,
-    this.phone,
-    required this.specialty,
-  });
-
-  String get initials => name
-      .split(' ')
-      .where((w) => w.isNotEmpty)
-      .map((w) => w[0].toUpperCase())
-      .take(2)
-      .join();
-
-  // Predefined color pairs for avatars (Background, Text)
-  static const List<Map<String, Color>> _avatarPalette = [
-    {'bg': Color(0xFFCECBF6), 'text': Color(0xFF3C3489)}, // Purple
-    {'bg': Color(0xFF9FE1CB), 'text': Color(0xFF085041)}, // Green
-    {'bg': Color(0xFFF4C0D1), 'text': Color(0xFF72243E)}, // Pink
-    {'bg': Color(0xFFB5D4F4), 'text': Color(0xFF0C447C)}, // Blue
-    {'bg': Color(0xFFFFE0B2), 'text': Color(0xFFE65100)}, // Orange
-    {'bg': Color(0xFFD1C4E9), 'text': Color(0xFF4527A0)}, // Deep Purple
-    {'bg': Color(0xFFF0F4C3), 'text': Color(0xFF827717)}, // Lime
-    {'bg': Color(0xFFFFCCBC), 'text': Color(0xFFBF360C)}, // Deep Orange
-  ];
-
-  Map<String, Color> getColors() {
-    // Generate a consistent color based on the name's hash
-    final index = name.hashCode.abs() % _avatarPalette.length;
-    return _avatarPalette[index];
-  }
-}
-
 class CounselorView extends StatefulWidget {
   const CounselorView({super.key});
-
-  static const _counselors = [
-    Counselor(
-      id: '101',
-      name: 'Dr. Ayesha Khan',
-      email: 'ayesha.khan@example.com',
-      phone: '+923001234567',
-      specialty: 'Therapist',
-    ),
-    Counselor(
-      id: '102',
-      name: 'Sana Raza',
-      email: 'sana.raza@example.com',
-      phone: '+923119876543',
-      specialty: 'Psychologist',
-    ),
-    Counselor(
-      id: '103',
-      name: 'Omar Malik',
-      email: 'omar.malik@example.com',
-      phone: '+923335554444',
-      specialty: 'Life Coach',
-    ),
-    Counselor(
-      id: '139040',
-      name: 'Nadia Baig',
-      email: 'nadia.baig@example.com',
-      phone: '+923217778888',
-      specialty: 'Counselor',
-    ),
-    Counselor(
-      id: '105',
-      name: 'Zaid Ahmed',
-      email: 'zaid.ahmed@example.com',
-      specialty: 'Mental Health Expert',
-    ),
-    Counselor(
-      id: '106',
-      name: 'Hina Pervez',
-      email: 'hina.p@example.com',
-      phone: '+923000001111',
-      specialty: 'Family Counselor',
-    ),
-  ];
-
-  static const _purple = Color(0xFF6B5FD4);
 
   @override
   State<CounselorView> createState() => _CounselorViewState();
@@ -100,32 +15,12 @@ class CounselorView extends StatefulWidget {
 
 class _CounselorViewState extends State<CounselorView> {
   final TextEditingController _searchController = TextEditingController();
-  List<Counselor> _filteredCounselors = CounselorView._counselors;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchChanged);
-  }
+  final CouncelorController _controller = Get.put(CouncelorController());
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  void _onSearchChanged() {
-    setState(() {
-      _filteredCounselors = CounselorView._counselors
-          .where((counselor) =>
-              counselor.name
-                  .toLowerCase()
-                  .contains(_searchController.text.toLowerCase()) ||
-              counselor.specialty
-                  .toLowerCase()
-                  .contains(_searchController.text.toLowerCase()))
-          .toList();
-    });
   }
 
   @override
@@ -146,10 +41,10 @@ class _CounselorViewState extends State<CounselorView> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Text(
-              '${_filteredCounselors.length} available specialists',
-              style: const TextStyle(color: Colors.white70, fontSize: 13),
-            ),
+            Obx(() => Text(
+                  '${_controller.filteredList.length} available specialists',
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                )),
           ],
         ),
       ),
@@ -166,6 +61,7 @@ class _CounselorViewState extends State<CounselorView> {
               ),
               child: TextField(
                 controller: _searchController,
+                onChanged: (value) => _controller.searchCounselor(value),
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: const InputDecoration(
                   hintText: 'Search counselors...',
@@ -199,21 +95,35 @@ class _CounselorViewState extends State<CounselorView> {
 
           // List
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              itemCount: _filteredCounselors.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                return _CounselorCard(counselor: _filteredCounselors[index]);
-              },
-            ),
+            child: Obx(() {
+              if (_controller.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (_controller.filteredList.isEmpty) {
+                return const Center(child: Text("No Counselors Found"));
+              }
+              return RefreshIndicator(
+                backgroundColor: AppColor.white,
+                color: AppColor.primaryColor,
+                onRefresh: () => _controller.getCouncelorList(),
+                child: ListView.separated(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  itemCount: _controller.filteredList.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    return _CounselorCard(
+                        counselor: _controller.filteredList[index]);
+                  },
+                ),
+              );
+            }),
           ),
         ],
       ),
     );
   }
 }
-
 
 class _CounselorCard extends StatelessWidget {
   const _CounselorCard({required this.counselor});
@@ -227,7 +137,7 @@ class _CounselorCard extends StatelessWidget {
   }
 
   Future<void> _launchPhone() async {
-    if (counselor.phone == null) return;
+    if (counselor.phone == null || counselor.phone!.isEmpty) return;
     final uri = Uri(scheme: 'tel', path: counselor.phone!);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -295,9 +205,10 @@ class _CounselorCard extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 5),
+                if(counselor.specialty.isNotEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: avatarBg.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(20),
@@ -315,7 +226,6 @@ class _CounselorCard extends StatelessWidget {
             ),
           ),
 
-          // Tappable call button
           // Action Buttons
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -366,24 +276,6 @@ class _CounselorCard extends StatelessWidget {
               ],
             ],
           ),
-
-          // if (counselor.phone != null && counselor.phone!.isNotEmpty)
-          //   GestureDetector(
-          //     onTap: _launchPhone,
-          //     child: Container(
-          //       width: 38,
-          //       height: 38,
-          //       decoration: BoxDecoration(
-          //         color: avatarBg.withOpacity(0.4),
-          //         shape: BoxShape.circle,
-          //       ),
-          //       child: Icon(
-          //         Icons.phone_rounded,
-          //         size: 18,
-          //         color: avatarText,
-          //       ),
-          //     ),
-          //   ),
         ],
       ),
     );

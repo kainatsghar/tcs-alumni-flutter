@@ -17,8 +17,9 @@ class NetworkCalls {
     };
     try {
       Uri uri = Uri.parse(AppConstants.baseUrl + url);
+      print('url>>>>>>>>>>>>>>$uri');
       var response = await http.get(uri, headers: headers).timeout(
-        const Duration(
+        const Duration( 
           seconds: 45,
         ),
         onTimeout: () async {
@@ -437,17 +438,27 @@ class NetworkCalls {
     print("ResponseApiStatus: ${response.statusCode}");
     switch (response.statusCode) {
       case 200:
-        ErrorEntity normalEntity =
-            ErrorEntity().fromJson(jsonDecode(response.body));
-        if (normalEntity.success == 1 ||
-            normalEntity.success == -1 ||
-            normalEntity.success == -4 ||
-            normalEntity.success == -5) {
-          return jsonDecode(response.body);
-        } else {
-          print(response.body);
-          return normalEntity;
+        var decodedResponse = jsonDecode(response.body);
+
+        // Safety check for ErrorEntity parsing
+        try {
+          // Only attempt to parse as ErrorEntity if it has the expected fields
+          if (decodedResponse is Map && decodedResponse.containsKey('success')) {
+            ErrorEntity normalEntity = ErrorEntity().fromJson(Map<String, dynamic>.from(decodedResponse));
+            if (normalEntity.success == 1 ||
+                normalEntity.success == -1 ||
+                normalEntity.success == -4 ||
+                normalEntity.success == -5) {
+              return decodedResponse;
+            } else {
+              return normalEntity;
+            }
+          }
+        } catch (e) {
+          print("Error parsing ErrorEntity: $e");
         }
+
+        return decodedResponse;
       case 400:
       case 401:
         return ErrorEntity()
