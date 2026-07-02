@@ -34,7 +34,7 @@ class _CounselorViewState extends State<CounselorView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Counselors',
+              'Counsellors',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -64,7 +64,7 @@ class _CounselorViewState extends State<CounselorView> {
                 onChanged: (value) => _controller.searchCounselor(value),
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'Search counselors...',
+                  hintText: 'Search counsellors...',
                   hintStyle: TextStyle(color: Colors.white60, fontSize: 14),
                   prefixIcon:
                       Icon(Icons.search, color: Colors.white70, size: 18),
@@ -82,7 +82,7 @@ class _CounselorViewState extends State<CounselorView> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'ALL COUNSELORS',
+                'ALL COUNSELLORS',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,

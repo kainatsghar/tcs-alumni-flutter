@@ -110,12 +110,12 @@ class MoreScreenState extends State<MoreScreen> {
       ),
 
       // Counselling / Consultancy
-      // MoreMenuItem(
-      //   title: Strings.consultancy,
-      //   color: _red,
-      //   pngAsset: 'assets/images/consultant.png',
-      //   onTap: () => Get.to(() => const Consultancy()),
-      // ),
+      MoreMenuItem(
+        title: Strings.consultancy,
+        color: _red,
+        pngAsset: 'assets/images/consultant.png',
+        onTap: () => Get.to(() => const Consultancy()),
+      ),
       // Counselor
         MoreMenuItem(
         title: Strings.counselor,

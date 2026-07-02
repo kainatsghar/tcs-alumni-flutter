@@ -134,6 +134,9 @@ class AppImages {
 
   //profilescrn
   static const String mentorpopup = 'assets/images/mentor_popup.png';
+
+  static const String profile2 = 'assets/images/profile2.png';
+  // static const String profile = profile2;
   static const String profile = 'assets/images/profile.png';
 
   //Other images
