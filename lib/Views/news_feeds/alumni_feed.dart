@@ -2733,7 +2733,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
     }
 
     return SizedBox(
-      height: 100.w,
+      height: 105.w,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         scrollDirection: Axis.horizontal,
@@ -2744,43 +2744,62 @@ class _AlumniFeedState extends State<AlumniFeed> {
               padding: const EdgeInsets.only(right: 15),
               child: GestureDetector(
                 onTap: () => Get.to(() => const CreateStory()),
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: 65.w,
-                          height: 65.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColor.primaryColor, width: 2),
-                            image: const DecorationImage(
-                              image: AssetImage("assets/images/profile.png"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
+                child: Container(
+                  height: 230,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor,
+                        borderRadius: BorderRadius.circular(7)
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            width: 50.w,
+                            height: 50.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColor.primaryColor,
-                              border: Border.all(color: Colors.white, width: 2),
+                              border: Border.all(color: AppColor.primaryColor, width: 2),
+                              image: const DecorationImage(
+                                image: AssetImage("assets/images/profile.png"),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            child: Icon(Icons.add, color: Colors.white, size: 14.w),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColor.primaryColor,
+                                border: Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: Icon(Icons.add, color: Colors.white, size: 14.w),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 1),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:5.0),
+                        child: Text(
+                          'Create Story',
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyles.text12RegularW400.copyWith(
+                            color: AppColor.white,
+                            fontWeight: FontWeight.w600
+
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'Create Story',
-                      style: CustomTextStyles.text12RegularW400,
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -2788,7 +2807,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
           int storyIndex = index - 1;
           return Padding(
-            padding: const EdgeInsets.only(right: 15),
+            padding: const EdgeInsets.only(right: 15,top: 12.5 ),
             child: GestureDetector(
               onTap: () {
                 Get.to(

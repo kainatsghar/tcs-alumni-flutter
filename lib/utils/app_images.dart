@@ -47,6 +47,7 @@ class AppImages {
   static const String careers = 'assets/icons/careers.svg';
   static const String mentor = 'assets/icons/mentor.svg';
   static const String gallery = 'assets/icons/gallery.svg';
+  static const String gallery2 = 'assets/icons/galary2.png';
   static const String applyCard = 'assets/icons/applycard.svg';
   static const String electionicon = 'assets/icons/election.svg';
   static const String networking = 'assets/icons/networking.svg';
@@ -86,6 +87,7 @@ class AppImages {
 
   static const String business = 'assets/icons/business.svg';
   static const String myconnections = 'assets/icons/myconnections.svg';
+  static const String myconnections2 = 'assets/images/glob.png';
   static const String chapterdetails = 'assets/icons/chapterdetails.svg';
 
   //otp
