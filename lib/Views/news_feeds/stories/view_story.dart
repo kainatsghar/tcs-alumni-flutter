@@ -17,7 +17,6 @@ import 'package:iobm/utils/app_color.dart';
 import 'package:iobm/utils/app_constants.dart';
 
 import 'package:iobm/utils/app_images.dart';
-import 'package:iobm/utils/app_utils.dart';
 import 'package:story_view/story_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -61,47 +60,11 @@ class _ViewStoryState extends State<ViewStory> {
   String? largeId;
   String? smallId;
   String? readLength;
-  Timer? timeCounter;
   int currentIndex = 0;
   List<StoryItem> storyItems = [];
 
   @override
   void initState() {
-    //region Story Index changing
-    dateController.calculateDifference(widget.storiesList![0].storyTime.toString());
-    dateController.fetchStoryLink(widget.storiesList![0].link??"");
-    if(widget.userId == AppConstants.myId){
-      dateController.seenByApi(widget.storiesList![0].id??"0");
-    }
-    else{
-      storySeen(widget.storiesList![0].id);
-    }
-    timeCounter = Timer.periodic( const Duration(seconds: 10), (timeCounter){
-      if(currentIndex < widget.storiesList!.length){
-        try{
-          currentIndex ++;
-          dateController.calculateDifference(widget.storiesList![currentIndex].storyTime.toString());
-          dateController.fetchStoryLink(widget.storiesList![currentIndex].link??"");
-          if(widget.userId == AppConstants.myId){
-            dateController.seenByApi(widget.storiesList![currentIndex].id??"0");
-          }
-          else{
-            storySeen(widget.storiesList![currentIndex].id);
-          }
-          print("Timer currentIndex= $currentIndex");
-        }catch(e){
-          print("Exception= $e");
-        }
-      }
-      else{
-        timeCounter.cancel();
-        FocusScope.of(context).unfocus();
-        currentIndex = 0;
-      }
-    });
-    //endregion
-    _initializeToken();
-
     //region Other Code
     nums = [int.parse(AppConstants.myId), int.parse(widget.userId ?? '')];
     nums.sort();
@@ -111,13 +74,12 @@ class _ViewStoryState extends State<ViewStory> {
     });
     _addStories();
     //endregion
+    _initializeToken();
     super.initState();
   }
 
   @override
   void dispose() {
-    timeCounter!.cancel();
-    print("Timer has been cancelled");
     super.dispose();
   }
 
@@ -136,241 +98,222 @@ class _ViewStoryState extends State<ViewStory> {
     //         ),
     // ];
 
-    return GestureDetector(
-      onTap: (){
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            GestureDetector(
-              onTap: (){
-                print("clicked");
-              },
-              child: StoryView(
-                storyItems: storyItems,
-                onComplete: () {
-                  //timer!.cancel();
-                  Get.back();
-                },
-                controller: controller,
-              ),
-            ),
-            Padding(
-              padding:
-              const EdgeInsets.only(right: 5, left: 3).copyWith(top: 45.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: AppColor.white,
-                          size: 25.r,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          Get.to(()=> ProfileScreen(userID: widget.userId,));
-                        },
-                        child: CircleAvatar(
-                          child: widget.image == ''
-                              ? Image(
+    return Scaffold(
+      body: Stack(
+        children: [
+          StoryView(
+            storyItems: storyItems,
+            onComplete: () {
+              Get.back();
+            },
+            onStoryShow: (s, index) {
+              currentIndex = index;
+              dateController.calculateDifference(widget.storiesList![currentIndex].storyTime.toString());
+              dateController.fetchStoryLink(widget.storiesList![currentIndex].link ?? "");
+              if (widget.userId == AppConstants.myId) {
+                dateController.seenByApi(widget.storiesList![currentIndex].id ?? "0");
+              } else {
+                storySeen(widget.storiesList![currentIndex].id);
+              }
+            },
+            controller: controller,
+          ),
+          // Top Left: Back button and Profile
+          Positioned(
+            top: 45.h,
+            left: 3,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColor.white,
+                    size: 25.r,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => ProfileScreen(userID: widget.userId));
+                  },
+                  child: CircleAvatar(
+                    child: widget.image == ''
+                        ? Image(
                             image: const AssetImage(AppImages.profile),
                             width: 45.w,
                             height: 45.h,
                           )
-                              : CachedNetworkImage(
+                        : CachedNetworkImage(
                             imageUrl: widget.image ?? '',
-                            imageBuilder: (context, imageProvider) =>
-                                Container(
-                                  height: 45.w,
-                                  width: 45.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: 45.w,
+                              width: 45.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
                                 ),
+                              ),
+                            ),
                             errorWidget: (context, url, error) => Image(
                               image: const AssetImage(AppImages.profile),
                               height: 50.w,
                               width: 50.h,
                             ),
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                  value: downloadProgress.progress,
-                                ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 15.w),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Get.to(()=> ProfileScreen(userID: widget.userId,));
-                            },
-                            child: Container(
-                              width: 150.w,
-                              height: 20.h,
-                              color: Colors.transparent,
-                              child: Text(
-                                widget.name ?? '',
-                                style: CustomTextStyles.text12SemiBoldW600.copyWith(overflow: TextOverflow.ellipsis,
-                                  color: AppColor.white,  ),
-                              ),
+                            progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
+                              value: downloadProgress.progress,
                             ),
                           ),
-                          GetBuilder<UpdateTimeController>(builder: (_){
-                            return Text(
-                              _.changedDate??"",
-                              style: CustomTextStyles.text12SemiBoldW600.copyWith(color: AppColor.white,),
-                            );
-                          }),
-                        ],
-                      ),
-                    ],
                   ),
-                  if (widget.userId == AppConstants.myId)
-                    PopupMenuButton(
-                      onSelected: (value) {
-                        // if (value == 0) {
-                        //
-                        // }
-                        deleteStory(widget.storiesList![currentIndex].id);
-                        // Get.back();
+                ),
+                SizedBox(width: 15.w),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ProfileScreen(userID: widget.userId));
                       },
-                      itemBuilder: (BuildContext context) {
-                        return  [
-                          PopupMenuItem(
-                            value: 0,
-                            child: Text('Delete Story', style: CustomTextStyles.text12SemiBoldW600,),
-                          )
-                        ];
-                      },
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: AppColor.white,
+                      child: Container(
+                        width: 150.w,
+                        height: 20.h,
+                        color: Colors.transparent,
+                        child: Text(
+                          widget.name ?? '',
+                          style: CustomTextStyles.text12SemiBoldW600.copyWith(
+                            overflow: TextOverflow.ellipsis,
+                            color: AppColor.white,
+                          ),
+                        ),
                       ),
-                      color: AppColor.white,
                     ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 85.h,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 300.h,
-                color: Colors.transparent,
-              ),
-            ),
-            GetBuilder<UpdateTimeController>(builder: (_){
-              return _.storyLink!.isNotEmpty
-                  ? Positioned(
-                top: 50.h,
-                right: 50.w,
-                child: CustomWidget.dialogButton(
-                    name: 'Visit Link',
-                    isBorderColor: true,
-                    onClicked: () {
-                      _launchInBrowser(_.storyLink??"");
-                    }),
-              )
-                  : Container();
-            }),
-            widget.userId == AppConstants.myId
-                ? Positioned(
-              bottom: 50,
-              child: GestureDetector(
-                onVerticalDragUpdate: (_) {
-                  _showSeen();
-                },
-                child: Container(
-                  width: Get.width,
-                  color: AppColor.transparent,
-                  height: 350.h,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.keyboard_arrow_up,
-                          size: 30.r,
+                    GetBuilder<UpdateTimeController>(builder: (_) {
+                      return Text(
+                        _.changedDate ?? "",
+                        style: CustomTextStyles.text12SemiBoldW600.copyWith(
                           color: AppColor.white,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Top Right: More Menu
+          if (widget.userId == AppConstants.myId)
+            Positioned(
+              top: 45.h,
+              right: 5,
+              child: PopupMenuButton(
+                onSelected: (value) {
+                  deleteStory(widget.storiesList![currentIndex].id);
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text(
+                        'Delete Story',
+                        style: CustomTextStyles.text12SemiBoldW600,
+                      ),
+                    )
+                  ];
+                },
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppColor.white,
+                ),
+                color: AppColor.white,
+              ),
+            ),
+          // Bottom Center: Seen By / Reply
+          Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            child: widget.userId == AppConstants.myId
+                ? Center(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onVerticalDragUpdate: (_) {
+                        _showSeen();
+                      },
+                      child: Container(
+                        width: 150.w, // Narrower width so sides are clickable
+                        color: AppColor.transparent,
+                        height: 80.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Icon(
+                              Icons.keyboard_arrow_up,
+                              size: 30.r,
+                              color: AppColor.white,
+                            ),
                             Text(
                               'Seen By',
                               style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
                             ),
-                            // Text(
-                            //   ' (${_seenUsers.length.toString()})',
-                            //   style: TextStyle(
-                            //     fontSize: 16.sp,
-                            //     color: Colors.white,
-                            //   ),
-                            // ),
                           ],
                         ),
-                      ],
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onVerticalDragUpdate: (_) {
+                        storyReply();
+                        _replyController.clear();
+                      },
+                      child: Container(
+                        width: 150.w, // Narrower width
+                        color: AppColor.transparent,
+                        height: 80.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.keyboard_arrow_up,
+                              size: 30.r,
+                              color: AppColor.white,
+                            ),
+                            Text(
+                              'Reply',
+                              style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )
-                : Positioned(
-              bottom: 50,
-              child: GestureDetector(
-                onVerticalDragUpdate: (_) {
-                  storyReply();
-                  _replyController.clear();
-                },
-                child: Container(
-                  width: Get.width,
-                  color: AppColor.transparent,
-                  height: 350,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.keyboard_arrow_up,
-                          size: 30.r,
-                          color: AppColor.white,
-                        ),
-                        Text(
-                          'Reply',
-                          style: CustomTextStyles.text16SemiBoldW600.copyWith(color: AppColor.textWhiteColor),
-                        ),
-                      ],
+          ),
+          // Visit Link Positioned (existing, kept separate)
+          GetBuilder<UpdateTimeController>(builder: (_) {
+            return _.storyLink!.isNotEmpty
+                ? Positioned(
+                    top: 50.h,
+                    right: 50.w,
+                    child: CustomWidget.dialogButton(
+                      name: 'Visit Link',
+                      isBorderColor: true,
+                      onClicked: () {
+                        _launchInBrowser(_.storyLink ?? "");
+                      },
                     ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+                  )
+                : Container();
+          }),
+        ],
       ),
     );
-  }
+    }
 
   _addStories(){
     storyItems.clear();
@@ -390,6 +333,7 @@ class _ViewStoryState extends State<ViewStory> {
   }
 
   _showSeen() {
+    controller.pause();
     return showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -465,10 +409,11 @@ class _ViewStoryState extends State<ViewStory> {
               );
             });
           });
-        });
+        }).then((value) => controller.play());
   }
 
   storyReply() {
+    controller.pause();
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -606,7 +551,7 @@ class _ViewStoryState extends State<ViewStory> {
               ],
             );
           });
-        });
+        }).then((value) => controller.play());
   }
 
   Future<void> getNameAddress() async {
