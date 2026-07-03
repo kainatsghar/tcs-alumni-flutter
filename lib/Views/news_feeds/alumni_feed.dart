@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
@@ -158,19 +159,20 @@ class _AlumniFeedState extends State<AlumniFeed> {
   Widget _bodyContainer() {
     return Column(
       children: [
+        SizedBox(height: 10.h,),
         Container(
-          padding: const EdgeInsets.only(
-              top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+          // padding: const EdgeInsets.only(
+          //     top: 10.0, bottom: 10.0,),
           decoration: const BoxDecoration(
             color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xFFE5E6E6),
-                blurRadius: 2.0,
-                spreadRadius: 0.0,
-                offset: Offset(2.0, 2.0), // shadow direction: bottom right
-              )
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Color(0xFFE5E6E6),
+            //     blurRadius: 2.0,
+            //     spreadRadius: 0.0,
+            //     offset: Offset(2.0, 2.0), // shadow direction: bottom right
+            //   )
+            // ],
           ),
           child: Row(
             children: [
@@ -214,38 +216,72 @@ class _AlumniFeedState extends State<AlumniFeed> {
               //     );
               //   },
               // ),
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(() => const CreatePost());
-                  },
-                  child: Container(
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40.0),
-                      border: Border.all(
-                        color: AppColor.SYT,
-                        width: 1
-                      ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => const CreatePost());
+                },
+                child: Container(
+                  // height: 35,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: AppColor.SYT,
+                      width: 0.1
                     ),
-                    margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                    padding: const EdgeInsets.only(left: 17.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Share your thoughts',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.SYT),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFFE5E6E6),
+                        blurRadius: 2.0,
+                        spreadRadius: 0.0,
+                        offset: Offset(1.0, 2.0), // shadow direction: bottom right
+                      )
+                    ],
+
+                  ),
+                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                  padding: const EdgeInsets.only(left: 17.0,top: 5,bottom: 5),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: AppColor.white,
+                        radius: 20.r,
+                        backgroundImage: AssetImage('assets/images/thinking.png'),
                       ),
-                    ),
+                      SizedBox(
+                          width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Share your thoughts',
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Connect with your community... ',
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.SYT),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(
-          height: 10,
+         SizedBox(
+          height: 10.h,
         ),
         Expanded(
           child: RefreshIndicator(
@@ -1212,11 +1248,14 @@ class _AlumniFeedState extends State<AlumniFeed> {
           itemBuilder: (BuildContext context, int index) {
             return Container(
               color: Colors.white,
-              padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+              padding: const EdgeInsets.only(top: 15.0, bottom: 15.0,left: 15,right: 15),
               child: Column(
                 children: [
                   //region Row User name, time, image
                   Container(
+                    decoration: BoxDecoration(
+                      // color: AppColor.primaryColor
+                    ),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -1538,391 +1577,183 @@ class _AlumniFeedState extends State<AlumniFeed> {
                     child: Stack(
                       children: [
                         Container(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                          height: 220.h,
-                          child: _postsTimeLine[index]
-                              .postImages!
-                              .length < 2
-                              ? Container(
-                            height: 220.h,
-                            color: AppColor.greyshade200,
-                            child: _postsTimeLine[index]
-                                .postImages![0]
-                                .mediaType ==
-                                "IMAGE"
-                                ? CachedNetworkImage(
-                              imageUrl: _postsTimeLine[index]
-                                  .postImages![0]
-                                  .postMedia ??
-                                  '',
-                              fit: BoxFit.fitWidth,
-                              imageBuilder:
-                                  (context, imageProvider) =>
-                                  Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          height: 200.h,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(12),topLeft: Radius.circular(12)),
+                            child: _postsTimeLine[index].postImages!.length == 1
+                                ? Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                _postsTimeLine[index].postImages![0].mediaType == "IMAGE"
+                                    ? CachedNetworkImage(
+                                  imageUrl: _postsTimeLine[index].postImages![0].postMedia ?? '',
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) => const Image(image: AssetImage(AppImages.noImage), fit: BoxFit.cover),
+                                )
+                                    : VideoPlayerRemote(
+                                  url: _postsTimeLine[index].postImages![0].postMedia ?? '',
+                                  height: 250.h.toInt(),
+                                ),
+                                // WhatsApp-style overlay
+                                Positioned.fill(
+                                  child: Container(
                                     decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.fitWidth
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black.withOpacity(0.4),
+                                        ],
                                       ),
                                     ),
                                   ),
-                              progressIndicatorBuilder:
-                                  (context, url,
-                                  downloadProgress) =>
-                                  Center(
-                                    child: SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child:
-                                      CircularProgressIndicator(
-                                          strokeWidth: 0.5,
-                                          value:
-                                          downloadProgress
-                                              .progress),
-                                    ),
-                                  ),
-                              errorWidget:
-                                  (context, url, error) =>
-                              const Image(
-                                image: AssetImage(
-                                  AppImages.noImage,
                                 ),
-                              ),
+                              ],
                             )
-                                : VideoPlayerRemote(
-                              height: 150,
-                              url: _postsTimeLine[index]
-                                  .postImages![0]
-                                  .postMedia ??
-                                  '',
+                                : Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                // Full view first image as background
+                                _postsTimeLine[index].postImages![0].mediaType == "IMAGE"
+                                    ? CachedNetworkImage(
+                                  imageUrl: _postsTimeLine[index].postImages![0].postMedia ?? '',
+                                  fit: BoxFit.cover,
+                                )
+                                    : VideoPlayerRemote(
+                                  url: _postsTimeLine[index].postImages![0].postMedia ?? '',
+                                  height: 250.h.toInt(),
+                                ),
+                                // Thumbnails stacked on the right
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  bottom: 10,
+                                  child: SizedBox(
+                                    width: 80.w,
+                                    child: Column(
+                                      children: [
+                                        // Second image thumbnail
+                                        if (_postsTimeLine[index].postImages!.length >= 2)
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.white, width: 2),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.3),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 1,
+                                                  )
+                                                ],
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(6),
+                                                child: _postsTimeLine[index].postImages![1].mediaType == "IMAGE"
+                                                    ? CachedNetworkImage(
+                                                  imageUrl: _postsTimeLine[index].postImages![1].postMedia ?? '',
+                                                  fit: BoxFit.cover,
+                                                )
+                                                    : VideoPlayerRemote(
+                                                  url: _postsTimeLine[index].postImages![1].postMedia ?? '',
+                                                  height: 110.h.toInt(),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        if (_postsTimeLine[index].postImages!.length > 2)
+                                          const SizedBox(height: 8),
+                                        // Third image thumbnail with overlay
+                                        if (_postsTimeLine[index].postImages!.length >= 3)
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.white, width: 2),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.3),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 1,
+                                                  )
+                                                ],
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(6),
+                                                child: Stack(
+                                                  fit: StackFit.expand,
+                                                  children: [
+                                                    _postsTimeLine[index].postImages![2].mediaType == "IMAGE"
+                                                        ? CachedNetworkImage(
+                                                      imageUrl: _postsTimeLine[index].postImages![2].postMedia ?? '',
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                        : VideoPlayerRemote(
+                                                      url: _postsTimeLine[index].postImages![2].postMedia ?? '',
+                                                      height: 110.h.toInt(),
+                                                    ),
+                                                    if (_postsTimeLine[index].postImages!.length > 3)
+                                                      Container(
+                                                        color: Colors.black54,
+                                                        child: Center(
+                                                          child: Text(
+                                                            "+${_postsTimeLine[index].postImages!.length - 2} more",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 12.sp,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          )
-                              : _postsTimeLine[index]
-                              .postImages!
-                              .length == 2
-                              ? Row(
-                            children: [
-                              for (var element
-                              in _postsTimeLine[index]
-                                  .postImages!)
-                                Expanded(
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.only(
-                                        left: 3),
-                                    child: Container(
-                                      height: 220.h,
-                                      color:
-                                      AppColor.greyshade200,
-                                      child: element
-                                          .mediaType ==
-                                          "IMAGE"
-                                          ? CachedNetworkImage(
-                                        imageUrl: element
-                                            .postMedia ??
-                                            '',
-                                        fit: BoxFit
-                                            .fitHeight,
-                                        imageBuilder:
-                                            (context,
-                                            imageProvider) =>
-                                            Container(
-                                              decoration:
-                                              BoxDecoration(
-                                                image:
-                                                DecorationImage(
-                                                  image:
-                                                  imageProvider,
-                                                ),
-                                              ),
-                                            ),
-                                        progressIndicatorBuilder:
-                                            (context, url,
-                                            downloadProgress) =>
-                                            Center(
-                                              child: SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: CircularProgressIndicator(
-                                                    strokeWidth:
-                                                    0.5,
-                                                    value: downloadProgress
-                                                        .progress),
-                                              ),
-                                            ),
-                                        errorWidget: (context,
-                                            url,
-                                            error) =>
-                                        const Image(
-                                          image:
-                                          AssetImage(
-                                            AppImages
-                                                .noImage,
-                                          ),
-                                        ),
-                                      )
-                                          : VideoPlayerRemote(
-                                        height: 150,
-                                        url: element
-                                            .postMedia ??
-                                            '',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          )
-                              : Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  height: 220.h,
-                                  color: AppColor.greyshade200,
-                                  child: _postsTimeLine[index]
-                                      .postImages![0]
-                                      .mediaType ==
-                                      "IMAGE"
-                                      ? CachedNetworkImage(
-                                    imageUrl: _postsTimeLine[
-                                    index]
-                                        .postImages![
-                                    0]
-                                        .postMedia ??
-                                        '',
-                                    fit: BoxFit.fitHeight,
-                                    imageBuilder: (context,
-                                        imageProvider) =>
-                                        Container(
-                                          decoration:
-                                          BoxDecoration(
-                                            image:
-                                            DecorationImage(
-                                              image:
-                                              imageProvider,
-                                            ),
-                                          ),
-                                        ),
-                                    progressIndicatorBuilder:
-                                        (context, url,
-                                        downloadProgress) =>
-                                        Center(
-                                          child: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                                strokeWidth:
-                                                0.5,
-                                                value: downloadProgress
-                                                    .progress),
-                                          ),
-                                        ),
-                                    errorWidget: (context,
-                                        url, error) =>
-                                    const Image(
-                                      image: AssetImage(
-                                        AppImages.noImage,
-                                      ),
-                                    ),
-                                  )
-                                      : VideoPlayerRemote(
-                                    height: 150,
-                                    url: _postsTimeLine[
-                                    index]
-                                        .postImages![
-                                    0]
-                                        .postMedia ??
-                                        '',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        color: AppColor
-                                            .greyshade200,
-                                        child: _postsTimeLine[
-                                        index]
-                                            .postImages![
-                                        1]
-                                            .mediaType ==
-                                            "IMAGE"
-                                            ? CachedNetworkImage(
-                                          imageUrl: _postsTimeLine[
-                                          index]
-                                              .postImages![
-                                          1]
-                                              .postMedia ??
-                                              '',
-                                          fit: BoxFit
-                                              .fitWidth,
-                                          imageBuilder:
-                                              (context,
-                                              imageProvider) =>
-                                              Container(
-                                                decoration:
-                                                BoxDecoration(
-                                                  image:
-                                                  DecorationImage(
-                                                    image:
-                                                    imageProvider,
-                                                  ),
-                                                ),
-                                              ),
-                                          progressIndicatorBuilder:
-                                              (context,
-                                              url,
-                                              downloadProgress) =>
-                                              Center(
-                                                child:
-                                                SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child: CircularProgressIndicator(
-                                                      strokeWidth:
-                                                      0.5,
-                                                      value: downloadProgress
-                                                          .progress),
-                                                ),
-                                              ),
-                                          errorWidget: (context,
-                                              url,
-                                              error) =>
-                                          const Image(
-                                            image:
-                                            AssetImage(
-                                              AppImages
-                                                  .noImage,
-                                            ),
-                                          ),
-                                        )
-                                            : VideoPlayerRemote(
-                                          height: 150,
-                                          url: _postsTimeLine[
-                                          index]
-                                              .postImages![
-                                          1]
-                                              .postMedia ??
-                                              '',
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Flexible(
-                                      child: Container(
-                                        color: AppColor
-                                            .greyshade200,
-                                        child: Center(
-                                          child: Text(
-                                            "${_postsTimeLine[index].postImages!.length - 2} more",
-                                            style: TextStyle(
-                                              fontSize:
-                                              ScreenUtil()
-                                                  .setSp(
-                                                  16),
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(),
-                            ],
                           ),
                         ),
-                        _postsTimeLine[index].postType == "event"
-                            ? Positioned(
-                          bottom: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                    () => EventTabs(
-                                  eventId:
-                                  _postsTimeLine[index].eventId,
-                                  title: '',
-                                ),
-                              );
-                            },
+                        // Event/Product badge
+                        if (_postsTimeLine[index].postType == "event" || _postsTimeLine[index].postType == "product")
+                          Positioned(
+                            bottom: 0,
+                            left: 10,
+                            right: 10,
                             child: Container(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                color: AppColor.primaryColor
-                                    .withOpacity(0.2),
+                                color: AppColor.primaryColor.withOpacity(0.8),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                ),
                               ),
                               child: Center(
                                 child: Text(
-                                  'View Event',
+                                  _postsTimeLine[index].postType == "event" ? 'View Event' : 'View Product Details',
                                   style: TextStyle(
-                                    fontSize:
-                                    ScreenUtil().setSp(14),
-                                    color: AppColor.primaryColor,
-                                    decoration:
-                                    TextDecoration.underline,
+                                    fontSize: 12.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        )
-                            : _postsTimeLine[index].postType == "product"
-                            ? Positioned(
-                          bottom: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                    () => ProductDetailScreen(
-                                  productId: int.parse(
-                                      _postsTimeLine[index]
-                                          .eventId ??
-                                          ''),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width,
-                              padding:
-                              const EdgeInsets.symmetric(
-                                  vertical: 10),
-                              decoration: BoxDecoration(
-                                color: AppColor.primaryColor
-                                    .withOpacity(0.5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'View Product Details',
-                                  style: TextStyle(
-                                    fontSize:
-                                    ScreenUtil().setSp(14),
-                                    color: AppColor.white,
-                                    decoration: TextDecoration
-                                        .underline,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                            : const SizedBox(),
                       ],
                     ),
                   )
+
                       : _postsTimeLine[index].postType == "event"
                       ? GestureDetector(
                     onTap: () {
@@ -1985,139 +1816,157 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   )
                       : const SizedBox(),
 
-                  const SizedBox(
-                    height: 7.0,
-                  ),
+                  // const SizedBox(
+                  //   height: 7.0,
+                  // ),
                   //region Horizontal Lion
-                  Container(
-                    color: const Color(0xFFa8a8a8),
-                    height: 0.5,
-                  ),
+                  // Container(
+                  //   color: const Color(0xFFa8a8a8),
+                  //   height: 0.5,
+                  // ),
                   //endregion
                   //region Like, share, comment box
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 8.0, bottom: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     _reaction(index);
-                        //     // await likeDislikePost(
-                        //     //   index,
-                        //     //   _postsTimeLine[index].id,
-                        //     //   _postsTimeLine[index].isLike == "0"
-                        //     //       ? 'like'
-                        //     //       : "unlike",
-                        //     // );
-                        //   },
-                        //   child:
-                        Row(
-                          children: [
-                            _reaction(index),
-                            // Icon(
-                            //   Icons.favorite,
-                            //   size: 27.h,
-                            //   color: _postsTimeLine[index].isLike == "1"
-                            //       ? AppColor.primaryColor
-                            //       : Colors.black26,
-                            // ),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            Text(
-                              '${_postsTimeLine[index].totalLike}',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(13),
-                                color: Colors.grey,
-                              ),
-                            ),
-
-                          ],
-                        ),
-                        // ),
-                        GestureDetector(
-                          onTap: () async {
-                            int a = await Get.to(
-                                  () => InsertComments(
-                                  postId: _postsTimeLine[index].id ?? '',
-                                  totalLikes:
-                                  _postsTimeLine[index].totalLike ?? ''),
-                              transition: Transition.downToUp,
-                              curve: Curves.easeInOut,
-                            );
-                            setState(() {
-                              commentCount = a;
-                            });
-                            increaseCount(index);
-                            // .then((value) => increaseCount(index));
-                          },
-                          child: Row(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
+                        border: Border.all(color: AppColor.greyshade100)
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 8.0, bottom: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     _reaction(index);
+                          //     // await likeDislikePost(
+                          //     //   index,
+                          //     //   _postsTimeLine[index].id,
+                          //     //   _postsTimeLine[index].isLike == "0"
+                          //     //       ? 'like'
+                          //     //       : "unlike",
+                          //     // );
+                          //   },
+                          //   child:
+                          Row(
                             children: [
-                              Icon(
-                                Icons.message_sharp,
-                                color: AppColor.primaryColor,
-                                size: 22.w,
+                              Row(
+                                children: [
+                                  _reaction(index),
+                                  // Icon(
+                                  //   Icons.favorite,
+                                  //   size: 27.h,
+                                  //   color: _postsTimeLine[index].isLike == "1"
+                                  //       ? AppColor.primaryColor
+                                  //       : Colors.black26,
+                                  // ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Text(
+                                    '${_postsTimeLine[index].totalLike}',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(13),
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+
+                                ],
                               ),
-                              SizedBox(
-                                width: 5.w,
+                              // ),
+                              SizedBox(width: 20,),
+                              GestureDetector(
+                                onTap: () async {
+                                  int a = await Get.to(
+                                        () => InsertComments(
+                                        postId: _postsTimeLine[index].id ?? '',
+                                        totalLikes:
+                                        _postsTimeLine[index].totalLike ?? ''),
+                                    transition: Transition.downToUp,
+                                    curve: Curves.easeInOut,
+                                  );
+                                  setState(() {
+                                    commentCount = a;
+                                  });
+                                  increaseCount(index);
+                                  // .then((value) => increaseCount(index));
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.chat_bubble_text,
+                                      color: AppColor.primaryColor,
+                                      size: 22.w,
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Text(
+                                      '${_postsTimeLine[index].totalComments}',
+                                      style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(13),
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                '${_postsTimeLine[index].totalComments}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(13),
-                                  color: Colors.grey,
+                              SizedBox(width: 20,),
+                              GestureDetector(
+                                onTap: () {
+                                  internalShare(_postsTimeLine[index].id);
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.arrowshape_turn_up_right,
+                                      color: AppColor.primaryColor,
+                                      size: 22.w,
+                                    ),
+                                    // SvgPicture.asset(
+                                    //   CupertinoIcons.arrowshape_turn_up_right,
+                                    //   height: 22.w,
+                                    //   color: AppColor.primaryColor,
+                                    // ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            internalShare(_postsTimeLine[index].id);
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppImages.shareIcon,
-                                height: 22.w,
-                                color: AppColor.primaryColor,
-                              ),
-                            ],
+
+                          GestureDetector(
+                            onTap: () {
+                              if (Platform.isAndroid) {
+                                Share.share(
+                                    "${_postsTimeLine[index].firstName} posted in DOW Alumni\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+                              } else if (Platform.isIOS) {
+                                Share.share(
+                                    "${_postsTimeLine[index].firstName} posted in DOW Alumni\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.share_outlined,
+                                  color: AppColor.primaryColor,
+                                  size: 22.w,
+                                ),
+                                // const SizedBox(
+                                //   width: 5.0,
+                                // ),
+                                // Text(
+                                //   'Share',
+                                //   style: TextStyle(
+                                //     fontSize: ScreenUtil().setSp(14),
+                                //     color: const Color(0xFFa8a8a8),
+                                //   ),
+                                // )
+                              ],
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (Platform.isAndroid) {
-                              Share.share(
-                                  "${_postsTimeLine[index].firstName} posted in CXO Global\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
-                            } else if (Platform.isIOS) {
-                              Share.share(
-                                  "${_postsTimeLine[index].firstName} posted in CXO Global\nPost Text: ${_postsTimeLine[index].text}\nPosted Date:  ${_postsTimeLine[index].updatedDate}");
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.share_outlined,
-                                color: AppColor.primaryColor,
-                                size: 22.w,
-                              ),
-                              // const SizedBox(
-                              //   width: 5.0,
-                              // ),
-                              // Text(
-                              //   'Share',
-                              //   style: TextStyle(
-                              //     fontSize: ScreenUtil().setSp(14),
-                              //     color: const Color(0xFFa8a8a8),
-                              //   ),
-                              // )
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   //endregion
@@ -2794,358 +2643,213 @@ class _AlumniFeedState extends State<AlumniFeed> {
   }
 
   Widget _stories() {
-    return SizedBox(
-      height: 160.w,
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: GestureDetector(
-              onTap: () {
-                Get.to(() => const CreateStory());
-              },
-              child: Container(
-                width: 100.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColor.black54,
-                ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: GetBuilder<ProfileController>(
-                        init: ProfileController(),
-                        builder: (_) {
-                          return Stack(
-                            children: [
-                              CircleAvatar(
-                                child: _.image == ''
-                                    ? Image(
-                                  image: const AssetImage(
-                                      "assets/images/profile.png"),
-                                  width: 80.w,
-                                  height: 80.w,
-                                )
-                                    : CachedNetworkImage(
-                                  imageUrl: _.image ?? '',
-                                  imageBuilder:
-                                      (context, imageProvider) =>
-                                      Container(
-                                        width: 80.w,
-                                        height: 80.w,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          //   color: Colors.white,
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                  progressIndicatorBuilder: (context, url,
-                                      downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value:
-                                          downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      CircleAvatar(
-                                        //profile image
-                                        backgroundColor: Colors.white,
-                                        backgroundImage: const AssetImage(
-                                            "assets/images/profile.png"),
-                                        radius: 20.r,
-                                      ),
-                                ),
-                                radius: 20.r,
-                                //backgroundColor: Colors.black,
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  decoration:  BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.primaryColor,
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 15.w,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+    if (!storyFetch) {
+      return const CircularProgressIndicator(color: Colors.transparent);
+    }
+
+    if (_storiesByList.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                blurRadius: 10,
+                spreadRadius: 2,
+              )
+            ],
+          ),
+          child: Row(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    width: 60.w,
+                    height: 60.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColor.primaryColor, width: 2),
+                      color: AppColor.greyshade100,
                     ),
-                    Positioned(
-                      width: 100.w,
-                      bottom: 5,
-                      child: Text(
-                        'Create Story',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.white),
+                    child: Icon(Icons.person, color: AppColor.primaryColor, size: 30.w),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColor.primaryColor,
                       ),
+                      child: Icon(Icons.add, color: Colors.white, size: 18.w),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'No stories available yet.',
+                      style: CustomTextStyles.text14SemiBoldW600,
+                    ),
+                    Text(
+                      'Be the first to share your moment!',
+                      style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.SYT),
                     ),
                   ],
                 ),
               ),
-            ),
+              GestureDetector(
+                onTap: () => Get.to(() => const CreateStory()),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Post Story',
+                        style: CustomTextStyles.text12SemiBoldW600.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(width: 5),
+                      Icon(Icons.add_circle_outline, color: Colors.white, size: 16.w),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          storyFetch ?
-          ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _storiesByList.length,
-            itemBuilder: (context, index) {
-              if (storyImageList[index].endsWith('mp4')) {
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(
-                          () => ViewStory(
-                        //url: _storiesList[index].storyImage ?? '',
-                        name: _storiesByList[index].name ?? '',
-                        image: _storiesByList[index].userImage ?? '',
-                        storiesList: List<Story>.from(_storiesModelList[index]),
-                        //date: _storiesList[index].storyTime ?? '',
-                        userId: _storiesByList[index].addedBy.toString(),
-                        //storyId: _storiesList[index].storyId.toString(),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 100.w,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        scrollDirection: Axis.horizontal,
+        itemCount: _storiesByList.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: GestureDetector(
+                onTap: () => Get.to(() => const CreateStory()),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: 65.w,
+                          height: 65.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColor.primaryColor, width: 2),
+                            image: const DecorationImage(
+                              image: AssetImage("assets/images/profile.png"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColor.primaryColor,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            child: Icon(Icons.add, color: Colors.white, size: 14.w),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Create Story',
+                      style: CustomTextStyles.text12RegularW400,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          int storyIndex = index - 1;
+          return Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(
+                  () => ViewStory(
+                    name: _storiesByList[storyIndex].name ?? '',
+                    image: _storiesByList[storyIndex].userImage ?? '',
+                    storiesList: List<Story>.from(_storiesModelList[storyIndex]),
+                    userId: _storiesByList[storyIndex].addedBy.toString(),
+                  ),
+                  transition: Transition.downToUp,
+                  duration: const Duration(milliseconds: 400),
+                );
+              },
+              child: Column(
+                children: [
+                  Container(
+                    width: 65.w,
+                    height: 65.w,
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Colors.purple, Colors.orange, AppColor.primaryColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      transition: Transition.downToUp,
-                      duration: const Duration(milliseconds: 400),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    ),
                     child: Container(
-                      width: 100.w,
-                      height: 160.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColor.black38,
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: SizedBox(
-                              width: 100.w,
-                              height: 160.w,
-                              child: StoryVideoPlayer(
-                                url: storyImageList[index],
-                              ),
-                              // child: CachedNetworkImage(
-                              //   fit: BoxFit.fill,
-                              //   imageUrl: _storiesList[index].storyImage ?? '',
-                              //   errorWidget: (context, url, error) => const Image(
-                              //     image: AssetImage(AppImages.profile),
-                              //   ),
-                              // ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 5,
-                            left: 5,
-                            child: CircleAvatar(
-                              radius: 26.w,
-                              child: _storiesByList[index].userImage == ''
-                                  ? Image(
-                                image: const AssetImage(
-                                    AppImages.profile),
-                                width: 50.w,
-                                height: 50.h,
-                              )
-                                  : CachedNetworkImage(
-                                imageUrl: _storiesByList[index]
-                                    .userImage ??
-                                    '',
-                                imageBuilder:
-                                    (context, imageProvider) =>
-                                    Container(
-                                      height: 50.h,
-                                      width: 50.w,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                errorWidget:
-                                    (context, url, error) => Image(
-                                  image: const AssetImage(
-                                      AppImages.profile),
-                                  height: 50.w,
-                                  width: 50.h,
-                                ),
-                                progressIndicatorBuilder: (context,
-                                    url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 6,
-                            left: 4,
-                            child: Container(
-                              width: 90.w,
-                              height: 15.h,
-                              color: Colors.transparent,
-                              child: Text(
-                                _storiesByList[index].name ?? '',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: AppColor.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //     border: Border.all(color: AppColor.primaryColor),
-                          //     shape: BoxShape.circle,
-                          //     color: Colors.blue,
-                          //   ),
-                          //   width: 53,
-                          //   height: 70,
-                          //   child: Image.asset(AppImages.profile),
-                          // ),
-                          // index == 0
-                          //     ? const Positioned(
-                          //         bottom: 0,
-                          //         right: 0,
-                          //         child: Icon(
-                          //           Icons.add,
-                          //           size: 10,
-                          //           color: AppColor.primaryColor,
-                          //         ),
-                          //       )
-                          //     : const SizedBox(),
-                        ],
+                      child: CircleAvatar(
+                        backgroundColor: AppColor.greyshade200,
+                        backgroundImage: _storiesByList[storyIndex].userImage == ''
+                            ? const AssetImage(AppImages.profile) as ImageProvider
+                            : NetworkImage(_storiesByList[storyIndex].userImage!),
                       ),
                     ),
                   ),
-                );
-              }
-              else {
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(
-                          () => ViewStory(
-                        name: _storiesByList[index].name ?? '',
-                        image: _storiesByList[index].userImage ?? '',
-                        storiesList: List<Story>.from(_storiesModelList[index]),
-                        userId: _storiesByList[index].addedBy.toString(),
-                        //storyId: _storiesList[index].storyId.toString(),
-                        //link: _storiesList[index].link ?? '',
-                      ),
-                      transition: Transition.downToUp,
-                      duration: const Duration(milliseconds: 400),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Container(
-                      width: 100.w,
-                      height: 160.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColor.black38,
-                      ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: SizedBox(
-                              width: 100.w,
-                              height: 160.w,
-                              child: Image.network(
-                                storyImageList[index],
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 5,
-                            left: 5,
-                            child: CircleAvatar(
-                              radius: 26.w,
-                              child: _storiesByList[index].userImage == ''
-                                  ? Image(
-                                image: const AssetImage(
-                                    AppImages.profile),
-                                width: 50.w,
-                                height: 50.h,
-                              )
-                                  : CachedNetworkImage(
-                                imageUrl: _storiesByList[index].userImage ?? '',
-                                imageBuilder:
-                                    (context, imageProvider) =>
-                                    Container(
-                                      height: 50.h,
-                                      width: 50.w,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                errorWidget:
-                                    (context, url, error) => Image(
-                                  image: const AssetImage(
-                                      AppImages.profile),
-                                  height: 50.w,
-                                  width: 50.h,
-                                ),
-                                progressIndicatorBuilder: (context,
-                                    url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 6,
-                            left: 4,
-                            child: Container(
-                              width: 85.w,
-                              height: 15.h,
-                              color: Colors.transparent,
-                              child: Text(
-                                _storiesByList[index].name ?? '',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColor.white,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    width: 70.w,
+                    child: Text(
+                      _storiesByList[storyIndex].name ?? '',
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: CustomTextStyles.text12RegularW400,
                     ),
                   ),
-                );
-              }
-            },
-          ) :
-          const CircularProgressIndicator(color: Colors.transparent,),
-        ],
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
+
 
   // Future<void> getStories() async {
   //   setState(() {
