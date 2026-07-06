@@ -154,6 +154,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
                     if (_branches.length > 2)
                       SizedBox(
                         height: 35.h,
+                        width: 95.sw,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
@@ -208,13 +209,26 @@ class _AlumniScreenState extends State<AlumniScreen> {
                   ],
                 )
               : Container(),
-          searchBar(),
+          SizedBox(
+            height: 6,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:8.0),
+            child: searchBar(),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: RefreshIndicator(
+              backgroundColor: AppColor.white,
+              color: AppColor.primaryColor,
               onRefresh: () {
                 return getFirstPageUsers();
               },
               child: Container(
+                // padding: EdgeInsets.symmetric(horizontal: 10),
+
                 child: _buildListViewWidget(),
               ),
             ),
@@ -226,81 +240,160 @@ class _AlumniScreenState extends State<AlumniScreen> {
 
   Widget searchBar() {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: AppColor.black12,
+      height: 44.h,
+      padding: EdgeInsets.only(left: 12.w),
+      decoration: BoxDecoration(
+        color: Colors.white, // 2. TextField ke andar ka area ab bilkul WHITE ho jayega
+        borderRadius: BorderRadius.circular(22.r), // Gol corners intact hain
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2), // Use opacity so it blends smoothly
+            blurRadius: 3,                    // Softens the shadow
+            spreadRadius: 0.5,                   // Extends the shadow outwards
+            offset: Offset(0, 0),                // Position: (x = horizontal, y = vertical)           // Position: (x = horizontal, y = vertical)
           ),
+        ],
+
+        // Optional: Agar white box ko thoda prominent karna ho to halki si border de sakte ho
+        border: Border.all(
+          color: AppColor.black12,
+          width: 1,
         ),
       ),
-      padding: EdgeInsets.only(
-        left: 8.w,
-        right: 8.w,
-        top: 4.h,
-        bottom: 0.h,
-      ),
-      width: MediaQuery.of(context).size.width,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             Icons.search,
-            size: 25.r,
+            size: 20.r,
             color: AppColor.black45,
           ),
-          const SizedBox(
-            width: 10,
-          ),
+          SizedBox(width: 8.w),
           Expanded(
-            child: SizedBox(
-              height: 30,
-              child: TextField(
-                cursorHeight: 15.h,
-                style: CustomTextStyles.text12RegularW400,
-                textCapitalization: TextCapitalization.words,
-                onEditingComplete: () {
-                  getFirstPageUsers();
-                },
-                onChanged: (String) {
-                  getFirstPageUsers();
-                },
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
-                  contentPadding: const EdgeInsets.only(bottom: 10),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.greyshade100,
-                    ),
+            child: TextField(
+              controller: _searchController,
+              cursorHeight: 15.h,
+              style: CustomTextStyles.text12RegularW400,
+              textCapitalization: TextCapitalization.words,
+              onEditingComplete: () {
+                getFirstPageUsers();
+              },
+              onChanged: (value) {
+                getFirstPageUsers();
+              },
+              decoration: InputDecoration(
+                hintText: 'Search',
+                hintStyle: CustomTextStyles.text12RegularW400.copyWith(
+                  color: AppColor.black38,
+                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 11.h),
+
+                // Filter Button inside suffix
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (builder) {
+                        return _filterClick();
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.tune,
+                    size: 22.r,
+                    color: AppColor.black45,
                   ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (builder) {
-                  return _filterClick();
-                },
-              );
-            },
-            icon: Icon(
-              Icons.tune,
-              size: 25.r,
-              color: AppColor.black45,
             ),
           ),
         ],
       ),
     );
   }
+
+  // Widget searchBar() {
+  //   return Container(
+  //     decoration: const BoxDecoration(
+  //       border: Border(
+  //         bottom: BorderSide(
+  //           color: AppColor.black12,
+  //         ),
+  //       ),
+  //     ),
+  //     padding: EdgeInsets.only(
+  //       left: 8.w,
+  //       right: 8.w,
+  //       top: 4.h,
+  //       bottom: 0.h,
+  //     ),
+  //     width: MediaQuery.of(context).size.width,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         Icon(
+  //           Icons.search,
+  //           size: 25.r,
+  //           color: AppColor.black45,
+  //         ),
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         Expanded(
+  //           child: SizedBox(
+  //             height: 30,
+  //             child: TextField(
+  //               cursorHeight: 15.h,
+  //               style: CustomTextStyles.text12RegularW400,
+  //               textCapitalization: TextCapitalization.words,
+  //               onEditingComplete: () {
+  //                 getFirstPageUsers();
+  //               },
+  //               onChanged: (String) {
+  //                 getFirstPageUsers();
+  //               },
+  //               controller: _searchController,
+  //
+  //               decoration: InputDecoration(
+  //                 hintText: 'Search',
+  //                 hintStyle: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.black38,),
+  //                 contentPadding: const EdgeInsets.only(bottom: 10),
+  //
+  //                 border: UnderlineInputBorder(
+  //                   borderSide: BorderSide(
+  //                     color: AppColor.greyshade100,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         IconButton(
+  //           onPressed: () {
+  //             showDialog(
+  //               context: context,
+  //               builder: (builder) {
+  //                 return _filterClick();
+  //               },
+  //             );
+  //           },
+  //           icon: Icon(
+  //             Icons.tune,
+  //             size: 25.r,
+  //             color: AppColor.black45,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildListViewWidget() {
     return _allUsers.isEmpty
@@ -310,41 +403,50 @@ class _AlumniScreenState extends State<AlumniScreen> {
               style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.black45,),
             ),
           )
-        : ListView.builder(
+        : GridView.builder(
             controller: _scrollController,
             itemCount: _allUsers.length,
             shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,          // Ek row mein 2 items dikhane ke liye
+        crossAxisSpacing: 7,       // Horizontal spacing
+        mainAxisSpacing: 0,        // Vertical spacing
+        childAspectRatio: 1.19,     // Card ki height badhane ke liye (Width / Height)
+      ),
             itemBuilder: (BuildContext context, int i) {
               if (_allUsers[i].userId != AppConstants.myId) {
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return ProfileScreen(userID: _allUsers[i].userId);
-                            },
-                          ),
-                        );
-                      },
-                      child: UserWidget(
-                        image: _allUsers[i].image ?? AppImages.profile,
-                        name:
-                            "${_allUsers[i].firstName} ${_allUsers[i].lastName}",
-                        place: "${_allUsers[i].currentCityName}",
-                        organization: _allUsers[i].organizationName ?? '',
-                        designation: _allUsers[i].designation ?? '',
-                        year: AppConstants.appName != 'TLE'
-                            ? (_allUsers[i].graduationYear ?? "2015")
-                            : '',
-                        isMentor: _allUsers[i].isMentor ?? "0",
-                        chatStatus: _allUsers[i].chatStatus,
-                        id: _allUsers[i].userId,
+                return Padding(
+                  padding:  EdgeInsets.only(left:i%2==0?15:0,right:i%2!=0?12:0),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return ProfileScreen(userID: _allUsers[i].userId);
+                              },
+                            ),
+                          );
+                        },
+                        child: UserWidget(
+                          image: _allUsers[i].image ?? AppImages.profile,
+                          name:
+                              "${_allUsers[i].firstName} ${_allUsers[i].lastName}",
+                          place: "${_allUsers[i].currentCityName}",
+                          organization: _allUsers[i].organizationName ?? '',
+                          designation: _allUsers[i].designation ?? '',
+                          year: AppConstants.appName != 'TLE'
+                              ? (_allUsers[i].graduationYear ?? "2015")
+                              : '',
+                          isMentor: _allUsers[i].isMentor ?? "0",
+                          chatStatus: _allUsers[i].chatStatus,
+                          id: _allUsers[i].userId,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               } else {
                 return Container();

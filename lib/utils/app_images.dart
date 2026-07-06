@@ -104,8 +104,11 @@ class AppImages {
   static const String topper1 = 'assets/images/topper1.png';
 
   static const String chatAccept = "assets/icons/chatAccept.svg";
+  static const String chatAccept2 = "assets/icons/chatAccept2.svg";
   static const String chatPending = "assets/icons/chatPending.svg";
+  static const String chatPending2 = "assets/icons/chatPending2.svg";
   static const String chatSend = "assets/icons/chatSend.svg";
+  static const String chatSend2 = "assets/icons/chatSend2.svg";
 
   //Illustrations
   static const String sendInvitation = "assets/images/sendInvitation.svg";
