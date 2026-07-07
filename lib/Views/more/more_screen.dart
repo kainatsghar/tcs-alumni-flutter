@@ -339,7 +339,7 @@ class MoreScreenState extends State<MoreScreen> {
           context: context,
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+          padding: EdgeInsets.only(left: 12.w,right:  12.w,top: 2,bottom: 2),
           child: GridView.builder(
             itemCount: items.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

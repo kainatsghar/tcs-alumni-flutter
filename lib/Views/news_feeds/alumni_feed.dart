@@ -160,103 +160,10 @@ class _AlumniFeedState extends State<AlumniFeed> {
     return Column(
 
       children: [
-        SizedBox(height: 10.h,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                // padding: const EdgeInsets.only(
-                //     top: 10.0, bottom: 10.0,),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Color(0xFFE5E6E6),
-                  //     blurRadius: 2.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(2.0, 2.0), // shadow direction: bottom right
-                  //   )
-                  // ],
-                ),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(() => const CreatePost());
-                      },
-                      child: Container(
-                        // height: 35,
-                        width: MediaQuery.of(context).size.width*0.94 ,
-                        decoration: BoxDecoration(
-                          color: Color(0xffDFEBFB),
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: AppColor.SYT,
-                            width: 0.1
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xFFB8C1D2),
-                              // color: Colors.blue.shade50,
-                              blurRadius: 8.0,
-                              spreadRadius: 2.0,
-                              offset: Offset(1.5, 3.0), // shadow direction: bottom right
-                            )
-                          ],
-
-                        ),
-
-                        padding: const EdgeInsets.only(left: 17.0,top: 5,bottom: 5),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: AppColor.white,
-                              radius: 20.r,
-                              backgroundImage: AssetImage('assets/images/thinking.png'),
-                            ),
-                            SizedBox(
-                                width: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Share your thoughts',
-                                    textAlign: TextAlign.center,
-                                    style: CustomTextStyles.text12SemiBoldW600.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColor.black),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Connect with your community... ',
-                                    textAlign: TextAlign.center,
-                                    style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-         SizedBox(
-          height: 10.h,
-        ),
         Expanded(
           child: RefreshIndicator(
+            backgroundColor: AppColor.white,
+            color: AppColor.primaryColor,
             onRefresh: () {
               getStories();
               return loadTimeLinePosts();
@@ -266,10 +173,127 @@ class _AlumniFeedState extends State<AlumniFeed> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height:
+                    10
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Text('Stories',
+                      style: CustomTextStyles.text14SemiBoldW600.copyWith(
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
                   _stories(),
                   //region Row Image and share thoughts
+                  SizedBox(
+                    height: 7,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Text('Feeds',
+                      style: CustomTextStyles.text14SemiBoldW600.copyWith(
+                          fontSize: 18
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          // padding: const EdgeInsets.only(
+                          //     top: 10.0, bottom: 10.0,),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Color(0xFFE5E6E6),
+                            //     blurRadius: 2.0,
+                            //     spreadRadius: 0.0,
+                            //     offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                            //   )
+                            // ],
+                          ),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const CreatePost());
+                                },
+                                child: Container(
+                                  // height: 35,
+                                  width: MediaQuery.of(context).size.width*0.94 ,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffDFEBFB),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                        color: AppColor.SYT,
+                                        width: 0.1
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xFFB8C1D2),
+                                        // color: Colors.blue.shade50,
+                                        blurRadius: 8.0,
+                                        spreadRadius: 2.0,
+                                        offset: Offset(1.5, 3.0), // shadow direction: bottom right
+                                      )
+                                    ],
 
+                                  ),
+
+                                  padding: const EdgeInsets.only(left: 17.0,top: 5,bottom: 5),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: AppColor.white,
+                                        radius: 20.r,
+                                        backgroundImage: AssetImage('assets/images/thinking.png'),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'Share your thoughts',
+                                              textAlign: TextAlign.center,
+                                              style: CustomTextStyles.text12SemiBoldW600.copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColor.black),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'Connect with your community... ',
+                                              textAlign: TextAlign.center,
+                                              style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.grey),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   // _youtubePlayer(),
+
                   _youtube.isNotEmpty
                       ? GestureDetector(
                           onTap: () {
@@ -1736,7 +1760,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
 
     if (_storiesByList.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
@@ -1755,8 +1779,8 @@ class _AlumniFeedState extends State<AlumniFeed> {
               Stack(
                 children: [
                   Container(
-                    width: 60.w,
-                    height: 60.w,
+                    width: 50.w,
+                    height: 50.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColor.primaryColor, width: 2),
@@ -1777,38 +1801,44 @@ class _AlumniFeedState extends State<AlumniFeed> {
                   ),
                 ],
               ),
-              const SizedBox(width: 15),
+              const SizedBox(width: 12), // Gap thoda manage kiya taake space bache
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       'No stories available yet.',
                       style: CustomTextStyles.text14SemiBoldW600,
+                      softWrap: false, // Fix: Yeh text ko zabardasti single line me rakhega break nahi hone dega
                     ),
+                    const SizedBox(height: 4),
                     Text(
                       'Be the first to share your moment!',
                       style: CustomTextStyles.text12RegularW400.copyWith(color: AppColor.SYT),
+                      // Isko wese hi chor diya taake space kam hone par yeh automatic 2 lines me wrap ho jaye
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 8), // Text aur button k darmiyan gap
               GestureDetector(
                 onTap: () => Get.to(() => const CreateStory()),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8), // Padding thodi optimize ki
                   decoration: BoxDecoration(
                     color: AppColor.primaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         'Post Story',
                         style: CustomTextStyles.text12SemiBoldW600.copyWith(color: Colors.white),
                       ),
-                      const SizedBox(width: 5),
-                      Icon(Icons.add_circle_outline, color: Colors.white, size: 16.w),
+                      const SizedBox(width: 4),
+                      Icon(Icons.add_circle_outline, color: Colors.white, size: 14.w), // Icon size halka sa chota kiya
                     ],
                   ),
                 ),

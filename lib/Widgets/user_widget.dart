@@ -48,7 +48,7 @@ class _UserWidgetState extends State<UserWidget> {
     return Stack(
       children: [
         Container(
-          height: 140,
+          height: 160,
           padding:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
 
           decoration: BoxDecoration(

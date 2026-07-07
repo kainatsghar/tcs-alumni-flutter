@@ -411,7 +411,7 @@ class _AlumniScreenState extends State<AlumniScreen> {
         crossAxisCount: 2,          // Ek row mein 2 items dikhane ke liye
         crossAxisSpacing: 7,       // Horizontal spacing
         mainAxisSpacing: 0,        // Vertical spacing
-        childAspectRatio: 1.19,     // Card ki height badhane ke liye (Width / Height)
+        childAspectRatio: 1.15,     // Card ki height badhane ke liye (Width / Height)
       ),
             itemBuilder: (BuildContext context, int i) {
               if (_allUsers[i].userId != AppConstants.myId) {
