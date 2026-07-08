@@ -78,6 +78,7 @@ class _UserWidgetState extends State<UserWidget> {
               _profilepicture(widget.image!),
               SizedBox(
                 width: 12.w,
+                height: 4.h,
               ),
               Center(
                 child:
@@ -253,7 +254,7 @@ class _UserWidgetState extends State<UserWidget> {
                 )
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 1,bottom: 3),
+                padding: const EdgeInsets.only(left: 10,right:10,top: 1,bottom: 3),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,

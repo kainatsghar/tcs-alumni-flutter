@@ -40,7 +40,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
+          // height: MediaQuery.of(context).size.height * 0.8,
           child: AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
             child: Stack(

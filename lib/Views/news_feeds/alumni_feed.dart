@@ -1180,9 +1180,26 @@ class _AlumniFeedState extends State<AlumniFeed> {
   }
 
   Future<void> likeDislikePost(index, postId, status, reaction) async {
+    // 1. Save current state for potential rollback
+    String? previousTotalLike = _postsTimeLine[index].totalLike;
+    String? previousIsLike = _postsTimeLine[index].isLike;
+    String? previousReaction = _postsTimeLine[index].reaction;
+
+    // 2. Optimistic Update
     setState(() {
-      wait = true;
+      _postsTimeLine[index].isLike = (status == "like" ? "1" : "0");
+      _postsTimeLine[index].reaction = (status == "like" ? reaction : "");
+
+      int currentLikes = int.tryParse(previousTotalLike ?? '0') ?? 0;
+      if (status == "like") {
+        currentLikes++;
+      } else {
+        currentLikes = (currentLikes > 0) ? currentLikes - 1 : 0;
+      }
+      _postsTimeLine[index].totalLike = currentLikes.toString();
     });
+
+    // 3. API Call
     var response = await ApiCalls.likeUnlikePost(
       userId: AppConstants.myId,
       status: status,
@@ -1190,12 +1207,19 @@ class _AlumniFeedState extends State<AlumniFeed> {
       reaction: reaction,
       type: "timeline",
     );
+
+    // 4. Handle Result
     if (response is ErrorEntity) {
-      UIHelper.showErrorAlert(context, response.message);
+      // Rollback on network/error
+      _rollbackLikeState(
+          index, previousTotalLike, previousIsLike, previousReaction);
+      Fluttertoast.showToast(
+          msg: "Failed to update your like. Please try again.");
       print(response.message);
     } else {
       LikePostEntity likeEntity = LikePostEntity().fromJson(response);
       if (likeEntity.success == 1) {
+        // Update local DB
         await database.editPostLikes(
           postId,
           likeEntity.result.likes.toString(),
@@ -1204,23 +1228,33 @@ class _AlumniFeedState extends State<AlumniFeed> {
           postId,
           status == "like" ? "1" : "0",
         );
-        setState(
-          () {
+
+        // Sync with actual response count if different
+        if (mounted) {
+          setState(() {
             _postsTimeLine[index].totalLike =
                 likeEntity.result.likes.toString();
-            _postsTimeLine[index].reaction = reaction;
-            if (status == 'like') {
-              _postsTimeLine[index].isLike = '1';
-            } else {
-              _postsTimeLine[index].isLike = '0';
-            }
-          },
-        );
+          });
+        }
+      } else {
+        // Rollback on API failure (e.g. success == 0)
+        _rollbackLikeState(
+            index, previousTotalLike, previousIsLike, previousReaction);
+        Fluttertoast.showToast(
+            msg: "Failed to update your like. Please try again.");
       }
     }
-    setState(() {
-      wait = false;
-    });
+  }
+
+  void _rollbackLikeState(
+      int index, String? totalLike, String? isLike, String? reaction) {
+    if (mounted) {
+      setState(() {
+        _postsTimeLine[index].totalLike = totalLike;
+        _postsTimeLine[index].isLike = isLike;
+        _postsTimeLine[index].reaction = reaction;
+      });
+    }
   }
 
   void increaseCount(index) {
@@ -1762,7 +1796,7 @@ class _AlumniFeedState extends State<AlumniFeed> {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Container(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.symmetric(horizontal:15,vertical: 5),
           decoration: BoxDecoration(
             color: AppColor.white,
             borderRadius: BorderRadius.circular(15),
@@ -1987,78 +2021,6 @@ class _AlumniFeedState extends State<AlumniFeed> {
   }
 
 
-  // Future<void> getStories() async {
-  //   setState(() {
-  //     storyFetch = false;
-  //   });
-  //   var response = await ApiCalls.getStories();
-  //   if (response is ErrorEntity) {
-  //   }
-  //   else {
-  //     print("Stories Response= ${response.toString()}");
-  //     TimelineStoriesEntity storiesEntity = TimelineStoriesEntity.fromJson(response);
-  //     if (storiesEntity.success == 1) {
-  //       await database.deleteAllTimeLineStories();
-  //       await database.deleteAllStories();
-  //       int storiesLength = storiesEntity.data!.length;
-  //       replyUserDevices!.clear();
-  //       storyImageList.clear();
-  //
-  //       for(int i=0; i<storiesLength; i++){
-  //         storyImageList.add(storiesEntity.data![i].stories!.first.storyImage!);
-  //         print("storyImageList= $storyImageList");
-  //       }
-  //
-  //       try{
-  //         for(var element in storiesEntity.data!){
-  //           for(var element2 in element.devices!){
-  //             if(element2.token!.isNotEmpty){
-  //               replyUserDevices!.add(UserDevices(
-  //                 token: element2.token,
-  //                 status: element2.status,
-  //               ));
-  //             }
-  //           }
-  //         }
-  //       }catch(e){}
-  //
-  //       var list = [];
-  //       for(int i=0; i<storiesLength; i++){
-  //         list.add(storiesEntity.data![i].stories);
-  //       }
-  //
-  //       _storiesModelList = list;
-  //
-  //       for (var element in storiesEntity.data!) {
-  //         DBStorie dbStorie = DBStorie(
-  //             storyById: element.id,
-  //             name: element.name,
-  //             addedBy: element.addedBy,
-  //             userImage: element.userImage
-  //         );
-  //         database.insertAllTimeLineStories(dbStorie);
-  //       }
-  //
-  //       for (var element in storiesEntity.data!.first.stories!) {
-  //         DbNewStorie dbNewStorie = DbNewStorie(
-  //             storyId: element.id,
-  //             mediaType: element.mediaType,
-  //             storyImage: element.storyImage,
-  //             storyTime: element.storyTime.toString(),
-  //             updatedDate: element.updatedAt.toString(),
-  //             link: element.link);
-  //         database.insertAllStories(dbNewStorie);
-  //       }
-  //
-  //       _storiesByList = await database.getAllTimeLineStories();
-  //       print("_storiesByList= ${_storiesByList.length}");
-  //       _storiesList = await database.getAllStories();
-  //     }
-  //     setState(() {
-  //       storyFetch = true;
-  //     });
-  //   }
-  // }
 
   Future<void> getStories() async {
     setState(() {

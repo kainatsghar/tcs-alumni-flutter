@@ -44,6 +44,7 @@ class _UploadStoryState extends State<UploadStory> {
       top: false,
       bottom: true,
       child: Scaffold(
+        backgroundColor: AppColor.black26,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         systemOverlayStyle:
@@ -68,8 +69,8 @@ class _UploadStoryState extends State<UploadStory> {
                   else
                     Image.file(
                       widget.file,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
+                      // height: MediaQuery.of(context).size.height,
+                      // width: MediaQuery.of(context).size.width,
                       fit: BoxFit.fill,
                     ),
                   // const Spacer(),
