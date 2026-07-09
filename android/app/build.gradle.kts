@@ -14,8 +14,8 @@ android {
         applicationId = "com.viion.tcsalumniapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 41
-        versionName = "1.0.29"
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
         multiDexEnabled = true
     }
 

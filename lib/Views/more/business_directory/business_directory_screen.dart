@@ -191,7 +191,7 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Material(
-          elevation: 5,
+          // elevation: 5,
           child: Container(
             decoration: BoxDecoration(
               color: AppColor.white,
@@ -199,8 +199,8 @@ class _BusinessDirectoryState extends State<BusinessDirectory> {
               boxShadow: const [
                 BoxShadow(
                   color: AppColor.black12,
-                  spreadRadius: 0.2,
-                  blurRadius: 0.5,
+                  spreadRadius: 2,
+                  blurRadius: 1,
                 )
               ],
             ),

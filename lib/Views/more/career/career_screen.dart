@@ -41,9 +41,9 @@ class CareerScreenState extends State<CareerScreen> {
                 Get.to(() => JobOpening());
               },
             ),
-            Divider(
-              height: 1.h,
-            ),
+            // Divider(
+            //   height: 1.h,
+            // ),
             AppConstants.appName == "BOSS"
                 ? _beconhouse(
                     title: 'Beaconhouse Jobs',
@@ -64,9 +64,9 @@ class CareerScreenState extends State<CareerScreen> {
                     },
                   )
                 : const SizedBox(),
-            Divider(
-              height: 1.h,
-            ),
+            // Divider(
+            //   height: 1.h,
+            // ),
             _postJob(
               title: 'Post a Job',
               onClicked: () {
@@ -81,9 +81,9 @@ class CareerScreenState extends State<CareerScreen> {
                 );
               },
             ),
-            Divider(
-              height: 1.h,
-            ),
+            // Divider(
+            //   height: 1.h,
+            // ),
             //JOb opening container
           ],
         ),
@@ -95,7 +95,8 @@ class CareerScreenState extends State<CareerScreen> {
     String? title,
     VoidCallback? onClicked,
   }) {
-    return Center(
+    return  Card(
+      color: AppColor.white,
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 7.0),
         title: Row(
@@ -155,7 +156,8 @@ class CareerScreenState extends State<CareerScreen> {
     String? title,
     VoidCallback? onClicked,
   }) {
-    return Center(
+    return Card(
+      color: AppColor.white,
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 7.0),
         title: Row(

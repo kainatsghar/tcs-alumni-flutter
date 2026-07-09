@@ -50,70 +50,75 @@ class ProfileOptionsView extends StatelessWidget {
                   ));
             },
           ),
-          Divider(
-            height: 1.h,
-          ),
+          // Divider(
+          //   height: 1.h,
+          // ),
           _buildMoreItem(
               title: 'Update Password',
               icon: AppImages.lock,
               onClicked: () {
                 Get.to(() => const UpdatePassword());
               }),
-          Divider(
-            height: 1.h,
+          // Divider(
+          //   height: 1.h,
+          // ),
+          Card(
+            color: AppColor.white,
+            child: ListTile(
+              minVerticalPadding: 10.h,
+              contentPadding: const EdgeInsets.only(left: 10.0),
+              title: Row(
+                children: [
+                  Icon(Icons.delete_rounded, color: AppColor.redshade900, size: 22.h),
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  Text('Delete Account',
+                      style: TextStyle(
+                        // //Family: 'Nunito',
+                        color: AppColor.redshade900,
+                        fontSize: 15.sp,
+                      )),
+                ],
+              ),
+              trailing: Icon(
+                Icons.keyboard_arrow_right,
+                size: 22.h,
+                color: AppColor.black,
+              ),
+              onTap: () {
+                deleteDialog();
+              },
+              dense: true,
+            ),
           ),
-          ListTile(
-            minVerticalPadding: 10.h,
-            contentPadding: const EdgeInsets.only(left: 10.0),
-            title: Row(
-              children: [
-                Icon(Icons.delete_rounded, color: AppColor.redshade900, size: 22.h),
-                SizedBox(
-                  width: 12.w,
-                ),
-                Text('Delete Account',
-                    style: TextStyle(
-                      // //Family: 'Nunito',
-                      color: AppColor.redshade900,
-                      fontSize: 15.sp,
-                    )),
-              ],
+
+
+          Card(
+            color: AppColor.white,
+            child: ListTile(
+              minVerticalPadding: 10.h,
+              contentPadding: const EdgeInsets.only(left: 10.0),
+              title: Row(
+                children: [
+                  Icon(Icons.logout, color: AppColor.redshade900, size: 22.h),
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  Text('Logout',
+                      style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.redshade900,)),
+                ],
+              ),
+              trailing: Icon(
+                Icons.keyboard_arrow_right,
+                size: 22.h,
+                color: AppColor.black,
+              ),
+              onTap: () {
+                logout(context);
+              },
+              dense: true,
             ),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              size: 22.h,
-              color: AppColor.black,
-            ),
-            onTap: () {
-              deleteDialog();
-            },
-            dense: true,
-          ),
-          Divider(
-            height: 1.h,
-          ),
-          ListTile(
-            minVerticalPadding: 10.h,
-            contentPadding: const EdgeInsets.only(left: 10.0),
-            title: Row(
-              children: [
-                Icon(Icons.logout, color: AppColor.redshade900, size: 22.h),
-                SizedBox(
-                  width: 12.w,
-                ),
-                Text('Logout',
-                    style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.redshade900,)),
-              ],
-            ),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              size: 22.h,
-              color: AppColor.black,
-            ),
-            onTap: () {
-              logout(context);
-            },
-            dense: true,
           )
           //jobDetailsWidget(title: 'My Profile'),
         ],
@@ -126,31 +131,34 @@ class ProfileOptionsView extends StatelessWidget {
     String? icon,
     VoidCallback? onClicked,
   }) {
-    return ListTile(
-      minVerticalPadding: 10.h,
-      hoverColor: AppColor.primaryColor,
-      contentPadding: const EdgeInsets.only(left: 10.0),
-      title: Row(
-        children: [
-          //  Icon(icon, color: AppColor.black, size: 22.0),
-          ImageIcon(
-            AssetImage(icon!),
-            size: 22.h,
-          ),
-          SizedBox(
-            width: 12.w,
-          ),
-          Text(title!,
-              style: CustomTextStyles.text14SemiBoldW600),
-        ],
+    return Card(
+      color: AppColor.white,
+      child: ListTile(
+        minVerticalPadding: 10.h,
+        hoverColor: AppColor.primaryColor,
+        contentPadding: const EdgeInsets.only(left: 10.0),
+        title: Row(
+          children: [
+            //  Icon(icon, color: AppColor.black, size: 22.0),
+            ImageIcon(
+              AssetImage(icon!),
+              size: 22.h,
+            ),
+            SizedBox(
+              width: 12.w,
+            ),
+            Text(title!,
+                style: CustomTextStyles.text14SemiBoldW600),
+          ],
+        ),
+        trailing: Icon(
+          Icons.keyboard_arrow_right,
+          size: 22.h,
+          color: AppColor.black,
+        ),
+        onTap: onClicked,
+        dense: true,
       ),
-      trailing: Icon(
-        Icons.keyboard_arrow_right,
-        size: 22.h,
-        color: AppColor.black,
-      ),
-      onTap: onClicked,
-      dense: true,
     );
   }
 

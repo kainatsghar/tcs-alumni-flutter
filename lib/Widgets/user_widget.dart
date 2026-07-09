@@ -48,7 +48,7 @@ class _UserWidgetState extends State<UserWidget> {
     return Stack(
       children: [
         Container(
-          height: 160,
+          height:widget.isMentor!='1'? 145 : 160,
           padding:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
 
           decoration: BoxDecoration(
@@ -72,9 +72,9 @@ class _UserWidgetState extends State<UserWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // SizedBox(
-              //   width: 6.w,
-              // ),
+              SizedBox(
+                height: 15,
+              ),
               _profilepicture(widget.image!),
               SizedBox(
                 width: 12.w,
@@ -86,18 +86,19 @@ class _UserWidgetState extends State<UserWidget> {
                     widget.designation ?? '', widget.year!,widget.place),
               ),
 
-              SizedBox(
-                height: 20.h,
-              ),
+              // SizedBox(
+              //   height: 20.h,
+              // ),
 
 
             ],
           ),
         ),
         Positioned(
-          bottom: 7,
-          left: 0,
-          right: 0,
+          // bottom: 7,
+          // left: 0,
+          right: 10,
+          top: 10,
           child:
 
         _designation(widget.place ?? ''),
@@ -180,14 +181,16 @@ class _UserWidgetState extends State<UserWidget> {
           style: CustomTextStyles.text14SemiBoldW600,
         ),
         const SizedBox(
-          height: 0,
+          height: 2,
         ),
         if (designation != '' || organization != '')
-          Text('$designation,$organization',style: TextStyle(color: AppColor.grey,fontSize: 13.sp),),
+          Text('$designation,$organization',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: AppColor.grey,fontSize: 11.sp),),
         AppConstants.appName != 'TLE' ? Column(
           children: [
             const SizedBox(
-              height: 1,
+              height: 5,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,10 +251,10 @@ class _UserWidgetState extends State<UserWidget> {
               decoration: BoxDecoration(
                 color:AppColor.white,
                 // widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?AppColor.primaryColor:widget.chatStatus == AppConstants.INVITE ?Colors.deepOrange:AppColor.greenColor,
-                borderRadius: BorderRadius.circular(3.r),
-                border: Border.all(
-                  color: widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?AppColor.primaryColor:widget.chatStatus == AppConstants.INVITE ?Colors.deepOrange:AppColor.greenColor,
-                )
+                // borderRadius: BorderRadius.circular(3.r),
+                // border: Border.all(
+                //   color: widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?AppColor.primaryColor:widget.chatStatus == AppConstants.INVITE ?Colors.deepOrange:AppColor.greenColor,
+                // )
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 10,right:10,top: 1,bottom: 3),
@@ -264,40 +267,40 @@ class _UserWidgetState extends State<UserWidget> {
                         bottom: 2
                       ),
                       child: SizedBox(
-                        height: 18,
+                        height: 22 ,
                         child:widget.chatStatus == ""
                           ? SvgPicture.asset(
-                              AppImages.chatSend2,
+                              AppImages.chatSend,
                               color:AppColor.primaryColor,
                               // color: AppColor.white,
                             )
                           : widget.chatStatus == AppConstants.INVITE ||
                                   widget.chatStatus == AppConstants.REJECT
                               ? SvgPicture.asset(
-                                  AppImages.chatPending2,
+                                  AppImages.chatPending,
                                   color: Colors.deepOrange,
                                   // color: AppColor.white,
                                 )
                               : SvgPicture.asset(
-                                  AppImages.chatAccept2,
+                                  AppImages.chatAccept,
                                   // color: AppColor.white,
                                   color: AppColor.greenColor,
                                 ),
                                   ),
                     ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6,bottom: 0),
-                      child: Text(
-                        widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?"Connect":widget.chatStatus == AppConstants.INVITE ?"Pending":'Chat   ',
-                        style: CustomTextStyles.text12RegularW400.copyWith(
-                            color: widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?AppColor.primaryColor:widget.chatStatus == AppConstants.INVITE ?Colors.deepOrange:AppColor.greenColor,
-                          // color: AppColor.white
-                          ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 5.w,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 6,bottom: 0),
+                    //   child: Text(
+                    //     widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?"Connect":widget.chatStatus == AppConstants.INVITE ?"Pending":'Chat   ',
+                    //     style: CustomTextStyles.text12RegularW400.copyWith(
+                    //         color: widget.chatStatus == ""||widget.chatStatus == AppConstants.REJECT?AppColor.primaryColor:widget.chatStatus == AppConstants.INVITE ?Colors.deepOrange:AppColor.greenColor,
+                    //       // color: AppColor.white
+                    //       ),
+                    //   ),
+                    // ),
                   ],
                 ),
               )

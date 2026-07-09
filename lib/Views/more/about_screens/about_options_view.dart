@@ -30,7 +30,8 @@ class AboutOptionsView extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Center(
+            Card(
+              color: AppColor.white,
               child: ListTile(
                 onTap: () {
                   Get.to(() => const AboutUsScreen());
@@ -61,10 +62,11 @@ class AboutOptionsView extends StatelessWidget {
             AppConstants.appName == 'TLE'
                 ? Column(
                     children: [
-                      Divider(
-                        height: 1.h,
-                      ),
-                      Center(
+                      // Divider(
+                      //   height: 1.h,
+                      // ),
+                      Card(
+                        color: AppColor.white,
                         child: ListTile(
                           onTap: () {
                             Get.to(() => const FeedBack());
@@ -95,9 +97,9 @@ class AboutOptionsView extends StatelessWidget {
                     ],
                   )
                 : Container(),
-            Divider(
-              height: 1.h,
-            ),
+            // Divider(
+            //   height: 1.h,
+            // ),
             _buildMoreItem(
                 title: 'Contact Us',
                 icon: AppImages.contactMenu,
@@ -107,9 +109,9 @@ class AboutOptionsView extends StatelessWidget {
                     return const ConnectScreen();
                   }));
                 }),
-            Divider(
-              height: 1.h,
-            ),
+            // Divider(
+            //   height: 1.h,
+            // ),
             _buildMoreItem(
                 title: "FAQ's",
                 icon: AppImages.faq,
@@ -119,9 +121,7 @@ class AboutOptionsView extends StatelessWidget {
                     return const FaqScreen();
                   }));
                 }),
-            Divider(
-              height: 1.h,
-            ),
+
             _buildMoreItem(
               title: 'Privacy Policy',
               icon: AppImages.privacy,
@@ -143,9 +143,6 @@ class AboutOptionsView extends StatelessWidget {
                       return const PrivacyPolicyScreen();
                     }));
               },
-            ),
-            Divider(
-              height: 1.h,
             ),
             Spacer(),
             Padding(
@@ -188,29 +185,32 @@ class AboutOptionsView extends StatelessWidget {
     String? icon,
     VoidCallback? onClicked,
   }) {
-    return ListTile(
-      hoverColor: AppColor.primaryColor,
-      contentPadding: const EdgeInsets.only(left: 10.0),
-      title: Row(
-        children: [
-          //  Icon(icon, color: AppColor.black, size: 22.0),
-          ImageIcon(
-            AssetImage(icon!),
-            size: 20.h,
-          ),
-          SizedBox(
-            width: 12.w,
-          ),
-          Text(title!,
-              style: CustomTextStyles.text14SemiBoldW600,),
-        ],
+    return             Card(
+      color: AppColor.white,
+      child: ListTile(
+        hoverColor: AppColor.primaryColor,
+        contentPadding: const EdgeInsets.only(left: 10.0),
+        title: Row(
+          children: [
+            //  Icon(icon, color: AppColor.black, size: 22.0),
+            ImageIcon(
+              AssetImage(icon!),
+              size: 20.h,
+            ),
+            SizedBox(
+              width: 12.w,
+            ),
+            Text(title!,
+                style: CustomTextStyles.text14SemiBoldW600,),
+          ],
+        ),
+        trailing: const Icon(
+          Icons.keyboard_arrow_right,
+          color: AppColor.black,
+        ),
+        onTap: onClicked,
+        dense: true,
       ),
-      trailing: const Icon(
-        Icons.keyboard_arrow_right,
-        color: AppColor.black,
-      ),
-      onTap: onClicked,
-      dense: true,
     );
   }
 }

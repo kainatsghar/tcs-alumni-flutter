@@ -283,120 +283,126 @@ class _ChatScreenState extends State<ChatScreen> {
         Function()? onPressed}) {
     return GestureDetector(
       onTap: onPressed,
-      child: Stack(
-        children: [
-          Container(
-            color: slcColor,
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  child: CircleAvatar(
-                    child: image == ''
-                        ? Image(
-                      image: const AssetImage(AppImages.profile),
-                      width: 50.w,
-                      height: 50.h,
-                    )
-                        : CachedNetworkImage(
-                      imageUrl: image ?? '',
-                      imageBuilder: (context, imageProvider) => Container(
-                        height: 50.h,
-                        width: 50.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Image(
+      child: Card(
+        child: Stack(
+          children: [
+            Container(
+
+              decoration: BoxDecoration(
+                  color: slcColor,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    child: CircleAvatar(
+                      child: image == ''
+                          ? Image(
                         image: const AssetImage(AppImages.profile),
-                        height: 50.w,
-                        width: 50.h,
-                      ),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                          CircularProgressIndicator(
-                            value: downloadProgress.progress,
-                          ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name!,
-                          style: TextStyle(
-                            // //Family: 'Nunito',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                msg ?? '',
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: AppColor.grey),
-                              ),
+                        width: 50.w,
+                        height: 50.h,
+                      )
+                          : CachedNetworkImage(
+                        imageUrl: image ?? '',
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 50.h,
+                          width: 50.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
                             ),
-                          ],
+                          ),
                         ),
-                      ],
-                    )),
-                // Text(
-                //   unreadCount ?? '',
-                //   style: TextStyle(
-                //     fontSize: ScreenUtil().setSp(12),
-                //     color: AppColor.grey,
-                //   ),
-                // ),
-                Text(
-                  time ?? '',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(12),
-                    color: AppColor.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          unreadCount != '0'
-              ? Positioned(
-            right: 20,
-            top: 5,
-            child: Container(
-              decoration:  BoxDecoration(
-                  color: AppColor.primaryColor, shape: BoxShape.circle),
-              child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      unreadCount ?? '',
-                      style:
-                      TextStyle(color: AppColor.white, fontSize: 10.sp),
+                        errorWidget: (context, url, error) => Image(
+                          image: const AssetImage(AppImages.profile),
+                          height: 50.w,
+                          width: 50.h,
+                        ),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                      ),
                     ),
-                  )),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name!,
+                            style: TextStyle(
+                              // //Family: 'Nunito',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  msg ?? '',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: AppColor.grey),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                  // Text(
+                  //   unreadCount ?? '',
+                  //   style: TextStyle(
+                  //     fontSize: ScreenUtil().setSp(12),
+                  //     color: AppColor.grey,
+                  //   ),
+                  // ),
+                  Text(
+                    time ?? '',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(12),
+                      color: AppColor.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
-              : const SizedBox(),
-        ],
+            unreadCount != '0'
+                ? Positioned(
+              right: 20,
+              top: 5,
+              child: Container(
+                decoration:  BoxDecoration(
+                    color: AppColor.primaryColor, shape: BoxShape.circle),
+                child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        unreadCount ?? '',
+                        style:
+                        TextStyle(color: AppColor.white, fontSize: 10.sp),
+                      ),
+                    )),
+              ),
+            )
+                : const SizedBox(),
+          ],
+        ),
       ),
     );
   }
