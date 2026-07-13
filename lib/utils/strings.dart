@@ -46,6 +46,7 @@ class Strings {
   static const String profile = 'Profile';
   static const String aboutUs = 'About Cityzens Alumni';
   static const String help = 'Help';
+  static const String game = 'Game';
   static const String jobopening = 'Alumni Jobs';
   static const String postajob = 'Post a Job';
   static const String jobs = 'Jobs';

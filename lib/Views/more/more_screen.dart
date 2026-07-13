@@ -31,6 +31,7 @@ import '../../utils/text_styles.dart';
 import '../privac_&_policy.dart';
 import 'business_directory/business_directory_screen.dart';
 import 'consultancy/Consultancy.dart';
+import 'game/quoridor_game_view.dart';
 import 'gallery/gallery_screen.dart';
 import 'networking_screen.dart';
 
@@ -280,6 +281,14 @@ class MoreScreenState extends State<MoreScreen> {
         color: _orange,
         svgAsset: AppImages.help,
         onTap: () => Get.to(() => const AboutOptionsView()),
+      ),
+      // Help
+      MoreMenuItem(
+        title: Strings.game,
+        color: _orange,
+        // svgAsset: AppImages.help,
+        iconData: Icons.videogame_asset_outlined,
+        onTap: () => Get.to(() => const QuoridorGameView()),
       ),
 
       // Campus Details
