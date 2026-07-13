@@ -13,7 +13,9 @@ import 'package:iobm/utils/app_images.dart';
 import 'package:iobm/utils/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../networkcalls/response_models/business_spotlight_model.dart';
 import '../../../utils/text_styles.dart';
+import '../business_directory/business_directory_screen.dart';
 
 class CareerScreen extends StatefulWidget {
   const CareerScreen({Key? key}) : super(key: key);
@@ -79,6 +81,20 @@ class CareerScreenState extends State<CareerScreen> {
                     jobID: "",
                   ),
                 );
+              },
+            ),
+            _postJob(
+              title: Strings.businessspotlight,
+              onClicked: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const BusinessDirectory()),
+                );
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (_) => BusinessSpotlight()),
+
+                // );
               },
             ),
             // Divider(

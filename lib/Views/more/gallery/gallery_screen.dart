@@ -77,18 +77,19 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 itemCount: _galleries.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
+                  final reverseIndex = _galleries.length - 1 - index;
                   return Column(
                     children: [
                       _event(
-                          img: '${_galleries[index].image}',
-                          title: '${_galleries[index].title}',
+                          img: '${_galleries[reverseIndex].image}',
+                          title: '${_galleries[reverseIndex].title}',
                           date: AppUtils().convertDateTimeDisplay(
-                              _galleries[index].createdDAte ?? ''),
+                              _galleries[reverseIndex].createdDAte ?? ''),
                           onTap: () {
                             Get.to(
                               () => ShowImagesScreen(
-                                galleryId: _galleries[index].id,
-                                galleryTitle: _galleries[index].title,
+                                galleryId: _galleries[reverseIndex].id,
+                                galleryTitle: _galleries[reverseIndex].title,
                               ),
                             );
                           }),

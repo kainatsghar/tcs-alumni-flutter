@@ -62,21 +62,39 @@ class MoreScreen extends StatefulWidget {
 
 class MoreScreenState extends State<MoreScreen> {
   // ─── Colors matching the design ─────────────────────────────────────────
-  static const Color _purple      = Color(0xFFB1A7F2); // Soft Lavender
-  static const Color _teal        = Color(0xFF8CE5DC); // Light Mint/Teal
-  static const Color _green       = Color(0xFF8ED9A6); // Soft Pastel Green
-  static const Color _red         = Color(0xFFF99DA4); // Light Coral Red
-  static const Color _violet      = Color(0xFFD6A6F7); // Light Violet/Lilac
-  static const Color _olive       = Color(0xFFE2D68F); // Soft Olive/Sand
-  static const Color _darkNav     = Color(0xFF8EA4C7); // Light Steel Blue
-  static const Color _brown       = Color(0xFFC79E91); // Soft Terracotta/Brown
-  static const Color _blue        = Color(0xFF99BBFF); // Baby Blue
-  static const Color _salmon      = Color(0xFFF3B0A7); // Light Salmon Pink
-  static const Color _limeGreen   = Color(0xFFA5E6A5); // Light Lime Green
-  static const Color _slate       = Color(0xFFA3BCC9); // Light Slate/Gray-Blue
-  static const Color _crimson     = Color(0xFFEAA1A8); // Soft Crimson Pink
-  static const Color _orange      = Color(0xFFFFC093); // Light Pastel Orange
-  static const Color _counselor   = Color(0xFF90C2CE); // Soft Slate Cyan (Opacity removed for consistency)
+  ///todo:Promary colors
+  static  Color _purple      = AppColor.primaryColor; // Soft Lavender
+  static  Color _teal        = AppColor.primaryColor; // Light Mint/Teal
+  static  Color _green       = AppColor.primaryColor; // Soft Pastel Green
+  static  Color _red         = AppColor.primaryColor; // Light Coral Red
+  static  Color _violet      = AppColor.primaryColor; // Light Violet/Lilac
+  static  Color _olive       = AppColor.primaryColor; // Soft Olive/Sand
+  static  Color _darkNav     = AppColor.primaryColor; // Light Steel Blue
+  static  Color _brown       = AppColor.primaryColor; // Soft Terracotta/Brown
+  static  Color _blue        = AppColor.primaryColor; // Baby Blue
+  static  Color _salmon      = AppColor.primaryColor; // Light Salmon Pink
+  static  Color _limeGreen   = AppColor.primaryColor; // Light Lime Green
+  static  Color _slate       = AppColor.primaryColor; // Light Slate/Gray-Blue
+  static  Color _crimson     = AppColor.primaryColor; // Soft Crimson Pink
+  static  Color _orange      = AppColor.primaryColor; // Light Pastel Orange
+  static  Color _counselor   = AppColor.primaryColor; // Soft Slate Cyan (Opacity removed for consistency)
+  ///todo:old Lite Multi colors
+  // static const Color _purple      = Color(0xFFB1A7F2); // Soft Lavender
+  // static const Color _teal        = Color(0xFF8CE5DC); // Light Mint/Teal
+  // static const Color _green       = Color(0xFF8ED9A6); // Soft Pastel Green
+  // static const Color _red         = Color(0xFFF99DA4); // Light Coral Red
+  // static const Color _violet      = Color(0xFFD6A6F7); // Light Violet/Lilac
+  // static const Color _olive       = Color(0xFFE2D68F); // Soft Olive/Sand
+  // static const Color _darkNav     = Color(0xFF8EA4C7); // Light Steel Blue
+  // static const Color _brown       = Color(0xFFC79E91); // Soft Terracotta/Brown
+  // static const Color _blue        = Color(0xFF99BBFF); // Baby Blue
+  // static const Color _salmon      = Color(0xFFF3B0A7); // Light Salmon Pink
+  // static const Color _limeGreen   = Color(0xFFA5E6A5); // Light Lime Green
+  // static const Color _slate       = Color(0xFFA3BCC9); // Light Slate/Gray-Blue
+  // static const Color _crimson     = Color(0xFFEAA1A8); // Soft Crimson Pink
+  // static const Color _orange      = Color(0xFFFFC093); // Light Pastel Orange
+  // static const Color _counselor   = Color(0xFF90C2CE); // Soft Slate Cyan (Opacity removed for consistency)
+  ///todo:old dark Multi colors
   // static const Color _purple     = Color(0xFF5C4DB1);
   // static const Color _teal       = Color(0xFF00A896);
   // static const Color _green      = Color(0xFF1B7F3B);
@@ -250,7 +268,8 @@ class MoreScreenState extends State<MoreScreen> {
       // Privacy and polocy
       MoreMenuItem(
         title: Strings.privacyAndPolicy,
-        color: Colors.deepOrangeAccent,
+        color: AppColor.primaryColor,
+        // color: Colors.deepOrangeAccent,
         svgAsset: AppImages.privacy_and_policy,
         onTap: () => Get.to(()=>PrivacyPolicyPage()),
       ),
@@ -300,16 +319,16 @@ class MoreScreenState extends State<MoreScreen> {
         ),
 
       // Business Spotlight (TLE only)
-      if (AppConstants.appName == 'TLE')
-        MoreMenuItem(
-          title: Strings.businessspotlight,
-          color: _green,
-          svgAsset: AppImages.bspotlighticon,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const BusinessSpotlight()),
-          ),
-        ),
+      // if (AppConstants.appName == 'TLE')
+      //   MoreMenuItem(
+      //     title: Strings.businessspotlight,
+      //     color: _green,
+      //     svgAsset: AppImages.bspotlighticon,
+      //     onTap: () => Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (_) => const BusinessSpotlight()),
+      //     ),
+      //   ),
 
       // Advertise (TLE only)
       if (AppConstants.appName == 'TLE')
@@ -401,7 +420,7 @@ class MoreScreenState extends State<MoreScreen> {
                   fontFamily: 'Poppins',
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColor.black,
+                  color: AppColor.white,
                   height: 1.3,
                 ),
               ),
@@ -417,7 +436,7 @@ class MoreScreenState extends State<MoreScreen> {
      double size2 = 27.r;
 
     if (item.iconData != null) {
-      return Icon(item.iconData, color: AppColor.black, size: size);
+      return Icon(item.iconData, color: AppColor.white, size: size);
     }
 
     if (item.pngAsset != null) {
@@ -425,9 +444,9 @@ class MoreScreenState extends State<MoreScreen> {
         item.pngAsset!,
         height: size.r,
         width: size.r,
-        color: AppColor.black,
+        color: AppColor.white,
         errorBuilder: (_, __, ___) =>
-         Icon(Icons.grid_view, color: AppColor.black, size: size),
+         Icon(Icons.grid_view, color: AppColor.white, size: size),
       );
     }
 
@@ -436,7 +455,7 @@ class MoreScreenState extends State<MoreScreen> {
         item.svgAsset!,
         height: size2.r,
         width: size2.r,
-        colorFilter: const ColorFilter.mode(AppColor.black, BlendMode.srcIn),
+        colorFilter: const ColorFilter.mode(AppColor.white, BlendMode.srcIn),
       );
     }
 

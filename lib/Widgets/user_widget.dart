@@ -48,7 +48,7 @@ class _UserWidgetState extends State<UserWidget> {
     return Stack(
       children: [
         Container(
-          height:widget.isMentor!='1'? 145 : 160,
+          height:widget.isMentor!='1'? 145 : 155,
           padding:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 10.w),
 
           decoration: BoxDecoration(
