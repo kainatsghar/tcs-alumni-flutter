@@ -42,6 +42,8 @@ class Wall {
   int get hashCode => position.hashCode ^ orientation.hashCode ^ owner.hashCode;
 }
 
+enum GameMode { singlePlayer, twoPlayers }
+
 class QuoridorState {
   final Point p1Pos;
   final Point p2Pos;
@@ -53,6 +55,7 @@ class QuoridorState {
   final int? seriesLength;
   final int p1Wins;
   final int p2Wins;
+  final GameMode gameMode;
 
   QuoridorState({
     required this.p1Pos,
@@ -65,6 +68,7 @@ class QuoridorState {
     this.seriesLength,
     this.p1Wins = 0,
     this.p2Wins = 0,
+    required this.gameMode,
   });
 
   QuoridorState copyWith({
@@ -78,6 +82,7 @@ class QuoridorState {
     int? seriesLength,
     int? p1Wins,
     int? p2Wins,
+    GameMode? gameMode,
   }) {
     return QuoridorState(
       p1Pos: p1Pos ?? this.p1Pos,
@@ -90,6 +95,7 @@ class QuoridorState {
       seriesLength: seriesLength ?? this.seriesLength,
       p1Wins: p1Wins ?? this.p1Wins,
       p2Wins: p2Wins ?? this.p2Wins,
+      gameMode: gameMode ?? this.gameMode,
     );
   }
 }
