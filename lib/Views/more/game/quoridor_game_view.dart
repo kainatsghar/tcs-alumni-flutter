@@ -277,8 +277,9 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(seriesEnded ? Icons.emoji_events : Icons.stars,
-                    color: Colors.yellow, size: 80.w),
+                Image.asset(seriesEnded ?'assets/images/winner.png':'assets/images/champion.png', height: 120.h, width: 120.w),
+                // Icon(seriesEnded ? Icons.emoji_events : Icons.stars,
+                //     color: Colors.yellow, size: 80.w),
                 SizedBox(height: 16.h),
                 Text(
                   title,
