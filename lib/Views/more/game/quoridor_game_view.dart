@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/text_styles.dart';
 import 'quoridor_models.dart';
@@ -16,12 +17,29 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
   QuoridorState? _state;
   bool _isPlayerTurn = true;
   bool? _placingHorizontal; // Null means no wall type selected yet
+  int _totalSeriesWins = 0;
+  int _totalSeriesLosses = 0;
 
   @override
   void initState() {
     super.initState();
+    _loadStats();
     _initializeState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _showSeriesSelection());
+  }
+
+  Future<void> _loadStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _totalSeriesWins = prefs.getInt('quoridor_series_wins') ?? 0;
+      _totalSeriesLosses = prefs.getInt('quoridor_series_losses') ?? 0;
+    });
+  }
+
+  Future<void> _saveStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('quoridor_series_wins', _totalSeriesWins);
+    await prefs.setInt('quoridor_series_losses', _totalSeriesLosses);
   }
 
   void _initializeState() {
@@ -62,14 +80,14 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF2C3E50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Select Series Mode',
+        title: Text('Select Match Series Mode',
             textAlign: TextAlign.center, style: CustomTextStyles.text16SemiBoldW600.copyWith(color: Colors.white)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _seriesOption(2, 'Best of 2'),
-            _seriesOption(3, 'Best of 3'),
-            _seriesOption(5, 'Best of 5'),
+            _seriesOption(1, 'Single Match'),
+            _seriesOption(3, '3 Match Series'),
+            _seriesOption(5, '5 Match of Series'),
           ],
         ),
       ),
@@ -162,17 +180,36 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
     });
 
     bool seriesEnded = false;
+    PlayerType? seriesWinner;
+
     if (_state!.seriesLength != null) {
-      int winThreshold = (_state!.seriesLength! / 2).ceil();
-      if (p1Wins >= winThreshold || p2Wins >= winThreshold) {
+      if (p1Wins + p2Wins >= _state!.seriesLength!) {
         seriesEnded = true;
+        int winThreshold = (_state!.seriesLength! / 2).ceil();
+        if (p1Wins >= winThreshold) {
+          _totalSeriesWins++;
+          seriesWinner = PlayerType.player1;
+        } else if (p2Wins >= winThreshold) {
+          _totalSeriesLosses++;
+          seriesWinner = PlayerType.player2;
+        }
+        _saveStats();
       }
     }
 
-    _showWinPopup(roundWinner, seriesEnded);
+    _showWinPopup(roundWinner, seriesEnded, seriesWinner);
   }
 
-  void _showWinPopup(PlayerType winner, bool seriesEnded) {
+  void _showWinPopup(PlayerType roundWinner, bool seriesEnded, PlayerType? seriesWinner) {
+    String title = seriesEnded ? 'SERIES CHAMPION!' : 'MATCH WINNER!';
+    String message = '';
+    
+    if (seriesEnded) {
+      message = seriesWinner == PlayerType.player1 ? 'CONGRATULATIONS! YOU WON THE SERIES!' : 'SYSTEM WON THE SERIES! BETTER LUCK NEXT TIME.';
+    } else {
+      message = roundWinner == PlayerType.player1 ? 'YOU WON THIS MATCH!' : 'SYSTEM WON THIS MATCH!';
+    }
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -191,17 +228,22 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
                     color: Colors.yellow, size: 80.w),
                 SizedBox(height: 16.h),
                 Text(
-                  seriesEnded ? 'SERIES CHAMPION!' : 'ROUND WINNER!',
+                  title,
+                  textAlign: TextAlign.center,
                   style: CustomTextStyles.text16SemiBoldW600.copyWith(color: Colors.yellow),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 12.h),
                 Text(
-                  winner == PlayerType.player1 ? 'YOU WON!' : 'SYSTEM WON!',
+                  message,
+                  textAlign: TextAlign.center,
                   style: CustomTextStyles.text14SemiBoldW600.copyWith(color: Colors.white),
                 ),
                 SizedBox(height: 24.h),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.primaryColor,
+                    minimumSize: Size(120.w, 40.h),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                     if (seriesEnded) {
@@ -211,7 +253,7 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
                       _resetGame(keepWins: true);
                     }
                   },
-                  child: Text(seriesEnded ? 'New Series' : 'Next Round',
+                  child: Text(seriesEnded ? 'New Series' : 'Next Match',
                       style: const TextStyle(color: Colors.white)),
                 ),
               ],
@@ -312,19 +354,28 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          _playerCard('YOU', state.p1WallsLeft, Colors.cyanAccent, state.turn == PlayerType.player1),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: AppColor.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text('VS', style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _playerCard('YOU', state.p1WallsLeft, Colors.cyanAccent, state.turn == PlayerType.player1),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: AppColor.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text('VS', style: CustomTextStyles.text14SemiBoldW600.copyWith(color: AppColor.primaryColor)),
+              ),
+              _playerCard('SYSTEM', state.p2WallsLeft, Colors.orangeAccent, state.turn == PlayerType.player2),
+            ],
           ),
-          _playerCard('SYSTEM', state.p2WallsLeft, Colors.orangeAccent, state.turn == PlayerType.player2),
+          SizedBox(height: 10.h),
+          Text(
+            'Lifetime Series Wins: $_totalSeriesWins | Losses: $_totalSeriesLosses',
+            style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.grey[600]),
+          ),
         ],
       ),
     );
@@ -429,6 +480,12 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
                 for (int x = 0; x < 8; x++)
                   _buildIntersectionDot(Point(x, y), state, cellSize, wallSize),
 
+            if (_isPlayerTurn && state.winner == null && _placingHorizontal != null)
+              for (int y = 0; y < 8; y++)
+                for (int x = 0; x < 8; x++)
+                  if (QuoridorEngine.isWallValid(state, Wall(Point(x, y), _placingHorizontal! ? WallOrientation.horizontal : WallOrientation.vertical, PlayerType.player1)))
+                    _buildWallHint(Point(x, y), cellSize, wallSize),
+
             for (final wall in state.walls) _buildPlacedWall(wall, cellSize, wallSize),
 
             _buildAnimatedPawn(state.p1Pos, cellSize, wallSize, Colors.cyanAccent, Icons.person),
@@ -482,32 +539,25 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
   }
 
   Widget _buildIntersectionDot(Point p, QuoridorState state, double cellSize, double wallSize) {
+    if (_placingHorizontal == null) return const SizedBox.shrink();
+
     bool canPlaceHor = QuoridorEngine.isWallValid(state, Wall(p, WallOrientation.horizontal, PlayerType.player1));
     bool canPlaceVer = QuoridorEngine.isWallValid(state, Wall(p, WallOrientation.vertical, PlayerType.player1));
 
-    if (!canPlaceHor && !canPlaceVer) return const SizedBox.shrink();
+    bool currentValid = _placingHorizontal! ? canPlaceHor : canPlaceVer;
+    if (!currentValid) return const SizedBox.shrink();
 
     return Positioned(
       left: p.x * (cellSize + wallSize) + cellSize - 2.w,
       top: p.y * (cellSize + wallSize) + cellSize - 2.w,
       child: GestureDetector(
-        onTap: () {
-          if (_placingHorizontal != null) {
-            _handleWallTap(p, _placingHorizontal! ? WallOrientation.horizontal : WallOrientation.vertical);
-          } else {
-             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Select Horizontal or Vertical first!'), duration: Duration(milliseconds: 500)),
-            );
-          }
-        },
+        onTap: () => _handleWallTap(p, _placingHorizontal! ? WallOrientation.horizontal : WallOrientation.vertical),
         behavior: HitTestBehavior.opaque,
         child: Container(
           width: wallSize + 4.w,
           height: wallSize + 4.w,
           decoration: BoxDecoration(
-            color: (_placingHorizontal != null && (_placingHorizontal! ? canPlaceHor : canPlaceVer))
-                ? Colors.cyanAccent.withOpacity(0.8)
-                : Colors.white.withOpacity(0.3),
+            color: Colors.white.withOpacity(0.3),
             shape: BoxShape.circle,
           ),
           child: Center(

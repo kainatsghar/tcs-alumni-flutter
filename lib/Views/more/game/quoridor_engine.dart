@@ -1,4 +1,4 @@
-import 'dart:collection';
+ import 'dart:collection';
 import 'quoridor_models.dart';
 
 class QuoridorEngine {
