@@ -5,6 +5,7 @@ import '../../../utils/app_color.dart';
 import '../../../utils/text_styles.dart';
 import 'quoridor_models.dart';
 import 'quoridor_engine.dart';
+import 'quoridor_leaderboard.dart';
 
 class QuoridorGameView extends StatefulWidget {
   const QuoridorGameView({Key? key}) : super(key: key);
@@ -318,6 +319,18 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
     );
   }
 
+  void _showLeaderboard() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => QuoridorLeaderboard(
+        userWins: _totalSeriesWins,
+        userLosses: _totalSeriesLosses,
+      ),
+    );
+  }
+
   void _triggerAIMove() async {
     await Future.delayed(const Duration(milliseconds: 600));
     if (!mounted || _state == null) return;
@@ -353,6 +366,12 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
         backgroundColor: const Color(0xFF2C3E50),
         elevation: 0,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.leaderboard_rounded, color: Colors.yellow),
+            onPressed: () => _showLeaderboard(),
+          ),
+        ],
       ),
       body: Column(
         children: [
