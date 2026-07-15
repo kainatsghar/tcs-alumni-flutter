@@ -1,84 +1,131 @@
-# Add Confirmation Dialog for Game Reset
+# Quoridor Game Enhancements
 
-This plan adds a confirmation popup when the user clicks "Reset Game / Change Mode" during an active match. If the game hasn't started yet, it will proceed directly to mode selection.
+This plan covers:
+1. Movement logic fix (Already implemented).
+2. Reset confirmation dialog.
+3. Leaderboard API integration using real data structure.
 
 ## User Review Required
 
-> [!NOTE]
-> I am defining "game started" as either pawn being moved from its starting position or any walls being placed. This prevents unnecessary popups if the user just opened the game and immediately wanted to change modes.
+> [!IMPORTANT]
+> - The leaderboard will now fetch live data from the API using `AppConstants.myId` as the `user_id`.
+> - The UI will be updated to display `wins`, `losses`, and `rank` from the API response.
 
 ## Proposed Changes
+
+### [NEW] Quoridor Leaderboard Model
+
+#### [NEW] [quoridor_leaderboard_entity.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/response_models/quoridor_leaderboard_entity.dart)
+
+- Define `QuoridorLeaderboardEntity` to match the actual API structure.
+
+```dart
+class QuoridorLeaderboardEntity {
+  int? success;
+  String? message;
+  QuoridorLeaderboardResult? result;
+
+  QuoridorLeaderboardEntity({this.success, this.message, this.result});
+
+  factory QuoridorLeaderboardEntity.fromJson(Map<String, dynamic> json) {
+    return QuoridorLeaderboardEntity(
+      success: json['success'],
+      message: json['message'],
+      result: json['result'] != null
+          ? QuoridorLeaderboardResult.fromJson(json['result'])
+          : null,
+    );
+  }
+}
+
+class QuoridorLeaderboardResult {
+  CurrentUserStats? currentUserStats;
+  List<QuoridorPlayer>? topPlayers;
+
+  QuoridorLeaderboardResult({this.currentUserStats, this.topPlayers});
+
+  factory QuoridorLeaderboardResult.fromJson(Map<String, dynamic> json) {
+    return QuoridorLeaderboardResult(
+      currentUserStats: json['current_user_stats'] != null
+          ? CurrentUserStats.fromJson(json['current_user_stats'])
+          : null,
+      topPlayers: json['top_players'] != null
+          ? (json['top_players'] as List).map((i) => QuoridorPlayer.fromJson(i)).toList()
+          : null,
+    );
+  }
+}
+
+class QuoridorPlayer {
+  String? userId;
+  String? name;
+  int? wins;
+  int? losses;
+  int? rank;
+
+  QuoridorPlayer({this.userId, this.name, this.wins, this.losses, this.rank});
+
+  factory QuoridorPlayer.fromJson(Map<String, dynamic> json) {
+    return QuoridorPlayer(
+      userId: json['user_id']?.toString(),
+      name: json['name'],
+      wins: json['wins'],
+      losses: json['losses'],
+      rank: json['rank'],
+    );
+  }
+}
+
+class CurrentUserStats {
+  String? userId;
+  String? name;
+  int? wins;
+  int? losses;
+  int? rank;
+
+  CurrentUserStats({this.userId, this.name, this.wins, this.losses, this.rank});
+
+  factory CurrentUserStats.fromJson(Map<String, dynamic> json) {
+    return CurrentUserStats(
+      userId: json['user_id']?.toString(),
+      name: json['name'],
+      wins: json['wins'],
+      losses: json['losses'],
+      rank: json['rank'],
+    );
+  }
+}
+```
+
+---
+
+### Network Layer
+
+#### [api_path.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/api_path.dart)
+- Add `const String apiGetQuoridorLeaderboard = 'api/get_quoridor_leaderboard';`
+
+#### [api_calls.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/api_calls.dart)
+- Add `static getQuoridorLeaderboard({userId})` method.
+
+---
 
 ### Quoridor Game View
 
 #### [quoridor_game_view.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/Views/more/game/quoridor_game_view.dart)
 
-- Add `_showResetConfirmation()` method to display an `AlertDialog`.
-- Update the "Reset Game / Change Mode" `TextButton` to call this new method.
-- The confirmation will only show if the game state is "dirty" (pawn moved or walls placed).
+- Implement `_showResetConfirmation()` to block immediate resets.
+- Pass `AppConstants.myId` to the leaderboard.
 
-```dart
-  void _showResetConfirmation() {
-    final state = _state;
-    if (state == null) return;
+#### [quoridor_leaderboard.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/Views/more/game/quoridor_leaderboard.dart)
 
-    // Check if game has actually started
-    bool hasStarted = state.walls.isNotEmpty ||
-                      state.p1Pos != const Point(4, 8) ||
-                      state.p2Pos != const Point(4, 0);
-
-    if (!hasStarted) {
-      _resetGame();
-      _showModeSelection();
-      return;
-    }
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF2C3E50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Reset Game?', style: CustomTextStyles.text16SemiBoldW600.copyWith(color: Colors.white)),
-        content: Text('Are you sure you want to reset the current game and change mode?',
-                     style: CustomTextStyles.text14RegularW400.copyWith(color: Colors.white70)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: Colors.grey[400])),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor),
-            onPressed: () {
-              Navigator.pop(context);
-              _resetGame();
-              _showModeSelection();
-            },
-            child: const Text('Reset', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-```
-
-```diff
-          TextButton(
--           onPressed: () {
--             _resetGame();
--             _showModeSelection();
--           },
-+           onPressed: _showResetConfirmation,
-            child: Text('Reset Game / Change Mode', style: TextStyle(color: Colors.grey[600])),
-          ),
-```
+- Convert to `StatefulWidget` to fetch data on `initState`.
+- Call `ApiCalls.getQuoridorLeaderboard` and display data.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `analyze_file` to ensure no syntax errors in the new method.
+- Run `analyze_file` on all modified files.
 
 ### Manual Verification
-1. Click the button when game just started (no moves) -> Should go to mode selection directly.
-2. Move a pawn or place a wall, then click the button -> Should show confirmation popup.
-3. Click "Cancel" -> Game should continue.
-4. Click "Reset" -> Game should reset and show mode selection.
+- Test reset confirmation: Move pawn -> click reset -> confirm popup appears.
+- Test leaderboard: Click leaderboard icon -> loader shows -> real data from API appears.

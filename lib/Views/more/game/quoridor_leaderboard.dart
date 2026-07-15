@@ -2,28 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/text_styles.dart';
+import '../../../utils/app_constants.dart';
+import '../../../networkcalls/api_calls.dart';
+import '../../../networkcalls/response_models/quoridor_leaderboard_entity.dart';
 
-class QuoridorLeaderboard extends StatelessWidget {
-  final int userWins;
-  final int userLosses;
+class QuoridorLeaderboard extends StatefulWidget {
+  const QuoridorLeaderboard({Key? key}) : super(key: key);
 
-  const QuoridorLeaderboard({
-    Key? key,
-    required this.userWins,
-    required this.userLosses,
-  }) : super(key: key);
+  @override
+  _QuoridorLeaderboardState createState() => _QuoridorLeaderboardState();
+}
+
+class _QuoridorLeaderboardState extends State<QuoridorLeaderboard> {
+  bool _isLoading = true;
+  QuoridorLeaderboardEntity? _leaderboardData;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLeaderboard();
+  }
+
+  Future<void> _fetchLeaderboard() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final response = await ApiCalls.getQuoridorLeaderboard(userId: AppConstants.myId);
+      if (response != null && response is Map<String, dynamic>) {
+        setState(() {
+          _leaderboardData = QuoridorLeaderboardEntity.fromJson(response);
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _errorMessage = "Failed to load leaderboard data.";
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = "An error occurred: $e";
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Mock data for Top Players (Replace with API call later)
-    final topPlayers = [
-      {'name': 'Zaid Khan', 'wins': 150, 'rank': 1},
-      {'name': 'Ali Ahmed', 'wins': 142, 'rank': 2},
-      {'name': 'Sara Malik', 'wins': 135, 'rank': 3},
-      {'name': 'Hamza Sheikh', 'wins': 128, 'rank': 4},
-      {'name': 'User 123', 'wins': 115, 'rank': 5},
-    ];
-
     return Container(
       height: MediaQuery.of(context).size.height * 0.75,
       decoration: const BoxDecoration(
@@ -57,42 +86,72 @@ class QuoridorLeaderboard extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              itemCount: topPlayers.length,
-              itemBuilder: (context, index) {
-                final player = topPlayers[index];
-                return _leaderboardItem(
-                  player['name'] as String,
-                  player['wins'] as int,
-                  player['rank'] as int,
-                  false,
-                );
-              },
-            ),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator(color: Colors.yellow))
+                : _errorMessage != null
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(_errorMessage!, style: const TextStyle(color: Colors.white70)),
+                            TextButton(
+                              onPressed: _fetchLeaderboard,
+                              child: const Text('Retry', style: TextStyle(color: Colors.yellow)),
+                            )
+                          ],
+                        ),
+                      )
+                    : _buildLeaderboardList(),
           ),
           // Current User Profile Section
-          Container(
-            padding: EdgeInsets.all(20.w),
-            decoration: BoxDecoration(
-              color: AppColor.primaryColor.withOpacity(0.2),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-              border: Border(top: BorderSide(color: Colors.yellow.withOpacity(0.3), width: 1)),
-            ),
-            child: Column(
-              children: [
-                _leaderboardItem('YOU (Current Stats)', userWins, 42, true),
-                SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _statChip('Wins', userWins, Colors.green),
-                    SizedBox(width: 20.w),
-                    _statChip('Losses', userLosses, Colors.red),
-                  ],
-                ),
-              ],
-            ),
+          if (!_isLoading && _leaderboardData?.result?.currentUserStats != null)
+            _buildCurrentUserSection(_leaderboardData!.result!.currentUserStats!),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLeaderboardList() {
+    final players = _leaderboardData?.result?.topPlayers ?? [];
+    if (players.isEmpty) {
+      return const Center(child: Text('No players found', style: TextStyle(color: Colors.white70)));
+    }
+
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      itemCount: players.length,
+      itemBuilder: (context, index) {
+        final player = players[index];
+        bool isMe = player.userId == AppConstants.myId;
+        return _leaderboardItem(
+          player.name ?? 'Unknown',
+          player.wins ?? 0,
+          player.rank ?? (index + 1),
+          isMe,
+        );
+      },
+    );
+  }
+
+  Widget _buildCurrentUserSection(CurrentUserStats stats) {
+    return Container(
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: AppColor.primaryColor.withOpacity(0.2),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        border: Border(top: BorderSide(color: Colors.yellow.withOpacity(0.3), width: 1)),
+      ),
+      child: Column(
+        children: [
+          _leaderboardItem('YOU (Current Stats)', stats.wins ?? 0, stats.rank ?? 0, true),
+          SizedBox(height: 10.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _statChip('Wins', stats.wins ?? 0, Colors.green),
+              SizedBox(width: 20.w),
+              _statChip('Losses', stats.losses ?? 0, Colors.red),
+            ],
           ),
         ],
       ),
@@ -122,9 +181,7 @@ class QuoridorLeaderboard extends StatelessWidget {
         color: isMe ? AppColor.primaryColor : Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: isMe ? Colors.yellow : Colors.transparent, width: 1),
-        boxShadow: isMe
-            ? [BoxShadow(color: Colors.yellow.withOpacity(0.2), blurRadius: 8)]
-            : null,
+        boxShadow: isMe ? [BoxShadow(color: Colors.yellow.withOpacity(0.2), blurRadius: 8)] : null,
       ),
       child: Row(
         children: [
@@ -146,6 +203,7 @@ class QuoridorLeaderboard extends StatelessWidget {
                 Text(
                   name,
                   style: CustomTextStyles.text14SemiBoldW600.copyWith(color: Colors.white),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 if (isMe)
                   Text(

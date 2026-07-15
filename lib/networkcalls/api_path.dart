@@ -123,4 +123,5 @@ const String apiOtpVerification = "api/otp_verification";
 
 ///Counter
 const String apiCounter = "api/get_user_unread_count";
+const String apiGetQuoridorLeaderboard = 'api/get_quoridor_leaderboard';
 

@@ -339,10 +339,7 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) => QuoridorLeaderboard(
-        userWins: _totalSeriesWins,
-        userLosses: _totalSeriesLosses,
-      ),
+      builder: (context) => const QuoridorLeaderboard(),
     );
   }
 
@@ -455,11 +452,51 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
           ),
           // SizedBox(height: 10.h),
           TextButton(
+            onPressed: _showResetConfirmation,
+            child: Text('Reset Game / Change Mode', style: TextStyle(color: Colors.grey[600])),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showResetConfirmation() {
+    final state = _state;
+    if (state == null) return;
+
+    // Check if game has actually started
+    bool hasStarted = state.walls.isNotEmpty ||
+        state.p1Pos != const Point(4, 8) ||
+        state.p2Pos != const Point(4, 0);
+
+    if (!hasStarted) {
+      _resetGame();
+      _showModeSelection();
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF2C3E50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text('Reset Game?',
+            style: CustomTextStyles.text16SemiBoldW600.copyWith(color: Colors.white)),
+        content: Text('Are you sure you want to reset the current game and change mode?',
+            style: CustomTextStyles.text12RegularW400.copyWith(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[400])),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor),
             onPressed: () {
+              Navigator.pop(context);
               _resetGame();
               _showModeSelection();
             },
-            child: Text('Reset Game / Change Mode', style: TextStyle(color: Colors.grey[600])),
+            child: const Text('Reset', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

@@ -16,7 +16,15 @@ class NetworkCalls {
         'Authorization': 'Bearer ${AppConstants.bearerToken}',
     };
     try {
-      Uri uri = Uri.parse(AppConstants.baseUrl + url);
+      String queryString = "";
+      if (params != null && params is Map && params.isNotEmpty) {
+        queryString = "?" +
+            params.entries
+                .map((e) => "${Uri.encodeComponent(e.key.toString())}=${Uri.encodeComponent(e.value.toString())}")
+                .join("&");
+      }
+
+      Uri uri = Uri.parse(AppConstants.baseUrl + url + queryString);
       print('url>>>>>>>>>>>>>>$uri');
       var response = await http.get(uri, headers: headers).timeout(
         const Duration( 
@@ -54,7 +62,14 @@ class NetworkCalls {
     };
 
     try {
-      Uri uri = Uri.parse(AppConstants.baseUrl + url);
+      String queryString = "";
+      if (params != null && params is Map && params.isNotEmpty) {
+        queryString = "?" +
+            params.entries
+                .map((e) => "${Uri.encodeComponent(e.key.toString())}=${Uri.encodeComponent(e.value.toString())}")
+                .join("&");
+      }
+      Uri uri = Uri.parse(AppConstants.baseUrl + url + queryString);
       var response = await http.get(uri, headers: headers).timeout(
         const Duration(
           seconds: 45,

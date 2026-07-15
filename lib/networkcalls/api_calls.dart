@@ -105,6 +105,13 @@ class ApiCalls {
     return _condition(apiDeleteEducation, params);
   }
 
+  static getQuoridorLeaderboard({userId}) async {
+    Map params = {
+      Params.USER_ID: userId,
+    };
+    return await NetworkCalls.getWebCall(apiGetQuoridorLeaderboard, params: params);
+  }
+
   static deleteExperience(userId, experienceId) async {
     Map params = {
       Params.USER_ID: userId,
