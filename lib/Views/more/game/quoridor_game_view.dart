@@ -162,9 +162,20 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
     // In single player mode, only P1 (human) can click on their turn
     if (state.gameMode == GameMode.singlePlayer && state.turn != PlayerType.player1) return;
 
+    if (_isWallTypeSelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please deselect wall type to move!'), duration: Duration(milliseconds: 500)),
+      );
+      return;
+    }
+
     final currentPos = state.turn == PlayerType.player1 ? state.p1Pos : state.p2Pos;
     if (QuoridorEngine.isMoveValid(state, currentPos, p)) {
       _processMove(targetPos: p);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid move!'), duration: Duration(milliseconds: 500)),
+      );
     }
   }
 
@@ -196,6 +207,10 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
       if (_state!.gameMode == GameMode.singlePlayer && _state!.turn == PlayerType.player2) {
         _triggerAIMove();
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid wall placement!'), duration: Duration(milliseconds: 500)),
+      );
     }
   }
 
@@ -278,7 +293,7 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(seriesEnded ?'assets/images/winner.png':'assets/images/champion.png', height: 120.h, width: 120.w),
+                Image.asset(seriesEnded ?'assets/images/champion.png':'assets/images/winner.png', height: 120.h, width: 120.w),
                 // Icon(seriesEnded ? Icons.emoji_events : Icons.stars,
                 //     color: Colors.yellow, size: 80.w),
                 SizedBox(height: 16.h),
@@ -622,7 +637,11 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
                   child: GestureDetector(
                     onTap: () => _handleCellTap(Point(x, y)),
                     behavior: HitTestBehavior.opaque,
-                    child: SizedBox(width: cellSize, height: cellSize),
+                    child: Container(
+                      width: cellSize,
+                      height: cellSize,
+                      color: Colors.transparent,
+                    ),
                   ),
                 ),
 
