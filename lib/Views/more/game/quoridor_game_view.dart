@@ -6,6 +6,8 @@ import '../../../utils/text_styles.dart';
 import 'quoridor_models.dart';
 import 'quoridor_engine.dart';
 import 'quoridor_leaderboard.dart';
+import '../../../networkcalls/api_calls.dart';
+import '../../../utils/app_constants.dart';
 
 class QuoridorGameView extends StatefulWidget {
   const QuoridorGameView({Key? key}) : super(key: key);
@@ -263,7 +265,36 @@ class _QuoridorGameViewState extends State<QuoridorGameView> {
       }
     }
 
+    if (state.gameMode == GameMode.singlePlayer) {
+      _saveMatchResultToApi(roundWinner, seriesEnded, seriesWinner);
+    }
+
     _showWinPopup(roundWinner, seriesEnded, seriesWinner);
+  }
+
+  void _saveMatchResultToApi(PlayerType roundWinner, bool seriesEnded, PlayerType? seriesWinner) async {
+    final state = _state;
+    if (state == null || state.gameMode != GameMode.singlePlayer) return;
+
+    String winnerStr = "";
+    if (seriesEnded && seriesWinner != null) {
+      winnerStr = seriesWinner == PlayerType.player1 ? 'player1' : 'player2';
+    } else {
+      winnerStr = roundWinner == PlayerType.player1 ? 'player1' : 'player2';
+    }
+
+    try {
+      await ApiCalls.saveQuoridorMatch(
+        userId: AppConstants.myId,
+        winner: winnerStr,
+        gameMode: 'singlePlayer',
+        p1Wins: state.p1Wins,
+        p2Wins: state.p2Wins,
+        seriesLength: state.seriesLength ?? 1,
+      );
+    } catch (e) {
+      debugPrint("Error saving match result: $e");
+    }
   }
 
   void _showWinPopup(PlayerType roundWinner, bool seriesEnded, PlayerType? seriesWinner) {

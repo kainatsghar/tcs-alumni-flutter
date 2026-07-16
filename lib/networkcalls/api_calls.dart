@@ -112,6 +112,18 @@ class ApiCalls {
     return await NetworkCalls.getWebCall(apiGetQuoridorLeaderboard, params: params);
   }
 
+  static saveQuoridorMatch({userId, winner, gameMode, p1Wins, p2Wins, seriesLength}) async {
+    Map params = {
+      "user_id": userId,
+      "winner": winner,
+      "game_mode": gameMode,
+      "p1_wins": p1Wins,
+      "p2_wins": p2Wins,
+      "series_length": seriesLength,
+    };
+    return await NetworkCalls.postWebCall(apiSaveQuoridorMatch, params);
+  }
+
   static deleteExperience(userId, experienceId) async {
     Map params = {
       Params.USER_ID: userId,

@@ -2,110 +2,25 @@
 
 This plan covers:
 1. Movement logic fix (Already implemented).
-2. Reset confirmation dialog.
-3. Leaderboard API integration using real data structure.
+2. Reset confirmation dialog (Already implemented).
+3. Leaderboard API integration (Already implemented).
+4. Save Match API integration (New).
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - The leaderboard will now fetch live data from the API using `AppConstants.myId` as the `user_id`.
-> - The UI will be updated to display `wins`, `losses`, and `rank` from the API response.
+> - The match result will be saved **only** for "Play vs System" (singlePlayer) mode.
+> - The API will be called once a series or a single match is completed.
 
 ## Proposed Changes
-
-### [NEW] Quoridor Leaderboard Model
-
-#### [NEW] [quoridor_leaderboard_entity.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/response_models/quoridor_leaderboard_entity.dart)
-
-- Define `QuoridorLeaderboardEntity` to match the actual API structure.
-
-```dart
-class QuoridorLeaderboardEntity {
-  int? success;
-  String? message;
-  QuoridorLeaderboardResult? result;
-
-  QuoridorLeaderboardEntity({this.success, this.message, this.result});
-
-  factory QuoridorLeaderboardEntity.fromJson(Map<String, dynamic> json) {
-    return QuoridorLeaderboardEntity(
-      success: json['success'],
-      message: json['message'],
-      result: json['result'] != null
-          ? QuoridorLeaderboardResult.fromJson(json['result'])
-          : null,
-    );
-  }
-}
-
-class QuoridorLeaderboardResult {
-  CurrentUserStats? currentUserStats;
-  List<QuoridorPlayer>? topPlayers;
-
-  QuoridorLeaderboardResult({this.currentUserStats, this.topPlayers});
-
-  factory QuoridorLeaderboardResult.fromJson(Map<String, dynamic> json) {
-    return QuoridorLeaderboardResult(
-      currentUserStats: json['current_user_stats'] != null
-          ? CurrentUserStats.fromJson(json['current_user_stats'])
-          : null,
-      topPlayers: json['top_players'] != null
-          ? (json['top_players'] as List).map((i) => QuoridorPlayer.fromJson(i)).toList()
-          : null,
-    );
-  }
-}
-
-class QuoridorPlayer {
-  String? userId;
-  String? name;
-  int? wins;
-  int? losses;
-  int? rank;
-
-  QuoridorPlayer({this.userId, this.name, this.wins, this.losses, this.rank});
-
-  factory QuoridorPlayer.fromJson(Map<String, dynamic> json) {
-    return QuoridorPlayer(
-      userId: json['user_id']?.toString(),
-      name: json['name'],
-      wins: json['wins'],
-      losses: json['losses'],
-      rank: json['rank'],
-    );
-  }
-}
-
-class CurrentUserStats {
-  String? userId;
-  String? name;
-  int? wins;
-  int? losses;
-  int? rank;
-
-  CurrentUserStats({this.userId, this.name, this.wins, this.losses, this.rank});
-
-  factory CurrentUserStats.fromJson(Map<String, dynamic> json) {
-    return CurrentUserStats(
-      userId: json['user_id']?.toString(),
-      name: json['name'],
-      wins: json['wins'],
-      losses: json['losses'],
-      rank: json['rank'],
-    );
-  }
-}
-```
-
----
 
 ### Network Layer
 
 #### [api_path.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/api_path.dart)
-- Add `const String apiGetQuoridorLeaderboard = 'api/get_quoridor_leaderboard';`
+- Add `const String apiSaveQuoridorMatch = 'api/save_quoridor_match';`
 
 #### [api_calls.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/networkcalls/api_calls.dart)
-- Add `static getQuoridorLeaderboard({userId})` method.
+- Add `static saveQuoridorMatch({userId, winner, gameMode, p1Wins, p2Wins, seriesLength})` method using `postWebCall`.
 
 ---
 
@@ -113,19 +28,47 @@ class CurrentUserStats {
 
 #### [quoridor_game_view.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/Views/more/game/quoridor_game_view.dart)
 
-- Implement `_showResetConfirmation()` to block immediate resets.
-- Pass `AppConstants.myId` to the leaderboard.
+- Update `_handleRoundEnd` logic:
+    - Call `_saveMatchResultToApi()` inside `_handleRoundEnd` before showing the popup.
+    - Create `_saveMatchResultToApi(PlayerType roundWinner, bool seriesEnded, PlayerType? seriesWinner)` to prepare parameters and call the API.
 
-#### [quoridor_leaderboard.dart](file:///C:/Users/all/Desktop/flutter/TCS/tcs-alumni-flutter/lib/Views/more/game/quoridor_leaderboard.dart)
+```dart
+  void _saveMatchResultToApi(PlayerType roundWinner, bool seriesEnded, PlayerType? seriesWinner) async {
+    final state = _state;
+    if (state == null || state.gameMode != GameMode.singlePlayer) return;
 
-- Convert to `StatefulWidget` to fetch data on `initState`.
-- Call `ApiCalls.getQuoridorLeaderboard` and display data.
+    // For single match: winner is roundWinner
+    // For series match: winner is seriesWinner (if ended) or roundWinner (if tracking match by match)
+    // Based on requirement: "jese hi winner ka popup aye to api call ho jaye"
+
+    String winnerStr = "";
+    if (seriesEnded) {
+       winnerStr = seriesWinner == PlayerType.player1 ? 'player1' : 'player2';
+    } else {
+       winnerStr = roundWinner == PlayerType.player1 ? 'player1' : 'player2';
+    }
+
+    try {
+      await ApiCalls.saveQuoridorMatch(
+        userId: AppConstants.myId,
+        winner: winnerStr,
+        gameMode: 'singlePlayer',
+        p1Wins: state.p1Wins,
+        p2Wins: state.p2Wins,
+        seriesLength: state.seriesLength ?? 1,
+      );
+    } catch (e) {
+      print("Error saving match result: $e");
+    }
+  }
+```
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `analyze_file` on all modified files.
+- Run `analyze_file` on modified files.
 
 ### Manual Verification
-- Test reset confirmation: Move pawn -> click reset -> confirm popup appears.
-- Test leaderboard: Click leaderboard icon -> loader shows -> real data from API appears.
+- Play a "Single Match" vs System -> Complete the match -> Verify `save_quoridor_match` is called in logs.
+- Play a "3 Match Series" vs System -> Complete the series -> Verify `save_quoridor_match` is called.
+- Play "Two Players" mode -> Complete the match -> Verify API is **NOT** called.
