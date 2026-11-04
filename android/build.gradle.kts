@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         // Android Gradle Plugin (AGP) version
-        classpath("com.android.tools.build:gradle:8.1.1")
+        classpath("com.android.tools.build:gradle:8.11.1")
         // Google Services Plugin for Firebase, Analytics, etc.
         classpath("com.google.gms:google-services:4.4.3")
         // NOTE: Do not place your application dependencies here; they belong
